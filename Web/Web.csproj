@@ -401,6 +401,8 @@
     <Content Include="Angular\dist\Simple-Line-Icons.f33df365d6d0255b586f.eot" />
     <Content Include="Angular\dist\styles.bundle.js.map" />
     <Content Include="Angular\dist\vendor.bundle.js.map" />
+    <None Include="Properties\PublishProfiles\agencypm - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\agencypm - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -20,6 +20,7 @@ namespace Web
             var config = new HttpConfiguration();
 
 
+            //Default index file
             var mainIndex = new FileServerOptions
             {
                 EnableDefaultFiles = true,
@@ -28,16 +29,14 @@ namespace Web
                 DefaultFilesOptions = {DefaultFileNames = new[] {"index.html"}}
             };
 
-            //Configure the file/ static file serving middleware
-            var dependency = new FileServerOptions
+            //Angular build folder 
+            var angularBuild = new FileServerOptions
             {
-//                EnableDefaultFiles = true,
-//                RequestPath = new PathString(@"~/Angular/dist"),
                 FileSystem = new PhysicalFileSystem(@".\Angular\dist")
             };
-            
+
             app.UseFileServer(mainIndex);
-            app.UseFileServer(dependency);
+            app.UseFileServer(angularBuild);
             app.UseWebApi(config);
             app.MapSignalR();
         }
