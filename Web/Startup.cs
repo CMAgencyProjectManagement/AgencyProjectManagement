@@ -10,6 +10,7 @@ using Owin;
 using Web;
 
 [assembly: OwinStartup(typeof(Startup))]
+
 namespace Web
 {
     public class Startup
@@ -17,25 +18,26 @@ namespace Web
         public void Configuration(IAppBuilder app)
         {
             var config = new HttpConfiguration();
-//            config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "",
-                defaults: "/Angular/dist"
-            );
-            //Configure the file/ static file serving middleware
-            var physicalFileSystem = new PhysicalFileSystem(@".\Angular\dist");
-            var fileServerOptions = new FileServerOptions
+
+
+            var mainIndex = new FileServerOptions
             {
                 EnableDefaultFiles = true,
                 RequestPath = PathString.Empty,
-                FileSystem = physicalFileSystem
+                FileSystem = new PhysicalFileSystem(@".\"),
+                DefaultFilesOptions = {DefaultFileNames = new[] {"index.html"}}
             };
 
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames = new[] { "index.html" };
-            fileServerOptions.StaticFileOptions.ServeUnknownFileTypes = true;
-            fileServerOptions.StaticFileOptions.FileSystem = physicalFileSystem;
-            app.UseFileServer(fileServerOptions);
+            //Configure the file/ static file serving middleware
+            var dependency = new FileServerOptions
+            {
+//                EnableDefaultFiles = true,
+//                RequestPath = new PathString(@"~/Angular/dist"),
+                FileSystem = new PhysicalFileSystem(@".\Angular\dist")
+            };
+            
+            app.UseFileServer(mainIndex);
+            app.UseFileServer(dependency);
             app.UseWebApi(config);
             app.MapSignalR();
         }

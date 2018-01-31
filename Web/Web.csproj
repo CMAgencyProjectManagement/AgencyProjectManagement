@@ -382,6 +382,7 @@
     <Content Include="Angular\dist\Simple-Line-Icons.2fe2efe63441d830b1ac.svg" />
     <Content Include="Angular\dist\styles.bundle.js" />
     <Content Include="Angular\dist\vendor.bundle.js" />
+    <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include="Angular\dist\assets\.npmignore" />
     <Content Include="Angular\dist\dashboard.module.chunk.js.map" />
