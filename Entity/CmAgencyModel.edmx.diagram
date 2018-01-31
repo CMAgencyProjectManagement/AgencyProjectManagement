@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e5a5eeab788b4fcaa55a378e929df623" Name="Diagram1">
+        <EntityTypeShape EntityType="CmAgencyModel.Attachment" Width="1.5" PointX="9.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Comment" Width="1.5" PointX="9.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Label" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Project" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Role" Width="1.5" PointX="3" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Stage" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Task" Width="1.5" PointX="7.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.TaskDependency" Width="1.5" PointX="9.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.Team" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.User" Width="1.5" PointX="3" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.UserProject" Width="1.5" PointX="5.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmAgencyModel.UserTask" Width="1.5" PointX="12.75" PointY="10.625" IsExpanded="true" />
+        <AssociationConnector Association="CmAgencyModel.FK_Attachment_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Comment_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Label_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Project_Team" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Stage_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Task_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_UserProject_Project1" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_UserProject_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Task_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_Task_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_TaskDependency_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_TaskDependency_Task1" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_UserTask_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_UserProject_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.FK_UserTask_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.LabelTask" ManuallyRouted="false" />
+        <AssociationConnector Association="CmAgencyModel.UserTeam" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
