@@ -62,6 +62,8 @@ import {AppRoutingModule} from './app.routing';
 
 // Import provider
 import {AlwaysAuthGuard} from './services/auth.guard'
+import {StoreService} from './services/tree.service';
+import {AccountService} from './services/account.service';
 
 // Import 3rd party components
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
@@ -85,7 +87,10 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }, AlwaysAuthGuard,
+  },
+    AlwaysAuthGuard,
+    StoreService,
+    AccountService
   ],
   bootstrap: [AppComponent]
 })

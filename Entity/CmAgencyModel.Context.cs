@@ -26,19 +26,18 @@ namespace Entity
         }
     
         public virtual DbSet<Attachment> Attachments { get; set; }
-        public virtual DbSet<Comment> Comments { get; set; }
-        public virtual DbSet<Label> Labels { get; set; }
-        public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<Stage> Stages { get; set; }
-        public virtual DbSet<Task> Tasks { get; set; }
-        public virtual DbSet<TaskDependency> TaskDependencies { get; set; }
-        public virtual DbSet<Team> Teams { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserProject> UserProjects { get; set; }
-        public virtual DbSet<UserTask> UserTasks { get; set; }
         public virtual DbSet<CheckList> CheckLists { get; set; }
         public virtual DbSet<CheckListItem> CheckListItems { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Label> Labels { get; set; }
         public virtual DbSet<List> Lists { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<Team> Teams { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<TaskDependency> TaskDependencies { get; set; }
+        public virtual DbSet<UserTask> UserTasks { get; set; }
+        public virtual DbSet<UserTeam> UserTeams { get; set; }
     }
 }

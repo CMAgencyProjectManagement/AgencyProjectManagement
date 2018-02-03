@@ -14,17 +14,11 @@ namespace Entity
     
     public partial class TaskDependency
     {
-        public int ID { get; set; }
-        public int Source { get; set; }
-        public int Destination { get; set; }
-        public int Type { get; set; }
         public int SourceTaskId { get; set; }
         public int DestinationTaskId { get; set; }
         public int DependencyType { get; set; }
     
         public virtual Task Task { get; set; }
         public virtual Task Task1 { get; set; }
-        public virtual Task Task2 { get; set; }
-        public virtual Task Task11 { get; set; }
     }
 }

@@ -17,28 +17,28 @@ namespace Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.UserProjects = new HashSet<UserProject>();
-            this.UserTasks = new HashSet<UserTask>();
-            this.Teams = new HashSet<Team>();
             this.Tasks = new HashSet<Task>();
-            this.Teams1 = new HashSet<Team>();
+            this.Teams = new HashSet<Team>();
+            this.UserTasks = new HashSet<UserTask>();
+            this.UserTeams = new HashSet<UserTeam>();
+            this.Projects = new HashSet<Project>();
         }
     
-        public int ID { get; set; }
+        public System.DateTime ID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Avatar { get; set; }
         public bool IsAdmin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserProject> UserProjects { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserTask> UserTasks { get; set; }
+        public virtual ICollection<Task> Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Team> Teams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<UserTask> UserTasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Team> Teams1 { get; set; }
+        public virtual ICollection<UserTeam> UserTeams { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

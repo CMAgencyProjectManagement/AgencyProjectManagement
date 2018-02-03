@@ -52,6 +52,12 @@
     <Compile Include="Attachment.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CheckList.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckListItem.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CmAgencyModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -73,14 +79,14 @@
     <Compile Include="Label.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="List.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Project.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Stage.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Task.cs">
@@ -95,10 +101,10 @@
     <Compile Include="User.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserProject.cs">
+    <Compile Include="UserTask.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserTask.cs">
+    <Compile Include="UserTeam.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
