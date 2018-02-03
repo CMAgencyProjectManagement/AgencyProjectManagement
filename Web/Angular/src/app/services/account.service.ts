@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Account} from '../entities/Account';
 import {Cursor, StoreService} from './tree.service';
+import {WebsocketService} from './websocket.service';
 
 declare var $: any;
 
@@ -9,7 +10,8 @@ export class AccountService {
   private accountHub: any;
   private currentAccountCursor: Cursor;
 
-  constructor(private store: StoreService) {
+  constructor(private store: StoreService,
+              private ws: WebsocketService) {
     this.currentAccountCursor = store.select(['currentAccount']);
   }
 
@@ -51,33 +53,17 @@ export class AccountService {
   public login(username: string, password: string): Promise<Account> {
     console.debug('Login - AccountService');
     return new Promise<Account>((resolve, reject) => {
-      if (username === 'user' && password === 'password') {
-        let account: Account = {
-          id: 1,
-          username: 'user',
-          password: 'password',
-          avatar: '',
-          isAdmin: true
-        };
-        this.setCurrentAccount(account);
-        resolve(account)
-      } else {
-        reject('Invalid');
-      }
+      this.ws.getAccountHub().server.login(username, password)
+        .then(result => {
+          if (result.isSuccess) {
+            this.setCurrentAccount(result);
+            resolve(result.account);
+          } else {
+            reject(result.message);
+          }
+        })
+        .catch(reject);
     });
-    // const _this = this;
-    // return new Promise<Account>((resolve, reject) => {
-    //   $.connection.hub.start().then(_ => {
-    //     _this.accountHub.server.login(username, password).then(result => {
-    //       console.debug('After login', result);
-    //       if (result.isSuccess) {
-    //         resolve(result.account);
-    //       } else {
-    //         reject(result.message);
-    //       }
-    //     });
-    //   })
-    // })
   }
 
 

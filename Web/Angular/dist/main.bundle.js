@@ -130,6 +130,7 @@ var app_routing_1 = __webpack_require__("../../../../../src/app/app.routing.ts")
 var auth_guard_1 = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var account_service_1 = __webpack_require__("../../../../../src/app/services/account.service.ts");
+var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
 // Import 3rd party components
 var dropdown_1 = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
 var tabs_1 = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
@@ -155,7 +156,8 @@ var AppModule = /** @class */ (function () {
                 },
                 auth_guard_1.AlwaysAuthGuard,
                 tree_service_1.StoreService,
-                account_service_1.AccountService
+                account_service_1.AccountService,
+                websocket_service_1.WebsocketService
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -1440,9 +1442,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
 var AccountService = /** @class */ (function () {
-    function AccountService(store) {
+    function AccountService(store, ws) {
         this.store = store;
+        this.ws = ws;
         this.currentAccountCursor = store.select(['currentAccount']);
     }
     // public connect(username: string, password: string): Promise<void> {
@@ -1479,34 +1483,18 @@ var AccountService = /** @class */ (function () {
         var _this = this;
         console.debug('Login - AccountService');
         return new Promise(function (resolve, reject) {
-            if (username === 'user' && password === 'password') {
-                var account = {
-                    id: 1,
-                    username: 'user',
-                    password: 'password',
-                    avatar: '',
-                    isAdmin: true
-                };
-                _this.setCurrentAccount(account);
-                resolve(account);
-            }
-            else {
-                reject('Invalid');
-            }
+            _this.ws.getAccountHub().server.login(username, password)
+                .then(function (result) {
+                if (result.isSuccess) {
+                    _this.setCurrentAccount(result);
+                    resolve(result.account);
+                }
+                else {
+                    reject(result.message);
+                }
+            })
+                .catch(reject);
         });
-        // const _this = this;
-        // return new Promise<Account>((resolve, reject) => {
-        //   $.connection.hub.start().then(_ => {
-        //     _this.accountHub.server.login(username, password).then(result => {
-        //       console.debug('After login', result);
-        //       if (result.isSuccess) {
-        //         resolve(result.account);
-        //       } else {
-        //         reject(result.message);
-        //       }
-        //     });
-        //   })
-        // })
     };
     /**
      * @param user
@@ -1519,7 +1507,8 @@ var AccountService = /** @class */ (function () {
     };
     AccountService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [tree_service_1.StoreService])
+        __metadata("design:paramtypes", [tree_service_1.StoreService,
+            websocket_service_1.WebsocketService])
     ], AccountService);
     return AccountService;
 }());
@@ -1617,6 +1606,54 @@ var StoreService = /** @class */ (function () {
     return StoreService;
 }());
 exports.StoreService = StoreService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/websocket.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var WebsocketService = /** @class */ (function () {
+    function WebsocketService() {
+        var _this = this;
+        if ($ === undefined || $.connection === undefined) {
+            throw new Error('Missing dependency');
+        }
+        else {
+            this.connection = $.connection;
+            $.connection.hub.start().then(function (_) {
+                _this.isConnected = true;
+            });
+        }
+    }
+    WebsocketService.prototype.getAccountHub = function () {
+        if (this.isConnected) {
+            return this.connection.accountHub;
+        }
+        else {
+            throw new Error('Connection is not available');
+        }
+    };
+    WebsocketService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], WebsocketService);
+    return WebsocketService;
+}());
+exports.WebsocketService = WebsocketService;
 
 
 /***/ }),
