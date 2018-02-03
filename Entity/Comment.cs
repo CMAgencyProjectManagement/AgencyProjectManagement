@@ -20,6 +20,7 @@ namespace Entity
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ChangedDate { get; set; }
         public int TaskID { get; set; }
+        public string Body { get; set; }
     
         public virtual Task Task { get; set; }
     }

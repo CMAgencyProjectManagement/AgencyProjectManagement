@@ -12,14 +12,13 @@ namespace Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class UserTask
+    public partial class CheckListItem
     {
-        public int TaskID { get; set; }
-        public int UserID { get; set; }
-        public bool IsFollow { get; set; }
-        public bool IsAssigned { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
+        public int CheckListId { get; set; }
     
-        public virtual Task Task { get; set; }
-        public virtual User User { get; set; }
+        public virtual CheckList CheckList { get; set; }
     }
 }

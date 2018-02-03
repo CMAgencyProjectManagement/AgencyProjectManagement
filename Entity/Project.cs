@@ -21,6 +21,8 @@ namespace Entity
             this.Stages = new HashSet<Stage>();
             this.Tasks = new HashSet<Task>();
             this.UserProjects = new HashSet<UserProject>();
+            this.Lists = new HashSet<List>();
+            this.Teams = new HashSet<Team>();
         }
     
         public int ID { get; set; }
@@ -31,6 +33,7 @@ namespace Entity
         public int ChangedBy { get; set; }
         public System.DateTime ChangedDate { get; set; }
         public int TeamID { get; set; }
+        public Nullable<System.DateTime> Deadline { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Label> Labels { get; set; }
@@ -41,5 +44,9 @@ namespace Entity
         public virtual ICollection<Task> Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProject> UserProjects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<List> Lists { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Team> Teams { get; set; }
     }
 }

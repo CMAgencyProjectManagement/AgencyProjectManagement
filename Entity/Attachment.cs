@@ -18,6 +18,7 @@ namespace Entity
         public string Name { get; set; }
         public string Type { get; set; }
         public int TaskID { get; set; }
+        public string Path { get; set; }
     
         public virtual Task Task { get; set; }
     }

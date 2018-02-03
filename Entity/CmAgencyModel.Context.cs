@@ -37,5 +37,8 @@ namespace Entity
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserProject> UserProjects { get; set; }
         public virtual DbSet<UserTask> UserTasks { get; set; }
+        public virtual DbSet<CheckList> CheckLists { get; set; }
+        public virtual DbSet<CheckListItem> CheckListItems { get; set; }
+        public virtual DbSet<List> Lists { get; set; }
     }
 }

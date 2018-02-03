@@ -1,22 +1,23 @@
 import {CanActivate, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
+import {StoreService} from './tree.service';
 
 @Injectable()
 class AlwaysAuthGuard implements CanActivate {
-
-  constructor(private router: Router) {
+  constructor(private router: Router, private tree: StoreService) {
   }
 
   canActivate(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      let isSuccess = false;
+      const currentAccount = this.tree.get(['currentAccount']);
+      let isSuccess = currentAccount == null;
       console.debug('AlwaysAuthGuard');
       if (isSuccess) {
-        // tmp
+        resolve(isSuccess);
       } else {
         this.router.navigate(['login']);
+        resolve(isSuccess);
       }
-      resolve(isSuccess);
     });
   }
 }

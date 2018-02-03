@@ -24,6 +24,9 @@ namespace Entity
             this.TaskDependencies1 = new HashSet<TaskDependency>();
             this.UserTasks = new HashSet<UserTask>();
             this.Labels = new HashSet<Label>();
+            this.CheckLists = new HashSet<CheckList>();
+            this.TaskDependencies2 = new HashSet<TaskDependency>();
+            this.TaskDependencies11 = new HashSet<TaskDependency>();
         }
     
         public int ID { get; set; }
@@ -38,6 +41,8 @@ namespace Entity
         public Nullable<System.DateTime> Deadline { get; set; }
         public int ProjectID { get; set; }
         public int StageID { get; set; }
+        public Nullable<long> Duration { get; set; }
+        public int ListId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attachment> Attachments { get; set; }
@@ -56,5 +61,13 @@ namespace Entity
         public virtual ICollection<UserTask> UserTasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Label> Labels { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CheckList> CheckLists { get; set; }
+        public virtual List List { get; set; }
+        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TaskDependency> TaskDependencies2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TaskDependency> TaskDependencies11 { get; set; }
     }
 }
