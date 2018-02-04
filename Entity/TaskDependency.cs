@@ -18,7 +18,7 @@ namespace Entity
         public int DestinationTaskID { get; set; }
         public int DependencyType { get; set; }
     
-        public virtual Task SourceTask { get; set; }
-        public virtual Task DestinationTask { get; set; }
+        public virtual Task Task { get; set; }
+        public virtual Task Task1 { get; set; }
     }
 }

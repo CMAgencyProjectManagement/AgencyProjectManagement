@@ -27,15 +27,18 @@ namespace Entity
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> Deadline { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime CreatedTime { get; set; }
         public int CreatedBy { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<int> ChangedBy { get; set; }
+        public Nullable<System.DateTime> ChangeTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Label> Labels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<List> Lists { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Team> Teams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
