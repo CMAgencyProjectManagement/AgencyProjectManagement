@@ -6,6 +6,24 @@
   <button class="navbar-toggler d-md-down-none mr-auto" type="button" appSidebarToggler>
     <span class="navbar-toggler-icon"></span>
   </button>
+  <li class="nav-item dropdown" dropdown>
+    <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+      <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+      <span class="d-md-down-none">admin</span>
+
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+
+      <div class="dropdown-header text-center"><strong>Account</strong></div>
+      <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> Updates</a>
+      <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Tasks</a>
+      <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects</a>
+
+      <div class="dropdown-header text-center"><strong>Settings</strong></div>
+      <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+      <a class="dropdown-item" href="#" (click)="logout($event)"><i class="fa fa-lock"></i> Logout</a>
+    </div>
+  </li>
   <button class="navbar-toggler d-md-down-none" type="button" appAsideMenuToggler>
     <span class="navbar-toggler-icon"></span>
   </button>

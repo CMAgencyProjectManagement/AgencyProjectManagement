@@ -421,7 +421,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-footer/app-f
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n</header>\n"
+module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <li class=\"nav-item dropdown\" dropdown>\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\n      <span class=\"d-md-down-none\">admin</span>\n\n    </a>\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\n\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-user\"></i> Profile</a>\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\n    </div>\n  </li>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n</header>\n"
 
 /***/ }),
 
@@ -436,16 +436,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var account_service_1 = __webpack_require__("../../../../../src/app/services/account.service.ts");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var AppHeaderComponent = /** @class */ (function () {
-    function AppHeaderComponent() {
+    function AppHeaderComponent(accountService, router) {
+        this.accountService = accountService;
+        this.router = router;
     }
+    AppHeaderComponent.prototype.logout = function ($event) {
+        $event.preventDefault();
+        this.accountService.logout();
+        this.router.navigate(['login']);
+    };
     AppHeaderComponent = __decorate([
         core_1.Component({
             selector: 'app-header',
             template: __webpack_require__("../../../../../src/app/components/app-header/app-header.component.html")
-        })
+        }),
+        __metadata("design:paramtypes", [account_service_1.AccountService,
+            router_1.Router])
     ], AppHeaderComponent);
     return AppHeaderComponent;
 }());
