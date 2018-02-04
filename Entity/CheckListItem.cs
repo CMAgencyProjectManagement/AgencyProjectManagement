@@ -17,7 +17,7 @@ namespace Entity
         public int ID { get; set; }
         public string Name { get; set; }
         public bool IsChecked { get; set; }
-        public int CheckListId { get; set; }
+        public int CheckListID { get; set; }
     
         public virtual CheckList CheckList { get; set; }
     }

@@ -17,8 +17,8 @@ namespace Entity
         public int ID { get; set; }
         public string Body { get; set; }
         public int CreatedBy { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public Nullable<System.DateTime> ChangedDate { get; set; }
+        public System.DateTime CreatedTime { get; set; }
+        public Nullable<System.DateTime> ChangedTime { get; set; }
         public int TaskID { get; set; }
     
         public virtual Task Task { get; set; }

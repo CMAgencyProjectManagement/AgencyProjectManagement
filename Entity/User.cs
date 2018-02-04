@@ -17,6 +17,7 @@ namespace Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.CreatedProjects = new HashSet<Project>();
             this.Tasks = new HashSet<Task>();
             this.Teams = new HashSet<Team>();
             this.UserTasks = new HashSet<UserTask>();
@@ -24,12 +25,14 @@ namespace Entity
             this.Projects = new HashSet<Project>();
         }
     
-        public System.DateTime ID { get; set; }
+        public int ID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Avatar { get; set; }
         public bool IsAdmin { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project> CreatedProjects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

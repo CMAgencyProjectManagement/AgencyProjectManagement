@@ -19,6 +19,8 @@ namespace Entity
         public string Type { get; set; }
         public int TaskID { get; set; }
         public string Path { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedTime { get; set; }
     
         public virtual Task Task { get; set; }
     }

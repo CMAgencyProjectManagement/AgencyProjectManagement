@@ -86,9 +86,6 @@
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Role.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Task.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>

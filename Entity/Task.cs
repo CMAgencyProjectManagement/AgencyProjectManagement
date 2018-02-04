@@ -29,13 +29,15 @@ namespace Entity
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public System.DateTime CreatedBy { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
+        public System.DateTime CreatedTime { get; set; }
         public Nullable<int> ChangedBy { get; set; }
-        public Nullable<System.DateTime> ChangedDate { get; set; }
+        public Nullable<System.DateTime> ChangedTime { get; set; }
         public int Status { get; set; }
-        public Nullable<long> Duration { get; set; }
-        public int ListId { get; set; }
+        public long Duration { get; set; }
+        public int ListID { get; set; }
+        public Nullable<int> Priority { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attachment> Attachments { get; set; }

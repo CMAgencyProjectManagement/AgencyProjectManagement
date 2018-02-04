@@ -15,7 +15,7 @@ namespace Entity
     public partial class UserTask
     {
         public int TaskID { get; set; }
-        public System.DateTime UserID { get; set; }
+        public int UserID { get; set; }
         public bool IsFollow { get; set; }
         public bool IsAssigned { get; set; }
     

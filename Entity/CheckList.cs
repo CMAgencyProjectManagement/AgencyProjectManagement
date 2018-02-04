@@ -22,7 +22,7 @@ namespace Entity
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public int TaskId { get; set; }
+        public int TaskID { get; set; }
     
         public virtual Task Task { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
