@@ -1,18 +1,18 @@
 import {CanActivate, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {AccountService} from './account.service';
-import {Account} from '../entities/account';
+import {UserService} from './user.service';
+import {User} from '../entities/user';
 
 @Injectable()
 class AlwaysAuthGuard implements CanActivate {
   constructor(private router: Router,
-              private accountService: AccountService) {
+              private accountService: UserService) {
   }
 
   canActivate(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      const currentAccount: Account = this.accountService.getCurrentAccount();
-      let isSuccess = currentAccount != null;
+      const currentUser: User = this.accountService.getCurrentUser();
+      let isSuccess = currentUser != null;
       if (isSuccess) {
         resolve(isSuccess);
       } else {

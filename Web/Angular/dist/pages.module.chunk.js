@@ -102,7 +102,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
-var account_service_1 = __webpack_require__("../../../../../src/app/services/account.service.ts");
+var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var LoginComponent = /** @class */ (function () {
@@ -110,7 +110,7 @@ var LoginComponent = /** @class */ (function () {
         this.accountHub = accountHub;
         this.storeService = storeService;
         this.router = router;
-        this.currentAccountCursor = this.storeService.select(['currentAccount']);
+        this.currentAccountCursor = this.storeService.select(['currentUser']);
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.loginForm = new forms_1.FormGroup({
@@ -134,7 +134,7 @@ var LoginComponent = /** @class */ (function () {
         core_1.Component({
             template: __webpack_require__("../../../../../src/app/views/pages/login.component.html")
         }),
-        __metadata("design:paramtypes", [account_service_1.AccountService,
+        __metadata("design:paramtypes", [user_service_1.UserService,
             tree_service_1.StoreService,
             router_1.Router])
     ], LoginComponent);

@@ -84,7 +84,7 @@ warning 6002: The table/view 'marketingagency.dbo.LabelTask' does not have a pri
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="StartDate" Type="date" />
           <Property Name="ChangedBy" Type="int" />
-          <Property Name="ChangeTime" Type="datetime" />
+          <Property Name="ChangedTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -778,7 +778,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="ChangedBy" Type="Int32" />
-          <Property Name="ChangeTime" Type="DateTime" Precision="3" />
+          <Property Name="ChangedTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Labels" Relationship="CmAgencyModel.FK_Label_Project" FromRole="Project" ToRole="Label" />
           <NavigationProperty Name="Lists" Relationship="CmAgencyModel.FK_Stage_Project" FromRole="Project" ToRole="List" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Project_User" FromRole="Project" ToRole="User" />
@@ -1168,7 +1168,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="CmAgencyModel.Project">
               <MappingFragment StoreEntitySet="Project">
-                <ScalarProperty Name="ChangeTime" ColumnName="ChangeTime" />
+                <ScalarProperty Name="ChangedTime" ColumnName="ChangedTime" />
                 <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />

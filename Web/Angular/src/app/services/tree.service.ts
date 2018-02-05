@@ -4,7 +4,7 @@ declare var require: (moduleId: string) => any;
 const Baobab = require('Baobab');
 
 const StoreTree = {
-  currentAccount: undefined,
+  currentUser: undefined,
 };
 
 @Injectable()

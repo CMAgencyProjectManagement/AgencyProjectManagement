@@ -1,20 +1,24 @@
 import {Component} from '@angular/core';
-import {AccountService} from '../../services/account.service';
+import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
+import {StoreService} from '../../services/tree.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html'
 })
 export class AppHeaderComponent {
-  constructor(private accountService: AccountService,
-              private router: Router) {
+  username;
 
+  constructor(private userService: UserService,
+              private router: Router,
+              private store: StoreService) {
+    this.username = store.get(['currentUser', 'username'])
   }
 
   logout($event) {
     $event.preventDefault();
-    this.accountService.logout();
+    this.userService.logout();
     this.router.navigate(['login'])
   }
 }

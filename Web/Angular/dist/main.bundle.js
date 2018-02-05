@@ -67,7 +67,7 @@ var admin_navigation = [
     {
         name: 'Team',
         url: '/team',
-        icon: 'icon-users',
+        icon: 'icon-people',
         badge: {
             variant: 'info'
         }
@@ -168,7 +168,7 @@ var app_routing_1 = __webpack_require__("../../../../../src/app/app.routing.ts")
 // Import provider
 var auth_guard_1 = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
-var account_service_1 = __webpack_require__("../../../../../src/app/services/account.service.ts");
+var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
 // Import 3rd party components
 var dropdown_1 = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
@@ -195,7 +195,7 @@ var AppModule = /** @class */ (function () {
                 },
                 auth_guard_1.AlwaysAuthGuard,
                 tree_service_1.StoreService,
-                account_service_1.AccountService,
+                user_service_1.UserService,
                 websocket_service_1.WebsocketService
             ],
             bootstrap: [app_component_1.AppComponent]
@@ -464,7 +464,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-footer/app-f
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <li class=\"nav-item dropdown\" dropdown>\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\n      <span class=\"d-md-down-none\">admin</span>\n\n    </a>\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\n\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-user\"></i> Profile</a>\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\n    </div>\n  </li>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n</header>\n"
+module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <li class=\"nav-item dropdown\" dropdown>\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\n      <span class=\"d-md-down-none\">{{username}}</span>\n\n    </a>\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\n\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-user\"></i> Profile</a>\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\n    </div>\n  </li>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n</header>\n"
 
 /***/ }),
 
@@ -484,16 +484,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var account_service_1 = __webpack_require__("../../../../../src/app/services/account.service.ts");
+var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var AppHeaderComponent = /** @class */ (function () {
-    function AppHeaderComponent(accountService, router) {
-        this.accountService = accountService;
+    function AppHeaderComponent(userService, router, store) {
+        this.userService = userService;
         this.router = router;
+        this.store = store;
+        this.username = store.get(['currentUser', 'username']);
     }
     AppHeaderComponent.prototype.logout = function ($event) {
         $event.preventDefault();
-        this.accountService.logout();
+        this.userService.logout();
         this.router.navigate(['login']);
     };
     AppHeaderComponent = __decorate([
@@ -501,8 +504,9 @@ var AppHeaderComponent = /** @class */ (function () {
             selector: 'app-header',
             template: __webpack_require__("../../../../../src/app/components/app-header/app-header.component.html")
         }),
-        __metadata("design:paramtypes", [account_service_1.AccountService,
-            router_1.Router])
+        __metadata("design:paramtypes", [user_service_1.UserService,
+            router_1.Router,
+            tree_service_1.StoreService])
     ], AppHeaderComponent);
     return AppHeaderComponent;
 }());
@@ -1482,98 +1486,6 @@ exports.SIDEBAR_TOGGLE_DIRECTIVES = [
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/account.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
-var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
-var AccountService = /** @class */ (function () {
-    function AccountService(store, ws) {
-        this.store = store;
-        this.ws = ws;
-        this.currentAccountCursor = store.select(['currentAccount']);
-    }
-    // public connect(username: string, password: string): Promise<void> {
-    //   $.connection.hub.qs = {};
-    //   return $.connection.hub.start();
-    // }
-    AccountService.prototype.getCurrentAccount = function () {
-        var account = this.currentAccountCursor.get();
-        if (account == null && typeof (Storage) !== 'undefined') {
-            account = JSON.parse(localStorage.getItem('agencyUser'));
-        }
-        return account;
-    };
-    AccountService.prototype.setCurrentAccount = function (account) {
-        if (account != null) {
-            this.currentAccountCursor.set(account);
-            if (typeof (Storage) !== 'undefined') {
-                localStorage.setItem('agencyUser', JSON.stringify(account));
-            }
-        }
-    };
-    AccountService.prototype.logout = function () {
-        if (typeof (Storage) !== 'undefined') {
-            localStorage.clear();
-        }
-        this.currentAccountCursor.set(undefined);
-    };
-    /**
-     * @param username
-     * @param password
-     * @returns {Promise<Account> }
-     */
-    AccountService.prototype.login = function (username, password) {
-        var _this = this;
-        console.debug('Login - AccountService');
-        return new Promise(function (resolve, reject) {
-            _this.ws.getAccountHub().server.login(username, password)
-                .then(function (result) {
-                if (result.isSuccess) {
-                    _this.setCurrentAccount(result.data);
-                    resolve(result.data);
-                }
-                else {
-                    reject(result.message);
-                }
-            })
-                .catch(reject);
-        });
-    };
-    /**
-     * @param user
-     * @param password
-     * @param avatar
-     * @returns {Promise<object{}> }
-     */
-    AccountService.prototype.createAccount = function (user, password, avatar) {
-        return this.accountHub.server.createAccount(user, password, avatar);
-    };
-    AccountService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [tree_service_1.StoreService,
-            websocket_service_1.WebsocketService])
-    ], AccountService);
-    return AccountService;
-}());
-exports.AccountService = AccountService;
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/services/auth.guard.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1591,7 +1503,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var account_service_1 = __webpack_require__("../../../../../src/app/services/account.service.ts");
+var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var AlwaysAuthGuard = /** @class */ (function () {
     function AlwaysAuthGuard(router, accountService) {
         this.router = router;
@@ -1600,8 +1512,8 @@ var AlwaysAuthGuard = /** @class */ (function () {
     AlwaysAuthGuard.prototype.canActivate = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            var currentAccount = _this.accountService.getCurrentAccount();
-            var isSuccess = currentAccount != null;
+            var currentUser = _this.accountService.getCurrentUser();
+            var isSuccess = currentUser != null;
             if (isSuccess) {
                 resolve(isSuccess);
             }
@@ -1614,7 +1526,7 @@ var AlwaysAuthGuard = /** @class */ (function () {
     AlwaysAuthGuard = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [router_1.Router,
-            account_service_1.AccountService])
+            user_service_1.UserService])
     ], AlwaysAuthGuard);
     return AlwaysAuthGuard;
 }());
@@ -1641,7 +1553,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var Baobab = __webpack_require__("../../../../Baobab/dist/baobab.js");
 var StoreTree = {
-    currentAccount: undefined,
+    currentUser: undefined,
 };
 var StoreService = /** @class */ (function () {
     function StoreService() {
@@ -1663,6 +1575,98 @@ var StoreService = /** @class */ (function () {
     return StoreService;
 }());
 exports.StoreService = StoreService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/user.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
+var UserService = /** @class */ (function () {
+    function UserService(store, ws) {
+        this.store = store;
+        this.ws = ws;
+        this.currentUserCursor = store.select(['currentUser']);
+    }
+    // public connect(username: string, password: string): Promise<void> {
+    //   $.connection.hub.qs = {};
+    //   return $.connection.hub.start();
+    // }
+    UserService.prototype.getCurrentUser = function () {
+        var user = this.currentUserCursor.get();
+        if (user == null && typeof (Storage) !== 'undefined') {
+            user = JSON.parse(localStorage.getItem('agencyUser'));
+        }
+        return user;
+    };
+    UserService.prototype.setCurrentUser = function (user) {
+        if (user != null) {
+            this.currentUserCursor.set(user);
+            if (typeof (Storage) !== 'undefined') {
+                localStorage.setItem('agencyUser', JSON.stringify(user));
+            }
+        }
+    };
+    UserService.prototype.logout = function () {
+        if (typeof (Storage) !== 'undefined') {
+            localStorage.clear();
+        }
+        this.currentUserCursor.set(undefined);
+    };
+    /**
+     * @param username
+     * @param password
+     * @returns {Promise<Account> }
+     */
+    UserService.prototype.login = function (username, password) {
+        var _this = this;
+        console.debug('Login - UserService');
+        return new Promise(function (resolve, reject) {
+            _this.ws.getUserHub().server.login(username, password)
+                .then(function (result) {
+                if (result.IsSuccess) {
+                    _this.setCurrentUser(result.data);
+                    resolve(result.Data);
+                }
+                else {
+                    reject(result.Message);
+                }
+            })
+                .catch(reject);
+        });
+    };
+    /**
+     * @param user
+     * @param password
+     * @param avatar
+     * @returns {Promise<object{}> }
+     */
+    UserService.prototype.createUser = function (user, password, avatar) {
+        return this.userHub.server.createAccount(user, password, avatar);
+    };
+    UserService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [tree_service_1.StoreService,
+            websocket_service_1.WebsocketService])
+    ], UserService);
+    return UserService;
+}());
+exports.UserService = UserService;
 
 
 /***/ }),
@@ -1696,9 +1700,17 @@ var WebsocketService = /** @class */ (function () {
             });
         }
     }
-    WebsocketService.prototype.getAccountHub = function () {
+    WebsocketService.prototype.getUserHub = function () {
         if (this.isConnected) {
             return this.connection.accountHub;
+        }
+        else {
+            throw new Error('Connection is not available');
+        }
+    };
+    WebsocketService.prototype.getProjectHub = function () {
+        if (this.isConnected) {
+            return this.connection.projectHub;
         }
         else {
             throw new Error('Connection is not available');

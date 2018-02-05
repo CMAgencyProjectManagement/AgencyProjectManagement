@@ -63,7 +63,7 @@ import {AppRoutingModule} from './app.routing';
 // Import provider
 import {AlwaysAuthGuard} from './services/auth.guard'
 import {StoreService} from './services/tree.service';
-import {AccountService} from './services/account.service';
+import {UserService} from './services/user.service';
 import {WebsocketService} from './services/websocket.service';
 
 // Import 3rd party components
@@ -91,7 +91,7 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
   },
     AlwaysAuthGuard,
     StoreService,
-    AccountService,
+    UserService,
     WebsocketService
   ],
   bootstrap: [AppComponent]

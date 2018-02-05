@@ -26,7 +26,7 @@ const admin_navigation = [
   {
     name: 'Team',
     url: '/team',
-    icon: 'icon-users',
+    icon: 'icon-people',
     badge: {
       variant: 'info'
     }

@@ -19,11 +19,24 @@ export class WebsocketService {
     }
   }
 
-  public getAccountHub() {
+  public getUserHub() {
     if (this.isConnected) {
       return this.connection.accountHub as {
         server: {
           login: (username: string, password: string) => Promise<any>
+        },
+        client: any
+      };
+    } else {
+      throw new Error('Connection is not available');
+    }
+  }
+
+  public getProjectHub() {
+    if (this.isConnected) {
+      return this.connection.projectHub as {
+        server: {
+          getActiveProjects: () => Promise<any>
         },
         client: any
       };

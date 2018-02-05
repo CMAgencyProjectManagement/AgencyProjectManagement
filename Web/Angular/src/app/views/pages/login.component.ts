@@ -9,7 +9,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {AccountService} from '../../services/account.service';
+import {UserService} from '../../services/user.service';
 import {Cursor, StoreService} from '../../services/tree.service';
 import {Router} from '@angular/router';
 
@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   currentAccountCursor: Cursor;
 
-  constructor(private accountHub: AccountService,
+  constructor(private accountHub: UserService,
               private  storeService: StoreService,
               private router: Router) {
-    this.currentAccountCursor = this.storeService.select(['currentAccount'])
+    this.currentAccountCursor = this.storeService.select(['currentUser'])
   }
 
   ngOnInit() {

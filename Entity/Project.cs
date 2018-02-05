@@ -31,7 +31,7 @@ namespace Entity
         public int CreatedBy { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<int> ChangedBy { get; set; }
-        public Nullable<System.DateTime> ChangeTime { get; set; }
+        public Nullable<System.DateTime> ChangedTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Label> Labels { get; set; }
