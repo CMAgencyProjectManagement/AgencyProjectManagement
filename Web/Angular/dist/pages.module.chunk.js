@@ -114,8 +114,8 @@ var LoginComponent = /** @class */ (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.loginForm = new forms_1.FormGroup({
-            username: new forms_1.FormControl('user', forms_1.Validators.required),
-            password: new forms_1.FormControl('password', forms_1.Validators.required)
+            username: new forms_1.FormControl(undefined, forms_1.Validators.required),
+            password: new forms_1.FormControl(undefined, forms_1.Validators.required)
         });
     };
     LoginComponent.prototype.handleLogin = function () {

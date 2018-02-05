@@ -19,6 +19,11 @@ namespace Web
         {
             var config = new HttpConfiguration();
 
+            config.Routes.MapHttpRoute(
+                "Api",
+                "api/{controller}/{action}"
+            );
+
 
             //Default index file
             var mainIndex = new FileServerOptions

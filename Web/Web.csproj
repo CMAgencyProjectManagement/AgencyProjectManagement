@@ -420,6 +420,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\FileController.cs" />
     <Compile Include="Hubs\AccountHub.cs" />
     <Compile Include="Hubs\ProjectHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -437,6 +438,7 @@
       <Name>Service</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
