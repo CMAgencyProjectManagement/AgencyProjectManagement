@@ -11,6 +11,10 @@ var map = {
 	"./views/pages/pages.module": [
 		"../../../../../src/app/views/pages/pages.module.ts",
 		"pages.module"
+	],
+	"./views/project-management/project-management.module": [
+		"../../../../../src/app/views/project-management/project-management.module.ts",
+		"project-management.module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -35,17 +39,52 @@ module.exports = webpackAsyncContext;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.navigation = [
+var admin_navigation = [
     {
         name: 'Dashboard',
         url: '/dashboard',
         icon: 'icon-speedometer',
         badge: {
-            variant: 'info',
-            text: 'NEW'
+            variant: 'info'
+        }
+    },
+    {
+        name: 'Account',
+        url: '/account',
+        icon: 'icon-user',
+        badge: {
+            variant: 'info'
+        }
+    },
+    {
+        name: 'Project',
+        url: '/project',
+        icon: 'icon-calendar',
+        badge: {
+            variant: 'info'
+        }
+    },
+    {
+        name: 'Team',
+        url: '/team',
+        icon: 'icon-users',
+        badge: {
+            variant: 'info'
         }
     }
 ];
+exports.admin_navigation = admin_navigation;
+var navigation = [
+    {
+        name: 'Dashboard',
+        url: '/dashboard',
+        icon: 'icon-speedometer',
+        badge: {
+            variant: 'info'
+        }
+    }
+];
+exports.navigation = navigation;
 
 
 /***/ }),
@@ -204,6 +243,10 @@ exports.routes = [
             {
                 path: 'dashboard',
                 loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'project',
+                loadChildren: './views/project-management/project-management.module#ProjectManagementModule'
             }
         ]
     },
@@ -702,7 +745,7 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var _nav_1 = __webpack_require__("../../../../../src/app/_nav.ts");
 var AppSidebarNavComponent = /** @class */ (function () {
     function AppSidebarNavComponent() {
-        this.navigation = _nav_1.navigation;
+        this.navigation = _nav_1.admin_navigation;
     }
     AppSidebarNavComponent.prototype.isDivider = function (item) {
         return item.divider ? true : false;
@@ -744,7 +787,7 @@ var AppSidebarNavItemComponent = /** @class */ (function () {
     AppSidebarNavItemComponent = __decorate([
         core_1.Component({
             selector: 'app-sidebar-nav-item',
-            template: "\n    <li *ngIf=\"!isDropdown(); else dropdown\" [ngClass]=\"hasClass() ? 'nav-item ' + item.class : 'nav-item'\">\n      <app-sidebar-nav-link [link]='item'></app-sidebar-nav-link>\n    </li>\n    <ng-template #dropdown>\n      <li [ngClass]=\"hasClass() ? 'nav-item nav-dropdown ' + item.class : 'nav-item nav-dropdown'\"\n          [class.open]=\"isActive()\"\n          routerLinkActive=\"open\"\n          appNavDropdown>\n        <app-sidebar-nav-dropdown [link]='item'></app-sidebar-nav-dropdown>\n      </li>\n    </ng-template>\n    "
+            template: "\n    <li *ngIf=\"!isDropdown(); else dropdown\" [ngClass]=\"hasClass() ? 'nav-item ' + item.class : 'nav-item'\">\n      <app-sidebar-nav-link [link]='item'></app-sidebar-nav-link>\n    </li>\n    <ng-template #dropdown>\n      <li [ngClass]=\"hasClass() ? 'nav-item nav-dropdown ' + item.class : 'nav-item nav-dropdown'\"\n          [class.open]=\"isActive()\"\n          routerLinkActive=\"open\"\n          appNavDropdown>\n        <app-sidebar-nav-dropdown [link]='item'></app-sidebar-nav-dropdown>\n      </li>\n    </ng-template>\n  "
         }),
         __metadata("design:paramtypes", [router_1.Router])
     ], AppSidebarNavItemComponent);
@@ -773,7 +816,7 @@ var AppSidebarNavLinkComponent = /** @class */ (function () {
     AppSidebarNavLinkComponent = __decorate([
         core_1.Component({
             selector: 'app-sidebar-nav-link',
-            template: "\n    <a *ngIf=\"!isExternalLink(); else external\"\n      [ngClass]=\"hasVariant() ? 'nav-link nav-link-' + link.variant : 'nav-link'\"\n      routerLinkActive=\"active\"\n      [routerLink]=\"[link.url]\">\n      <i *ngIf=\"isIcon()\" class=\"{{ link.icon }}\"></i>\n      {{ link.name }}\n      <span *ngIf=\"isBadge()\" [ngClass]=\"'badge badge-' + link.badge.variant\">{{ link.badge.text }}</span>\n    </a>\n    <ng-template #external>\n      <a [ngClass]=\"hasVariant() ? 'nav-link nav-link-' + link.variant : 'nav-link'\" href=\"{{link.url}}\">\n        <i *ngIf=\"isIcon()\" class=\"{{ link.icon }}\"></i>\n        {{ link.name }}\n        <span *ngIf=\"isBadge()\" [ngClass]=\"'badge badge-' + link.badge.variant\">{{ link.badge.text }}</span>\n      </a>\n    </ng-template>\n  "
+            template: "\n    <a *ngIf=\"!isExternalLink(); else external\"\n       [ngClass]=\"hasVariant() ? 'nav-link nav-link-' + link.variant : 'nav-link'\"\n       routerLinkActive=\"active\"\n       [routerLink]=\"[link.url]\">\n      <i *ngIf=\"isIcon()\" class=\"{{ link.icon }}\"></i>\n      {{ link.name }}\n      <span *ngIf=\"isBadge()\" [ngClass]=\"'badge badge-' + link.badge.variant\">{{ link.badge.text }}</span>\n    </a>\n    <ng-template #external>\n      <a [ngClass]=\"hasVariant() ? 'nav-link nav-link-' + link.variant : 'nav-link'\" href=\"{{link.url}}\">\n        <i *ngIf=\"isIcon()\" class=\"{{ link.icon }}\"></i>\n        {{ link.name }}\n        <span *ngIf=\"isBadge()\" [ngClass]=\"'badge badge-' + link.badge.variant\">{{ link.badge.text }}</span>\n      </a>\n    </ng-template>\n  "
         }),
         __metadata("design:paramtypes", [])
     ], AppSidebarNavLinkComponent);
@@ -1500,8 +1543,8 @@ var AccountService = /** @class */ (function () {
             _this.ws.getAccountHub().server.login(username, password)
                 .then(function (result) {
                 if (result.isSuccess) {
-                    _this.setCurrentAccount(result);
-                    resolve(result.account);
+                    _this.setCurrentAccount(result.data);
+                    resolve(result.data);
                 }
                 else {
                     reject(result.message);

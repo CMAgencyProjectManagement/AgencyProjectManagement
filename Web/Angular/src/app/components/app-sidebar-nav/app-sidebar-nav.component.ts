@@ -1,7 +1,7 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 
 // Import navigation elements
-import { navigation } from './../../_nav';
+import {navigation, admin_navigation} from '../../_nav';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -22,7 +22,7 @@ import { navigation } from './../../_nav';
 })
 export class AppSidebarNavComponent {
 
-  public navigation = navigation;
+  public navigation = admin_navigation;
 
   public isDivider(item) {
     return item.divider ? true : false
@@ -32,10 +32,11 @@ export class AppSidebarNavComponent {
     return item.title ? true : false
   }
 
-  constructor() { }
+  constructor() {
+  }
 }
 
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-nav-item',
@@ -51,7 +52,7 @@ import { Router } from '@angular/router';
         <app-sidebar-nav-dropdown [link]='item'></app-sidebar-nav-dropdown>
       </li>
     </ng-template>
-    `
+  `
 })
 export class AppSidebarNavItemComponent {
   @Input() item: any;
@@ -72,7 +73,8 @@ export class AppSidebarNavItemComponent {
     return this.router.isActive(this.thisUrl(), false)
   }
 
-  constructor( private router: Router )  { }
+  constructor(private router: Router) {
+  }
 
 }
 
@@ -80,9 +82,9 @@ export class AppSidebarNavItemComponent {
   selector: 'app-sidebar-nav-link',
   template: `
     <a *ngIf="!isExternalLink(); else external"
-      [ngClass]="hasVariant() ? 'nav-link nav-link-' + link.variant : 'nav-link'"
-      routerLinkActive="active"
-      [routerLink]="[link.url]">
+       [ngClass]="hasVariant() ? 'nav-link nav-link-' + link.variant : 'nav-link'"
+       routerLinkActive="active"
+       [routerLink]="[link.url]">
       <i *ngIf="isIcon()" class="{{ link.icon }}"></i>
       {{ link.name }}
       <span *ngIf="isBadge()" [ngClass]="'badge badge-' + link.badge.variant">{{ link.badge.text }}</span>
@@ -115,7 +117,8 @@ export class AppSidebarNavLinkComponent {
     return this.link.icon ? true : false
   }
 
-  constructor() { }
+  constructor() {
+  }
 }
 
 @Component({
@@ -144,7 +147,8 @@ export class AppSidebarNavDropdownComponent {
     return this.link.icon ? true : false
   }
 
-  constructor() { }
+  constructor() {
+  }
 }
 
 @Component({
@@ -154,7 +158,8 @@ export class AppSidebarNavDropdownComponent {
 export class AppSidebarNavTitleComponent implements OnInit {
   @Input() title: any;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+  }
 
   ngOnInit() {
     const nativeElement: HTMLElement = this.el.nativeElement;
@@ -163,12 +168,12 @@ export class AppSidebarNavTitleComponent implements OnInit {
 
     this.renderer.addClass(li, 'nav-title');
 
-    if ( this.title.class ) {
+    if (this.title.class) {
       const classes = this.title.class;
       this.renderer.addClass(li, classes);
     }
 
-    if ( this.title.wrapper ) {
+    if (this.title.wrapper) {
       const wrapper = this.renderer.createElement(this.title.wrapper.element);
 
       this.renderer.appendChild(wrapper, name);

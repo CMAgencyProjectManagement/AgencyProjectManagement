@@ -56,8 +56,8 @@ export class AccountService {
       this.ws.getAccountHub().server.login(username, password)
         .then(result => {
           if (result.isSuccess) {
-            this.setCurrentAccount(result);
-            resolve(result.account);
+            this.setCurrentAccount(result.data);
+            resolve(result.data);
           } else {
             reject(result.message);
           }

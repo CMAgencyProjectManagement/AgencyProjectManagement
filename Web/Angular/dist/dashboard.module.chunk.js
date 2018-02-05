@@ -92,7 +92,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var ng2_charts_1 = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
 var dashboard_component_1 = __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.ts");
 var dashboard_routing_module_1 = __webpack_require__("../../../../../src/app/views/dashboard/dashboard-routing.module.ts");
 var DashboardModule = /** @class */ (function () {
@@ -101,8 +100,7 @@ var DashboardModule = /** @class */ (function () {
     DashboardModule = __decorate([
         core_1.NgModule({
             imports: [
-                dashboard_routing_module_1.DashboardRoutingModule,
-                ng2_charts_1.ChartsModule
+                dashboard_routing_module_1.DashboardRoutingModule
             ],
             declarations: [dashboard_component_1.DashboardComponent]
         })

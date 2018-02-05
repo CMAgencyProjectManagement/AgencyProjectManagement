@@ -28,6 +28,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        path: 'project',
+        loadChildren: './views/project-management/project-management.module#ProjectManagementModule'
       }
     ]
   },

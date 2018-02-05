@@ -421,8 +421,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hubs\AccountHub.cs" />
-    <Compile Include="Hubs\AdminHub.cs" />
+    <Compile Include="Hubs\ProjectHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseHelper.cs" />
     <Compile Include="Security\AgencyConnectionStore.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
