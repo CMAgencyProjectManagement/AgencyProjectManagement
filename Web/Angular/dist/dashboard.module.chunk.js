@@ -43,7 +43,7 @@ exports.DashboardRoutingModule = DashboardRoutingModule;
 /***/ "../../../../../src/app/views/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  Hello World!\n</div>\n"
+module.exports = "<div class=\"animated fadeIn\">\r\n  Hello World!\r\n</div>\r\n"
 
 /***/ }),
 

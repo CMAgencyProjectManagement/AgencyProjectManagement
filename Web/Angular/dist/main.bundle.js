@@ -287,7 +287,7 @@ exports.AppRoutingModule = AppRoutingModule;
 /***/ "../../../../../src/app/components/app-aside/app-aside.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<aside class=\"aside-menu\">\n  \n</aside>\n"
+module.exports = "<aside class=\"aside-menu\">\r\n  \r\n</aside>\r\n"
 
 /***/ }),
 
@@ -414,7 +414,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-breadcrumbs/
 /***/ "../../../../../src/app/components/app-footer/app-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<footer class=\"app-footer\">\n  <span><a href=\"http://coreui.io\">CoreUI</a> &copy; 2017 creativeLabs.</span>\n  <span class=\"ml-auto\">Powered by <a href=\"http://coreui.io\">CoreUI</a></span>\n</footer>\n"
+module.exports = "<footer class=\"app-footer\">\r\n  <span><a href=\"http://coreui.io\">CoreUI</a> &copy; 2017 creativeLabs.</span>\r\n  <span class=\"ml-auto\">Powered by <a href=\"http://coreui.io\">CoreUI</a></span>\r\n</footer>\r\n"
 
 /***/ }),
 
@@ -464,7 +464,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-footer/app-f
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <li class=\"nav-item dropdown\" dropdown>\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\n      <span class=\"d-md-down-none\">{{username}}</span>\n\n    </a>\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\n\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-user\"></i> Profile</a>\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\n    </div>\n  </li>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n</header>\n"
+module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <li class=\"nav-item dropdown\" dropdown>\r\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\r\n      <span class=\"d-md-down-none\">{{username}}</span>\r\n\r\n    </a>\r\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-user\"></i> Profile</a>\r\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\r\n    </div>\r\n  </li>\r\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -532,7 +532,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-header/app-h
 /***/ "../../../../../src/app/components/app-sidebar-footer/app-sidebar-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\n"
+module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\r\n"
 
 /***/ }),
 
@@ -582,7 +582,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-foot
 /***/ "../../../../../src/app/components/app-sidebar-form/app-sidebar-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\n"
+module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\r\n"
 
 /***/ }),
 
@@ -632,7 +632,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-form
 /***/ "../../../../../src/app/components/app-sidebar-header/app-sidebar-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\n"
+module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\r\n"
 
 /***/ }),
 
@@ -682,7 +682,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-head
 /***/ "../../../../../src/app/components/app-sidebar-minimizer/app-sidebar-minimizer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\n"
+module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\r\n"
 
 /***/ }),
 
@@ -916,7 +916,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/components/app-sidebar/app-sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sidebar\">\n  <app-sidebar-header></app-sidebar-header>\n  <app-sidebar-form></app-sidebar-form>\n  <app-sidebar-nav></app-sidebar-nav>\n  <app-sidebar-footer></app-sidebar-footer>\n  <app-sidebar-minimizer></app-sidebar-minimizer>\n</div>\n"
+module.exports = "<div class=\"sidebar\">\r\n  <app-sidebar-header></app-sidebar-header>\r\n  <app-sidebar-form></app-sidebar-form>\r\n  <app-sidebar-nav></app-sidebar-nav>\r\n  <app-sidebar-footer></app-sidebar-footer>\r\n  <app-sidebar-minimizer></app-sidebar-minimizer>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -989,7 +989,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/containers/full-layout/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-header></app-header>\n<div class=\"app-body\">\n  <app-sidebar></app-sidebar>\n  <!-- Main content -->\n  <main class=\"main\">\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n  <app-aside></app-aside>\n</div>\n<app-footer></app-footer>\n"
+module.exports = "<app-header></app-header>\r\n<div class=\"app-body\">\r\n  <app-sidebar></app-sidebar>\r\n  <!-- Main content -->\r\n  <main class=\"main\">\r\n    <!-- Breadcrumb -->\r\n    <ol class=\"breadcrumb\">\r\n      <app-breadcrumbs></app-breadcrumbs>\r\n    </ol>\r\n    <div class=\"container-fluid\">\r\n      <router-outlet></router-outlet>\r\n    </div><!-- /.conainer-fluid -->\r\n  </main>\r\n  <app-aside></app-aside>\r\n</div>\r\n<app-footer></app-footer>\r\n"
 
 /***/ }),
 
@@ -1505,14 +1505,14 @@ var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var AlwaysAuthGuard = /** @class */ (function () {
-    function AlwaysAuthGuard(router, accountService) {
+    function AlwaysAuthGuard(router, userService) {
         this.router = router;
-        this.accountService = accountService;
+        this.userService = userService;
     }
     AlwaysAuthGuard.prototype.canActivate = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            var currentUser = _this.accountService.getCurrentUser();
+            var currentUser = _this.userService.getCurrentUser();
             var isSuccess = currentUser != null;
             if (isSuccess) {
                 resolve(isSuccess);

@@ -6,12 +6,12 @@ import {User} from '../entities/user';
 @Injectable()
 class AlwaysAuthGuard implements CanActivate {
   constructor(private router: Router,
-              private accountService: UserService) {
+              private userService: UserService) {
   }
 
   canActivate(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      const currentUser: User = this.accountService.getCurrentUser();
+      const currentUser: User = this.userService.getCurrentUser();
       let isSuccess = currentUser != null;
       if (isSuccess) {
         resolve(isSuccess);

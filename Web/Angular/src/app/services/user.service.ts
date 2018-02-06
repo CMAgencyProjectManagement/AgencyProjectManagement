@@ -48,7 +48,7 @@ export class UserService {
   /**
    * @param username
    * @param password
-   * @returns {Promise<Account> }
+   * @returns {Promise<User> }
    */
   public login(username: string, password: string): Promise<User> {
     console.debug('Login - UserService');
