@@ -4,7 +4,13 @@ declare var require: (moduleId: string) => any;
 const Baobab = require('Baobab');
 
 const StoreTree = {
+  token: {
+    access_token: '',
+    type: ''
+  },
+  bearerToken: undefined,
   currentUser: undefined,
+  isWebSocketConnected: false
 };
 
 @Injectable()
@@ -15,7 +21,7 @@ export class StoreService {
     this.store = new Baobab(StoreTree);
   }
 
-  public get(path: string[]): Cursor {
+  public get(path: string[]): any {
     return this.store.get(path);
   }
 
@@ -31,7 +37,11 @@ export class StoreService {
 export interface Cursor {
   get(): any;
 
+  get(path: string[]): any;
+
   set(value: any): void;
+
+  set(path: string[], value: any): void
 
   select(path: string[]): Cursor;
 

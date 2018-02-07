@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.FileSystems;
+using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.StaticFiles;
 using Owin;
 using Web;
@@ -17,14 +20,49 @@ namespace Web
     {
         public void Configuration(IAppBuilder app)
         {
-            var config = new HttpConfiguration();
+            HttpConfiguration config = new HttpConfiguration();
 
+            ConfigOAuth(app);
+            ConfigApiRoutes(config);
+
+            app.UseCors(CorsOptions.AllowAll);
+            app.UseWebApi(config);
+
+            //            ConfigApiRoutes(app);
+            //            ConfigOAuth(app);
+            SignalROAuthConfig(app);
+            ConfigStaticFiles(app);
+            app.MapSignalR();
+        }
+
+        private void ConfigOAuth(IAppBuilder app)
+        {
+            OAuthAuthorizationServerOptions authorizationServerOptions = new OAuthAuthorizationServerOptions()
+            {
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/token"),
+                Provider = new AgencyAuthorizationServerProvider()
+            };
+
+            app.UseOAuthAuthorizationServer(authorizationServerOptions);
+//            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
+            {
+                Provider = new OAuthBearerTokenAuthenticationProvider()
+            });
+        }
+
+        private void ConfigApiRoutes(HttpConfiguration config)
+        {
+            config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
                 "Api",
                 "api/{controller}/{action}"
             );
+        }
 
-
+        private void ConfigStaticFiles(IAppBuilder app)
+        {
             //Default index file
             var mainIndex = new FileServerOptions
             {
@@ -42,8 +80,27 @@ namespace Web
 
             app.UseFileServer(mainIndex);
             app.UseFileServer(angularBuild);
-            app.UseWebApi(config);
-            app.MapSignalR();
+        }
+
+        private void SignalROAuthConfig(IAppBuilder app)
+        {
+            app.Map(@"/signalr", map =>
+            {
+                map.UseCors(CorsOptions.AllowAll);
+                map.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
+                {
+                    Provider = new QueryStringOAuthBearerProvider(),
+
+                });
+                var hubConfig = new HubConfiguration
+                {
+                    Resolver = GlobalHost.DependencyResolver,
+                    EnableDetailedErrors = true
+                };
+                map.RunSignalR(hubConfig);
+            });
+            
+            
         }
     }
 }

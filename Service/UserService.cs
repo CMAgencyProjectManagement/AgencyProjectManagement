@@ -32,6 +32,27 @@ namespace Service
             }
         }
 
+        public static User GetUser(string id)
+        {
+            try
+            {
+                int? userId = int.Parse(id);
+                return GetUser(userId.Value);
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public static User CreateAccount(string username, string password, string avatar, bool isAdmin = false)
         {
             User newUser;

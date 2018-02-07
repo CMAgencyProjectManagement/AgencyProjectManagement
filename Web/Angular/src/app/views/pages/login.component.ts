@@ -19,11 +19,13 @@ import {Router} from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   currentAccountCursor: Cursor;
+  tokenCursor: Cursor;
 
   constructor(private accountHub: UserService,
-              private  storeService: StoreService,
+              private storeService: StoreService,
               private router: Router) {
-    this.currentAccountCursor = this.storeService.select(['currentUser'])
+    this.currentAccountCursor = this.storeService.select(['currentUser']);
+    this.tokenCursor = this.storeService.select(['token']);
   }
 
   ngOnInit() {
@@ -41,12 +43,20 @@ export class LoginComponent implements OnInit {
         formValue.username,
         formValue.password
       ).then(value => {
-        _this.currentAccountCursor.set(value);
-        _this.router.navigate(['dashboard']);
-      }).catch(reason => {
-        console.debug('login fail with reason', reason);
-      })
+        // _this.currentAccountCursor.set(value);
+        // _this.router.navigate(['dashboard']);
 
+        if (value) {
+          console.debug('login success', value);
+          _this.router.navigate(['dashboard'])
+        } else {
+          console.debug('login fail', value);
+        }
+      }).catch(reason => {
+        // TODO: Handle error
+        console.debug('login fail: ', reason);
+      })
     }
   }
+
 }

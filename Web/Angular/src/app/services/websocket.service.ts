@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Cursor, StoreService} from './tree.service';
 
 
 declare var $: any;
@@ -6,24 +7,43 @@ declare var $: any;
 @Injectable()
 export class WebsocketService {
   private connection;
-  private isConnected: boolean;
+  private isConnectedCursor: Cursor;
+  private tokenCursor: Cursor;
 
-  constructor() {
+  constructor(private storeService: StoreService) {
+    this.isConnectedCursor = this.storeService.select(['isWebSocketConnected']);
+    this.tokenCursor = this.storeService.select(['token']);
+
+    this.tokenCursor.on('update', this.handleTokenUpdate.bind(this));
+  }
+
+  public handleTokenUpdate(event) {
+    const token = event.data.currentData;
+    console.debug('handleTokenUpdate', token);
+    if (token.access_token) {
+      this.connect(token.access_token);
+    }
+  }
+
+  public connect(access_token: string) {
     if ($ === undefined || $.connection === undefined) {
-      throw  new Error('Missing dependency');
+      throw new Error('Missing dependency');
     } else {
       this.connection = $.connection;
-      $.connection.hub.start().then(_ => {
-        this.isConnected = true;
+      this.connection.qs = {'token': access_token};
+      // this.connection.hub.url = '/signalr';
+      this.connection.hub.start().then(_ => {
+        this.isConnectedCursor.set(true);
       })
     }
   }
 
   public getUserHub() {
-    if (this.isConnected) {
+    if (this.isConnectedCursor.get()) {
       return this.connection.accountHub as {
         server: {
-          login: (username: string, password: string) => Promise<any>
+          login: (username: string, password: string) => Promise<any>,
+          getAllAccounts: () => Promise<any>
         },
         client: any
       };
@@ -33,7 +53,7 @@ export class WebsocketService {
   }
 
   public getProjectHub() {
-    if (this.isConnected) {
+    if (this.isConnectedCursor.get()) {
       return this.connection.projectHub as {
         server: {
           getActiveProjects: () => Promise<any>

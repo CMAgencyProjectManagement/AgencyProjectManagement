@@ -21,4 +21,9 @@ export class AppHeaderComponent {
     this.userService.logout();
     this.router.navigate(['login'])
   }
+
+  getAllAccountTest($event) {
+    $event.preventDefault();
+    this.userService.getAllAccountTest();
+  }
 }

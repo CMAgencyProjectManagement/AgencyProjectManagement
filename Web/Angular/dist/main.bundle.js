@@ -89,6 +89,21 @@ exports.navigation = navigation;
 
 /***/ }),
 
+/***/ "../../../../../src/app/_serverPath.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var serverPath = {
+    token: '/token',
+    getUser: '/api/user'
+};
+exports.serverPath = serverPath;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/app.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -287,7 +302,7 @@ exports.AppRoutingModule = AppRoutingModule;
 /***/ "../../../../../src/app/components/app-aside/app-aside.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<aside class=\"aside-menu\">\r\n  \r\n</aside>\r\n"
+module.exports = "<aside class=\"aside-menu\">\n  \n</aside>\n"
 
 /***/ }),
 
@@ -414,7 +429,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-breadcrumbs/
 /***/ "../../../../../src/app/components/app-footer/app-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<footer class=\"app-footer\">\r\n  <span><a href=\"http://coreui.io\">CoreUI</a> &copy; 2017 creativeLabs.</span>\r\n  <span class=\"ml-auto\">Powered by <a href=\"http://coreui.io\">CoreUI</a></span>\r\n</footer>\r\n"
+module.exports = "<footer class=\"app-footer\">\n  <span><a href=\"http://coreui.io\">CoreUI</a> &copy; 2017 creativeLabs.</span>\n  <span class=\"ml-auto\">Powered by <a href=\"http://coreui.io\">CoreUI</a></span>\n</footer>\n"
 
 /***/ }),
 
@@ -464,7 +479,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-footer/app-f
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <li class=\"nav-item dropdown\" dropdown>\r\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\r\n      <span class=\"d-md-down-none\">{{username}}</span>\r\n\r\n    </a>\r\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\r\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-user\"></i> Profile</a>\r\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\r\n    </div>\r\n  </li>\r\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n</header>\r\n"
+module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <li class=\"nav-item dropdown\" dropdown>\n    <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n      <img src=\"assets/img/avatars/6.jpg\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\n      <span class=\"d-md-down-none\">{{username}}</span>\n\n    </a>\n    <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n      <div class=\"dropdown-header text-center\"><strong>Account</strong></div>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-bell-o\"></i> Updates</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-tasks\"></i> Tasks</a>\n      <a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-file\"></i> Projects</a>\n\n      <div class=\"dropdown-header text-center\"><strong>Settings</strong></div>\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"getAllAccountTest($event)\"><i class=\"fa fa-user\"></i> Profile</a>\n      <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\"><i class=\"fa fa-lock\"></i> Logout</a>\n    </div>\n  </li>\n  <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n</header>\n"
 
 /***/ }),
 
@@ -499,6 +514,10 @@ var AppHeaderComponent = /** @class */ (function () {
         this.userService.logout();
         this.router.navigate(['login']);
     };
+    AppHeaderComponent.prototype.getAllAccountTest = function ($event) {
+        $event.preventDefault();
+        this.userService.getAllAccountTest();
+    };
     AppHeaderComponent = __decorate([
         core_1.Component({
             selector: 'app-header',
@@ -532,7 +551,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-header/app-h
 /***/ "../../../../../src/app/components/app-sidebar-footer/app-sidebar-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\r\n"
+module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\n"
 
 /***/ }),
 
@@ -582,7 +601,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-foot
 /***/ "../../../../../src/app/components/app-sidebar-form/app-sidebar-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\r\n"
+module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\n"
 
 /***/ }),
 
@@ -632,7 +651,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-form
 /***/ "../../../../../src/app/components/app-sidebar-header/app-sidebar-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\r\n"
+module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\n"
 
 /***/ }),
 
@@ -682,7 +701,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-head
 /***/ "../../../../../src/app/components/app-sidebar-minimizer/app-sidebar-minimizer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\r\n"
+module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\n"
 
 /***/ }),
 
@@ -916,7 +935,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/components/app-sidebar/app-sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sidebar\">\r\n  <app-sidebar-header></app-sidebar-header>\r\n  <app-sidebar-form></app-sidebar-form>\r\n  <app-sidebar-nav></app-sidebar-nav>\r\n  <app-sidebar-footer></app-sidebar-footer>\r\n  <app-sidebar-minimizer></app-sidebar-minimizer>\r\n</div>\r\n"
+module.exports = "<div class=\"sidebar\">\n  <app-sidebar-header></app-sidebar-header>\n  <app-sidebar-form></app-sidebar-form>\n  <app-sidebar-nav></app-sidebar-nav>\n  <app-sidebar-footer></app-sidebar-footer>\n  <app-sidebar-minimizer></app-sidebar-minimizer>\n</div>\n"
 
 /***/ }),
 
@@ -989,7 +1008,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/containers/full-layout/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-header></app-header>\r\n<div class=\"app-body\">\r\n  <app-sidebar></app-sidebar>\r\n  <!-- Main content -->\r\n  <main class=\"main\">\r\n    <!-- Breadcrumb -->\r\n    <ol class=\"breadcrumb\">\r\n      <app-breadcrumbs></app-breadcrumbs>\r\n    </ol>\r\n    <div class=\"container-fluid\">\r\n      <router-outlet></router-outlet>\r\n    </div><!-- /.conainer-fluid -->\r\n  </main>\r\n  <app-aside></app-aside>\r\n</div>\r\n<app-footer></app-footer>\r\n"
+module.exports = "<app-header></app-header>\n<div class=\"app-body\">\n  <app-sidebar></app-sidebar>\n  <!-- Main content -->\n  <main class=\"main\">\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n  <app-aside></app-aside>\n</div>\n<app-footer></app-footer>\n"
 
 /***/ }),
 
@@ -1503,16 +1522,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
+var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var AlwaysAuthGuard = /** @class */ (function () {
-    function AlwaysAuthGuard(router, userService) {
+    function AlwaysAuthGuard(router, storeService) {
         this.router = router;
-        this.userService = userService;
+        this.storeService = storeService;
     }
     AlwaysAuthGuard.prototype.canActivate = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            var currentUser = _this.userService.getCurrentUser();
+            var currentUser = _this.storeService.get(['currentUser']);
             var isSuccess = currentUser != null;
             if (isSuccess) {
                 resolve(isSuccess);
@@ -1526,7 +1545,7 @@ var AlwaysAuthGuard = /** @class */ (function () {
     AlwaysAuthGuard = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [router_1.Router,
-            user_service_1.UserService])
+            tree_service_1.StoreService])
     ], AlwaysAuthGuard);
     return AlwaysAuthGuard;
 }());
@@ -1553,7 +1572,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var Baobab = __webpack_require__("../../../../Baobab/dist/baobab.js");
 var StoreTree = {
+    token: {
+        access_token: '',
+        type: ''
+    },
+    bearerToken: undefined,
     currentUser: undefined,
+    isWebSocketConnected: false
 };
 var StoreService = /** @class */ (function () {
     function StoreService() {
@@ -1597,57 +1622,87 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
+var _serverPath_1 = __webpack_require__("../../../../../src/app/_serverPath.ts");
+var superagent_1 = __webpack_require__("../../../../superagent/lib/client.js");
 var UserService = /** @class */ (function () {
-    function UserService(store, ws) {
-        this.store = store;
+    function UserService(storeService, ws) {
+        this.storeService = storeService;
         this.ws = ws;
-        this.currentUserCursor = store.select(['currentUser']);
+        this.currentUserCursor = storeService.select(['currentUser']);
+        this.tokenCursor = storeService.select(['token', 'access_token']);
+        this.securityTypeCursor = storeService.select(['token', 'type']);
     }
-    // public connect(username: string, password: string): Promise<void> {
-    //   $.connection.hub.qs = {};
-    //   return $.connection.hub.start();
-    // }
-    UserService.prototype.getCurrentUser = function () {
-        var user = this.currentUserCursor.get();
-        if (user == null && typeof (Storage) !== 'undefined') {
-            user = JSON.parse(localStorage.getItem('agencyUser'));
-        }
-        return user;
-    };
-    UserService.prototype.setCurrentUser = function (user) {
-        if (user != null) {
-            this.currentUserCursor.set(user);
-            if (typeof (Storage) !== 'undefined') {
-                localStorage.setItem('agencyUser', JSON.stringify(user));
-            }
-        }
-    };
     UserService.prototype.logout = function () {
-        if (typeof (Storage) !== 'undefined') {
-            localStorage.clear();
-        }
         this.currentUserCursor.set(undefined);
+        this.tokenCursor.set(undefined);
+        this.securityTypeCursor.set(undefined);
     };
     /**
      * @param username
      * @param password
-     * @returns {Promise<Account> }
+     * @returns {Promise<User>}
      */
     UserService.prototype.login = function (username, password) {
-        var _this = this;
         console.debug('Login - UserService');
+        var _this = this;
+        // return new Promise<User>();
         return new Promise(function (resolve, reject) {
-            _this.ws.getUserHub().server.login(username, password)
-                .then(function (result) {
-                if (result.IsSuccess) {
-                    _this.setCurrentUser(result.data);
-                    resolve(result.Data);
+            _this.getToken(username, password)
+                .then(function (res) {
+                var type = res.token_type;
+                var token = res.access_token;
+                console.debug('Login - getInfo', type, token.substring(10) + '.....');
+                _this.tokenCursor.set(token);
+                _this.securityTypeCursor.set(type);
+                _this.getCurrentUserInfo(token)
+                    .then(function (user) {
+                    resolve(user);
+                    _this.currentUserCursor.set(user);
+                }).catch(reject);
+            }).catch(reject);
+        });
+    };
+    UserService.prototype.getToken = function (username, password) {
+        return new Promise(function (resolve, reject) {
+            superagent_1.post(_serverPath_1.serverPath.token)
+                .send('grant_type=password')
+                .send("username=" + username)
+                .send("password=" + password)
+                .then(function (res) {
+                if (res.ok) {
+                    resolve(res.body);
                 }
                 else {
-                    reject(result.Message);
+                    reject(res.body);
                 }
-            })
-                .catch(reject);
+            });
+        });
+    };
+    UserService.prototype.getCurrentUserInfo = function (authorization) {
+        return new Promise(function (resolve, reject) {
+            superagent_1.get(_serverPath_1.serverPath.getUser)
+                .set('token', authorization)
+                .then(function (res) {
+                if (res.ok) {
+                    resolve(res.body);
+                }
+                else {
+                    reject(res.body);
+                }
+            });
+        });
+    };
+    /***
+     * Test
+     */
+    UserService.prototype.getAllAccountTest = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this.ws.getUserHub().server.getAllAccounts().then(function (value) {
+                console.debug('getAllAccountTest - success', value);
+            }).catch(function (reason) {
+                console.debug('getAllAccountTest - fail', reason);
+            });
         });
     };
     /**
@@ -1687,21 +1742,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var WebsocketService = /** @class */ (function () {
-    function WebsocketService() {
+    function WebsocketService(storeService) {
+        this.storeService = storeService;
+        this.isConnectedCursor = this.storeService.select(['isWebSocketConnected']);
+        this.tokenCursor = this.storeService.select(['token']);
+        this.tokenCursor.on('update', this.handleTokenUpdate.bind(this));
+    }
+    WebsocketService.prototype.handleTokenUpdate = function (event) {
+        var token = event.data.currentData;
+        console.debug('handleTokenUpdate', token);
+        if (token.access_token) {
+            this.connect(token.access_token);
+        }
+    };
+    WebsocketService.prototype.connect = function (access_token) {
         var _this = this;
         if ($ === undefined || $.connection === undefined) {
             throw new Error('Missing dependency');
         }
         else {
             this.connection = $.connection;
-            $.connection.hub.start().then(function (_) {
-                _this.isConnected = true;
+            this.connection.qs = { 'token': access_token };
+            // this.connection.hub.url = '/signalr';
+            this.connection.hub.start().then(function (_) {
+                _this.isConnectedCursor.set(true);
             });
         }
-    }
+    };
     WebsocketService.prototype.getUserHub = function () {
-        if (this.isConnected) {
+        if (this.isConnectedCursor.get()) {
             return this.connection.accountHub;
         }
         else {
@@ -1709,7 +1780,7 @@ var WebsocketService = /** @class */ (function () {
         }
     };
     WebsocketService.prototype.getProjectHub = function () {
-        if (this.isConnected) {
+        if (this.isConnectedCursor.get()) {
             return this.connection.projectHub;
         }
         else {
@@ -1718,7 +1789,7 @@ var WebsocketService = /** @class */ (function () {
     };
     WebsocketService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [tree_service_1.StoreService])
     ], WebsocketService);
     return WebsocketService;
 }());

@@ -2,68 +2,97 @@ import {Injectable} from '@angular/core';
 import {User} from '../entities/user';
 import {Cursor, StoreService} from './tree.service';
 import {WebsocketService} from './websocket.service';
-
-declare var $: any;
-
+import {serverPath} from '../_serverPath';
+import {post, get} from 'superagent';
 @Injectable()
 export class UserService {
   private userHub: any;
   private currentUserCursor: Cursor;
+  private tokenCursor: Cursor;
+  private securityTypeCursor: Cursor;
 
-  constructor(private store: StoreService,
+  constructor(private storeService: StoreService,
               private ws: WebsocketService) {
-    this.currentUserCursor = store.select(['currentUser']);
-  }
-
-  // public connect(username: string, password: string): Promise<void> {
-  //   $.connection.hub.qs = {};
-  //   return $.connection.hub.start();
-  // }
-
-  public getCurrentUser(): User {
-    let user: User = this.currentUserCursor.get();
-    if (user == null && typeof(Storage) !== 'undefined') {
-      user = JSON.parse(localStorage.getItem('agencyUser'));
-    }
-    return user;
-  }
-
-  public setCurrentUser(user: User) {
-    if (user != null) {
-      this.currentUserCursor.set(user);
-      if (typeof(Storage) !== 'undefined') {
-        localStorage.setItem('agencyUser', JSON.stringify(user));
-      }
-    }
+    this.currentUserCursor = storeService.select(['currentUser']);
+    this.tokenCursor = storeService.select(['token', 'access_token']);
+    this.securityTypeCursor = storeService.select(['token', 'type']);
   }
 
   public logout() {
-    if (typeof(Storage) !== 'undefined') {
-      localStorage.clear();
-    }
     this.currentUserCursor.set(undefined);
-
+    this.tokenCursor.set(undefined);
+    this.securityTypeCursor.set(undefined);
   }
 
   /**
    * @param username
    * @param password
-   * @returns {Promise<User> }
+   * @returns {Promise<User>}
    */
   public login(username: string, password: string): Promise<User> {
     console.debug('Login - UserService');
+    const _this = this;
+    // return new Promise<User>();
     return new Promise<User>((resolve, reject) => {
-      this.ws.getUserHub().server.login(username, password)
-        .then(result => {
-          if (result.IsSuccess) {
-            this.setCurrentUser(result.data);
-            resolve(result.Data);
+      _this.getToken(username, password)
+        .then(res => {
+          const type = res.token_type;
+          const token = res.access_token;
+          console.debug('Login - getInfo', type, token.substring(10) + '.....');
+          _this.tokenCursor.set(token);
+          _this.securityTypeCursor.set(type);
+          _this.getCurrentUserInfo(token)
+            .then(user => {
+              resolve(user);
+              _this.currentUserCursor.set(user);
+            }).catch(reject);
+        }).catch(reject);
+
+    })
+  }
+
+  private getToken(username: string, password: string): Promise<any> {
+    return new Promise<string>((resolve, reject) => {
+      post(serverPath.token)
+        .send('grant_type=password')
+        .send(`username=${username}`)
+        .send(`password=${password}`)
+        .then(res => {
+          if (res.ok) {
+            resolve(res.body);
           } else {
-            reject(result.Message);
+            reject(res.body);
           }
         })
-        .catch(reject);
+    })
+  }
+
+  private getCurrentUserInfo(authorization): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
+      get(serverPath.getUser)
+        .set('token', authorization)
+        .then(res => {
+          if (res.ok) {
+            resolve(res.body);
+          } else {
+            reject(res.body);
+          }
+        })
     });
+  }
+
+  /***
+   * Test
+   */
+  public getAllAccountTest(): Promise<any> {
+    return new Promise<any>(resolve => {
+      this.ws.getUserHub().server.getAllAccounts().then(value => {
+        console.debug('getAllAccountTest - success', value);
+      }).catch(reason => {
+        console.debug('getAllAccountTest - fail', reason);
+      })
+    })
+
   }
 
 

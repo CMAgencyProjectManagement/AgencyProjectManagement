@@ -46,6 +46,7 @@ namespace Web.Hubs
          * Get current all accounts
          * Security: allow admin
          */
+        [Authorize]
         public JObject GetAllAccounts()
         {
             User currentUser = AgencyConnectionStore.GetUser(Context);
@@ -53,8 +54,10 @@ namespace Web.Hubs
 
             try
             {
-                throw new NotImplementedException();//remove this
-                //Code here
+                result = ResponseHelper.GetResponse(new JObject
+                {
+                    ["data"] = "testData"
+                });
             }
             catch (Exception exception)
             {
@@ -78,7 +81,6 @@ namespace Web.Hubs
             try
             {
                 //Validation code
-
 
 
                 //Other
