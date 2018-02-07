@@ -28,8 +28,6 @@ namespace Web
             app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
 
-            //            ConfigApiRoutes(app);
-            //            ConfigOAuth(app);
             SignalROAuthConfig(app);
             ConfigStaticFiles(app);
             app.MapSignalR();
@@ -45,7 +43,6 @@ namespace Web
             };
 
             app.UseOAuthAuthorizationServer(authorizationServerOptions);
-//            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
             {
                 Provider = new OAuthBearerTokenAuthenticationProvider()
@@ -84,13 +81,19 @@ namespace Web
 
         private void SignalROAuthConfig(IAppBuilder app)
         {
+            OAuthAuthorizationServerOptions authorizationServerOptions = new OAuthAuthorizationServerOptions()
+            {
+                AllowInsecureHttp = true,
+//                TokenEndpointPath = new PathString("/token"),
+                Provider = new AgencyAuthorizationServerProvider()
+            };
             app.Map(@"/signalr", map =>
             {
                 map.UseCors(CorsOptions.AllowAll);
+                map.UseOAuthAuthorizationServer(authorizationServerOptions);
                 map.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
                 {
-                    Provider = new QueryStringOAuthBearerProvider(),
-
+                    Provider = new OAuthBearerTokenAuthenticationProvider(),
                 });
                 var hubConfig = new HubConfiguration
                 {
@@ -99,8 +102,6 @@ namespace Web
                 };
                 map.RunSignalR(hubConfig);
             });
-            
-            
         }
     }
 }

@@ -1763,9 +1763,10 @@ var WebsocketService = /** @class */ (function () {
             throw new Error('Missing dependency');
         }
         else {
+            console.debug('connect', access_token);
             this.connection = $.connection;
-            this.connection.qs = { 'token': access_token };
-            // this.connection.hub.url = '/signalr';
+            this.connection.hub.qs = { 'token': access_token };
+            this.connection.hub.url = '/signalr';
             this.connection.hub.start().then(function (_) {
                 _this.isConnectedCursor.set(true);
             });

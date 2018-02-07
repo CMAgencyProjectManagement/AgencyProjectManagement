@@ -29,9 +29,10 @@ export class WebsocketService {
     if ($ === undefined || $.connection === undefined) {
       throw new Error('Missing dependency');
     } else {
+      console.debug('connect', access_token);
       this.connection = $.connection;
-      this.connection.qs = {'token': access_token};
-      // this.connection.hub.url = '/signalr';
+      this.connection.hub.qs = {'token': access_token};
+      this.connection.hub.url = '/signalr';
       this.connection.hub.start().then(_ => {
         this.isConnectedCursor.set(true);
       })
