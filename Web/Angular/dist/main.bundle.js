@@ -60,9 +60,9 @@ var admin_navigation = [
         icon: 'icon-star',
         children: [
             {
-                name: 'Account Management Page',
+                name: 'Account',
                 url: '/admin/accountManagePage',
-                icon: 'icon-puzzle'
+                icon: 'icon-user'
             }
         ]
     },
