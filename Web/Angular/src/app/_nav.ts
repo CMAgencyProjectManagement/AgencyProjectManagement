@@ -8,6 +8,18 @@ const admin_navigation = [
     }
   },
   {
+    name: 'Admin',
+    url: '/admin',
+    icon: 'icon-star',
+    children: [
+      {
+        name: 'Account Management Page',
+        url: '/admin/accountManagePage',
+        icon: 'icon-puzzle'
+      }
+    ]
+  },
+  {
     name: 'Account',
     url: '/account',
     icon: 'icon-user',

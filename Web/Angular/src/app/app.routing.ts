@@ -32,7 +32,11 @@ export const routes: Routes = [
       {
         path: 'project',
         loadChildren: './views/project-management/project-management.module#ProjectManagementModule'
-      }
+      },
+      {
+        path: 'admin',
+        loadChildren: './views/admin/admin.module#AdminModule'
+      },
     ]
   },
   {
