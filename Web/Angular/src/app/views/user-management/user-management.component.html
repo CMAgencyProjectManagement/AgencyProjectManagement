@@ -12,10 +12,65 @@
   </tr>
   </thead>
   <tbody>
+<<<<<<< HEAD
   <tr *ngFor="let user of users;let i = index">
     <th scope="row">{{i+1}}</th>
     <td>{{user.username}}</td>
     <td><img src="https://www.placehold.it/100x100?text=avatar" alt="..." class="img-thumbnail"></td>
+=======
+  <tr>
+    <th scope="row">1</th>
+    <td>Mark</td>
+    <td>Otto</td>
+    <td>MarkO</td>
+    <td><img src="..." alt="..." class="img-thumbnail"></td>
+
+    <td>
+      <label class="switch switch-default switch-pill switch-primary-outline-alt">
+        <input type="checkbox" class="switch-input" unchecked>
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">2</th>
+    <td>Jacob</td>
+    <td>Thornton</td>
+    <td>JacobT</td>
+    <td><img src="..." alt="..." class="img-thumbnail"></td>
+    <td>
+      <label class="switch switch-default switch-pill switch-primary-outline-alt">
+        <input type="checkbox" class="switch-input" unchecked>
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </td>
+
+  </tr>
+  <tr>
+    <th scope="row">3</th>
+    <td>Larry</td>
+    <td>the Bird</td>
+    <td>LarryTB</td>
+    <td><img src="..." alt="..." class="img-thumbnail"></td>
+
+    <td>
+      <label class="switch switch-default switch-pill switch-primary-outline-alt">
+        <input type="checkbox" class="switch-input" unchecked>
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">4</th>
+    <td>kira</td>
+    <td>the Killer</td>
+    <td>kiraTK</td>
+    <td><img src="..." alt="..." class="img-thumbnail"></td>
+
+>>>>>>> 0f1afbae88806e92ad0d37a1b01ffe8daddf0648
     <td>
       <label class="switch switch-default switch-pill switch-primary-outline-alt">
         <input type="checkbox" class="switch-input" [attr.checked]="user.isAdmin ? '' : null">
