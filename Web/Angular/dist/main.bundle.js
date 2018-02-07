@@ -195,9 +195,10 @@ var app_routing_1 = __webpack_require__("../../../../../src/app/app.routing.ts")
 // Import provider
 var auth_guard_1 = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
 var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var project_service_1 = __webpack_require__("../../../../../src/app/services/project.service.ts");
-var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
+var team_service_1 = __webpack_require__("../../../../../src/app/services/team.service.ts");
 // Import 3rd party components
 var dropdown_1 = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
 var tabs_1 = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
@@ -223,9 +224,10 @@ var AppModule = /** @class */ (function () {
                 },
                 auth_guard_1.AlwaysAuthGuard,
                 tree_service_1.StoreService,
+                websocket_service_1.WebsocketService,
                 user_service_1.UserService,
                 project_service_1.ProjectService,
-                websocket_service_1.WebsocketService
+                team_service_1.TeamService
             ],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -324,7 +326,7 @@ exports.AppRoutingModule = AppRoutingModule;
 /***/ "../../../../../src/app/components/app-aside/app-aside.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<aside class=\"aside-menu\">\r\n  \r\n</aside>\r\n"
+module.exports = "<aside class=\"aside-menu\">\n  \n</aside>\n"
 
 /***/ }),
 
@@ -576,7 +578,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-header/app-h
 /***/ "../../../../../src/app/components/app-sidebar-footer/app-sidebar-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\r\n"
+module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\n"
 
 /***/ }),
 
@@ -626,7 +628,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-foot
 /***/ "../../../../../src/app/components/app-sidebar-form/app-sidebar-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\r\n"
+module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\n"
 
 /***/ }),
 
@@ -676,7 +678,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-form
 /***/ "../../../../../src/app/components/app-sidebar-header/app-sidebar-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\r\n"
+module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\n"
 
 /***/ }),
 
@@ -726,7 +728,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-head
 /***/ "../../../../../src/app/components/app-sidebar-minimizer/app-sidebar-minimizer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\r\n"
+module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\n"
 
 /***/ }),
 
@@ -960,7 +962,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/components/app-sidebar/app-sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sidebar\">\r\n  <app-sidebar-header></app-sidebar-header>\r\n  <app-sidebar-form></app-sidebar-form>\r\n  <app-sidebar-nav></app-sidebar-nav>\r\n  <app-sidebar-footer></app-sidebar-footer>\r\n  <app-sidebar-minimizer></app-sidebar-minimizer>\r\n</div>\r\n"
+module.exports = "<div class=\"sidebar\">\n  <app-sidebar-header></app-sidebar-header>\n  <app-sidebar-form></app-sidebar-form>\n  <app-sidebar-nav></app-sidebar-nav>\n  <app-sidebar-footer></app-sidebar-footer>\n  <app-sidebar-minimizer></app-sidebar-minimizer>\n</div>\n"
 
 /***/ }),
 
@@ -1033,7 +1035,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/containers/full-layout/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-header></app-header>\r\n<div class=\"app-body\">\r\n  <app-sidebar></app-sidebar>\r\n  <!-- Main content -->\r\n  <main class=\"main\">\r\n    <!-- Breadcrumb -->\r\n    <ol class=\"breadcrumb\">\r\n      <app-breadcrumbs></app-breadcrumbs>\r\n    </ol>\r\n    <div class=\"container-fluid\">\r\n      <router-outlet></router-outlet>\r\n    </div><!-- /.conainer-fluid -->\r\n  </main>\r\n  <app-aside></app-aside>\r\n</div>\r\n<app-footer></app-footer>\r\n"
+module.exports = "<app-header></app-header>\n<div class=\"app-body\">\n  <app-sidebar></app-sidebar>\n  <!-- Main content -->\n  <main class=\"main\">\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n  <app-aside></app-aside>\n</div>\n<app-footer></app-footer>\n"
 
 /***/ }),
 
@@ -1608,6 +1610,36 @@ var ProjectService = /** @class */ (function () {
     return ProjectService;
 }());
 exports.ProjectService = ProjectService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/team.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var TeamService = /** @class */ (function () {
+    function TeamService() {
+    }
+    TeamService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], TeamService);
+    return TeamService;
+}());
+exports.TeamService = TeamService;
 
 
 /***/ }),

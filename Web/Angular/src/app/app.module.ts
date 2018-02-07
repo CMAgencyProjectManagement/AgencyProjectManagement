@@ -63,9 +63,10 @@ import {AppRoutingModule} from './app.routing';
 // Import provider
 import {AlwaysAuthGuard} from './services/auth.guard'
 import {StoreService} from './services/tree.service';
+import {WebsocketService} from './services/websocket.service';
 import {UserService} from './services/user.service';
 import {ProjectService} from './services/project.service';
-import {WebsocketService} from './services/websocket.service';
+import {TeamService} from './services/team.service';
 
 // Import 3rd party components
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
@@ -92,9 +93,10 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
   },
     AlwaysAuthGuard,
     StoreService,
+    WebsocketService,
     UserService,
     ProjectService,
-    WebsocketService
+    TeamService
   ],
   bootstrap: [AppComponent]
 })
