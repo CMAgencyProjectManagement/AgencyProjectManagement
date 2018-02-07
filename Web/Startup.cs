@@ -55,7 +55,8 @@ namespace Web
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(
                 "Api",
-                "api/{controller}/{action}"
+                "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
             );
         }
 

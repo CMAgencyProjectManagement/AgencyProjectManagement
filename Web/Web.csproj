@@ -441,18 +441,17 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgencyAuthorizationServerProvider.cs" />
-    <Compile Include="Api\UserController.cs" />
-    <Compile Include="Api\FileController.cs" />
-    <Compile Include="Api\TokenTestController.cs" />
+    <Compile Include="Security\AgencyAuthorizationServerProvider.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Hubs\AccountHub.cs" />
     <Compile Include="Hubs\ProjectHub.cs" />
-    <Compile Include="OAuthBearerTokenAuthenticationProvider.cs" />
+    <Compile Include="Security\OAuthBearerTokenAuthenticationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryStringOAuthBearerProvider.cs" />
     <Compile Include="ResponseHelper.cs" />
-    <Compile Include="Security\AgencyConnectionStore.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\EditUserModel.cs" />
+    <Compile Include="ViewModels\CreateUserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entity\Entity.csproj">

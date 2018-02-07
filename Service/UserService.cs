@@ -19,7 +19,9 @@ namespace Service
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
                 User foundUser =
-                    entities.Users.FirstOrDefault(user => user.Username == username && user.Password == password);
+                    entities.Users.FirstOrDefault(user =>
+                        user.Username.Equals(username) &&
+                        user.Password.Equals(password));
                 return foundUser;
             }
         }
