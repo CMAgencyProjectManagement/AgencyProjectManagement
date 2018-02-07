@@ -23,7 +23,7 @@ namespace Web.ViewModels
         public DateTime Birthdate { get; set; }
         [EmailAddress]
         [MaxLength(255)]
-        public string email { get; set; }
+        public string Email { get; set; }
         [MaxLength(255)]
         public string Avatar { get; set; }
     }

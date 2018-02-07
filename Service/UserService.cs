@@ -49,10 +49,6 @@ namespace Service
             {
                 return null;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public static User CreateAccount(string username, string password, string avatar, bool isAdmin = false)
@@ -65,7 +61,8 @@ namespace Service
                     Username = username,
                     Password = password,
                     IsAdmin = false,
-                    Avatar = avatar
+                    Avatar = avatar,
+                    IsActive = true
                 };
                 entities.Users.Add(newUser);
                 entities.SaveChanges();

@@ -12,7 +12,7 @@ namespace Web.ViewModels
         public int ID { get; set; }
         [MaxLength(255)]
         public string Name { get; set; }
-
+        [EmailAddress]
         [MaxLength(255)]
         public string Email { get; set; }
         [MaxLength(255)]
