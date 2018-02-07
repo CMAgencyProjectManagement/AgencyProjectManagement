@@ -43,7 +43,7 @@ exports.UserManagementRoutingModule = UserManagementRoutingModule;
 /***/ "../../../../../src/app/views/user-management/user-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  user-management works!\n</div>\n"
+module.exports = "<h1>\n  <strong>Manage account</strong>\n</h1>\n<table class=\"table table-info\">\n  <thead class=\"thead-light\">\n  <tr>\n    <th>#</th>\n    <th>First Name</th>\n    <th>Last Name</th>\n    <th>Username</th>\n    <th>Avatar</th>\n    <th>isAdmin</th>\n    <th>isTeamManager</th>\n\n  </tr>\n  </thead>\n  <tbody>\n  <tr>\n    <th scope=\"row\">1</th>\n    <td>Mark</td>\n    <td>Otto</td>\n    <td>MarkO</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  <tr>\n    <th scope=\"row\">2</th>\n    <td>Jacob</td>\n    <td>Thornton</td>\n    <td>JacobT</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  <tr>\n    <th scope=\"row\">3</th>\n    <td>Larry</td>\n    <td>the Bird</td>\n    <td>LarryTB</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  <tr>\n    <th scope=\"row\">4</th>\n    <td>kira</td>\n    <td>the Killer</td>\n    <td>kiraTK</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -81,8 +81,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var UserManagementComponent = /** @class */ (function () {
-    function UserManagementComponent() {
+    function UserManagementComponent(userService) {
+        this.userService = userService;
+        this.userService.getAllUser().then(function (value) {
+            return console.debug('UserManagementComponent', value);
+        });
     }
     UserManagementComponent.prototype.ngOnInit = function () {
     };
@@ -92,7 +97,7 @@ var UserManagementComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/views/user-management/user-management.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/user-management/user-management.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [user_service_1.UserService])
     ], UserManagementComponent);
     return UserManagementComponent;
 }());

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-user-management',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) {
+    this.userService.getAllUser().then(value =>
+      console.debug('UserManagementComponent', value)
+    )
+  }
 
   ngOnInit() {
+
   }
 
 }
