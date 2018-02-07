@@ -1,6 +1,6 @@
-webpackJsonp(["project-management.module"],{
+webpackJsonp(["user-management.module"],{
 
-/***/ "../../../../../src/app/views/project-management/project-management-routing.module.ts":
+/***/ "../../../../../src/app/views/user-management/user-management-routing.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14,40 +14,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var project_management_component_1 = __webpack_require__("../../../../../src/app/views/project-management/project-management.component.ts");
+var user_management_component_1 = __webpack_require__("../../../../../src/app/views/user-management/user-management.component.ts");
 var routes = [
     {
         path: '',
-        component: project_management_component_1.ProjectManagementComponent,
+        component: user_management_component_1.UserManagementComponent,
         data: {
-            title: 'Projects'
+            title: 'Account'
         }
     }
 ];
-var ProjectManagementRoutingModule = /** @class */ (function () {
-    function ProjectManagementRoutingModule() {
+var UserManagementRoutingModule = /** @class */ (function () {
+    function UserManagementRoutingModule() {
     }
-    ProjectManagementRoutingModule = __decorate([
+    UserManagementRoutingModule = __decorate([
         core_1.NgModule({
             imports: [router_1.RouterModule.forChild(routes)],
             exports: [router_1.RouterModule]
         })
-    ], ProjectManagementRoutingModule);
-    return ProjectManagementRoutingModule;
+    ], UserManagementRoutingModule);
+    return UserManagementRoutingModule;
 }());
-exports.ProjectManagementRoutingModule = ProjectManagementRoutingModule;
+exports.UserManagementRoutingModule = UserManagementRoutingModule;
 
 
 /***/ }),
 
-/***/ "../../../../../src/app/views/project-management/project-management.component.html":
+/***/ "../../../../../src/app/views/user-management/user-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  project-management works!\n</div>\n"
+module.exports = "<div class=\"animated fadeIn\">\n  user-management works!\n</div>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/views/project-management/project-management.component.scss":
+/***/ "../../../../../src/app/views/user-management/user-management.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -65,7 +65,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/views/project-management/project-management.component.ts":
+/***/ "../../../../../src/app/views/user-management/user-management.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81,27 +81,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var ProjectManagementComponent = /** @class */ (function () {
-    function ProjectManagementComponent() {
+var UserManagementComponent = /** @class */ (function () {
+    function UserManagementComponent() {
     }
-    ProjectManagementComponent.prototype.ngOnInit = function () {
+    UserManagementComponent.prototype.ngOnInit = function () {
     };
-    ProjectManagementComponent = __decorate([
+    UserManagementComponent = __decorate([
         core_1.Component({
-            selector: 'app-project-management',
-            template: __webpack_require__("../../../../../src/app/views/project-management/project-management.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/views/project-management/project-management.component.scss")]
+            selector: 'app-user-management',
+            template: __webpack_require__("../../../../../src/app/views/user-management/user-management.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/views/user-management/user-management.component.scss")]
         }),
         __metadata("design:paramtypes", [])
-    ], ProjectManagementComponent);
-    return ProjectManagementComponent;
+    ], UserManagementComponent);
+    return UserManagementComponent;
 }());
-exports.ProjectManagementComponent = ProjectManagementComponent;
+exports.UserManagementComponent = UserManagementComponent;
 
 
 /***/ }),
 
-/***/ "../../../../../src/app/views/project-management/project-management.module.ts":
+/***/ "../../../../../src/app/views/user-management/user-management.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -114,25 +114,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var project_management_component_1 = __webpack_require__("../../../../../src/app/views/project-management/project-management.component.ts");
-var project_management_routing_module_1 = __webpack_require__("../../../../../src/app/views/project-management/project-management-routing.module.ts");
-var ProjectManagementModule = /** @class */ (function () {
-    function ProjectManagementModule() {
+var user_management_component_1 = __webpack_require__("../../../../../src/app/views/user-management/user-management.component.ts");
+var user_management_routing_module_1 = __webpack_require__("../../../../../src/app/views/user-management/user-management-routing.module.ts");
+var UserManagementModule = /** @class */ (function () {
+    function UserManagementModule() {
     }
-    ProjectManagementModule = __decorate([
+    UserManagementModule = __decorate([
         core_1.NgModule({
             imports: [
-                project_management_routing_module_1.ProjectManagementRoutingModule
+                user_management_routing_module_1.UserManagementRoutingModule
             ],
-            declarations: [project_management_component_1.ProjectManagementComponent]
+            declarations: [user_management_component_1.UserManagementComponent]
         })
-    ], ProjectManagementModule);
-    return ProjectManagementModule;
+    ], UserManagementModule);
+    return UserManagementModule;
 }());
-exports.ProjectManagementModule = ProjectManagementModule;
+exports.UserManagementModule = UserManagementModule;
 
 
 /***/ })
 
 });
-//# sourceMappingURL=project-management.module.chunk.js.map
+//# sourceMappingURL=user-management.module.chunk.js.map

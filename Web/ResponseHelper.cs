@@ -16,6 +16,15 @@ namespace Web
                 ["Data"] = data
             };
         }
+        
+        public static JObject GetResponse(JArray data,bool isSuccess = true)
+        {
+            return new JObject
+            {
+                ["IsSuccess"] = isSuccess,
+                ["Data"] = data
+            };
+        }
 
         public static JObject GetExceptionResponse(string message, Exception exception = null, bool isSuccess = false)
         {

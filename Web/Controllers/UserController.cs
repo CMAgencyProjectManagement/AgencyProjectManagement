@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using Entity;
@@ -19,15 +20,20 @@ namespace Web.Controllers
         {
             try
             {
+                //Dont expose password
                 User user = UserService.GetUser(id);
                 JObject dataObject = new JObject
                 {
                     ["id"] = user.ID,
+                    ["name"] = user.Name,
+                    ["phone"] = user.Phone,
+                    ["birthday"] = user.Birthdate,
+                    ["email"] = user.Email,
                     ["username"] = user.Username,
                     ["avatar"] = user.Avatar,
                     ["isAdmin"] = user.IsAdmin
                 };
-                
+
                 return Ok(ResponseHelper.GetResponse(dataObject));
             }
             catch (Exception ex)
@@ -46,16 +52,56 @@ namespace Web.Controllers
             {
                 string userIdString = User.Identity.GetUserId();
                 User user = UserService.GetUser(userIdString);
-
+                //Dont expose password
                 JObject dataObject = new JObject
                 {
                     ["id"] = user.ID,
+                    ["name"] = user.Name,
+                    ["phone"] = user.Phone,
+                    ["birthday"] = user.Birthdate,
+                    ["email"] = user.Email,
                     ["username"] = user.Username,
                     ["avatar"] = user.Avatar,
                     ["isAdmin"] = user.IsAdmin
                 };
 
                 return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("all")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetAllUser()
+        {
+            try
+            {
+                IEnumerable<User> allUser = UserService.GetAll();
+
+                JArray data = new JArray();
+
+                foreach (User user in allUser)
+                {
+                    //Dont expose password
+                    data.Add(new JObject
+                    {
+                        ["id"] = user.ID,
+                        ["name"] = user.Name,
+                        ["phone"] = user.Phone,
+                        ["birthday"] = user.Birthdate,
+                        ["email"] = user.Email,
+                        ["username"] = user.Username,
+                        ["avatar"] = user.Avatar,
+                        ["isAdmin"] = user.IsAdmin
+                    });
+                }
+
+                return Ok(ResponseHelper.GetResponse(data));
             }
             catch (Exception ex)
             {
@@ -80,6 +126,10 @@ namespace Web.Controllers
                 JObject dataObject = new JObject
                 {
                     ["id"] = newUser.ID,
+                    ["name"] = newUser.Name,
+                    ["phone"] = newUser.Phone,
+                    ["birthday"] = newUser.Birthdate,
+                    ["email"] = newUser.Email,
                     ["username"] = newUser.Username,
                     ["avatar"] = newUser.Avatar,
                     ["isAdmin"] = newUser.IsAdmin
@@ -100,6 +150,8 @@ namespace Web.Controllers
         {
             try
             {
+                throw new NotImplementedException();
+/*
                 User newUser = UserService.CreateAccount(
                     createUserModel.Username,
                     createUserModel.Password,
@@ -109,11 +161,16 @@ namespace Web.Controllers
                 JObject dataObject = new JObject
                 {
                     ["id"] = newUser.ID,
+                    ["name"] = newUser.Name,
+                    ["phone"] = newUser.Phone,
+                    ["birthday"] = newUser.Birthdate,
+                    ["email"] = newUser.Email,
                     ["username"] = newUser.Username,
                     ["avatar"] = newUser.Avatar,
                     ["isAdmin"] = newUser.IsAdmin
                 };
                 return Ok(ResponseHelper.GetResponse(dataObject));
+*/
             }
             catch (Exception ex)
             {

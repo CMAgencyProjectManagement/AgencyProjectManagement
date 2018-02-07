@@ -1,0 +1,19 @@
+﻿TEAMPLATE
+
+CONTROLLER FUNCTIONS
+public IHttpActionResult FunctrionName()
+        {
+            try
+            {
+                JObject dataObject = new JObject
+                {
+                };
+                return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+

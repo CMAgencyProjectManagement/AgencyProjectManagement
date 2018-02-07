@@ -14,14 +14,20 @@ var map = {
 	],
 	"./views/project-management/project-management.module": [
 		"../../../../../src/app/views/project-management/project-management.module.ts",
-		"project-management.module"
+		"project-management.module",
+		"common"
+	],
+	"./views/user-management/user-management.module": [
+		"../../../../../src/app/views/user-management/user-management.module.ts",
+		"user-management.module",
+		"common"
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };
@@ -97,7 +103,8 @@ exports.navigation = navigation;
 Object.defineProperty(exports, "__esModule", { value: true });
 var serverPath = {
     token: '/token',
-    getUser: '/api/user'
+    user: '/api/user',
+    allUser: '/api/user/all'
 };
 exports.serverPath = serverPath;
 
@@ -184,6 +191,7 @@ var app_routing_1 = __webpack_require__("../../../../../src/app/app.routing.ts")
 var auth_guard_1 = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
+var project_service_1 = __webpack_require__("../../../../../src/app/services/project.service.ts");
 var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
 // Import 3rd party components
 var dropdown_1 = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
@@ -211,6 +219,7 @@ var AppModule = /** @class */ (function () {
                 auth_guard_1.AlwaysAuthGuard,
                 tree_service_1.StoreService,
                 user_service_1.UserService,
+                project_service_1.ProjectService,
                 websocket_service_1.WebsocketService
             ],
             bootstrap: [app_component_1.AppComponent]
@@ -262,6 +271,10 @@ exports.routes = [
             {
                 path: 'project',
                 loadChildren: './views/project-management/project-management.module#ProjectManagementModule'
+            },
+            {
+                path: 'account',
+                loadChildren: './views/user-management/user-management.module#UserManagementModule'
             }
         ]
     },
@@ -507,16 +520,19 @@ var AppHeaderComponent = /** @class */ (function () {
         this.userService = userService;
         this.router = router;
         this.store = store;
-        this.username = store.get(['currentUser', 'username']);
+        this.usernameCursor = store.select(['currentUser', 'username']);
     }
+    AppHeaderComponent.prototype.ngOnInit = function () {
+        this.username = this.usernameCursor.get();
+        this.usernameCursor.on('update', this.handleUsernameUpdate.bind(this));
+    };
+    AppHeaderComponent.prototype.handleUsernameUpdate = function (event) {
+        this.username = event.data.currentData;
+    };
     AppHeaderComponent.prototype.logout = function ($event) {
         $event.preventDefault();
         this.userService.logout();
         this.router.navigate(['login']);
-    };
-    AppHeaderComponent.prototype.getAllAccountTest = function ($event) {
-        $event.preventDefault();
-        this.userService.getAllAccountTest();
     };
     AppHeaderComponent = __decorate([
         core_1.Component({
@@ -1554,6 +1570,39 @@ exports.AlwaysAuthGuard = AlwaysAuthGuard;
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/project.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+var ProjectService = /** @class */ (function () {
+    function ProjectService(store) {
+        this.store = store;
+        this.tokenCursor = this.store.select(['token', 'access_token']);
+    }
+    ProjectService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [tree_service_1.StoreService])
+    ], ProjectService);
+    return ProjectService;
+}());
+exports.ProjectService = ProjectService;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/tree.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1621,13 +1670,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
-var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
 var _serverPath_1 = __webpack_require__("../../../../../src/app/_serverPath.ts");
 var superagent_1 = __webpack_require__("../../../../superagent/lib/client.js");
 var UserService = /** @class */ (function () {
-    function UserService(storeService, ws) {
+    function UserService(storeService) {
         this.storeService = storeService;
-        this.ws = ws;
         this.currentUserCursor = storeService.select(['currentUser']);
         this.tokenCursor = storeService.select(['token', 'access_token']);
         this.securityTypeCursor = storeService.select(['token', 'type']);
@@ -1643,7 +1690,6 @@ var UserService = /** @class */ (function () {
      * @returns {Promise<User>}
      */
     UserService.prototype.login = function (username, password) {
-        console.debug('Login - UserService');
         var _this = this;
         // return new Promise<User>();
         return new Promise(function (resolve, reject) {
@@ -1660,6 +1706,22 @@ var UserService = /** @class */ (function () {
                     _this.currentUserCursor.set(user);
                 }).catch(reject);
             }).catch(reject);
+        });
+    };
+    UserService.prototype.getAllUser = function () {
+        var authorization = this.tokenCursor.get();
+        return new Promise(function (resolve, reject) {
+            superagent_1.get(_serverPath_1.serverPath.allUser)
+                .set('token', authorization)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
         });
     };
     UserService.prototype.getToken = function (username, password) {
@@ -1680,44 +1742,22 @@ var UserService = /** @class */ (function () {
     };
     UserService.prototype.getCurrentUserInfo = function (authorization) {
         return new Promise(function (resolve, reject) {
-            superagent_1.get(_serverPath_1.serverPath.getUser)
+            superagent_1.get(_serverPath_1.serverPath.user)
                 .set('token', authorization)
                 .then(function (res) {
-                if (res.ok) {
-                    resolve(res.body);
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
                 }
                 else {
-                    reject(res.body);
+                    reject(content.Message);
                 }
             });
         });
-    };
-    /***
-     * Test
-     */
-    UserService.prototype.getAllAccountTest = function () {
-        var _this = this;
-        return new Promise(function (resolve) {
-            _this.ws.getUserHub().server.getAllAccounts().then(function (value) {
-                console.debug('getAllAccountTest - success', value);
-            }).catch(function (reason) {
-                console.debug('getAllAccountTest - fail', reason);
-            });
-        });
-    };
-    /**
-     * @param user
-     * @param password
-     * @param avatar
-     * @returns {Promise<object{}> }
-     */
-    UserService.prototype.createUser = function (user, password, avatar) {
-        return this.userHub.server.createAccount(user, password, avatar);
     };
     UserService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [tree_service_1.StoreService,
-            websocket_service_1.WebsocketService])
+        __metadata("design:paramtypes", [tree_service_1.StoreService])
     ], UserService);
     return UserService;
 }());
@@ -1763,7 +1803,6 @@ var WebsocketService = /** @class */ (function () {
             throw new Error('Missing dependency');
         }
         else {
-            console.debug('connect', access_token);
             this.connection = $.connection;
             this.connection.hub.qs = { 'token': access_token };
             this.connection.hub.url = '/signalr';

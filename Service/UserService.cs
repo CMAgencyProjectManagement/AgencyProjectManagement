@@ -51,6 +51,14 @@ namespace Service
             }
         }
 
+        public static IEnumerable<User> GetAll()
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                return entities.Users.ToList();
+            }
+        }
+
         public static User CreateAccount(string username, string password, string avatar, bool isAdmin = false)
         {
             User newUser;

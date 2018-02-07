@@ -46,4 +46,6 @@ export interface Cursor {
   select(path: string[]): Cursor;
 
   on(event: string, handler: (event) => void): void;
+
+  onUpdate(handler: (event) => void): void;
 }

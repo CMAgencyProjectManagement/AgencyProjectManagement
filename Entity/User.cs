@@ -30,7 +30,7 @@ namespace Entity
         public string Name { get; set; }
         public string Phone { get; set; }
         public Nullable<System.DateTime> Birthdate { get; set; }
-        public string email { get; set; }
+        public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Avatar { get; set; }

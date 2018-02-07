@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {User} from '../entities/user';
+import {User} from '../interfaces/user';
 import {Cursor, StoreService} from './tree.service';
-import {WebsocketService} from './websocket.service';
 import {serverPath} from '../_serverPath';
 import {post, get} from 'superagent';
+
 @Injectable()
 export class UserService {
   private userHub: any;
@@ -11,8 +11,7 @@ export class UserService {
   private tokenCursor: Cursor;
   private securityTypeCursor: Cursor;
 
-  constructor(private storeService: StoreService,
-              private ws: WebsocketService) {
+  constructor(private storeService: StoreService) {
     this.currentUserCursor = storeService.select(['currentUser']);
     this.tokenCursor = storeService.select(['token', 'access_token']);
     this.securityTypeCursor = storeService.select(['token', 'type']);
@@ -30,7 +29,6 @@ export class UserService {
    * @returns {Promise<User>}
    */
   public login(username: string, password: string): Promise<User> {
-    console.debug('Login - UserService');
     const _this = this;
     // return new Promise<User>();
     return new Promise<User>((resolve, reject) => {
@@ -48,6 +46,22 @@ export class UserService {
             }).catch(reject);
         }).catch(reject);
 
+    })
+  }
+
+  public getAllUser(): Promise<any> {
+    const authorization = this.tokenCursor.get();
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.allUser)
+        .set('token', authorization)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
     })
   }
 
@@ -69,40 +83,18 @@ export class UserService {
 
   private getCurrentUserInfo(authorization): Promise<User> {
     return new Promise<User>((resolve, reject) => {
-      get(serverPath.getUser)
+      get(serverPath.user)
         .set('token', authorization)
-        .then(res => {
-          if (res.ok) {
-            resolve(res.body);
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
           } else {
-            reject(res.body);
+            reject(content.Message);
           }
         })
     });
   }
 
-  /***
-   * Test
-   */
-  public getAllAccountTest(): Promise<any> {
-    return new Promise<any>(resolve => {
-      this.ws.getUserHub().server.getAllAccounts().then(value => {
-        console.debug('getAllAccountTest - success', value);
-      }).catch(reason => {
-        console.debug('getAllAccountTest - fail', reason);
-      })
-    })
 
-  }
-
-
-  /**
-   * @param user
-   * @param password
-   * @param avatar
-   * @returns {Promise<object{}> }
-   */
-  public createUser(user: string, password: string, avatar: string): Promise<number> {
-    return this.userHub.server.createAccount(user, password, avatar);
-  }
 }

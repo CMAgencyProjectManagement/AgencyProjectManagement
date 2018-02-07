@@ -1,6 +1,6 @@
 import {CanActivate, Router} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {User} from '../entities/user';
+import {User} from '../interfaces/user';
 import {StoreService, Cursor} from './tree.service';
 
 @Injectable()

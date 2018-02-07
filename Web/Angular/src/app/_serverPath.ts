@@ -1,6 +1,7 @@
 const serverPath = {
   token: '/token',
-  getUser: '/api/user'
+  user: '/api/user',
+  allUser: '/api/user/all'
 };
 
 export {

@@ -9,6 +9,7 @@ namespace Web.ViewModels
     public class CreateUserModel
     {
         [Required]
+        public string Id { get; set; }
         [MaxLength(255)]
         public string Username { get; set; }
         [Required]
