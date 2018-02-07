@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Security.Claims;
-using System.Web;
 using Entity;
 using Microsoft.Owin.Security.OAuth;
 using Service;
 using Task = System.Threading.Tasks.Task;
 
-namespace Web
+namespace Web.Security
 {
     public class AgencyAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
