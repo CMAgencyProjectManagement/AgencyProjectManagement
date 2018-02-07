@@ -17,6 +17,11 @@ var map = {
 		"project-management.module",
 		"common"
 	],
+	"./views/team-management/team-management.module": [
+		"../../../../../src/app/views/team-management/team-management.module.ts",
+		"team-management.module",
+		"common"
+	],
 	"./views/user-management/user-management.module": [
 		"../../../../../src/app/views/user-management/user-management.module.ts",
 		"user-management.module",
@@ -275,7 +280,11 @@ exports.routes = [
             {
                 path: 'account',
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
-            }
+            },
+            {
+                path: 'team',
+                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+            },
         ]
     },
     {

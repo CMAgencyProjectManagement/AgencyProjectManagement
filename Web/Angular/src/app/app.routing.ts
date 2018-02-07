@@ -36,7 +36,11 @@ export const routes: Routes = [
       {
         path: 'account',
         loadChildren: './views/user-management/user-management.module#UserManagementModule'
-      }
+      },
+      {
+        path: 'team',
+        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+      },
     ]
   },
   {
