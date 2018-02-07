@@ -79,18 +79,16 @@ var team_management_component_1 = __webpack_require__("../../../../../src/app/vi
 var TeamManagementModule = /** @class */ (function () {
     function TeamManagementModule() {
     }
-    TeamManagementModule_1 = TeamManagementModule;
-    TeamManagementModule = TeamManagementModule_1 = __decorate([
+    TeamManagementModule = __decorate([
         core_1.NgModule({
             imports: [
                 common_1.CommonModule,
-                TeamManagementModule_1,
+                team_management_component_1.TeamManagementComponent,
             ],
             declarations: [team_management_component_1.TeamManagementComponent]
         })
     ], TeamManagementModule);
     return TeamManagementModule;
-    var TeamManagementModule_1;
 }());
 exports.TeamManagementModule = TeamManagementModule;
 

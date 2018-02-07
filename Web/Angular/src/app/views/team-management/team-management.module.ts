@@ -6,7 +6,7 @@ import {UserManagementRoutingModule} from './team-management-routing.module'
 @NgModule({
   imports: [
     CommonModule,
-    TeamManagementModule,
+    TeamManagementComponent,
   ],
   declarations: [TeamManagementComponent]
 })
