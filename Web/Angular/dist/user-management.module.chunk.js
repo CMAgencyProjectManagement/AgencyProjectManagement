@@ -43,7 +43,7 @@ exports.UserManagementRoutingModule = UserManagementRoutingModule;
 /***/ "../../../../../src/app/views/user-management/user-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>\n  <strong>Manage account</strong>\n</h1>\n<table class=\"table table-info\">\n  <thead class=\"thead-light\">\n  <tr>\n    <th>#</th>\n    <th>First Name</th>\n    <th>Last Name</th>\n    <th>Username</th>\n    <th>Avatar</th>\n    <th>isAdmin</th>\n    <th>isTeamManager</th>\n\n  </tr>\n  </thead>\n  <tbody>\n  <tr>\n    <th scope=\"row\">1</th>\n    <td>Mark</td>\n    <td>Otto</td>\n    <td>MarkO</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  <tr>\n    <th scope=\"row\">2</th>\n    <td>Jacob</td>\n    <td>Thornton</td>\n    <td>JacobT</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  <tr>\n    <th scope=\"row\">3</th>\n    <td>Larry</td>\n    <td>the Bird</td>\n    <td>LarryTB</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  <tr>\n    <th scope=\"row\">4</th>\n    <td>kira</td>\n    <td>the Killer</td>\n    <td>kiraTK</td>\n    <td><img src=\"...\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" unchecked>\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<h1>\n  <strong>Manage account</strong>\n</h1>\n<table class=\"table table-info\">\n  <thead class=\"thead-light\">\n  <tr>\n    <th>#</th>\n    <th>Username</th>\n    <th>Avatar</th>\n    <th>isAdmin</th>\n\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let user of users;let i = index\">\n    <th scope=\"row\">{{i+1}}</th>\n    <td>{{user.username}}</td>\n    <td><img src=\"https://www.placehold.it/100x100?text=avatar\" alt=\"...\" class=\"img-thumbnail\"></td>\n    <td>\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\n        <input type=\"checkbox\" class=\"switch-input\" [attr.checked]=\"user.isAdmin ? '' : null\">\n        <span class=\"switch-label\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -84,9 +84,11 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var UserManagementComponent = /** @class */ (function () {
     function UserManagementComponent(userService) {
+        var _this = this;
         this.userService = userService;
-        this.userService.getAllUser().then(function (value) {
-            return console.debug('UserManagementComponent', value);
+        this.userService.getAllUser()
+            .then(function (value) {
+            return _this.users = value;
         });
     }
     UserManagementComponent.prototype.ngOnInit = function () {
@@ -121,13 +123,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var user_management_component_1 = __webpack_require__("../../../../../src/app/views/user-management/user-management.component.ts");
 var user_management_routing_module_1 = __webpack_require__("../../../../../src/app/views/user-management/user-management-routing.module.ts");
+var common_1 = __webpack_require__("../../../common/esm5/common.js");
 var UserManagementModule = /** @class */ (function () {
     function UserManagementModule() {
     }
     UserManagementModule = __decorate([
         core_1.NgModule({
             imports: [
-                user_management_routing_module_1.UserManagementRoutingModule
+                user_management_routing_module_1.UserManagementRoutingModule,
+                common_1.CommonModule
             ],
             declarations: [user_management_component_1.UserManagementComponent]
         })

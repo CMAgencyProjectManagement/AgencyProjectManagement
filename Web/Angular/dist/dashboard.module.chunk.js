@@ -100,7 +100,7 @@ var DashboardModule = /** @class */ (function () {
     DashboardModule = __decorate([
         core_1.NgModule({
             imports: [
-                dashboard_routing_module_1.DashboardRoutingModule
+                dashboard_routing_module_1.DashboardRoutingModule,
             ],
             declarations: [dashboard_component_1.DashboardComponent]
         })

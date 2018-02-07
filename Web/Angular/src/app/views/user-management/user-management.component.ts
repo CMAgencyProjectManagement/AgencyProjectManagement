@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../services/user.service';
+import {User} from '../../interfaces/user';
 
 @Component({
   selector: 'app-user-management',
@@ -7,11 +8,13 @@ import {UserService} from '../../services/user.service';
   styleUrls: ['./user-management.component.scss']
 })
 export class UserManagementComponent implements OnInit {
+  users: User[];
 
   constructor(private userService: UserService) {
-    this.userService.getAllUser().then(value =>
-      console.debug('UserManagementComponent', value)
-    )
+    this.userService.getAllUser()
+      .then(value =>
+        this.users = value
+      )
   }
 
   ngOnInit() {
