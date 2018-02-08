@@ -14,11 +14,11 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let team of teams;let i = index+1">
-    <th scope="row">{{i}}</th>
+  <tr *ngFor="let team of teams;let i = index">
+    <th scope="row">{{i+1}}</th>
     <td>{{team.name}}</td>
     <td>{{"team lead name"}}</td>
-    <td>{{team.createdBy}}</td>
+    <td>{{team.createdBy.username}}</td>
     <td>{{team.createdDate}}</td>
     <td>
       <label class="switch switch-default switch-pill switch-primary-outline-alt">

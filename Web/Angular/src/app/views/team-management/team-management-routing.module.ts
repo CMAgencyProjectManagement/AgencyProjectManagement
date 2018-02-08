@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {teamManagePageComponent} from './team-management.component';
+import {TeamManagePageComponent} from './team-management.component';
 
 const routes: Routes = [
   {
@@ -11,14 +11,14 @@ const routes: Routes = [
     children: [
       {
         path: 'teamManagePage',
-        component: teamManagePageComponent,
+        component: TeamManagePageComponent,
         data: {
           title: 'Team Management Page'
         }
       },
-          
+
     ]
-    
+
   }
 ];
 

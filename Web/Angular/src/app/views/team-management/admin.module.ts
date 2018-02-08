@@ -8,8 +8,8 @@ import { NgModule } from '@angular/core';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
-//team manage page
-import {teamManagePageComponent} from './team-management.component';
+// team manage page
+import {TeamManagePageComponent} from './team-management.component';
 
 @NgModule({
   imports: [
@@ -20,8 +20,8 @@ import {teamManagePageComponent} from './team-management.component';
 
   ],
   declarations: [
-    teamManagePageComponent,
-   
+    TeamManagePageComponent,
+
   ]
 })
 export class AdminModule { }

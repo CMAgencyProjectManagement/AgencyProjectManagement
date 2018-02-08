@@ -6,7 +6,7 @@ import {Team} from '../../interfaces/team';
   templateUrl: 'team-management.component.html'
 })
 export class TeamManagePageComponent implements OnInit {
-  private teams: Team[];
+  private teams: Team[] = [];
 
   constructor(private teamService: TeamService) {
   }

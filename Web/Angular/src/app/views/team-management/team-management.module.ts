@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import {teamManagePageComponent} from './team-management.component';
+import {TeamManagePageComponent} from './team-management.component';
 import {AdminRoutingModule} from './admin-routing.module';
 
 @NgModule({
   imports: [
     AdminRoutingModule
   ],
-  declarations: [teamManagePageComponent]
+  declarations: [TeamManagePageComponent]
 })
-export class ProjectManagementModule { }
+export class TeamManagementModule { }
