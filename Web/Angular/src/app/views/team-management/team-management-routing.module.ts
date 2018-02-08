@@ -1,16 +1,25 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TeamManagementComponent} from './team-management.component';
+import {teamManagePageComponent} from './team-management.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TeamManagementComponent,
     data: {
-      title: 'Team'
-    }
+      title: 'Admin'
+    },
+    children: [
+      {
+        path: 'teamManagePage',
+        component: teamManagePageComponent,
+        data: {
+          title: 'Team Management Page'
+        }
+      },
+          
+    ]
+    
   }
-
 ];
 
 @NgModule({

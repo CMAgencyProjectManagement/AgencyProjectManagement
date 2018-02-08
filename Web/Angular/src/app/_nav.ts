@@ -30,7 +30,19 @@ const admin_navigation = [
     badge: {
       variant: 'info'
     }
-  }
+  },
+  {
+    name: 'Admin',
+    url: '/admin',
+    icon: 'icon-star',
+    children: [
+      {
+        name: 'Team Management Page',
+        url: '/admin/teamManagePage',
+        icon: 'icon-star'
+      },
+    ]
+  },
 ];
 
 

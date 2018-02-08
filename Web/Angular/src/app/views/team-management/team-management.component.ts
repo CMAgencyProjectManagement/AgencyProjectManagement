@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-team-management',
-  templateUrl: './team-management.component.html',
-  styleUrls: ['./team-management.component.scss']
+  templateUrl: 'team-management.component.html'
 })
-export class TeamManagementComponent implements OnInit {
+export class teamManagePageComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

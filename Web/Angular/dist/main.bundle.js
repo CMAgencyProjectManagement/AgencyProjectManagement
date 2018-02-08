@@ -10,16 +10,17 @@ var map = {
 	],
 	"./views/pages/pages.module": [
 		"../../../../../src/app/views/pages/pages.module.ts",
-		"pages.module"
+		"pages.module",
+		"common"
 	],
 	"./views/project-management/project-management.module": [
 		"../../../../../src/app/views/project-management/project-management.module.ts",
 		"project-management.module",
 		"common"
 	],
-	"./views/team-management/team-management.module": [
-		"../../../../../src/app/views/team-management/team-management.module.ts",
-		"team-management.module",
+	"./views/team-management/admin.module": [
+		"../../../../../src/app/views/team-management/admin.module.ts",
+		"admin.module",
 		"common"
 	],
 	"./views/user-management/user-management.module": [
@@ -82,7 +83,19 @@ var admin_navigation = [
         badge: {
             variant: 'info'
         }
-    }
+    },
+    {
+        name: 'Admin',
+        url: '/admin',
+        icon: 'icon-star',
+        children: [
+            {
+                name: 'Team Management Page',
+                url: '/admin/teamManagePage',
+                icon: 'icon-star'
+            },
+        ]
+    },
 ];
 exports.admin_navigation = admin_navigation;
 var navigation = [
@@ -284,8 +297,8 @@ exports.routes = [
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
-                path: 'team',
-                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+                path: 'admin',
+                loadChildren: './views/team-management/admin.module#AdminModule'
             },
         ]
     },
@@ -326,7 +339,7 @@ exports.AppRoutingModule = AppRoutingModule;
 /***/ "../../../../../src/app/components/app-aside/app-aside.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<aside class=\"aside-menu\">\n  \n</aside>\n"
+module.exports = "<aside class=\"aside-menu\">\r\n  \r\n</aside>\r\n"
 
 /***/ }),
 
@@ -578,7 +591,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-header/app-h
 /***/ "../../../../../src/app/components/app-sidebar-footer/app-sidebar-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\n"
+module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\r\n"
 
 /***/ }),
 
@@ -628,7 +641,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-foot
 /***/ "../../../../../src/app/components/app-sidebar-form/app-sidebar-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\n"
+module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\r\n"
 
 /***/ }),
 
@@ -678,7 +691,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-form
 /***/ "../../../../../src/app/components/app-sidebar-header/app-sidebar-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\n"
+module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\r\n"
 
 /***/ }),
 
@@ -728,7 +741,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-head
 /***/ "../../../../../src/app/components/app-sidebar-minimizer/app-sidebar-minimizer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\n"
+module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\r\n"
 
 /***/ }),
 
@@ -962,7 +975,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/components/app-sidebar/app-sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sidebar\">\n  <app-sidebar-header></app-sidebar-header>\n  <app-sidebar-form></app-sidebar-form>\n  <app-sidebar-nav></app-sidebar-nav>\n  <app-sidebar-footer></app-sidebar-footer>\n  <app-sidebar-minimizer></app-sidebar-minimizer>\n</div>\n"
+module.exports = "<div class=\"sidebar\">\r\n  <app-sidebar-header></app-sidebar-header>\r\n  <app-sidebar-form></app-sidebar-form>\r\n  <app-sidebar-nav></app-sidebar-nav>\r\n  <app-sidebar-footer></app-sidebar-footer>\r\n  <app-sidebar-minimizer></app-sidebar-minimizer>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1035,7 +1048,7 @@ __export(__webpack_require__("../../../../../src/app/components/app-sidebar-nav/
 /***/ "../../../../../src/app/containers/full-layout/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-header></app-header>\n<div class=\"app-body\">\n  <app-sidebar></app-sidebar>\n  <!-- Main content -->\n  <main class=\"main\">\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n  <app-aside></app-aside>\n</div>\n<app-footer></app-footer>\n"
+module.exports = "<app-header></app-header>\r\n<div class=\"app-body\">\r\n  <app-sidebar></app-sidebar>\r\n  <!-- Main content -->\r\n  <main class=\"main\">\r\n    <!-- Breadcrumb -->\r\n    <ol class=\"breadcrumb\">\r\n      <app-breadcrumbs></app-breadcrumbs>\r\n    </ol>\r\n    <div class=\"container-fluid\">\r\n      <router-outlet></router-outlet>\r\n    </div><!-- /.conainer-fluid -->\r\n  </main>\r\n  <app-aside></app-aside>\r\n</div>\r\n<app-footer></app-footer>\r\n"
 
 /***/ }),
 
