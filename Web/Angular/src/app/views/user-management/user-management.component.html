@@ -12,8 +12,8 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let user of users;let i = index">
-    <th scope="row">{{i+1}}</th>
+  <tr *ngFor="let user of users;let i = index+1">
+    <th scope="row">{{i}}</th>
     <td>{{user.username}}</td>
     <td><img src="https://www.placehold.it/100x100?text=avatar" alt="..." class="img-thumbnail"></td>
     <td>

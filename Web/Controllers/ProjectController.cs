@@ -15,7 +15,7 @@ namespace Web.Controllers
         [HttpGet]
         [Route("all")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetAllTeams()
+        public IHttpActionResult GetAllProject()
         {
             try
             {

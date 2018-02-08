@@ -22,19 +22,8 @@ namespace Web.Controllers
             {
                 //Dont expose password
                 User user = UserService.GetUser(id);
-                JObject dataObject = new JObject
-                {
-                    ["id"] = user.ID,
-                    ["name"] = user.Name,
-                    ["phone"] = user.Phone,
-                    ["birthday"] = user.Birthdate,
-                    ["email"] = user.Email,
-                    ["username"] = user.Username,
-                    ["avatar"] = user.Avatar,
-                    ["isAdmin"] = user.IsAdmin
-                };
 
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                return Ok(ResponseHelper.GetResponse(user.ToJson()));
             }
             catch (Exception ex)
             {
@@ -52,20 +41,7 @@ namespace Web.Controllers
             {
                 string userIdString = User.Identity.GetUserId();
                 User user = UserService.GetUser(userIdString);
-                //Dont expose password
-                JObject dataObject = new JObject
-                {
-                    ["id"] = user.ID,
-                    ["name"] = user.Name,
-                    ["phone"] = user.Phone,
-                    ["birthday"] = user.Birthdate,
-                    ["email"] = user.Email,
-                    ["username"] = user.Username,
-                    ["avatar"] = user.Avatar,
-                    ["isAdmin"] = user.IsAdmin
-                };
-
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                return Ok(ResponseHelper.GetResponse(user.ToJson()));
             }
             catch (Exception ex)
             {
@@ -88,17 +64,7 @@ namespace Web.Controllers
                 foreach (User user in allUser)
                 {
                     //Dont expose password
-                    data.Add(new JObject
-                    {
-                        ["id"] = user.ID,
-                        ["name"] = user.Name,
-                        ["phone"] = user.Phone,
-                        ["birthday"] = user.Birthdate,
-                        ["email"] = user.Email,
-                        ["username"] = user.Username,
-                        ["avatar"] = user.Avatar,
-                        ["isAdmin"] = user.IsAdmin
-                    });
+                    data.Add(user.ToJson());
                 }
 
                 return Ok(ResponseHelper.GetResponse(data));
@@ -122,19 +88,7 @@ namespace Web.Controllers
                     createUserModel.Password,
                     createUserModel.Avatar
                 );
-                //Dont expose password
-                JObject dataObject = new JObject
-                {
-                    ["id"] = newUser.ID,
-                    ["name"] = newUser.Name,
-                    ["phone"] = newUser.Phone,
-                    ["birthday"] = newUser.Birthdate,
-                    ["email"] = newUser.Email,
-                    ["username"] = newUser.Username,
-                    ["avatar"] = newUser.Avatar,
-                    ["isAdmin"] = newUser.IsAdmin
-                };
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                return Ok(ResponseHelper.GetResponse(newUser.ToJson()));
             }
             catch (Exception ex)
             {

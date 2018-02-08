@@ -14,60 +14,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>team 1</td>
-      <td>Otto</td>
-      <td>MarkO</td>
-      <td>22/12/2001</td>
-      <td>
-        <label class="switch switch-default switch-pill switch-primary-outline-alt">
-          <input type="checkbox" class="switch-input" unchecked>
-          <span class="switch-label"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Team 2</td>
-      <td>Thornton</td>
-      <td>JacobT</td>
-      <td>15/10/2012</td>
-      <td>
-        <label class="switch switch-default switch-pill switch-primary-outline-alt">
-          <input type="checkbox" class="switch-input" unchecked>
-          <span class="switch-label"></span>
-          <span class="switch-handle"></span>
-        </label>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Team 3</td>
-      <td>the Bird</td>
-      <td>LarryTB</td>
-      <td>20/5/1998</td>
-      <td>
-        <label class="switch switch-default switch-pill switch-primary-outline-alt">
-          <input type="checkbox" class="switch-input" unchecked>
-          <span class="switch-label"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Team 4</td>
-      <td>the Killer</td>
-      <td>kiraTK</td>
-      <td>15/1/2013</td>
-      <td>
-        <label class="switch switch-default switch-pill switch-primary-outline-alt">
-          <input type="checkbox" class="switch-input" unchecked>
-          <span class="switch-label"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </td>
-    </tr>
+  <tr *ngFor="let team of teams;let i = index+1">
+    <th scope="row">{{i}}</th>
+    <td>{{team.name}}</td>
+    <td>{{"team lead name"}}</td>
+    <td>{{team.createdBy}}</td>
+    <td>{{team.createdDate}}</td>
+    <td>
+      <label class="switch switch-default switch-pill switch-primary-outline-alt">
+        <input type="checkbox" class="switch-input" [attr.checked]="team.IsClosed ? '' : null">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </td>
+  </tr>
   </tbody>
 </table>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entity;
+using Newtonsoft.Json.Linq;
 
 namespace Service
 {
@@ -78,6 +79,27 @@ namespace Service
 
             // After save change user will have Id
             return newUser;
+        }
+
+        public static JObject ToJson(this User user, bool includePassword = false)
+        {
+            string password = null;
+            if (includePassword)
+            {
+                password = user.Password;
+            }
+            return new JObject
+            {
+                ["id"] = user.ID,
+                ["name"] = user.Name,
+                ["phone"] = user.Phone,
+                ["birthday"] = user.Birthdate,
+                ["email"] = user.Email,
+                ["username"] = user.Username,
+                ["password"] = password,
+                ["avatar"] = user.Avatar,
+                ["isAdmin"] = user.IsAdmin
+            };
         }
     }
 }

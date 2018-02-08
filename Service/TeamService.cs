@@ -20,13 +20,14 @@ namespace Service
 
         public static JObject ToJson(this Team team)
         {
+            var creator = UserService.GetUser(team.CreatedBy);
             return new JObject
             {
                 ["id"] = team.ID,
                 ["name"] = team.Name,
-                ["createdBy"] = team.CreatedBy,
+                ["createdBy"] = creator.ToJson(),
                 ["createdDate"] = team.CreatedDate,
-                ["IsClosed"] = team.IsClosed,
+                ["IsClosed"] = team.IsClosed
             };
         }
     }
