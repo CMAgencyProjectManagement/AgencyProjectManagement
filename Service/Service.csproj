@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListService.cs" />
     <Compile Include="ProjectService.cs" />
+    <Compile Include="TaskService.cs" />
     <Compile Include="TeamService.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

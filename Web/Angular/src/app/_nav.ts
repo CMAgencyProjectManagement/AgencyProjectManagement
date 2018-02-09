@@ -15,28 +15,28 @@ const admin_navigation = [
       variant: 'info'
     }
   },
-  {
-    name: 'Project',
-    url: '/project',
-    icon: 'icon-calendar',
-    badge: {
-      variant: 'info'
-    }
-  },
-  {
-    name: 'Team',
-    url: '/team',
-    icon: 'icon-people',
-    badge: {
-      variant: 'info'
-    }
-  },
+  // {
+  //   name: 'Project',
+  //   url: '/project',
+  //   icon: 'icon-calendar',
+  //   badge: {
+  //     variant: 'info'
+  //   }
+  // },
+  // {
+  //   name: 'Team',
+  //   url: '/team',
+  //   icon: 'icon-people',
+  //   badge: {
+  //     variant: 'info'
+  //   }
+  // },
   {
 
-        name: 'Team Management Page',
-        url: '/admin/teamManagePage',
-        icon: 'icon-people'
-      },
+    name: 'Team Management Page',
+    url: '/admin/teamManagePage',
+    icon: 'icon-people'
+  },
 
 ];
 

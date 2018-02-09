@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Entity;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using Service;
 
@@ -38,6 +40,31 @@ namespace Web.Controllers
                     });
                 }
 
+                return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("")]
+        [Authorize]
+        public IHttpActionResult GetMyProject()
+        {
+            try
+            {
+                string userId = User.Identity.GetUserId();
+                IEnumerable<Project> projects = ProjectService.GetProjectOfUser(Int32.Parse(userId));
+                JArray dataObject = new JArray();
+
+                foreach (var project in projects)
+                {
+                    dataObject.Add(project.ToJson());
+                }
+                
                 return Ok(ResponseHelper.GetResponse(dataObject));
             }
             catch (Exception ex)

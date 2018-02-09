@@ -1,62 +1,19 @@
-
-
 <div class="row">
-  <div class="col-md-3">
+  <div *ngFor="let project of projects"
+    class="col-md-3">
     <div class="card">
       <div class="card-header">
-        Project 1
+        {{project.name}}
       </div>
       <div class="card-body">
-
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-header">
-        Project 2
-      </div>
-      <div class="card-body">
-
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-header">
-        Project 3
-      </div>
-      <div class="card-body">
-
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-header">
-        Project 4
-      </div>
-      <div class="card-body">
-
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-header">
-        Project 5
-      </div>
-      <div class="card-body">
-
+          {{project.description}}
       </div>
     </div>
   </div>
 </div>
 
 
-
-        
-          <button type="button" class="btn btn-secondary" data-toggle="modal" (click)="smallModal.show()">
-            Add a new project
-          </button>
+<!--<button type="button" class="btn btn-secondary" data-toggle="modal" (click)="smallModal.show()">-->
+  <!--Add a new project-->
+<!--</button>-->
 

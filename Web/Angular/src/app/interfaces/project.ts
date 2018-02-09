@@ -6,7 +6,7 @@ export interface Project {
   description: string,
   deadline: string,
   createdTime: string,
-  createdBy: number,
+  createdBy: User,
   startDate: string,
   changedBy: User
   changedTime: string

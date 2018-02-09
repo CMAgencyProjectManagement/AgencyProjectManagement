@@ -1,7 +1,7 @@
 ﻿TEAMPLATE
 
 CONTROLLER FUNCTIONS
-public IHttpActionResult FunctrionName()
+public IHttpActionResult FunctionName()
         {
             try
             {
