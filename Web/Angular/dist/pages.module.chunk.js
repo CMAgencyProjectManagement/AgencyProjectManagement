@@ -8,10 +8,11 @@ module.exports = "<div class=\"app flex-row align-items-center\">\n  <div class=
 /***/ }),
 
 /***/ "../../../../../src/app/views/pages/404.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return P404Component; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -21,20 +22,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
+
 var P404Component = /** @class */ (function () {
     function P404Component() {
     }
     P404Component = __decorate([
-        core_1.Component({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/views/pages/404.component.html")
         }),
         __metadata("design:paramtypes", [])
     ], P404Component);
     return P404Component;
 }());
-exports.P404Component = P404Component;
+
 
 
 /***/ }),
@@ -47,10 +47,11 @@ module.exports = "<div class=\"app flex-row align-items-center\">\n  <div class=
 /***/ }),
 
 /***/ "../../../../../src/app/views/pages/500.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return P500Component; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -60,20 +61,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
+
 var P500Component = /** @class */ (function () {
     function P500Component() {
     }
     P500Component = __decorate([
-        core_1.Component({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/views/pages/500.component.html")
         }),
         __metadata("design:paramtypes", [])
     ], P500Component);
     return P500Component;
 }());
-exports.P500Component = P500Component;
+
 
 
 /***/ }),
@@ -86,10 +86,15 @@ module.exports = "<div class=\"app flex-row align-items-center\">\n  <div class=
 /***/ }),
 
 /***/ "../../../../../src/app/views/pages/login.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -99,12 +104,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
-var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
-var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
-var router_1 = __webpack_require__("../../../router/esm5/router.js");
+
+
+
+
+
 var LoginComponent = /** @class */ (function () {
     function LoginComponent(accountHub, storeService, router) {
         this.accountHub = accountHub;
@@ -114,9 +118,9 @@ var LoginComponent = /** @class */ (function () {
         this.tokenCursor = this.storeService.select(['token']);
     }
     LoginComponent.prototype.ngOnInit = function () {
-        this.loginForm = new forms_1.FormGroup({
-            username: new forms_1.FormControl(undefined, forms_1.Validators.required),
-            password: new forms_1.FormControl(undefined, forms_1.Validators.required)
+        this.loginForm = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
+            username: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["e" /* Validators */].required),
+            password: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["e" /* Validators */].required)
         });
     };
     LoginComponent.prototype.handleLogin = function () {
@@ -140,38 +144,43 @@ var LoginComponent = /** @class */ (function () {
         }
     };
     LoginComponent = __decorate([
-        core_1.Component({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/views/pages/login.component.html")
         }),
-        __metadata("design:paramtypes", [user_service_1.UserService,
-            tree_service_1.StoreService,
-            router_1.Router])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_3__services_tree_service__["a" /* StoreService */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* Router */]])
     ], LoginComponent);
     return LoginComponent;
 }());
-exports.LoginComponent = LoginComponent;
+
 
 
 /***/ }),
 
 /***/ "../../../../../src/app/views/pages/pages-routing.module.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PagesRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__404_component__ = __webpack_require__("../../../../../src/app/views/pages/404.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__500_component__ = __webpack_require__("../../../../../src/app/views/pages/500.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__login_component__ = __webpack_require__("../../../../../src/app/views/pages/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__register_component__ = __webpack_require__("../../../../../src/app/views/pages/register.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var _404_component_1 = __webpack_require__("../../../../../src/app/views/pages/404.component.ts");
-var _500_component_1 = __webpack_require__("../../../../../src/app/views/pages/500.component.ts");
-var login_component_1 = __webpack_require__("../../../../../src/app/views/pages/login.component.ts");
-var register_component_1 = __webpack_require__("../../../../../src/app/views/pages/register.component.ts");
+
+
+
+
+
+
 var routes = [
     {
         path: '',
@@ -181,28 +190,28 @@ var routes = [
         children: [
             {
                 path: '404',
-                component: _404_component_1.P404Component,
+                component: __WEBPACK_IMPORTED_MODULE_2__404_component__["a" /* P404Component */],
                 data: {
                     title: 'Page 404'
                 }
             },
             {
                 path: '500',
-                component: _500_component_1.P500Component,
+                component: __WEBPACK_IMPORTED_MODULE_3__500_component__["a" /* P500Component */],
                 data: {
                     title: 'Page 500'
                 }
             },
             {
                 path: 'login',
-                component: login_component_1.LoginComponent,
+                component: __WEBPACK_IMPORTED_MODULE_4__login_component__["a" /* LoginComponent */],
                 data: {
                     title: 'Login Page'
                 }
             },
             {
                 path: 'register',
-                component: register_component_1.RegisterComponent,
+                component: __WEBPACK_IMPORTED_MODULE_5__register_component__["a" /* RegisterComponent */],
                 data: {
                     title: 'Register Page'
                 }
@@ -214,57 +223,64 @@ var PagesRoutingModule = /** @class */ (function () {
     function PagesRoutingModule() {
     }
     PagesRoutingModule = __decorate([
-        core_1.NgModule({
-            imports: [router_1.RouterModule.forChild(routes)],
-            exports: [router_1.RouterModule]
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forChild(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
         })
     ], PagesRoutingModule);
     return PagesRoutingModule;
 }());
-exports.PagesRoutingModule = PagesRoutingModule;
+
 
 
 /***/ }),
 
 /***/ "../../../../../src/app/views/pages/pages.module.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PagesModule", function() { return PagesModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__404_component__ = __webpack_require__("../../../../../src/app/views/pages/404.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__500_component__ = __webpack_require__("../../../../../src/app/views/pages/500.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_component__ = __webpack_require__("../../../../../src/app/views/pages/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__register_component__ = __webpack_require__("../../../../../src/app/views/pages/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_routing_module__ = __webpack_require__("../../../../../src/app/views/pages/pages-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var _404_component_1 = __webpack_require__("../../../../../src/app/views/pages/404.component.ts");
-var _500_component_1 = __webpack_require__("../../../../../src/app/views/pages/500.component.ts");
-var login_component_1 = __webpack_require__("../../../../../src/app/views/pages/login.component.ts");
-var register_component_1 = __webpack_require__("../../../../../src/app/views/pages/register.component.ts");
-var pages_routing_module_1 = __webpack_require__("../../../../../src/app/views/pages/pages-routing.module.ts");
-var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
+
+
+
+
+
+
+
 var PagesModule = /** @class */ (function () {
     function PagesModule() {
     }
     PagesModule = __decorate([
-        core_1.NgModule({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
-                pages_routing_module_1.PagesRoutingModule,
-                forms_1.ReactiveFormsModule
+                __WEBPACK_IMPORTED_MODULE_5__pages_routing_module__["a" /* PagesRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_forms__["d" /* ReactiveFormsModule */]
             ],
             declarations: [
-                _404_component_1.P404Component,
-                _500_component_1.P500Component,
-                login_component_1.LoginComponent,
-                register_component_1.RegisterComponent
+                __WEBPACK_IMPORTED_MODULE_1__404_component__["a" /* P404Component */],
+                __WEBPACK_IMPORTED_MODULE_2__500_component__["a" /* P500Component */],
+                __WEBPACK_IMPORTED_MODULE_3__login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_4__register_component__["a" /* RegisterComponent */]
             ]
         })
     ], PagesModule);
     return PagesModule;
 }());
-exports.PagesModule = PagesModule;
+
 
 
 /***/ }),
@@ -277,10 +293,11 @@ module.exports = "<div class=\"app flex-row align-items-center\">\n  <div class=
 /***/ }),
 
 /***/ "../../../../../src/app/views/pages/register.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -290,20 +307,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
+
 var RegisterComponent = /** @class */ (function () {
     function RegisterComponent() {
     }
     RegisterComponent = __decorate([
-        core_1.Component({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/views/pages/register.component.html")
         }),
         __metadata("design:paramtypes", [])
     ], RegisterComponent);
     return RegisterComponent;
 }());
-exports.RegisterComponent = RegisterComponent;
+
 
 
 /***/ })

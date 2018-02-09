@@ -1,24 +1,26 @@
 webpackJsonp(["dashboard.module"],{
 
 /***/ "../../../../../src/app/views/dashboard/dashboard-routing.module.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboard_component__ = __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var dashboard_component_1 = __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.ts");
+
+
+
 var routes = [
     {
         path: '',
-        component: dashboard_component_1.DashboardComponent,
+        component: __WEBPACK_IMPORTED_MODULE_2__dashboard_component__["a" /* DashboardComponent */],
         data: {
             title: 'Dashboard'
         }
@@ -28,14 +30,14 @@ var DashboardRoutingModule = /** @class */ (function () {
     function DashboardRoutingModule() {
     }
     DashboardRoutingModule = __decorate([
-        core_1.NgModule({
-            imports: [router_1.RouterModule.forChild(routes)],
-            exports: [router_1.RouterModule]
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forChild(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
         })
     ], DashboardRoutingModule);
     return DashboardRoutingModule;
 }());
-exports.DashboardRoutingModule = DashboardRoutingModule;
+
 
 
 /***/ }),
@@ -48,10 +50,11 @@ module.exports = "\r\n\r\n<div class=\"row\">\r\n  <div class=\"col-md-3\">\r\n 
 /***/ }),
 
 /***/ "../../../../../src/app/views/dashboard/dashboard.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -61,13 +64,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
+
 var DashboardComponent = /** @class */ (function () {
     function DashboardComponent() {
     }
     DashboardComponent = __decorate([
-        core_1.Component({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.html"),
             styles: [".modal  { text-align: center;\n  }\n  .modal:before {\n    display: inline-block;\n    vertical-align: middle;\n    content: \" \";\n    height: 100%;\n    }\n    \n    .modal-dialog {\n    display: inline-block;\n    text-align: left;\n    vertical-align: middle;\n    }"]
         }),
@@ -75,40 +77,43 @@ var DashboardComponent = /** @class */ (function () {
     ], DashboardComponent);
     return DashboardComponent;
 }());
-exports.DashboardComponent = DashboardComponent;
+
 
 
 /***/ }),
 
 /***/ "../../../../../src/app/views/dashboard/dashboard.module.ts":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardModule", function() { return DashboardModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dashboard_component__ = __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboard_routing_module__ = __webpack_require__("../../../../../src/app/views/dashboard/dashboard-routing.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var dashboard_component_1 = __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.ts");
-var dashboard_routing_module_1 = __webpack_require__("../../../../../src/app/views/dashboard/dashboard-routing.module.ts");
+
+
+
 var DashboardModule = /** @class */ (function () {
     function DashboardModule() {
     }
     DashboardModule = __decorate([
-        core_1.NgModule({
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
-                dashboard_routing_module_1.DashboardRoutingModule,
+                __WEBPACK_IMPORTED_MODULE_2__dashboard_routing_module__["a" /* DashboardRoutingModule */],
             ],
-            declarations: [dashboard_component_1.DashboardComponent]
+            declarations: [__WEBPACK_IMPORTED_MODULE_1__dashboard_component__["a" /* DashboardComponent */]]
         })
     ], DashboardModule);
     return DashboardModule;
 }());
-exports.DashboardModule = DashboardModule;
+
 
 
 /***/ })
