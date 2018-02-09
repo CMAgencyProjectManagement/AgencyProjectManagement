@@ -32,17 +32,12 @@ const admin_navigation = [
     }
   },
   {
-    name: 'Admin',
-    url: '/admin',
-    icon: 'icon-star',
-    children: [
-      {
+
         name: 'Team Management Page',
         url: '/admin/teamManagePage',
-        icon: 'icon-star'
+        icon: 'icon-people'
       },
-    ]
-  },
+
 ];
 
 
