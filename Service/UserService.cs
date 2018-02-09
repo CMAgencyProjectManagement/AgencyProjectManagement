@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,9 +82,15 @@ namespace Service
             return newUser;
         }
 
-        public static JObject ToJson(this User user, bool includePassword = false)
+        public static JObject ToJson(this User user, string avatarPath = null, bool includePassword = false)
         {
             string password = null;
+            string avatar = user.Avatar;
+            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
+            {
+                avatar = Path.Combine(avatarPath, avatar);
+
+            }
             if (includePassword)
             {
                 password = user.Password;
@@ -97,7 +104,7 @@ namespace Service
                 ["email"] = user.Email,
                 ["username"] = user.Username,
                 ["password"] = password,
-                ["avatar"] = user.Avatar,
+                ["avatar"] = avatar,
                 ["isAdmin"] = user.IsAdmin
             };
         }

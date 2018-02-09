@@ -1,3 +1,5 @@
+import {User} from './user';
+
 export interface Project {
   id: number,
   name: string,
@@ -6,6 +8,6 @@ export interface Project {
   createdTime: string,
   createdBy: number,
   startDate: string,
-  changedBy: number
+  changedBy: User
   changedTime: string
 }

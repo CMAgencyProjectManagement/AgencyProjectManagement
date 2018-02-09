@@ -22,8 +22,9 @@ namespace Web.Controllers
             {
                 //Dont expose password
                 User user = UserService.GetUser(id);
+                string avatarPath = ConstantHolder.AvatarPath;
 
-                return Ok(ResponseHelper.GetResponse(user.ToJson()));
+                return Ok(ResponseHelper.GetResponse(user.ToJson(avatarPath)));
             }
             catch (Exception ex)
             {
@@ -41,7 +42,8 @@ namespace Web.Controllers
             {
                 string userIdString = User.Identity.GetUserId();
                 User user = UserService.GetUser(userIdString);
-                return Ok(ResponseHelper.GetResponse(user.ToJson()));
+                string avatarPath = ConstantHolder.AvatarPath;
+                return Ok(ResponseHelper.GetResponse(user.ToJson(avatarPath)));
             }
             catch (Exception ex)
             {
@@ -58,13 +60,41 @@ namespace Web.Controllers
             try
             {
                 IEnumerable<User> allUser = UserService.GetAll();
+                string avatarPath = ConstantHolder.AvatarPath;
 
                 JArray data = new JArray();
 
                 foreach (User user in allUser)
                 {
                     //Dont expose password
-                    data.Add(user.ToJson());
+                    data.Add(user.ToJson(avatarPath));
+                }
+
+                return Ok(ResponseHelper.GetResponse(data));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("all/{page:int}")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetAllUser(int page)
+        {
+            try
+            {
+                IEnumerable<User> allUser = UserService.GetAll();
+                string avatarPath = ConstantHolder.AvatarPath;
+
+                JArray data = new JArray();
+
+                foreach (User user in allUser)
+                {
+                    //Dont expose password
+                    data.Add(user.ToJson(avatarPath));
                 }
 
                 return Ok(ResponseHelper.GetResponse(data));

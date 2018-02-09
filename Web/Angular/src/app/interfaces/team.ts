@@ -1,7 +1,10 @@
+import {User} from './user';
+
 export interface Team {
   id: number,
   name: string,
-  createdBy: number,
+  createdBy: User,
   createdDate: string,
-  IsClosed: boolean
+  isClosed: boolean
+  manager: User
 }

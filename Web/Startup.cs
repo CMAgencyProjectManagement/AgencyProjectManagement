@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
@@ -32,6 +33,8 @@ namespace Web
             SignalROAuthConfig(app);
             ConfigStaticFiles(app);
             app.MapSignalR();
+
+            SetupConstant();
         }
 
         private void ConfigOAuth(IAppBuilder app)
@@ -56,7 +59,7 @@ namespace Web
             config.Routes.MapHttpRoute(
                 "Api",
                 "api/{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new {id = RouteParameter.Optional}
             );
         }
 
@@ -77,8 +80,15 @@ namespace Web
                 FileSystem = new PhysicalFileSystem(@".\Angular\dist")
             };
 
+            //Resource folder
+            var serverStaticResource = new FileServerOptions
+            {
+                FileSystem = new PhysicalFileSystem(@".\Resource")
+            };
+
             app.UseFileServer(mainIndex);
             app.UseFileServer(angularBuild);
+            app.UseFileServer(serverStaticResource);
         }
 
         private void SignalROAuthConfig(IAppBuilder app)
@@ -104,6 +114,12 @@ namespace Web
                 };
                 map.RunSignalR(hubConfig);
             });
+        }
+
+        public void SetupConstant()
+        {
+            ConstantHolder.AvatarPath = WebConfigurationManager.AppSettings["AvatarPath"];
+
         }
     }
 }

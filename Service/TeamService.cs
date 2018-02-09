@@ -18,16 +18,39 @@ namespace Service
             }
         }
 
+        public static User GetManager(int teamId)
+        {
+            using (var db = new CmAgencyEntities())
+            {
+                Team foundTeam = db.Teams.Find(teamId);
+                if (foundTeam != null)
+                {
+                    foreach (var userTeam in foundTeam.UserTeams)
+                    {
+                        if (userTeam.IsManager)
+                        {
+                            return userTeam.User;
+                        }
+                    }
+                }
+
+                return null;
+            }
+        }
+
         public static JObject ToJson(this Team team)
         {
             var creator = UserService.GetUser(team.CreatedBy);
+            var manager = GetManager(team.ID);
+
             return new JObject
             {
                 ["id"] = team.ID,
                 ["name"] = team.Name,
                 ["createdBy"] = creator.ToJson(),
-                ["createdDate"] = team.CreatedDate,
-                ["IsClosed"] = team.IsClosed
+                ["createdDate"] = team.CreatedDate.ToShortDateString(),
+                ["isClosed"] = team.IsClosed,
+                ["manager"] = manager.ToJson()
             };
         }
     }

@@ -23,6 +23,19 @@ export class UserService {
     this.securityTypeCursor.set(undefined);
   }
 
+  // getLocalToken(): string {
+  //   if (typeof(Storage) !== 'undefined') {
+  //     let token = localStorage.getItem('AgencyToken');
+  //     let expire = localStorage.getItem('AgencyTokenExpireTime');
+  //   }
+  // }
+  //
+  // setLocalToken() {
+  //   if (typeof(Storage) !== 'undefined') {
+  //
+  //   }
+  // }
+
   /**
    * @param username
    * @param password

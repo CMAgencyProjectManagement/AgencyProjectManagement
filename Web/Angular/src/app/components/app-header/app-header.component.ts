@@ -2,29 +2,30 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
 import {Cursor, StoreService} from '../../services/tree.service';
+import {User} from '../../interfaces/user';
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html'
 })
 export class AppHeaderComponent implements OnInit {
-  private usernameCursor: Cursor;
-  username;
+  private currentUserCursor: Cursor;
+  user: User;
 
   constructor(private userService: UserService,
               private router: Router,
               private store: StoreService) {
-    this.usernameCursor = store.select(['currentUser', 'username'])
+    this.currentUserCursor = store.select(['currentUser'])
   }
 
   ngOnInit(): void {
-    this.username = this.usernameCursor.get();
+    this.user = this.currentUserCursor.get();
 
-    this.usernameCursor.on('update', this.handleUsernameUpdate.bind(this));
+    this.currentUserCursor.on('update', this.handleCurrentUserUpdate.bind(this));
   }
 
-  handleUsernameUpdate(event) {
-    this.username = event.data.currentData;
+  handleCurrentUserUpdate(event) {
+    this.user = event.data.currentData;
   }
 
 

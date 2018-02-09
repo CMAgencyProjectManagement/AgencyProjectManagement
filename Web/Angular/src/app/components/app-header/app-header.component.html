@@ -15,8 +15,8 @@
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item dropdown" dropdown>
       <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-        <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-        <span class="d-md-down-none">{{username}}</span>
+        <img src="{{user.avatar}}" class="img-avatar" alt="admin@bootstrapmaster.com">
+        <span class="d-md-down-none">{{user.username}}</span>
 
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
@@ -34,7 +34,7 @@
         <div class="dropdown-header text-center">
           <strong>Settings</strong>
         </div>
-        <a class="dropdown-item" href="#" (click)="getAllAccountTest($event)">
+        <a class="dropdown-item" href="#">
           <i class="fa fa-user"></i> Profile</a>
         <a class="dropdown-item" href="#" (click)="logout($event)">
           <i class="fa fa-lock"></i> Logout</a>
