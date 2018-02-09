@@ -43,7 +43,7 @@ exports.DashboardRoutingModule = DashboardRoutingModule;
 /***/ "../../../../../src/app/views/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  Hello World!\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-3\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        Project 1\r\n      </div>\r\n      <div class=\"card-body\">\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-md-3\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        Project 2\r\n      </div>\r\n      <div class=\"card-body\">\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-md-3\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        Project 3\r\n      </div>\r\n      <div class=\"card-body\">\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-md-3\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n          Project 4\r\n      </div>\r\n      <div class=\"card-body\">\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-md-3\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n            Project 5\r\n        </div>\r\n        <div class=\"card-body\">\r\n\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n</div>\r\n\r\n\r\n<div class=\"container\">\r\n\r\n  <!-- Trigger the modal with a button -->\r\n  <button type=\"button\" class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#myModal\">Create a new project</button>\r\n\r\n  <!-- Modal -->\r\n  <div class=\"modal fade\" id=\"myModal\" role=\"dialog\">\r\n    <div class=\"modal-dialog\">\r\n\r\n      <!-- Modal content-->\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n\r\n          <h1 class=\"modal-title\">Create a new project</h1>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <div>\r\n            <h3>Name</h3>\r\n            <input/>\r\n          </div>\r\n          <div>\r\n            <h3>decription</h3>\r\n            <input/>\r\n          </div>\r\n        </div>\r\n        <div class=\"modal-footer\">\r\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\r\n        </div>\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -68,7 +68,8 @@ var DashboardComponent = /** @class */ (function () {
     }
     DashboardComponent = __decorate([
         core_1.Component({
-            template: __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.html")
+            template: __webpack_require__("../../../../../src/app/views/dashboard/dashboard.component.html"),
+            styles: [".modal  { text-align: center;\n    }\n    .modal:before {\n      display: inline-block;\n      vertical-align: middle;\n      content: \" \";\n      height: 100%;\n      }\n      \n      .modal-dialog {\n      display: inline-block;\n      text-align: left;\n      vertical-align: middle;\n      }"]
         }),
         __metadata("design:paramtypes", [])
     ], DashboardComponent);

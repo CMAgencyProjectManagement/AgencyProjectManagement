@@ -122,7 +122,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var serverPath = {
     token: '/token',
     user: '/api/user',
-    allUser: '/api/user/all'
+    allUser: '/api/user/all',
+    allProject: '/api/project/all',
+    allTeam: '/api/team/all'
 };
 exports.serverPath = serverPath;
 
@@ -1643,12 +1645,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var tree_service_1 = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+var superagent_1 = __webpack_require__("../../../../superagent/lib/client.js");
+var _serverPath_1 = __webpack_require__("../../../../../src/app/_serverPath.ts");
 var TeamService = /** @class */ (function () {
-    function TeamService() {
+    function TeamService(storeService) {
+        this.storeService = storeService;
+        this.tokenCursor = storeService.select(['token', 'access_token']);
     }
+    TeamService.prototype.getAllTeam = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            superagent_1.get(_serverPath_1.serverPath.allTeam)
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
     TeamService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [tree_service_1.StoreService])
     ], TeamService);
     return TeamService;
 }());
