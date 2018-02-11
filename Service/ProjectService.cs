@@ -74,7 +74,8 @@ namespace Service
                 ["createdTime"] = project.CreatedTime,
                 ["createdBy"] = creator.ToJson(),
                 ["startDate"] = project.StartDate,
-                ["changedTime"] = project.ID,
+                ["changedTime"] = project.ChangedTime,
+                ["changedBy"] = null,
             };
             if (project.ChangedBy.HasValue)
             {
