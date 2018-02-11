@@ -8,6 +8,7 @@ using Entity;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -64,8 +65,46 @@ namespace Web.Controllers
                 {
                     dataObject.Add(project.ToJson());
                 }
-                
+
                 return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpPost]
+        [Route("create")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult CreateProject(CreateProjectModel createProjectModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string loginedUserId = User.Identity.GetUserId();
+                    User creator = UserService.GetUser(loginedUserId);
+                    DateTime startTime = DateTime.Parse(createProjectModel.StartDate);
+                    DateTime deadline = DateTime.Parse(createProjectModel.Deadline);
+
+                    Project newProject = ProjectService.CreateProject(
+                        createProjectModel.Name,
+                        createProjectModel.Description,
+                        deadline,
+                        startTime,
+                        creator
+                    );
+
+                    JObject dataObject = newProject.ToJson();
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
             }
             catch (Exception ex)
             {

@@ -13,11 +13,6 @@ namespace Service
     {
         public static User GetUser(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                return null;
-            }
-
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
                 User foundUser =
