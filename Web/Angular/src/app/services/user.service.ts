@@ -74,7 +74,7 @@ export class UserService {
           } else {
             reject(content.Message);
           }
-        })
+        }).catch(reject)
     })
   }
 
@@ -90,7 +90,7 @@ export class UserService {
           } else {
             reject(res.body);
           }
-        })
+        }).catch(reject)
     })
   }
 
@@ -105,7 +105,7 @@ export class UserService {
           } else {
             reject(content.Message);
           }
-        })
+        }).catch(reject)
     });
   }
 

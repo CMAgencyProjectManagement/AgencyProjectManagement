@@ -20,12 +20,15 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   currentAccountCursor: Cursor;
   tokenCursor: Cursor;
+  isLoading: boolean;
 
   constructor(private accountHub: UserService,
               private storeService: StoreService,
               private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
+
+    this.isLoading = false;
   }
 
   ngOnInit() {
@@ -38,22 +41,17 @@ export class LoginComponent implements OnInit {
   handleLogin() {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
-      const _this = this;
+      this.isLoading = true;
       this.accountHub.login(
         formValue.username,
         formValue.password
       ).then(value => {
-        // _this.currentAccountCursor.set(value);
-        // _this.router.navigate(['dashboard']);
-
-        if (value) {
-          console.debug('login success', value);
-          _this.router.navigate(['dashboard'])
-        } else {
-          console.debug('login fail', value);
-        }
+        this.isLoading = false;
+        console.debug('login success', value);
+        this.router.navigate(['dashboard'])
       }).catch(reason => {
         // TODO: Handle error
+        this.isLoading = false;
         console.debug('login fail: ', reason);
       })
     }
