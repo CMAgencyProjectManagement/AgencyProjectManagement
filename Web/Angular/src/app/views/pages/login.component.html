@@ -23,7 +23,8 @@
                 <button
                   type="submit" class="btn btn-primary"
                   [disabled]="!loginForm.valid"
-                  (click)="handleLogin()">
+                  (click)="handleLogin()"
+                  [ladda]="isLoading">
                   Login
                 </button>
               </div>
