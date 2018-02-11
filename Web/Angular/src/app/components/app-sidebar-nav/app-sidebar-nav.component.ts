@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 
 // Import navigation elements
-import {navigation, admin_navigation} from '../../_nav';
+import {NavService} from '../../services/nav.service';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -22,7 +22,7 @@ import {navigation, admin_navigation} from '../../_nav';
 })
 export class AppSidebarNavComponent {
 
-  public navigation = admin_navigation;
+  public navigation;
 
   public isDivider(item) {
     return item.divider ? true : false
@@ -32,7 +32,8 @@ export class AppSidebarNavComponent {
     return item.title ? true : false
   }
 
-  constructor() {
+  constructor(private navService: NavService) {
+    this.navigation = navService.getCurrentUserMenu();
   }
 }
 

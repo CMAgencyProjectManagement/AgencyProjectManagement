@@ -64,6 +64,7 @@ import {AppRoutingModule} from './app.routing';
 import {AlwaysAuthGuard} from './services/auth.guard'
 import {StoreService} from './services/tree.service';
 import {WebsocketService} from './services/websocket.service';
+import {NavService} from './services/nav.service';
 import {UserService} from './services/user.service';
 import {ProjectService} from './services/project.service';
 import {TeamService} from './services/team.service';
@@ -94,6 +95,7 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
     AlwaysAuthGuard,
     StoreService,
     WebsocketService,
+    NavService,
     UserService,
     ProjectService,
     TeamService
