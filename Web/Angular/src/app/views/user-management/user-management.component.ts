@@ -11,14 +11,17 @@ export class UserManagementComponent implements OnInit {
   users: User[];
 
   constructor(private userService: UserService) {
+
+  }
+
+  ngOnInit() {
     this.userService.getAllUser()
       .then(value =>
         this.users = value
       )
   }
 
-  ngOnInit() {
-
+  handleCreateAccountClick(){
+    // not yet
   }
-
 }

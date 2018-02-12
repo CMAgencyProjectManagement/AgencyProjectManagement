@@ -26,7 +26,7 @@ const admin_navigation = [
   },
   {
     name: 'Manages account',
-    url: '/account',
+    url: '/account/view',
     icon: 'icon-user',
     badge: {
       variant: 'info'

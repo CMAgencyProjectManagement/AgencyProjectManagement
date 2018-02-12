@@ -1,7 +1,13 @@
 <h1>
   <strong>Manage account</strong>
 </h1>
-<table *ngIf="users" class="table table-info">
+<router-outlet>
+  <!--output-->
+</router-outlet>
+<div class="row">
+  <button type="button" class="btn btn-success">Create account</button>
+</div>
+<table *ngIf="users" class="table table-info animated fadeIn">
   <thead class="thead-light">
   <tr>
     <th>#</th>
