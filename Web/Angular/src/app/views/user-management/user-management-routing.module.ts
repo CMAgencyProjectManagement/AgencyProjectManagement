@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {UserManagementComponent} from './user-management.component';
 import {CreateUserComponent} from './create-user/create-user.component';
+import {ViewUserComponent} from './view-user/view-user.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: 'view',
-        component: UserManagementComponent,
+        component: ViewUserComponent,
       },
       {
         path: 'create',

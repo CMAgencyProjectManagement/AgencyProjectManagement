@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
       this.isLoading = true;
+      console.log(this.isLoading);
       this.accountHub.login(
         formValue.username,
         formValue.password
