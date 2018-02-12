@@ -12,47 +12,61 @@ namespace Web.Security
     {
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            string userIdString = null;
-            string username = context.Parameters["username"];
-            string password = context.Parameters["password"];
-            if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+            try
             {
-                User user = UserService.GetUser(username, password);
-                if (user != null)
+                string userIdString = null;
+                string username = context.Parameters["username"];
+                string password = context.Parameters["password"];
+                if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
                 {
-                    userIdString = user.ID.ToString();
+                    User user = UserService.GetUser(username, password);
+                    if (user != null)
+                    {
+                        userIdString = user.ID.ToString();
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(userIdString))
+                {
+                    context.Validated(userIdString);
+                }
+                else
+                {
+                    context.Rejected();
+                    context.SetError("Invalid user", "Invalid username or password");
                 }
             }
-
-            if (!String.IsNullOrEmpty(userIdString))
-            {
-                context.Validated(userIdString);
-            }
-            else
+            catch (Exception ex)
             {
                 context.Rejected();
-                context.SetError("Invalid user", "Invalid username or password");
+                context.SetError("Server error", ex.Message);
             }
-
 
             await base.ValidateClientAuthentication(context);
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            List<Claim> claims = new List<Claim>();
-            string userId = context.ClientId;
-
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, userId));
-
-            User user = UserService.GetUser(userId);
-            if (user.IsAdmin)
+            try
             {
-                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                List<Claim> claims = new List<Claim>();
+                string userId = context.ClientId;
+
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, userId));
+
+                User user = UserService.GetUser(userId);
+                if (user.IsAdmin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                }
+                context.Validated(new ClaimsIdentity(claims, context.Options.AuthenticationType));
+            }
+            catch (Exception ex)
+            {
+                context.Rejected();
+                context.SetError("Server error", ex.Message);
             }
 
-
-            context.Validated(new ClaimsIdentity(claims, context.Options.AuthenticationType));
             await base.GrantResourceOwnerCredentials(context);
         }
     }

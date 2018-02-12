@@ -7,14 +7,7 @@ const admin_navigation = [
       variant: 'info'
     }
   },
-  {
-    name: 'Account',
-    url: '/account',
-    icon: 'icon-user',
-    badge: {
-      variant: 'info'
-    }
-  },
+
   {
     name: 'Project',
     url: '/project',
@@ -32,8 +25,15 @@ const admin_navigation = [
     }
   },
   {
-
-    name: 'Team Management Page',
+    name: 'Manages account',
+    url: '/account',
+    icon: 'icon-user',
+    badge: {
+      variant: 'info'
+    }
+  },
+  {
+    name: 'Manage teams',
     url: '/admin/teamManagePage',
     icon: 'icon-people'
   },

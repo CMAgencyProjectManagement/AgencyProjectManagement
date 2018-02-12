@@ -13,14 +13,18 @@
               </div>
               <div class="input-group mb-3">
                 <span class="input-group-addon"><i class="icon-user"></i></span>
-                <input [readonly]="isLoading" formControlName="username" type="text" class="form-control" placeholder="Username">
+                <input formControlName="username" type="text" class="form-control" placeholder="Username"
+                       [readonly]="isLoading"
+                       (keypress)="handleEnterPressed($event)">
               </div>
               <div class="input-group mb-4">
                 <span class="input-group-addon"><i class="icon-lock"></i></span>
-                <input [readonly]="isLoading" formControlName="password" type="password" class="form-control" placeholder="Password">
+                <input [readonly]="isLoading" formControlName="password" type="password" class="form-control"
+                       placeholder="Password"
+                       (keypress)="handleEnterPressed($event)">
               </div>
               <div class="input-group alert alert-warning" role="alert"
-                *ngIf="errorMessage">
+                   *ngIf="errorMessage">
                 {{errorMessage}}
               </div>
               <div class="row justify-content-center">

@@ -69,6 +69,16 @@ import {UserService} from './services/user.service';
 import {ProjectService} from './services/project.service';
 import {TeamService} from './services/team.service';
 
+const SERVICES = [
+  AlwaysAuthGuard,
+  StoreService,
+  WebsocketService,
+  NavService,
+  UserService,
+  ProjectService,
+  TeamService
+]
+
 // Import 3rd party components
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
@@ -92,13 +102,7 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   },
-    AlwaysAuthGuard,
-    StoreService,
-    WebsocketService,
-    NavService,
-    UserService,
-    ProjectService,
-    TeamService
+    ...SERVICES
   ],
   bootstrap: [AppComponent]
 })

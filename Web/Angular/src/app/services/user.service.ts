@@ -56,8 +56,15 @@ export class UserService {
             .then(user => {
               resolve(user);
               _this.currentUserCursor.set(user);
-            }).catch(reject);
-        }).catch(reject);
+            })
+            .catch(reject);
+        })
+        .catch(reason => {
+          reject({
+            message: reason.response.body.error_description
+          })
+          ;
+        });
 
     })
   }
@@ -88,7 +95,7 @@ export class UserService {
           if (res.ok) {
             resolve(res.body);
           } else {
-            reject(res.body);
+            reject(res);
           }
         }).catch(reject)
     })

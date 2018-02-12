@@ -39,6 +39,12 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  handleEnterPressed($event) {
+    if ($event.keyCode === 13) {
+      this.handleLogin();
+    }
+  }
+
   handleLogin() {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
@@ -48,15 +54,10 @@ export class LoginComponent implements OnInit {
         formValue.password
       ).then(value => {
         this.isLoading = false;
-        console.debug('login success', value);
         this.router.navigate(['dashboard'])
       }).catch(reason => {
-        // TODO: Handle error
         this.isLoading = false;
-        console.debug('login fail: ', reason);
-        if (reason.status === 400) {
-          this.errorMessage = 'Invalid username or password';
-        }
+        this.errorMessage = reason.message;
       })
     }
   }

@@ -15,7 +15,9 @@ import {CommonModule} from '@angular/common';
     CommonModule,
     PagesRoutingModule,
     ReactiveFormsModule,
-    LaddaModule
+    LaddaModule.forRoot({
+      style: 'expand-left'
+    })
   ],
   declarations: [
     P404Component,
