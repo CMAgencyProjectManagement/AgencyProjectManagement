@@ -8,9 +8,11 @@ import {LaddaModule} from 'angular2-ladda';
 import {PagesRoutingModule} from './pages-routing.module';
 
 import {ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [
+    CommonModule,
     PagesRoutingModule,
     ReactiveFormsModule,
     LaddaModule

@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   currentAccountCursor: Cursor;
   tokenCursor: Cursor;
   isLoading: boolean;
+  errorMessage: string;
 
   constructor(private accountHub: UserService,
               private storeService: StoreService,
@@ -53,6 +54,9 @@ export class LoginComponent implements OnInit {
         // TODO: Handle error
         this.isLoading = false;
         console.debug('login fail: ', reason);
+        if (reason.status === 400) {
+          this.errorMessage = 'Invalid username or password';
+        }
       })
     }
   }

@@ -4,6 +4,11 @@
   // animation-fill-mode: both;
 }
 
+.animated.quick {
+  animation-duration: 0.4s;
+  // animation-fill-mode: both;
+}
+
 .animated.infinite {
   animation-iteration-count: infinite;
 }
@@ -22,6 +27,20 @@
   }
 }
 
+@keyframes expandIn {
+  from {
+    opacity: 0;
+    height: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .fadeIn {
   animation-name: fadeIn;
+}
+
+.expandIn{
+  animation-name: expandIn;
 }
