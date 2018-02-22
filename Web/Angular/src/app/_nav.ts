@@ -1,3 +1,26 @@
+const staff_navigation = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+    badge: {
+      variant: 'info'
+    }
+  }
+];
+
+const manager_navigation = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+    badge: {
+      variant: 'info'
+    }
+  }
+];
+
+
 const admin_navigation = [
   {
     name: 'Dashboard',
@@ -7,7 +30,6 @@ const admin_navigation = [
       variant: 'info'
     }
   },
-
   {
     name: 'Project',
     url: '/project',
@@ -35,24 +57,15 @@ const admin_navigation = [
   {
     name: 'Manage teams',
     url: '/admin/teamManagePage',
-    icon: 'icon-people'
+    icon: 'icon-people',
+    badge: undefined
   },
 
 ];
 
 
-const navigation = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'icon-speedometer',
-    badge: {
-      variant: 'info'
-    }
-  }
-];
-
 export {
   admin_navigation,
-  navigation
+  manager_navigation,
+  staff_navigation
 }
