@@ -9,27 +9,10 @@ const staff_navigation = [
   }
 ];
 
-const manager_navigation = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'icon-speedometer',
-    badge: {
-      variant: 'info'
-    }
-  }
-];
+const manager_navigation = [];
 
 
 const admin_navigation = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'icon-speedometer',
-    badge: {
-      variant: 'info'
-    }
-  },
   {
     name: 'Project',
     url: '/project',

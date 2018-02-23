@@ -10,7 +10,6 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --delete-output-path false -o",
     "build": "ng build --target=development --environment=dev",
-    "build_watch": "ng build --target=development --environment=dev --watch",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
