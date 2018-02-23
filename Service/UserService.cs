@@ -72,8 +72,7 @@ namespace Service
                 entities.Users.Add(newUser);
                 entities.SaveChanges();
             }
-
-            // After save change user will have Id
+            
             return newUser;
         }
 
