@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -16,8 +13,6 @@ namespace Service
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
-                bool result1 = "Dien Doan" == username &&
-                               "1234" == password;
                 User foundUser =
                     entities.Users.SingleOrDefault(user =>
                         user.Username == username &&
