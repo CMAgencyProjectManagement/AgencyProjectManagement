@@ -1,4 +1,4 @@
-webpackJsonp(["styles"],{
+webpackJsonp(["styles","common"],{
 
 /***/ "../../../../../src/scss/style.scss":
 /***/ (function(module, exports, __webpack_require__) {

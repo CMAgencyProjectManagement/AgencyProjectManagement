@@ -13,6 +13,7 @@ import {
 
 // Import Guards
 import { AlwaysAuthGuard } from './services/auth.guard';
+import {TeamManagementModule} from './views/team-management/team-management.module';
 
 export const routes: Routes = [
   {
@@ -42,7 +43,7 @@ export const routes: Routes = [
       },
       {
         path: 'admin',
-        loadChildren: './views/team-management/admin.module#AdminModule'
+        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
       },
     ]
   },

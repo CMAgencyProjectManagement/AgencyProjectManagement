@@ -10,18 +10,16 @@ var map = {
 	],
 	"./views/pages/pages.module": [
 		"../../../../../src/app/views/pages/pages.module.ts",
-		"pages.module",
-		"common"
+		"pages.module"
 	],
 	"./views/project-management/project-management.module": [
 		"../../../../../src/app/views/project-management/project-management.module.ts",
 		"project-management.module",
 		"common"
 	],
-	"./views/team-management/admin.module": [
-		"../../../../../src/app/views/team-management/admin.module.ts",
-		"admin.module",
-		"common"
+	"./views/team-management/team-management.module": [
+		"../../../../../src/app/views/team-management/team-management.module.ts",
+		"team-management.module"
 	],
 	"./views/user-management/user-management.module": [
 		"../../../../../src/app/views/user-management/user-management.module.ts",
@@ -312,7 +310,7 @@ var routes = [
             },
             {
                 path: 'admin',
-                loadChildren: './views/team-management/admin.module#AdminModule'
+                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
         ]
     },
