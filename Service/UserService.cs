@@ -84,12 +84,12 @@ namespace Service
             if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
             {
                 avatar = Path.Combine(avatarPath, avatar);
-
             }
             if (includePassword)
             {
                 password = user.Password;
             }
+            
             return new JObject
             {
                 ["id"] = user.ID,
@@ -100,7 +100,8 @@ namespace Service
                 ["username"] = user.Username,
                 ["password"] = password,
                 ["avatar"] = avatar,
-                ["isAdmin"] = user.IsAdmin
+                ["isAdmin"] = user.IsAdmin,
+                ["isManager"] = user.IsManager
             };
         }
     }

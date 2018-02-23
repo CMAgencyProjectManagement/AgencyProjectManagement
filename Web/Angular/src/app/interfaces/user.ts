@@ -8,5 +8,6 @@ export interface User {
   password: string,
   avatar: string,
   isAdmin: boolean,
+  isManager: boolean,
   isActive: boolean
 }

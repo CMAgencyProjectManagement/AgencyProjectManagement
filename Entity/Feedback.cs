@@ -12,13 +12,13 @@ namespace Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class UserTeam
+    public partial class Feedback
     {
-        public int TeamID { get; set; }
-        public int UserID { get; set; }
-        public bool IsManager { get; set; }
+        public int CustomerId { get; set; }
+        public string Remark { get; set; }
+        public int Rating { get; set; }
+        public string DetailFeedback { get; set; }
     
-        public virtual Team Team { get; set; }
-        public virtual User User { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

@@ -76,7 +76,10 @@
     <Compile Include="Comment.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Label.cs">
+    <Compile Include="Customer.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="List.cs">
@@ -99,9 +102,6 @@
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserTask.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserTeam.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

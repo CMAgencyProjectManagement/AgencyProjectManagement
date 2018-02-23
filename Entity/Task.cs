@@ -23,7 +23,6 @@ namespace Entity
             this.TaskDependencies = new HashSet<TaskDependency>();
             this.TaskDependencies1 = new HashSet<TaskDependency>();
             this.UserTasks = new HashSet<UserTask>();
-            this.Labels = new HashSet<Label>();
         }
     
         public int ID { get; set; }
@@ -34,7 +33,7 @@ namespace Entity
         public Nullable<int> ChangedBy { get; set; }
         public Nullable<System.DateTime> ChangedTime { get; set; }
         public int Status { get; set; }
-        public long Duration { get; set; }
+        public int Duration { get; set; }
         public int ListID { get; set; }
         public Nullable<int> Priority { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
@@ -53,7 +52,5 @@ namespace Entity
         public virtual ICollection<TaskDependency> TaskDependencies1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserTask> UserTasks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Label> Labels { get; set; }
     }
 }
