@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,21 @@ namespace Service
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
+                bool result1 = "Dien Doan" == username &&
+                               "1234" == password;
                 User foundUser =
-                    entities.Users.FirstOrDefault(user =>
-                        user.Username.Equals(username) &&
-                        user.Password.Equals(password));
-                return foundUser;
+                    entities.Users.SingleOrDefault(user =>
+                        user.Username == username &&
+                        user.Password == password
+                    );
+                // Check one more time because the sql server not set to case sensitive as default
+                if (foundUser != null &&
+                    foundUser.Username == username &&
+                    foundUser.Password == password)
+                {
+                    return foundUser;
+                }
+                return null;
             }
         }
 
@@ -72,7 +83,7 @@ namespace Service
                 entities.Users.Add(newUser);
                 entities.SaveChanges();
             }
-            
+
             return newUser;
         }
 
@@ -84,11 +95,12 @@ namespace Service
             {
                 avatar = Path.Combine(avatarPath, avatar);
             }
+
             if (includePassword)
             {
                 password = user.Password;
             }
-            
+
             return new JObject
             {
                 ["id"] = user.ID,
