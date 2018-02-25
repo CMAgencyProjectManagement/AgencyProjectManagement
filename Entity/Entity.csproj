@@ -85,6 +85,12 @@
     <Compile Include="List.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Notification.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationUser.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Project.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
