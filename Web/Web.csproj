@@ -137,7 +137,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Angular\dist\admin.module.chunk.js" />
     <Content Include="Angular\dist\assets\img\avatars\1.jpg" />
     <Content Include="Angular\dist\assets\img\avatars\2.jpg" />
     <Content Include="Angular\dist\assets\img\avatars\3.jpg" />
@@ -408,7 +407,6 @@
     <Content Include="Angular\dist\vendor.bundle.js" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
-    <Content Include="Angular\dist\admin.module.chunk.js.map" />
     <Content Include="Angular\dist\assets\.npmignore" />
     <Content Include="Angular\dist\common.chunk.js.map" />
     <Content Include="Angular\dist\dashboard.module.chunk.js.map" />
