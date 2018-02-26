@@ -69,8 +69,7 @@ namespace Service
             DateTime? birthday,
             string email,
             string username,
-            string password,
-            string avatar)
+            string password)
         {
             User newUser;
             using (CmAgencyEntities entities = new CmAgencyEntities())
@@ -83,8 +82,8 @@ namespace Service
                     Email = email,
                     Username = username,
                     Password = password,
+                    Avatar = null,
                     IsAdmin = false,
-                    Avatar = avatar,
                     IsActive = true
                 };
                 entities.Users.Add(newUser);
@@ -96,19 +95,11 @@ namespace Service
 
         public static JObject ToJson(this User user, string avatarPath = null, bool includePassword = false)
         {
-            string password = null;
-            string avatar = user.Avatar;
-            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
-            {
-                avatar = Path.Combine(avatarPath, avatar);
-            }
+            
 
-            if (includePassword)
-            {
-                password = user.Password;
-            }
+            
 
-            return new JObject
+            JObject result = new JObject
             {
                 ["id"] = user.ID,
                 ["name"] = user.Name,
@@ -116,11 +107,22 @@ namespace Service
                 ["birthday"] = user.Birthdate,
                 ["email"] = user.Email,
                 ["username"] = user.Username,
-                ["password"] = password,
-                ["avatar"] = avatar,
                 ["isAdmin"] = user.IsAdmin,
                 ["isManager"] = user.IsManager
             };
+            
+            string avatar = user.Avatar;
+            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
+            {
+                result[avatar] = Path.Combine(avatarPath, avatar);
+            }
+            
+            if (includePassword)
+            {
+                result["password"] = user.Password;
+            }
+
+            return result;
         }
     }
 }
