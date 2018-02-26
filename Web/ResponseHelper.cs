@@ -73,24 +73,24 @@ namespace Web
             return errorData;
         }
 
-//        public static JObject GetExceptionResponse(string message, Exception exception = null)
-//        {
-//            if (exception != null)
-//            {
-//                return new JObject
-//                {
-//                    ["IsSuccess"] = false,
-//                    ["Message"] = message,
-//                    ["Data"] = JObject.FromObject(exception)
-//                };
-//            }
-//
-//            return new JObject
-//            {
-//                ["IsSuccess"] = false,
-//                ["Message"] = message
-//            };
-//        }
+        public static JObject GetExceptionResponse(string message, Exception exception = null)
+        {
+            if (exception != null)
+            {
+                return new JObject
+                {
+                    ["IsSuccess"] = false,
+                    ["Message"] = message,
+                    ["Data"] = JObject.FromObject(exception)
+                };
+            }
+
+            return new JObject
+            {
+                ["IsSuccess"] = false,
+                ["Message"] = message
+            };
+        }
 
         public static JObject GetExceptionResponse(Exception exception)
         {

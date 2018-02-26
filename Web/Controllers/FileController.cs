@@ -5,68 +5,62 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using Newtonsoft.Json.Linq;
+using Service;
 
-namespace Web.Api
+namespace Web.Controllers
 {
     public class FileController : ApiController
     {
-        //TODO: Security for file api
-        // GET api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPut]
+        [Route("user/{id:int}/avatar")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult UploadAvatar(int id)
         {
-            return new string[] {"value1", "value2"};
-        }
-
-        // GET api/<controller>/5
-        [HttpPost]
-        public HttpResponseMessage UploadAvarta()
-        {
-            HttpResponseMessage result = null;
-
-            var httpRequest = HttpContext.Current.Request;
-
-            if (httpRequest.Files.Count > 0)
+            try
             {
-                var files = new List<string>();
-
-                foreach (string file in httpRequest.Files)
+                if (!Request.Content.IsMimeMultipartContent())
                 {
-                    var postedFile = httpRequest.Files[file];
-
-                    var filePath = HttpContext.Current.Server.MapPath("~/" + postedFile.FileName);
-
-                    postedFile.SaveAs(filePath);
-
-
-                    files.Add(filePath);
+                    return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Not supported media type"));
                 }
 
-                result = Request.CreateResponse(HttpStatusCode.Created, files);
+                HttpPostedFile avatarFile = HttpContext.Current.Request.Files.Count > 0
+                    ? HttpContext.Current.Request.Files["avatar"]
+                    : null;
+
+
+                if (avatarFile != null)
+                {
+                    UserService.UpdateAvatar(avatarFile.FileName, id);
+                    string path = Path.Combine(
+                        HttpContext.Current.Server.MapPath("~"),
+                        AgencyConfig.AvatarPath.Substring(1),
+                        avatarFile.FileName
+                    );
+
+                    using (FileStream fileStream = File.Create(path))
+                    {
+                        avatarFile.InputStream.CopyTo(fileStream);
+                    }
+
+                    JObject dataObject = new JObject
+                    {
+                        ["avatar"] = path
+                    };
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse("No avatar file found"));
+                }
             }
-
-            else
-
+            catch (Exception ex)
             {
-                result = Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
             }
-
-            return result;
-        }
-
-        private List<string> SaveFiles(HttpPostedFile[] files, string path)
-        {
-            var result = new List<string>();
-
-            foreach (HttpPostedFile postedFile in files)
-            {
-                var filePath = HttpContext.Current.Server.MapPath("~/" + path + postedFile.FileName);
-
-                postedFile.SaveAs(filePath);
-                result.Add(filePath);
-            }
-
-            return result;
         }
     }
 }

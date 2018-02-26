@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
 using Entity;
@@ -63,6 +64,23 @@ namespace Service
             }
         }
 
+        public static void UpdateAvatar(string avatarFileName, int id)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                User user = entities.Users.Find(id);
+                if (user != null)
+                {
+                    user.Avatar = avatarFileName;
+                    entities.SaveChanges();
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with Id {id} not found");
+                }
+            }
+        }
+
         public static User CreateAccount(
             string name,
             string phone,
@@ -95,10 +113,6 @@ namespace Service
 
         public static JObject ToJson(this User user, string avatarPath = null, bool includePassword = false)
         {
-            
-
-            
-
             JObject result = new JObject
             {
                 ["id"] = user.ID,
@@ -110,13 +124,13 @@ namespace Service
                 ["isAdmin"] = user.IsAdmin,
                 ["isManager"] = user.IsManager
             };
-            
+
             string avatar = user.Avatar;
             if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
             {
-                result[avatar] = Path.Combine(avatarPath, avatar);
+                result["avatar"] = Path.Combine(avatarPath, avatar);
             }
-            
+
             if (includePassword)
             {
                 result["password"] = user.Password;
