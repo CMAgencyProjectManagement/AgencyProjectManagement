@@ -118,7 +118,7 @@ namespace Web
 
         public void SetupConstant()
         {
-            ConstantHolder.AvatarPath = WebConfigurationManager.AppSettings["AvatarPath"];
+            AgencyConfig.AvatarPath = WebConfigurationManager.AppSettings["AvatarPath"];
 
         }
     }

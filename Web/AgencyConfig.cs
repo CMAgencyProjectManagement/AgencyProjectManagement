@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Web
 {
-    public static class ConstantHolder
+    public static class AgencyConfig
     {
         public static string AvatarPath;
     }

@@ -25,6 +25,7 @@ namespace Service
                 {
                     return foundUser;
                 }
+
                 return null;
             }
         }
@@ -62,13 +63,24 @@ namespace Service
             }
         }
 
-        public static User CreateAccount(string username, string password, string avatar, bool isAdmin = false)
+        public static User CreateAccount(
+            string name,
+            string phone,
+            DateTime? birthday,
+            string email,
+            string username,
+            string password,
+            string avatar)
         {
             User newUser;
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
                 newUser = new User
                 {
+                    Name = name,
+                    Phone = phone,
+                    Birthdate = birthday,
+                    Email = email,
                     Username = username,
                     Password = password,
                     IsAdmin = false,

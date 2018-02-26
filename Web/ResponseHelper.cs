@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Http.ModelBinding;
 using Newtonsoft.Json.Linq;
@@ -34,6 +35,29 @@ namespace Web
             {
                 var key = state.Key.Split('.').Last();
                 var msg = state.Value.Errors[0].ErrorMessage;
+                errors.Add(new JObject
+                {
+                    ["key"] = key,
+                    ["message"] = msg 
+                });
+            }
+            var errorData = new JObject
+            {
+                ["IsSuccess"] = false,
+                ["Message"] = "Invalid request",
+                ["Data"] = errors
+            };
+            return errorData;
+        }
+        
+        public static JObject GetExceptionResponse(IEnumerable<ValidationResult> validationResults)
+        {
+            JArray errors = new JArray();
+
+            foreach (ValidationResult validationResult in validationResults)
+            {
+                var key = validationResult.MemberNames.First();
+                var msg = validationResult.ErrorMessage;
                 errors.Add(new JObject
                 {
                     ["key"] = key,
