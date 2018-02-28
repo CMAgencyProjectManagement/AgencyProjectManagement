@@ -67,40 +67,37 @@ namespace Service
 
         public static JObject ToJson(this Project project, bool isDetailed = true)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
+            Customer customer = CustomerService.getCustomer(project.CustomerId);
+            User creator = UserService.GetUser(project.CreatedBy);
+            var result = new JObject
             {
-                
-                User creator = UserService.GetUser(project.CreatedBy);
-                var result = new JObject
-                {
-                    ["id"] = project.ID,
-                    ["name"] = project.Name,
-                    ["description"] = project.Description,
-                    ["deadline"] = project.Deadline,
-                    ["createdTime"] = project.CreatedTime,
-                    ["createdBy"] = creator.ToJson(),
-                    ["startDate"] = project.StartDate,
-                    ["changedTime"] = project.ChangedTime
-                };
-                if (project.ChangedBy.HasValue)
-                {
-                    var changer = UserService.GetUser(project.ChangedBy.Value);
-                    result["changedBy"] = changer.ToJson();
-                }
-
-                if (isDetailed)
-                {
-                    JArray listJArray = new JArray();
-                    foreach (List list in project.Lists)
-                    {
-                        listJArray.Add(list.ToJson());
-                    }
-
-                    result["lists"] = listJArray;
-                }
-                return result;
+                ["id"] = project.ID,
+                ["name"] = project.Name,
+                ["description"] = project.Description,
+                ["deadline"] = project.Deadline,
+                ["createdTime"] = project.CreatedTime,
+                ["createdBy"] = creator.ToJson(),
+                ["startDate"] = project.StartDate,
+                ["changedTime"] = project.ChangedTime
+            };
+            if (project.ChangedBy.HasValue)
+            {
+                var changer = UserService.GetUser(project.ChangedBy.Value);
+                result["changedBy"] = changer.ToJson();
             }
-           
+
+            if (isDetailed)
+            {
+                JArray listJArray = new JArray();
+                foreach (List list in project.Lists)
+                {
+                    listJArray.Add(list.ToJson());
+                }
+
+                result["lists"] = listJArray;
+            }
+
+            return result;
         }
     }
 }

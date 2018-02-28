@@ -30,7 +30,7 @@ const admin_navigation = [
     }
   },
   {
-    name: 'Manages account',
+    name: 'Account',
     url: '/account/view',
     icon: 'icon-user',
     badge: {

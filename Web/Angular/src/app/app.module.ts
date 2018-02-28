@@ -47,14 +47,16 @@ import {
   AsideToggleDirective,
   NAV_DROPDOWN_DIRECTIVES,
   ReplaceDirective,
-  SIDEBAR_TOGGLE_DIRECTIVES
+  SIDEBAR_TOGGLE_DIRECTIVES,
+  TruncateTextPipe
 } from './directives';
 
 const APP_DIRECTIVES = [
   AsideToggleDirective,
   NAV_DROPDOWN_DIRECTIVES,
   ReplaceDirective,
-  SIDEBAR_TOGGLE_DIRECTIVES
+  SIDEBAR_TOGGLE_DIRECTIVES,
+  // TruncateTextPipe
 ];
 
 // Import routing module
@@ -81,7 +83,7 @@ const SERVICES = [
   TeamService,
   TaskService,
   DependencyService
-]
+];
 
 // Import 3rd party components
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
