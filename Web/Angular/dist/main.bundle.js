@@ -12,8 +12,8 @@ var map = {
 		"../../../../../src/app/views/pages/pages.module.ts",
 		"pages.module"
 	],
-	"./views/project-management/project-management.module": [
-		"../../../../../src/app/views/project-management/project-management.module.ts",
+	"./views/project/project-management.module": [
+		"../../../../../src/app/views/project/project-management.module.ts",
 		"project-management.module",
 		"common"
 	],
@@ -72,25 +72,19 @@ var admin_navigation = [
     },
     {
         name: 'Team',
-        url: '/team',
+        url: '/team/view',
         icon: 'icon-people',
         badge: {
             variant: 'info'
         }
     },
     {
-        name: 'Manages account',
+        name: 'Account',
         url: '/account/view',
         icon: 'icon-user',
         badge: {
             variant: 'info'
         }
-    },
-    {
-        name: 'Manage teams',
-        url: '/admin/teamManagePage',
-        icon: 'icon-people',
-        badge: undefined
     },
 ];
 
@@ -109,7 +103,7 @@ var serverPath = {
     allUser: '/api/user/all',
     allProject: '/api/project/all',
     allTeam: '/api/team/all',
-    myProject: '/api/project'
+    myProject: '/api/project',
 };
 
 
@@ -166,10 +160,12 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -206,11 +202,13 @@ var APP_DIRECTIVES = [
     __WEBPACK_IMPORTED_MODULE_6__directives__["a" /* AsideToggleDirective */],
     __WEBPACK_IMPORTED_MODULE_6__directives__["b" /* NAV_DROPDOWN_DIRECTIVES */],
     __WEBPACK_IMPORTED_MODULE_6__directives__["c" /* ReplaceDirective */],
-    __WEBPACK_IMPORTED_MODULE_6__directives__["d" /* SIDEBAR_TOGGLE_DIRECTIVES */]
+    __WEBPACK_IMPORTED_MODULE_6__directives__["d" /* SIDEBAR_TOGGLE_DIRECTIVES */],
 ];
 // Import routing module
 
 // Import provider
+
+
 
 
 
@@ -225,7 +223,9 @@ var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_11__services_nav_service__["a" /* NavService */],
     __WEBPACK_IMPORTED_MODULE_12__services_user_service__["a" /* UserService */],
     __WEBPACK_IMPORTED_MODULE_13__services_project_service__["a" /* ProjectService */],
-    __WEBPACK_IMPORTED_MODULE_14__services_team_service__["a" /* TeamService */]
+    __WEBPACK_IMPORTED_MODULE_14__services_team_service__["a" /* TeamService */],
+    __WEBPACK_IMPORTED_MODULE_15__services_task_service__["a" /* TaskService */],
+    __WEBPACK_IMPORTED_MODULE_16__services_dependency_service__["a" /* DependencyService */]
 ];
 // Import 3rd party components
 
@@ -239,9 +239,9 @@ var AppModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_16_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts__["ChartsModule"]
+                __WEBPACK_IMPORTED_MODULE_17_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_18_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts__["ChartsModule"]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]
@@ -302,14 +302,14 @@ var routes = [
             },
             {
                 path: 'project',
-                loadChildren: './views/project-management/project-management.module#ProjectManagementModule'
+                loadChildren: './views/project/project-management.module#ProjectManagementModule'
             },
             {
                 path: 'account',
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
-                path: 'admin',
+                path: 'team',
                 loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
         ]
@@ -1058,7 +1058,7 @@ var AppSidebarComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/containers/full-layout/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-header></app-header>\r\n<div class=\"app-body\">\r\n  <app-sidebar></app-sidebar>\r\n  <!-- Main content -->\r\n  <main class=\"main\">\r\n    <!-- Breadcrumb -->\r\n    <ol class=\"breadcrumb\">\r\n      <app-breadcrumbs></app-breadcrumbs>\r\n    </ol>\r\n    <div class=\"container-fluid\">\r\n      <router-outlet></router-outlet>\r\n    </div><!-- /.conainer-fluid -->\r\n  </main>\r\n  <app-aside></app-aside>\r\n</div>\r\n<app-footer></app-footer>\r\n"
+module.exports = "<app-header></app-header>\n<div class=\"app-body\">\n  <app-sidebar></app-sidebar>\n  <!-- Main content -->\n  <main class=\"main\">\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n    <div class=\"container-fluid \">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n  <app-aside></app-aside>\n</div>\n<app-footer></app-footer>\n"
 
 /***/ }),
 
@@ -1224,6 +1224,9 @@ var AsideToggleDirective = /** @class */ (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__replace__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__("../../../../../src/app/directives/sidebar/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__sidebar__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pipe_truncateText_pipe__ = __webpack_require__("../../../../../src/app/directives/pipe/truncateText.pipe.ts");
+/* unused harmony namespace reexport */
+
 
 
 
@@ -1304,6 +1307,55 @@ var NavDropdownToggleDirective = /** @class */ (function () {
 }());
 
 var NAV_DROPDOWN_DIRECTIVES = [NavDropdownDirective, NavDropdownToggleDirective];
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/directives/pipe/truncateText.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TruncateTextPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var TruncateTextPipe = /** @class */ (function () {
+    function TruncateTextPipe() {
+    }
+    TruncateTextPipe.prototype.transform = function (value, length) {
+        var biggestWord = 50;
+        var elipses = '...';
+        if (typeof value === 'undefined') {
+            return value;
+        }
+        if (value.length <= length) {
+            return value;
+        }
+        // .. truncate to about correct lenght
+        var truncatedText = value.slice(0, length + biggestWord);
+        // .. now nibble ends till correct length
+        while (truncatedText.length > length - elipses.length) {
+            var lastSpace = truncatedText.lastIndexOf(' ');
+            if (lastSpace === -1) {
+                break;
+            }
+            truncatedText = truncatedText.slice(0, lastSpace).replace(/[!,.?;:]$/, '');
+        }
+        return truncatedText + elipses;
+    };
+    TruncateTextPipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Pipe"])({
+            name: 'truncatetext'
+        })
+    ], TruncateTextPipe);
+    return TruncateTextPipe;
+}());
+
 
 
 /***/ }),
@@ -1597,6 +1649,37 @@ var AlwaysAuthGuard = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/dependency.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DependencyService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var DependencyService = /** @class */ (function () {
+    function DependencyService() {
+    }
+    DependencyService.prototype.get = function () {
+        return Promise.resolve([
+            { id: 1, source: 1, target: 2, type: '0' }
+        ]);
+    };
+    DependencyService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], DependencyService);
+    return DependencyService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/nav.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1691,11 +1774,59 @@ var ProjectService = /** @class */ (function () {
             });
         });
     };
+    ProjectService.prototype.getAllProjects = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].allProject)
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
     ProjectService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__tree_service__["a" /* StoreService */]])
     ], ProjectService);
     return ProjectService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/task.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TaskService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var TaskService = /** @class */ (function () {
+    function TaskService() {
+    }
+    TaskService.prototype.get = function () {
+        return Promise.resolve([
+            { id: 1, start_date: '2017-04-15 00:00', text: 'Task #1', progress: 0.6, duration: 3, parent: undefined },
+            { id: 2, start_date: '2017-04-18 00:00', text: 'Task #2', progress: 0.4, duration: 3, parent: undefined }
+        ]);
+    };
+    TaskService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], TaskService);
+    return TaskService;
 }());
 
 
