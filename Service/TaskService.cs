@@ -35,6 +35,29 @@ namespace Service
             }
         }
 
+        public static List<Task> GetTasksOfList(int listId)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                List list = entities.Lists.Find(listId);
+                if (list != null)
+                {
+                    var taskList = new List<Task>();
+
+                    foreach (Task task in list.Tasks)
+                    {
+                        taskList.Add(task);
+                    }
+
+                    return taskList;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Project with ID {listId} not found");
+                }
+            }
+        }
+
         public static JObject ToJson(this Task task)
         {
             JObject result = new JObject

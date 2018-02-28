@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -10,7 +7,7 @@ namespace Service
 {
     public static class TeamService
     {
-        public static IEnumerable<Team> GetAll()
+        public static List<Team> GetAll()
         {
             using (var db = new CmAgencyEntities())
             {
@@ -33,7 +30,6 @@ namespace Service
                         }
                     }
                 }
-
                 return null;
             }
         }

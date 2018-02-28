@@ -10,6 +10,8 @@ namespace Service
 {
     static class ListService
     {
+        
+        
         public static JObject ToJson(this List list, bool isDetailed = true)
         {
             JObject result = new JObject
@@ -20,9 +22,10 @@ namespace Service
             
             if (isDetailed)
             {
-                JArray tasksJArray = new JArray();
+                var tasks = TaskService.GetTasksOfList(list.ID);
+                var tasksJArray = new JArray();
 
-                foreach (var task in list.Tasks)
+                foreach (var task in tasks)
                 {
                     tasksJArray.Add(task.ToJson());
                 }
