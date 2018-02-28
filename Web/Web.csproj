@@ -137,7 +137,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Angular\dist\admin.module.chunk.js" />
     <Content Include="Angular\dist\assets\img\avatars\1.jpg" />
     <Content Include="Angular\dist\assets\img\avatars\2.jpg" />
     <Content Include="Angular\dist\assets\img\avatars\3.jpg" />
@@ -408,7 +407,6 @@
     <Content Include="Angular\dist\vendor.bundle.js" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
-    <Content Include="Angular\dist\admin.module.chunk.js.map" />
     <Content Include="Angular\dist\assets\.npmignore" />
     <Content Include="Angular\dist\common.chunk.js.map" />
     <Content Include="Angular\dist\dashboard.module.chunk.js.map" />
@@ -440,7 +438,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Resource\avatar\25994855_974611699354326_8726051274387094426_n.jpg" />
+    <Content Include="Resource\avatar\26910289_1302577266544804_2727893603664003986_o.jpg" />
+    <Content Include="Resource\avatar\27867360_1708511502521042_7024456728235995189_n.jpg" />
+    <Content Include="Resource\avatar\Elon_Musk_2015.jpg" />
     <Content Include="Resource\avatar\user_id_1.jpg" />
+    <Content Include="Resource\avatar\user_phat.png" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -450,8 +453,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConstantHolder.cs" />
+    <Compile Include="AgencyConfig.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Security\AgencyAuthorizationServerProvider.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -477,6 +481,7 @@
       <Name>Service</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

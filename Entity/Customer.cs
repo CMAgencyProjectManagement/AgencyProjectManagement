@@ -12,21 +12,26 @@ namespace Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Label
+    public partial class Customer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Label()
+        public Customer()
         {
-            this.Tasks = new HashSet<Task>();
+            this.Feedbacks = new HashSet<Feedback>();
+            this.Projects = new HashSet<Project>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Color { get; set; }
-        public int ProjectID { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Description { get; set; }
+        public string Address { get; set; }
+        public string Logo { get; set; }
     
-        public virtual Project Project { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +28,11 @@ namespace Service
                     .Where(
                         project => project.Users.Any(user => user.ID.Equals(userId))
                     )
+                    .Include(p => p.Lists)
                     .ToList();
             }
         }
-        
+
         /// <summary>
         /// Create new project
         /// </summary>
@@ -40,19 +42,20 @@ namespace Service
         /// <param name="startDate"></param>
         /// <param name="creator">creator id</param>
         /// <returns>new project with Id</returns>
-        public static Project CreateProject(string name, string description, DateTime deadline, DateTime startDate, User creator)
+        public static Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
+            User creator)
         {
             Project newProject = new Project
             {
-                Name =  name,
+                Name = name,
                 Description = description,
                 Deadline = deadline,
                 StartDate = startDate,
                 CreatedBy = creator.ID,
                 CreatedTime = DateTime.Now
             };
-            
-            
+
+
             using (var db = new CmAgencyEntities())
             {
                 db.Projects.Add(newProject);
@@ -62,33 +65,42 @@ namespace Service
             return newProject;
         }
 
-        public static JObject ToJson(this Project project, bool isDetailed = false)
+        public static JObject ToJson(this Project project, bool isDetailed = true)
         {
-            User creator = UserService.GetUser(project.CreatedBy);
-            var result = new JObject
+            using (CmAgencyEntities entities = new CmAgencyEntities())
             {
-                ["id"] = project.ID,
-                ["name"] = project.Name,
-                ["description"] = project.Description,
-                ["deadline"] = project.Deadline,
-                ["createdTime"] = project.CreatedTime,
-                ["createdBy"] = creator.ToJson(),
-                ["startDate"] = project.StartDate,
-                ["changedTime"] = project.ChangedTime,
-                ["changedBy"] = null,
-            };
-            if (project.ChangedBy.HasValue)
-            {
-                var changer = UserService.GetUser(project.ChangedBy.Value);
-                result["changedBy"] = changer.ToJson();
-            }
+                
+                User creator = UserService.GetUser(project.CreatedBy);
+                var result = new JObject
+                {
+                    ["id"] = project.ID,
+                    ["name"] = project.Name,
+                    ["description"] = project.Description,
+                    ["deadline"] = project.Deadline,
+                    ["createdTime"] = project.CreatedTime,
+                    ["createdBy"] = creator.ToJson(),
+                    ["startDate"] = project.StartDate,
+                    ["changedTime"] = project.ChangedTime
+                };
+                if (project.ChangedBy.HasValue)
+                {
+                    var changer = UserService.GetUser(project.ChangedBy.Value);
+                    result["changedBy"] = changer.ToJson();
+                }
 
-            if (isDetailed)
-            {
-                throw new NotImplementedException();
-            }
+                if (isDetailed)
+                {
+                    JArray listJArray = new JArray();
+                    foreach (List list in project.Lists)
+                    {
+                        listJArray.Add(list.ToJson());
+                    }
 
-            return result;
+                    result["lists"] = listJArray;
+                }
+                return result;
+            }
+           
         }
     }
 }

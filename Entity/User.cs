@@ -21,9 +21,10 @@ namespace Entity
             this.Projects1 = new HashSet<Project>();
             this.Tasks = new HashSet<Task>();
             this.Teams = new HashSet<Team>();
+            this.NotificationUsers = new HashSet<NotificationUser>();
             this.UserTasks = new HashSet<UserTask>();
-            this.UserTeams = new HashSet<UserTeam>();
             this.Projects2 = new HashSet<Project>();
+            this.Teams1 = new HashSet<Team>();
         }
     
         public int ID { get; set; }
@@ -36,6 +37,7 @@ namespace Entity
         public string Avatar { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsActive { get; set; }
+        public bool IsManager { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
@@ -46,10 +48,12 @@ namespace Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Team> Teams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NotificationUser> NotificationUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserTask> UserTasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserTeam> UserTeams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Team> Teams1 { get; set; }
     }
 }

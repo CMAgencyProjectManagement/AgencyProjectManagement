@@ -68,6 +68,8 @@ import {NavService} from './services/nav.service';
 import {UserService} from './services/user.service';
 import {ProjectService} from './services/project.service';
 import {TeamService} from './services/team.service';
+import {TaskService} from './services/task.service';
+import {DependencyService} from './services/dependency.service';
 
 const SERVICES = [
   AlwaysAuthGuard,
@@ -76,7 +78,9 @@ const SERVICES = [
   NavService,
   UserService,
   ProjectService,
-  TeamService
+  TeamService,
+  TaskService,
+  DependencyService
 ]
 
 // Import 3rd party components

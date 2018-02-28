@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Http.ModelBinding;
 using Newtonsoft.Json.Linq;
@@ -48,25 +49,48 @@ namespace Web
             };
             return errorData;
         }
+        
+        public static JObject GetExceptionResponse(IEnumerable<ValidationResult> validationResults)
+        {
+            JArray errors = new JArray();
 
-//        public static JObject GetExceptionResponse(string message, Exception exception = null)
-//        {
-//            if (exception != null)
-//            {
-//                return new JObject
-//                {
-//                    ["IsSuccess"] = false,
-//                    ["Message"] = message,
-//                    ["Data"] = JObject.FromObject(exception)
-//                };
-//            }
-//
-//            return new JObject
-//            {
-//                ["IsSuccess"] = false,
-//                ["Message"] = message
-//            };
-//        }
+            foreach (ValidationResult validationResult in validationResults)
+            {
+                var key = validationResult.MemberNames.First();
+                var msg = validationResult.ErrorMessage;
+                errors.Add(new JObject
+                {
+                    ["key"] = key,
+                    ["message"] = msg 
+                });
+            }
+            var errorData = new JObject
+            {
+                ["IsSuccess"] = false,
+                ["Message"] = "Invalid request",
+                ["Data"] = errors
+            };
+            return errorData;
+        }
+
+        public static JObject GetExceptionResponse(string message, Exception exception = null)
+        {
+            if (exception != null)
+            {
+                return new JObject
+                {
+                    ["IsSuccess"] = false,
+                    ["Message"] = message,
+                    ["Data"] = JObject.FromObject(exception)
+                };
+            }
+
+            return new JObject
+            {
+                ["IsSuccess"] = false,
+                ["Message"] = message
+            };
+        }
 
         public static JObject GetExceptionResponse(Exception exception)
         {

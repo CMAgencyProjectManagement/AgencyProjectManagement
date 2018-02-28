@@ -10,18 +10,16 @@ var map = {
 	],
 	"./views/pages/pages.module": [
 		"../../../../../src/app/views/pages/pages.module.ts",
-		"pages.module",
-		"common"
+		"pages.module"
 	],
 	"./views/project-management/project-management.module": [
 		"../../../../../src/app/views/project-management/project-management.module.ts",
 		"project-management.module",
 		"common"
 	],
-	"./views/team-management/admin.module": [
-		"../../../../../src/app/views/team-management/admin.module.ts",
-		"admin.module",
-		"common"
+	"./views/team-management/team-management.module": [
+		"../../../../../src/app/views/team-management/team-management.module.ts",
+		"team-management.module"
 	],
 	"./views/user-management/user-management.module": [
 		"../../../../../src/app/views/user-management/user-management.module.ts",
@@ -50,47 +48,9 @@ module.exports = webpackAsyncContext;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return admin_navigation; });
-/* unused harmony export navigation */
-var admin_navigation = [
-    {
-        name: 'Dashboard',
-        url: '/dashboard',
-        icon: 'icon-speedometer',
-        badge: {
-            variant: 'info'
-        }
-    },
-    {
-        name: 'Account',
-        url: '/account',
-        icon: 'icon-user',
-        badge: {
-            variant: 'info'
-        }
-    },
-    // {
-    //   name: 'Project',
-    //   url: '/project',
-    //   icon: 'icon-calendar',
-    //   badge: {
-    //     variant: 'info'
-    //   }
-    // },
-    // {
-    //   name: 'Team',
-    //   url: '/team',
-    //   icon: 'icon-people',
-    //   badge: {
-    //     variant: 'info'
-    //   }
-    // },
-    {
-        name: 'Team Management Page',
-        url: '/admin/teamManagePage',
-        icon: 'icon-people'
-    },
-];
-var navigation = [
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return manager_navigation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return staff_navigation; });
+var staff_navigation = [
     {
         name: 'Dashboard',
         url: '/dashboard',
@@ -99,6 +59,39 @@ var navigation = [
             variant: 'info'
         }
     }
+];
+var manager_navigation = [];
+var admin_navigation = [
+    {
+        name: 'Project',
+        url: '/project',
+        icon: 'icon-calendar',
+        badge: {
+            variant: 'info'
+        }
+    },
+    {
+        name: 'Team',
+        url: '/team',
+        icon: 'icon-people',
+        badge: {
+            variant: 'info'
+        }
+    },
+    {
+        name: 'Manages account',
+        url: '/account/view',
+        icon: 'icon-user',
+        badge: {
+            variant: 'info'
+        }
+    },
+    {
+        name: 'Manage teams',
+        url: '/admin/teamManagePage',
+        icon: 'icon-people',
+        badge: undefined
+    },
 ];
 
 
@@ -169,13 +162,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_auth_guard__ = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_websocket_service__ = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_nav_service__ = __webpack_require__("../../../../../src/app/services/nav.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -223,6 +217,16 @@ var APP_DIRECTIVES = [
 
 
 
+
+var SERVICES = [
+    __WEBPACK_IMPORTED_MODULE_8__services_auth_guard__["a" /* AlwaysAuthGuard */],
+    __WEBPACK_IMPORTED_MODULE_9__services_tree_service__["a" /* StoreService */],
+    __WEBPACK_IMPORTED_MODULE_10__services_websocket_service__["a" /* WebsocketService */],
+    __WEBPACK_IMPORTED_MODULE_11__services_nav_service__["a" /* NavService */],
+    __WEBPACK_IMPORTED_MODULE_12__services_user_service__["a" /* UserService */],
+    __WEBPACK_IMPORTED_MODULE_13__services_project_service__["a" /* ProjectService */],
+    __WEBPACK_IMPORTED_MODULE_14__services_team_service__["a" /* TeamService */]
+];
 // Import 3rd party components
 
 
@@ -235,9 +239,9 @@ var AppModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_14_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_16_ng2_charts_ng2_charts__["ChartsModule"]
+                __WEBPACK_IMPORTED_MODULE_15_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_16_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_17_ng2_charts_ng2_charts__["ChartsModule"]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]
@@ -245,14 +249,7 @@ var AppModule = /** @class */ (function () {
             providers: [{
                     provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["g" /* LocationStrategy */],
                     useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["d" /* HashLocationStrategy */]
-                },
-                __WEBPACK_IMPORTED_MODULE_8__services_auth_guard__["a" /* AlwaysAuthGuard */],
-                __WEBPACK_IMPORTED_MODULE_9__services_tree_service__["a" /* StoreService */],
-                __WEBPACK_IMPORTED_MODULE_10__services_websocket_service__["a" /* WebsocketService */],
-                __WEBPACK_IMPORTED_MODULE_11__services_user_service__["a" /* UserService */],
-                __WEBPACK_IMPORTED_MODULE_12__services_project_service__["a" /* ProjectService */],
-                __WEBPACK_IMPORTED_MODULE_13__services_team_service__["a" /* TeamService */]
-            ],
+                }].concat(SERVICES),
             bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -313,7 +310,7 @@ var routes = [
             },
             {
                 path: 'admin',
-                loadChildren: './views/team-management/admin.module#AdminModule'
+                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
         ]
     },
@@ -354,7 +351,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-aside/app-aside.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<aside class=\"aside-menu\">\n  \n</aside>\n"
+module.exports = "<aside class=\"aside-menu\">\r\n  \r\n</aside>\r\n"
 
 /***/ }),
 
@@ -524,7 +521,7 @@ var AppFooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\n    <form class=\"form-inline my-lg-0 my-lg-5\">\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\n    </form>\n  </a> -->\n  <ul class=\"nav navbar-nav ml-auto\">\n    <li class=\"nav-item dropdown\" dropdown>\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n        <img src=\"{{user.avatar}}\" class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\">\n        <span class=\"d-md-down-none\">{{user.username}}</span>\n\n      </a>\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Account</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-file\"></i> Projects</a>\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Settings</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-user\"></i> Profile</a>\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\n          <i class=\"fa fa-lock\"></i> Logout</a>\n      </div>\n    </li>\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  </ul>\n</header>\n"
+module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\r\n    <form class=\"form-inline my-lg-0 my-lg-5\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\r\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\r\n    </form>\r\n  </a> -->\r\n  <ul class=\"nav navbar-nav ml-auto\">\r\n    <li class=\"nav-item dropdown\" dropdown>\r\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\r\n        <span class=\"d-md-down-none\">{{user.username}}</span>\r\n\r\n      </a>\r\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Account</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Settings</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-user\"></i> Profile</a>\r\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\r\n          <i class=\"fa fa-lock\"></i> Logout</a>\r\n      </div>\r\n    </li>\r\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n      <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n  </ul>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -599,7 +596,7 @@ var AppHeaderComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-sidebar-footer/app-sidebar-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\n"
+module.exports = "<!-- <div class=\"sidebar-footer\"></div> -->\r\n"
 
 /***/ }),
 
@@ -646,7 +643,7 @@ var AppSidebarFooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-sidebar-form/app-sidebar-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\n"
+module.exports = "<!-- <form class=\"sidebar-form\"></form> -->\r\n"
 
 /***/ }),
 
@@ -693,7 +690,7 @@ var AppSidebarFormComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-sidebar-header/app-sidebar-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\n"
+module.exports = "<!-- <div class=\"sidebar-header\"></div> -->\r\n"
 
 /***/ }),
 
@@ -740,7 +737,7 @@ var AppSidebarHeaderComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-sidebar-minimizer/app-sidebar-minimizer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\n"
+module.exports = "<button class=\"sidebar-minimizer\" type=\"button\" appSidebarMinimizer appBrandMinimizer></button>\r\n"
 
 /***/ }),
 
@@ -795,7 +792,7 @@ var AppSidebarMinimizerComponent = /** @class */ (function () {
 /* unused harmony export AppSidebarNavTitleComponent */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return APP_SIDEBAR_NAV; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nav__ = __webpack_require__("../../../../../src/app/_nav.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_nav_service__ = __webpack_require__("../../../../../src/app/services/nav.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -810,8 +807,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // Import navigation elements
 
 var AppSidebarNavComponent = /** @class */ (function () {
-    function AppSidebarNavComponent() {
-        this.navigation = __WEBPACK_IMPORTED_MODULE_1__nav__["a" /* admin_navigation */];
+    function AppSidebarNavComponent(navService) {
+        this.navService = navService;
+        this.navigation = navService.getCurrentUserMenu();
     }
     AppSidebarNavComponent.prototype.isDivider = function (item) {
         return item.divider ? true : false;
@@ -824,7 +822,7 @@ var AppSidebarNavComponent = /** @class */ (function () {
             selector: 'app-sidebar-nav',
             template: "\n    <nav class=\"sidebar-nav\">\n      <ul class=\"nav\">\n        <ng-template ngFor let-navitem [ngForOf]=\"navigation\">\n          <li *ngIf=\"isDivider(navitem)\" class=\"nav-divider\"></li>\n          <ng-template [ngIf]=\"isTitle(navitem)\">\n            <app-sidebar-nav-title [title]='navitem'></app-sidebar-nav-title>\n          </ng-template>\n          <ng-template [ngIf]=\"!isDivider(navitem)&&!isTitle(navitem)\">\n            <app-sidebar-nav-item [item]='navitem'></app-sidebar-nav-item>\n          </ng-template>\n        </ng-template>\n      </ul>\n    </nav>"
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */]])
     ], AppSidebarNavComponent);
     return AppSidebarNavComponent;
 }());
@@ -975,7 +973,7 @@ var APP_SIDEBAR_NAV = [
 /***/ "../../../../../src/app/components/app-sidebar/app-sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sidebar\">\n  <app-sidebar-header></app-sidebar-header>\n  <app-sidebar-form></app-sidebar-form>\n  <app-sidebar-nav></app-sidebar-nav>\n  <app-sidebar-footer></app-sidebar-footer>\n  <app-sidebar-minimizer></app-sidebar-minimizer>\n</div>\n"
+module.exports = "<div class=\"sidebar\">\r\n  <app-sidebar-header></app-sidebar-header>\r\n  <app-sidebar-form></app-sidebar-form>\r\n  <app-sidebar-nav></app-sidebar-nav>\r\n  <app-sidebar-footer></app-sidebar-footer>\r\n  <app-sidebar-minimizer></app-sidebar-minimizer>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1060,7 +1058,7 @@ var AppSidebarComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/containers/full-layout/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-header></app-header>\n<div class=\"app-body\">\n  <app-sidebar></app-sidebar>\n  <!-- Main content -->\n  <main class=\"main\">\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n  <app-aside></app-aside>\n</div>\n<app-footer></app-footer>\n"
+module.exports = "<app-header></app-header>\r\n<div class=\"app-body\">\r\n  <app-sidebar></app-sidebar>\r\n  <!-- Main content -->\r\n  <main class=\"main\">\r\n    <!-- Breadcrumb -->\r\n    <ol class=\"breadcrumb\">\r\n      <app-breadcrumbs></app-breadcrumbs>\r\n    </ol>\r\n    <div class=\"container-fluid\">\r\n      <router-outlet></router-outlet>\r\n    </div><!-- /.conainer-fluid -->\r\n  </main>\r\n  <app-aside></app-aside>\r\n</div>\r\n<app-footer></app-footer>\r\n"
 
 /***/ }),
 
@@ -1599,6 +1597,56 @@ var AlwaysAuthGuard = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/nav.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__nav__ = __webpack_require__("../../../../../src/app/_nav.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var NavService = /** @class */ (function () {
+    function NavService(store) {
+        this.store = store;
+        this.currentUserCursor = this.store.select(['currentUser']);
+    }
+    NavService.prototype.getCurrentUserMenu = function () {
+        var currentUser = this.currentUserCursor.get();
+        return this.getMenu(currentUser.isAdmin, currentUser.isManager);
+    };
+    NavService.prototype.getMenu = function (isAdmin, isManager) {
+        var menu = __WEBPACK_IMPORTED_MODULE_2__nav__["c" /* staff_navigation */];
+        if (isManager) {
+            menu = menu.concat(__WEBPACK_IMPORTED_MODULE_2__nav__["b" /* manager_navigation */]);
+        }
+        if (isAdmin) {
+            menu = menu.concat(__WEBPACK_IMPORTED_MODULE_2__nav__["a" /* admin_navigation */]);
+        }
+        return menu;
+    };
+    NavService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__tree_service__["a" /* StoreService */]])
+    ], NavService);
+    return NavService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/project.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1826,8 +1874,14 @@ var UserService = /** @class */ (function () {
                     .then(function (user) {
                     resolve(user);
                     _this.currentUserCursor.set(user);
-                }).catch(reject);
-            }).catch(reject);
+                })
+                    .catch(reject);
+            })
+                .catch(function (reason) {
+                reject({
+                    message: reason.response.body.error_description
+                });
+            });
         });
     };
     UserService.prototype.getAllUser = function () {
@@ -1843,7 +1897,7 @@ var UserService = /** @class */ (function () {
                 else {
                     reject(content.Message);
                 }
-            });
+            }).catch(reject);
         });
     };
     UserService.prototype.getToken = function (username, password) {
@@ -1857,9 +1911,9 @@ var UserService = /** @class */ (function () {
                     resolve(res.body);
                 }
                 else {
-                    reject(res.body);
+                    reject(res);
                 }
-            });
+            }).catch(reject);
         });
     };
     UserService.prototype.getCurrentUserInfo = function (authorization) {
@@ -1874,7 +1928,7 @@ var UserService = /** @class */ (function () {
                 else {
                     reject(content.Message);
                 }
-            });
+            }).catch(reject);
         });
     };
     UserService = __decorate([

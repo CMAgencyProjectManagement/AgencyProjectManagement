@@ -45,7 +45,7 @@ var ProjectManagementRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project-management/project-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  project-management works!\n</div>\n"
+module.exports = "<div class=\"animated fadeIn\">\r\n  project-management works!\r\n</div>\r\n"
 
 /***/ }),
 

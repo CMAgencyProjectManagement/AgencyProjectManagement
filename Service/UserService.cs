@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -16,10 +15,19 @@ namespace Service
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
                 User foundUser =
-                    entities.Users.FirstOrDefault(user =>
-                        user.Username.Equals(username) &&
-                        user.Password.Equals(password));
-                return foundUser;
+                    entities.Users.SingleOrDefault(user =>
+                        user.Username == username &&
+                        user.Password == password
+                    );
+                // Check one more time because the sql server not set to case sensitive as default
+                if (foundUser != null &&
+                    foundUser.Username == username &&
+                    foundUser.Password == password)
+                {
+                    return foundUser;
+                }
+
+                return null;
             }
         }
 
@@ -56,41 +64,56 @@ namespace Service
             }
         }
 
-        public static User CreateAccount(string username, string password, string avatar, bool isAdmin = false)
+        public static void UpdateAvatar(string avatarFileName, int id)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                User user = entities.Users.Find(id);
+                if (user != null)
+                {
+                    user.Avatar = avatarFileName;
+                    entities.SaveChanges();
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with Id {id} not found");
+                }
+            }
+        }
+
+        public static User CreateAccount(
+            string name,
+            string phone,
+            DateTime? birthday,
+            string email,
+            string username,
+            string password)
         {
             User newUser;
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
                 newUser = new User
                 {
+                    Name = name,
+                    Phone = phone,
+                    Birthdate = birthday,
+                    Email = email,
                     Username = username,
                     Password = password,
+                    Avatar = null,
                     IsAdmin = false,
-                    Avatar = avatar,
                     IsActive = true
                 };
                 entities.Users.Add(newUser);
                 entities.SaveChanges();
             }
 
-            // After save change user will have Id
             return newUser;
         }
 
         public static JObject ToJson(this User user, string avatarPath = null, bool includePassword = false)
         {
-            string password = null;
-            string avatar = user.Avatar;
-            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
-            {
-                avatar = Path.Combine(avatarPath, avatar);
-
-            }
-            if (includePassword)
-            {
-                password = user.Password;
-            }
-            return new JObject
+            JObject result = new JObject
             {
                 ["id"] = user.ID,
                 ["name"] = user.Name,
@@ -98,10 +121,22 @@ namespace Service
                 ["birthday"] = user.Birthdate,
                 ["email"] = user.Email,
                 ["username"] = user.Username,
-                ["password"] = password,
-                ["avatar"] = avatar,
-                ["isAdmin"] = user.IsAdmin
+                ["isAdmin"] = user.IsAdmin,
+                ["isManager"] = user.IsManager
             };
+
+            string avatar = user.Avatar;
+            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
+            {
+                result["avatar"] = Path.Combine(avatarPath, avatar);
+            }
+
+            if (includePassword)
+            {
+                result["password"] = user.Password;
+            }
+
+            return result;
         }
     }
 }

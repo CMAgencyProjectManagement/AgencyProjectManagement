@@ -4,27 +4,31 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e5a5eeab788b4fcaa55a378e929df623" Name="Diagram1" ZoomLevel="159">
-        <EntityTypeShape EntityType="CmAgencyModel.Attachment" Width="1.5" PointX="9.75" PointY="8.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.CheckList" Width="1.5" PointX="9.75" PointY="17.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.CheckListItem" Width="1.5" PointX="12" PointY="17.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.Comment" Width="1.5" PointX="9.75" PointY="19.75" />
-        <EntityTypeShape EntityType="CmAgencyModel.Label" Width="1.5" PointX="5.25" PointY="12.75" />
-        <EntityTypeShape EntityType="CmAgencyModel.List" Width="1.5" PointX="5.25" PointY="15.625" />
-        <EntityTypeShape EntityType="CmAgencyModel.Project" Width="1.5" PointX="3" PointY="9.875" />
-        <EntityTypeShape EntityType="CmAgencyModel.Task" Width="1.5" PointX="7.5" PointY="11.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.Team" Width="1.5" PointX="5.25" PointY="8.625" />
-        <EntityTypeShape EntityType="CmAgencyModel.User" Width="1.5" PointX="0.75" PointY="9.75" />
-        <EntityTypeShape EntityType="CmAgencyModel.TaskDependency" Width="1.5" PointX="9.75" PointY="14.375" />
-        <EntityTypeShape EntityType="CmAgencyModel.UserTask" Width="1.5" PointX="12.75" PointY="11.875" />
-        <EntityTypeShape EntityType="CmAgencyModel.UserTeam" Width="1.5" PointX="7.5" PointY="8.375" />
+      <Diagram DiagramId="e5a5eeab788b4fcaa55a378e929df623" Name="Diagram1" ZoomLevel="58">
+        <EntityTypeShape EntityType="CmAgencyModel.Attachment" Width="1.5" PointX="12.75" PointY="16.875" />
+        <EntityTypeShape EntityType="CmAgencyModel.CheckList" Width="1.5" PointX="12.75" PointY="22.875" />
+        <EntityTypeShape EntityType="CmAgencyModel.CheckListItem" Width="1.5" PointX="15" PointY="22.875" />
+        <EntityTypeShape EntityType="CmAgencyModel.Comment" Width="1.5" PointX="12.75" PointY="10.75" />
+        <EntityTypeShape EntityType="CmAgencyModel.Customer" Width="1.5" PointX="0.75" PointY="11.625" />
+        <EntityTypeShape EntityType="CmAgencyModel.List" Width="1.5" PointX="8.25" PointY="15.375" />
+        <EntityTypeShape EntityType="CmAgencyModel.Notification" Width="1.5" PointX="10.5" PointY="5.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.Project" Width="1.5" PointX="6" PointY="10.875" />
+        <EntityTypeShape EntityType="CmAgencyModel.Task" Width="1.5" PointX="10.5" PointY="13.875" />
+        <EntityTypeShape EntityType="CmAgencyModel.Team" Width="1.5" PointX="8.25" PointY="11.75" />
+        <EntityTypeShape EntityType="CmAgencyModel.User" Width="1.5" PointX="10.5" PointY="7.75" />
+        <EntityTypeShape EntityType="CmAgencyModel.Feedback" Width="1.5" PointX="3" PointY="12" />
+        <EntityTypeShape EntityType="CmAgencyModel.NotificationUser" Width="1.5" PointX="12.75" PointY="8" />
+        <EntityTypeShape EntityType="CmAgencyModel.TaskDependency" Width="1.5" PointX="12.75" PointY="20.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.UserTask" Width="1.5" PointX="15.75" PointY="12.125" />
         <AssociationConnector Association="CmAgencyModel.FK_Attachment_Task" />
         <AssociationConnector Association="CmAgencyModel.FK_CheckList_Task" />
         <AssociationConnector Association="CmAgencyModel.FK_CheckListItem_CheckList" />
         <AssociationConnector Association="CmAgencyModel.FK_Comment_Task" />
-        <AssociationConnector Association="CmAgencyModel.FK_Label_Project" />
+        <AssociationConnector Association="CmAgencyModel.FK_Feedback_Customer" />
+        <AssociationConnector Association="CmAgencyModel.FK_Project_Customer" />
         <AssociationConnector Association="CmAgencyModel.FK_Stage_Project" />
         <AssociationConnector Association="CmAgencyModel.FK_Task_List" />
+        <AssociationConnector Association="CmAgencyModel.FK_NotificationUser_Notification" />
         <AssociationConnector Association="CmAgencyModel.FK_Project_User" />
         <AssociationConnector Association="CmAgencyModel.FK_Project_User1" />
         <AssociationConnector Association="CmAgencyModel.FK_Task_User" />
@@ -32,12 +36,11 @@
         <AssociationConnector Association="CmAgencyModel.FK_TaskDependency_Task1" />
         <AssociationConnector Association="CmAgencyModel.FK_UserTask_Task" />
         <AssociationConnector Association="CmAgencyModel.FK_Team_User" />
-        <AssociationConnector Association="CmAgencyModel.FK_UserTeam_Team" />
+        <AssociationConnector Association="CmAgencyModel.FK_NotificationUser_User" />
         <AssociationConnector Association="CmAgencyModel.FK_UserTask_User" />
-        <AssociationConnector Association="CmAgencyModel.FK_UserTeam_User" />
-        <AssociationConnector Association="CmAgencyModel.LabelTask" />
         <AssociationConnector Association="CmAgencyModel.TeamProject" />
         <AssociationConnector Association="CmAgencyModel.UserProject" />
+        <AssociationConnector Association="CmAgencyModel.UserTeam" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

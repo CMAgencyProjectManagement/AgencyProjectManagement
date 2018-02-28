@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ProjectManagementComponent} from './project-management.component';
+import {ProjectSchedulingComponent} from './project-scheduling/project-scheduling.component';
 
 const routes: Routes = [
   {
@@ -9,8 +10,14 @@ const routes: Routes = [
     data: {
       title: 'Projects'
     }
+  },
+  {
+    path: 'schedule',
+    component: ProjectSchedulingComponent,
+    data: {
+      title: 'Scheduling'
+    }
   }
-
 ];
 
 @NgModule({

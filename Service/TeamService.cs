@@ -25,11 +25,11 @@ namespace Service
                 Team foundTeam = db.Teams.Find(teamId);
                 if (foundTeam != null)
                 {
-                    foreach (var userTeam in foundTeam.UserTeams)
+                    foreach (var user in foundTeam.Users)
                     {
-                        if (userTeam.IsManager)
+                        if (user.IsManager)
                         {
-                            return userTeam.User;
+                            return user;
                         }
                     }
                 }

@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.WebSockets;
 using Entity;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
@@ -22,7 +28,7 @@ namespace Web.Controllers
             {
                 //Dont expose password
                 User user = UserService.GetUser(id);
-                string avatarPath = ConstantHolder.AvatarPath;
+                string avatarPath = AgencyConfig.AvatarPath;
 
                 return Ok(ResponseHelper.GetResponse(user.ToJson(avatarPath)));
             }
@@ -42,7 +48,7 @@ namespace Web.Controllers
             {
                 string userIdString = User.Identity.GetUserId();
                 User user = UserService.GetUser(userIdString);
-                string avatarPath = ConstantHolder.AvatarPath;
+                string avatarPath = AgencyConfig.AvatarPath;
                 return Ok(ResponseHelper.GetResponse(user.ToJson(avatarPath)));
             }
             catch (Exception ex)
@@ -60,7 +66,7 @@ namespace Web.Controllers
             try
             {
                 IEnumerable<User> allUser = UserService.GetAll();
-                string avatarPath = ConstantHolder.AvatarPath;
+                string avatarPath = AgencyConfig.AvatarPath;
 
                 JArray data = new JArray();
 
@@ -87,7 +93,7 @@ namespace Web.Controllers
             try
             {
                 IEnumerable<User> allUser = UserService.GetAll();
-                string avatarPath = ConstantHolder.AvatarPath;
+                string avatarPath = AgencyConfig.AvatarPath;
 
                 JArray data = new JArray();
 
@@ -113,11 +119,16 @@ namespace Web.Controllers
         {
             try
             {
+                // Call service
                 User newUser = UserService.CreateAccount(
+                    createUserModel.Name,
+                    createUserModel.Phone,
+                    createUserModel.Birthdate,
+                    createUserModel.Email,
                     createUserModel.Username,
-                    createUserModel.Password,
-                    createUserModel.Avatar
+                    createUserModel.Password
                 );
+                
                 return Ok(ResponseHelper.GetResponse(newUser.ToJson()));
             }
             catch (Exception ex)
@@ -127,7 +138,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateUser(CreateUserModel createUserModel)

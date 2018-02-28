@@ -45,7 +45,7 @@ var DashboardRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div *ngFor=\"let project of projects\"\n    class=\"col-md-3\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        {{project.name}}\n      </div>\n      <div class=\"card-body\">\n          {{project.description}}\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<!--<button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"modal\" (click)=\"smallModal.show()\">-->\n  <!--Add a new project-->\n<!--</button>-->\n\n"
+module.exports = "<div class=\"row\">\r\n  <div *ngFor=\"let project of projects\"\r\n    class=\"col-md-3\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        {{project.name}}\r\n      </div>\r\n      <div class=\"card-body\">\r\n          {{project.description}}\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n\r\n<!--<button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"modal\" (click)=\"smallModal.show()\">-->\r\n  <!--Add a new project-->\r\n<!--</button>-->\r\n\r\n"
 
 /***/ }),
 
