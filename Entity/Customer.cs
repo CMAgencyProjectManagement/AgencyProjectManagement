@@ -18,7 +18,6 @@ namespace Entity
         public Customer()
         {
             this.Feedbacks = new HashSet<Feedback>();
-            this.Projects = new HashSet<Project>();
         }
     
         public int ID { get; set; }
@@ -31,7 +30,5 @@ namespace Entity
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Project> Projects { get; set; }
     }
 }
