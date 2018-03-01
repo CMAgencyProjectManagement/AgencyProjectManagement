@@ -37,6 +37,14 @@ const admin_navigation = [
       variant: 'info'
     }
   },
+  {
+    name: 'New Employee',
+    url: '/account/create',
+    icon: 'icon-user',
+    badge: {
+      variant: 'info'
+    }
+  },
   // {
   //   name: 'Manage teams',
   //   url: '/admin/teamManagePage',
