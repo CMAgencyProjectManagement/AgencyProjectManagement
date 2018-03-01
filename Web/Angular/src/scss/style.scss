@@ -5,22 +5,17 @@
  * Copyright (c) 2017 creativeLabs Łukasz Holeczek
  * @license MIT
  */
-
 // Override Boostrap variables
 @import "bootstrap-variables";
-
 // Import Bootstrap source files
 @import "../../node_modules/bootstrap/scss/bootstrap";
-
 // Override core variables
 @import "core-variables";
-
 // Import core styles
 @import "core/core";
-
+// 3rd party
+@import '../../node_modules/ladda/css/ladda';
+@import '../../node_modules/dhtmlx-gantt/codebase/dhtmlxgantt.css';
+@import '../../node_modules/spinkit/scss/spinners/11-folding-cube';
 // Custom styles
 @import "custom";
-
-@import "../../node_modules/ladda/css/ladda";
-
-@import "../../node_modules/dhtmlx-gantt/codebase/dhtmlxgantt.css";
