@@ -1,0 +1,7 @@
+{
+  "/": {
+    "target": "http://agencypm.gear.host",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

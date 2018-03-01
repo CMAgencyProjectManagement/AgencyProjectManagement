@@ -9,6 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --delete-output-path false -o",
+    "start-remote": "ng serve --proxy-config proxy-remote.conf.json --delete-output-path false -o",
     "build": "ng build --target=development --environment=dev",
     "test": "ng test",
     "lint": "ng lint",
