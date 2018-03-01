@@ -1,50 +1,71 @@
-<div class="animated fadeIn">
-  create user
+<div style="align-content: center">
+  <div class="card align-items-center">
+    <h1 style="margin-top: 20px">Sign up</h1>
+    <div class="card-body">
+      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group row">
+          <label class="col-md-4 col-form-label" for="username-input">Username:</label>
+          <div class="col-md-8">
+            <input type="text" id="username-input" name="username-input" class="form-control" style="position: relative;
+            left: -31px;
+            width: 257px;">
+            <span class="help-block" style="position: relative;
+            left: -30px;">Please enter username</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="password-input">Password</label>
+          <div class="col-md-9">
+            <input type="password" id="password-input" name="password-input" class="form-control">
+            <span class="help-block">Please enter a complex password</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="name-input">Fullname:</label>
+          <div class="col-md-9">
+            <input type="email" id="name-input" name="name-input" class="form-control">
+            <span class="help-block">Please enter name</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="email-input">Email:</label>
+          <div class="col-md-9">
+            <input type="email" id="email-input" name="email-input" class="form-control">
+            <span class="help-block">Please enter your email</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="select1">Gender</label>
+          <div class="col-md-9">
+            <select id="select1" name="select1" class="form-control">
+              <option value="0">Please select</option>
+              <option value="1">Female</option>
+              <option value="2">Male</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="disabledSelect">Position</label>
+          <div class="col-md-9">
+            <select id="disabledSelect" class="form-control" disabled>
+              <option value="0">Employee</option>
+              <option value="1">Option #1</option>
+              <option value="2">Option #2</option>
+              <option value="3">Option #3</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="file-input">Avatar</label>
+          <div class="col-md-9  ">
+            <input type="file" id="file-input" name="file-input">
+          </div>
+        </div>
+        <div class="form-actions" style="margin-left: 100px">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button class="btn btn-secondary" type="button">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-
-<!--<div class="app flex-row align-items-center">-->
-  <!--<div class="container">-->
-    <!--<div class="row justify-content-center">-->
-      <!--<div class="col-md-6">-->
-        <!--<div class="card-group">-->
-          <!--<div class="card p-4">-->
-            <!--<div class="card-body" [formGroup]="loginForm">-->
-              <!--<div class="row justify-content-center">-->
-                <!--<h1>Sign up</h1>-->
-              <!--</div>-->
-              <!--<div class="row justify-content-center">-->
-                <!--<p class="text-muted">Sign In to your account</p>-->
-              <!--</div>-->
-              <!--<div class="input-group mb-3">-->
-                <!--<span class="input-group-addon"><i class="icon-user"></i></span>-->
-                <!--<input formControlName="username" type="text" class="form-control" placeholder="Username"-->
-                       <!--[readonly]="isLoading"-->
-                       <!--(keypress)="handleEnterPressed($event)">-->
-              <!--</div>-->
-
-              <!--<div class="input-group mb-4">-->
-                <!--<span class="input-group-addon"><i class="icon-lock"></i></span>-->
-                <!--<input [readonly]="isLoading" formControlName="password" type="password" class="form-control"-->
-                       <!--placeholder="Password"-->
-                       <!--(keypress)="handleEnterPressed($event)">-->
-              <!--</div>-->
-              <!--<div class="input-group alert alert-warning" role="alert"-->
-                   <!--*ngIf="errorMessage">-->
-                <!--{{errorMessage}}-->
-              <!--</div>-->
-              <!--<div class="row justify-content-center">-->
-                <!--<button-->
-                  <!--type="submit" class="btn btn-primary"-->
-                  <!--[disabled]="!loginForm.valid"-->
-                  <!--(click)="handleLogin()"-->
-                  <!--[ladda]="isLoading">-->
-                  <!--Login-->
-                <!--</button>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
