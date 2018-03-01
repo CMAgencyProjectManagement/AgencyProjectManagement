@@ -6,7 +6,6 @@ const Baobab = require('Baobab');
 const StoreTree = {
   token: {
     access_token: '',
-    type: ''
   },
   bearerToken: undefined,
   currentUser: undefined,
