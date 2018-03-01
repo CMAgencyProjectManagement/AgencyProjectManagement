@@ -4,7 +4,7 @@ const serverPath = {
   allUser: '/api/user/all',
   allProject: '/api/project/all',
   allTeam: '/api/team/all',
-  myProject: '/api/project'
+  myProject: '/api/project',
 };
 
 export {

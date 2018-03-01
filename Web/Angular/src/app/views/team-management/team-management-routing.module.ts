@@ -4,20 +4,11 @@ import {TeamManagePageComponent} from './team-management.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'view',
+    component: TeamManagePageComponent,
     data: {
-      title: 'Admin'
-    },
-    children: [
-      {
-        path: 'teamManagePage',
-        component: TeamManagePageComponent,
-        data: {
-          title: 'Team Management Page'
-        }
-      },
-
-    ]
+      title: 'Team'
+    }
 
   }
 ];

@@ -25,4 +25,19 @@ export class ProjectService {
         })
     });
   }
+
+  public getAllProjects(): Promise<any> {
+    return new Promise<any>( (resolve, reject) => {
+      get(serverPath.allProject)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+    });
+  }
 }

@@ -61,14 +61,16 @@
 warning 6002: The table/view 'marketingagency.dbo.Feedback' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Feedback">
           <Key>
-            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="CustomerID" />
             <PropertyRef Name="Remark" />
             <PropertyRef Name="Rating" />
+            <PropertyRef Name="ProjectID" />
           </Key>
-          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="Remark" Type="text" Nullable="false" />
           <Property Name="Rating" Type="int" Nullable="false" />
           <Property Name="DetailFeedback" Type="text" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="List">
           <Key>
@@ -111,7 +113,7 @@ warning 6002: The table/view 'marketingagency.dbo.NotificationUser' does not hav
           <Property Name="StartDate" Type="date" />
           <Property Name="ChangedBy" Type="int" />
           <Property Name="ChangedTime" Type="datetime" />
-          <Property Name="CustomerId" Type="int" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="LessionLearnt" Type="text" />
         </EntityType>
         <EntityType Name="Task">
@@ -269,7 +271,19 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Feedback">
-              <PropertyRef Name="CustomerId" />
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -298,7 +312,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Project_Customer">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
           <End Role="Project" Type="Self.Project" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
@@ -515,10 +529,11 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Feedback" EntityType="Self.Feedback" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [Feedback].[CustomerId] AS [CustomerId], 
+    [Feedback].[CustomerID] AS [CustomerID], 
     [Feedback].[Remark] AS [Remark], 
     [Feedback].[Rating] AS [Rating], 
-    [Feedback].[DetailFeedback] AS [DetailFeedback]
+    [Feedback].[DetailFeedback] AS [DetailFeedback], 
+    [Feedback].[ProjectID] AS [ProjectID]
     FROM [dbo].[Feedback] AS [Feedback]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="NotificationUser" EntityType="Self.NotificationUser" store:Type="Tables" store:Schema="dbo">
@@ -579,6 +594,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           </AssociationSet>
           <AssociationSet Name="FK_Feedback_Customer" Association="Self.FK_Feedback_Customer">
             <End Role="Customer" EntitySet="Customer" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_Project" Association="Self.FK_Feedback_Project">
+            <End Role="Project" EntitySet="Project" />
             <End Role="Feedback" EntitySet="Feedback" />
           </AssociationSet>
           <AssociationSet Name="FK_NotificationUser_Notification" Association="Self.FK_NotificationUser_Notification">
@@ -713,6 +732,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <AssociationSet Name="FK_NotificationUser_Notification" Association="CmAgencyModel.FK_NotificationUser_Notification">
             <End Role="Notification" EntitySet="Notifications" />
             <End Role="NotificationUser" EntitySet="NotificationUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_Project" Association="CmAgencyModel.FK_Feedback_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
           </AssociationSet>
           <AssociationSet Name="FK_Project_User" Association="CmAgencyModel.FK_Project_User">
             <End Role="User" EntitySet="Users" />
@@ -854,10 +877,11 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="ChangedBy" Type="Int32" />
           <Property Name="ChangedTime" Type="DateTime" Precision="3" />
-          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="LessionLearnt" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Customer" Relationship="CmAgencyModel.FK_Project_Customer" FromRole="Project" ToRole="Customer" />
           <NavigationProperty Name="Lists" Relationship="CmAgencyModel.FK_Stage_Project" FromRole="Project" ToRole="List" />
+          <NavigationProperty Name="Feedbacks" Relationship="CmAgencyModel.FK_Feedback_Project" FromRole="Project" ToRole="Feedback" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Project_User" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CmAgencyModel.FK_Project_User1" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="Teams" Relationship="CmAgencyModel.TeamProject" FromRole="Project" ToRole="Team" />
@@ -927,15 +951,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
         </EntityType>
         <EntityType Name="Feedback">
           <Key>
-            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="CustomerID" />
             <PropertyRef Name="Remark" />
             <PropertyRef Name="Rating" />
+            <PropertyRef Name="ProjectID" />
           </Key>
-          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="Remark" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Rating" Type="Int32" Nullable="false" />
           <Property Name="DetailFeedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="CmAgencyModel.FK_Feedback_Customer" FromRole="Feedback" ToRole="Customer" />
+          <NavigationProperty Name="Project" Relationship="CmAgencyModel.FK_Feedback_Project" FromRole="Feedback" ToRole="Project" />
         </EntityType>
         <EntityType Name="NotificationUser">
           <Key>
@@ -1031,12 +1058,12 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Feedback">
-              <PropertyRef Name="CustomerId" />
+              <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Project_Customer">
-          <End Type="CmAgencyModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="CmAgencyModel.Customer" Role="Customer" Multiplicity="1" />
           <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
@@ -1080,6 +1107,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
             </Principal>
             <Dependent Role="NotificationUser">
               <PropertyRef Name="NotificationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_Project">
+          <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="CmAgencyModel.Feedback" Role="Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1350,10 +1389,11 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <EntitySetMapping Name="Feedbacks">
             <EntityTypeMapping TypeName="CmAgencyModel.Feedback">
               <MappingFragment StoreEntitySet="Feedback">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="DetailFeedback" ColumnName="DetailFeedback" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

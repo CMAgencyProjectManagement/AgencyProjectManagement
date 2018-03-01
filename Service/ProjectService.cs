@@ -65,8 +65,9 @@ namespace Service
             return newProject;
         }
 
-        public static JObject ToJson(this Project project, bool isDetailed = true)
+        public static JObject ToJson(this Project project, bool isDetailed = false)
         {
+            Customer customer = CustomerService.getCustomer(project.CustomerId);
             User creator = UserService.GetUser(project.CreatedBy);
             var result = new JObject
             {
@@ -87,9 +88,7 @@ namespace Service
 
             if (isDetailed)
             {
-                var list = ListService.
                 JArray listJArray = new JArray();
-                
                 foreach (List list in project.Lists)
                 {
                     listJArray.Add(list.ToJson());

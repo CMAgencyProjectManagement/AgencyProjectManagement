@@ -23,26 +23,26 @@ const admin_navigation = [
   },
   {
     name: 'Team',
-    url: '/team',
+    url: '/team/view',
     icon: 'icon-people',
     badge: {
       variant: 'info'
     }
   },
   {
-    name: 'Manages account',
+    name: 'Account',
     url: '/account/view',
     icon: 'icon-user',
     badge: {
       variant: 'info'
     }
   },
-  {
-    name: 'Manage teams',
-    url: '/admin/teamManagePage',
-    icon: 'icon-people',
-    badge: undefined
-  },
+  // {
+  //   name: 'Manage teams',
+  //   url: '/admin/teamManagePage',
+  //   icon: 'icon-people',
+  //   badge: undefined
+  // },
 
 ];
 

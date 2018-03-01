@@ -3,7 +3,7 @@ webpackJsonp(["user-management.module"],{
 /***/ "../../../../../src/app/views/user-management/create-user/create-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  create-user works!\n</p>\n"
+module.exports = "<div class=\"animated fadeIn\">\n  create user\n</div>\n\n<!--<div class=\"app flex-row align-items-center\">-->\n  <!--<div class=\"container\">-->\n    <!--<div class=\"row justify-content-center\">-->\n      <!--<div class=\"col-md-6\">-->\n        <!--<div class=\"card-group\">-->\n          <!--<div class=\"card p-4\">-->\n            <!--<div class=\"card-body\" [formGroup]=\"loginForm\">-->\n              <!--<div class=\"row justify-content-center\">-->\n                <!--<h1>Sign up</h1>-->\n              <!--</div>-->\n              <!--<div class=\"row justify-content-center\">-->\n                <!--<p class=\"text-muted\">Sign In to your account</p>-->\n              <!--</div>-->\n              <!--<div class=\"input-group mb-3\">-->\n                <!--<span class=\"input-group-addon\"><i class=\"icon-user\"></i></span>-->\n                <!--<input formControlName=\"username\" type=\"text\" class=\"form-control\" placeholder=\"Username\"-->\n                       <!--[readonly]=\"isLoading\"-->\n                       <!--(keypress)=\"handleEnterPressed($event)\">-->\n              <!--</div>-->\n\n              <!--<div class=\"input-group mb-4\">-->\n                <!--<span class=\"input-group-addon\"><i class=\"icon-lock\"></i></span>-->\n                <!--<input [readonly]=\"isLoading\" formControlName=\"password\" type=\"password\" class=\"form-control\"-->\n                       <!--placeholder=\"Password\"-->\n                       <!--(keypress)=\"handleEnterPressed($event)\">-->\n              <!--</div>-->\n              <!--<div class=\"input-group alert alert-warning\" role=\"alert\"-->\n                   <!--*ngIf=\"errorMessage\">-->\n                <!--{{errorMessage}}-->\n              <!--</div>-->\n              <!--<div class=\"row justify-content-center\">-->\n                <!--<button-->\n                  <!--type=\"submit\" class=\"btn btn-primary\"-->\n                  <!--[disabled]=\"!loginForm.valid\"-->\n                  <!--(click)=\"handleLogin()\"-->\n                  <!--[ladda]=\"isLoading\">-->\n                  <!--Login-->\n                <!--</button>-->\n              <!--</div>-->\n            <!--</div>-->\n          <!--</div>-->\n        <!--</div>-->\n      <!--</div>-->\n    <!--</div>-->\n  <!--</div>-->\n<!--</div>-->\n"
 
 /***/ }),
 
@@ -121,8 +121,8 @@ var UserManagementRoutingModule = /** @class */ (function () {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserManagementModule", function() { return UserManagementModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_management_routing_module__ = __webpack_require__("../../../../../src/app/views/user-management/user-management-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_management_routing_module__ = __webpack_require__("../../../../../src/app/views/user-management/user-management-routing.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__create_user_create_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/create-user/create-user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__view_user_view_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -142,8 +142,8 @@ var UserManagementModule = /** @class */ (function () {
     UserManagementModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1__user_management_routing_module__["a" /* UserManagementRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* CommonModule */]
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_2__user_management_routing_module__["a" /* UserManagementRoutingModule */]
             ],
             declarations: [__WEBPACK_IMPORTED_MODULE_3__create_user_create_user_component__["a" /* CreateUserComponent */], __WEBPACK_IMPORTED_MODULE_4__view_user_view_user_component__["a" /* ViewUserComponent */]]
         })
@@ -170,7 +170,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".table.table-bordered {\n  background-color: white; }\n", ""]);
 
 // exports
 

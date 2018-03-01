@@ -14,11 +14,13 @@ namespace Entity
     
     public partial class Feedback
     {
-        public int CustomerId { get; set; }
+        public int CustomerID { get; set; }
         public string Remark { get; set; }
         public int Rating { get; set; }
         public string DetailFeedback { get; set; }
+        public int ProjectID { get; set; }
     
         public virtual Customer Customer { get; set; }
+        public virtual Project Project { get; set; }
     }
 }
