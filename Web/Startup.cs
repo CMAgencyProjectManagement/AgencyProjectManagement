@@ -43,7 +43,8 @@ namespace Web
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
-                Provider = new AgencyAuthorizationServerProvider()
+                Provider = new AgencyAuthorizationServerProvider(),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1)
             };
 
             app.UseOAuthAuthorizationServer(authorizationServerOptions);
@@ -119,7 +120,6 @@ namespace Web
         public void SetupConstant()
         {
             AgencyConfig.AvatarPath = WebConfigurationManager.AppSettings["AvatarPath"];
-
         }
     }
 }

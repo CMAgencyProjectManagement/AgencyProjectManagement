@@ -3,38 +3,67 @@ import {User} from '../interfaces/user';
 import {Cursor, StoreService} from './tree.service';
 import {serverPath} from '../_serverPath';
 import {post, get} from 'superagent';
+import * as moment from 'moment';
 
 @Injectable()
 export class UserService {
-  private userHub: any;
   private currentUserCursor: Cursor;
   private tokenCursor: Cursor;
-  private securityTypeCursor: Cursor;
 
   constructor(private storeService: StoreService) {
     this.currentUserCursor = storeService.select(['currentUser']);
     this.tokenCursor = storeService.select(['token', 'access_token']);
-    this.securityTypeCursor = storeService.select(['token', 'type']);
   }
 
   public logout() {
     this.currentUserCursor.set(undefined);
     this.tokenCursor.set(undefined);
-    this.securityTypeCursor.set(undefined);
+    if (typeof(Storage) !== 'undefined') {
+      localStorage.clear();
+    }
   }
 
-  // getLocalToken(): string {
-  //   if (typeof(Storage) !== 'undefined') {
-  //     let token = localStorage.getItem('AgencyToken');
-  //     let expire = localStorage.getItem('AgencyTokenExpireTime');
-  //   }
-  // }
-  //
-  // setLocalToken() {
-  //   if (typeof(Storage) !== 'undefined') {
-  //
-  //   }
-  // }
+  public getLocalToken(): string {
+    if (typeof(Storage) !== 'undefined') {
+      let token = localStorage.getItem('AgencyToken');
+      if (token) {
+        let expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
+        let now = moment().unix();
+        console.debug('getLocalToken', token, expireTime, now);
+        if (now < expireTime) {
+          return token;
+        }
+      }
+
+    }
+  }
+
+  setLocalToken(token: string, expiresIn: number) {
+    if (typeof(Storage) !== 'undefined') {
+      localStorage.setItem('AgencyToken', token);
+      if (expiresIn) {
+        let now = moment().unix();
+        localStorage.setItem('AgencyTokenExpireTime', String(now + expiresIn));
+        console.debug('getLocalToken', token, expiresIn, now);
+      }
+
+    }
+  }
+
+  public getLocalUser(): User {
+    if (typeof(Storage) !== 'undefined') {
+      let userJson = localStorage.getItem('AgencyUser');
+      return JSON.parse(userJson);
+    }
+  }
+
+  setLocalUser(user: User) {
+    if (typeof(Storage) !== 'undefined') {
+      let userJson = JSON.stringify(user);
+      localStorage.setItem('AgencyUser', userJson);
+    }
+  }
+
 
   /**
    * @param username
@@ -42,20 +71,21 @@ export class UserService {
    * @returns {Promise<User>}
    */
   public login(username: string, password: string): Promise<User> {
-    const _this = this;
     // return new Promise<User>();
     return new Promise<User>((resolve, reject) => {
-      _this.getToken(username, password)
+      this.getToken(username, password)
         .then(res => {
           const type = res.token_type;
+          const expiresIn = res.expires_in;
           const token = res.access_token;
           console.debug('Login - getInfo', type, token.substring(10) + '.....');
-          _this.tokenCursor.set(token);
-          _this.securityTypeCursor.set(type);
-          _this.getCurrentUserInfo(token)
+          this.tokenCursor.set(token);
+          this.setLocalToken(token, expiresIn);
+          this.getCurrentUserInfo(token)
             .then(user => {
               resolve(user);
-              _this.currentUserCursor.set(user);
+              this.currentUserCursor.set(user);
+              this.setLocalUser(user);
             })
             .catch(reject);
         })

@@ -403,6 +403,7 @@
     <Content Include="Angular\dist\scripts.bundle.js" />
     <Content Include="Angular\dist\Simple-Line-Icons.2fe2efe63441d830b1ac.svg" />
     <Content Include="Angular\dist\styles.bundle.js" />
+    <Content Include="Angular\dist\team-management.module.chunk.js" />
     <Content Include="Angular\dist\user-management.module.chunk.js" />
     <Content Include="Angular\dist\vendor.bundle.js" />
     <Content Include="index.html" />
@@ -427,6 +428,7 @@
     <Content Include="Angular\dist\styles.bundle.js.map" />
     <Content Include="Angular\dist\user-management.module.chunk.js.map" />
     <Content Include="Angular\dist\vendor.bundle.js.map" />
+    <Content Include="Angular\dist\team-management.module.chunk.js.map" />
     <None Include="Properties\PublishProfiles\agencypm - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\agencypm - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">

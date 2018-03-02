@@ -113,8 +113,8 @@ warning 6002: The table/view 'marketingagency.dbo.NotificationUser' does not hav
           <Property Name="StartDate" Type="date" />
           <Property Name="ChangedBy" Type="int" />
           <Property Name="ChangedTime" Type="datetime" />
-          <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="LessionLearnt" Type="text" />
+          <Property Name="CustomerFeedback" Type="text" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -308,18 +308,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
             </Principal>
             <Dependent Role="NotificationUser">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Project_Customer">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-          <End Role="Project" Type="Self.Project" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Project">
-              <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -608,10 +596,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
             <End Role="User" EntitySet="User" />
             <End Role="NotificationUser" EntitySet="NotificationUser" />
           </AssociationSet>
-          <AssociationSet Name="FK_Project_Customer" Association="Self.FK_Project_Customer">
-            <End Role="Customer" EntitySet="Customer" />
-            <End Role="Project" EntitySet="Project" />
-          </AssociationSet>
           <AssociationSet Name="FK_Project_User" Association="Self.FK_Project_User">
             <End Role="User" EntitySet="User" />
             <End Role="Project" EntitySet="Project" />
@@ -716,10 +700,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <AssociationSet Name="FK_Feedback_Customer" Association="CmAgencyModel.FK_Feedback_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Feedback" EntitySet="Feedbacks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Project_Customer" Association="CmAgencyModel.FK_Project_Customer">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Stage_Project" Association="CmAgencyModel.FK_Stage_Project">
             <End Role="Project" EntitySet="Projects" />
@@ -843,7 +823,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Logo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Feedbacks" Relationship="CmAgencyModel.FK_Feedback_Customer" FromRole="Customer" ToRole="Feedback" />
-          <NavigationProperty Name="Projects" Relationship="CmAgencyModel.FK_Project_Customer" FromRole="Customer" ToRole="Project" />
         </EntityType>
         <EntityType Name="List">
           <Key>
@@ -877,9 +856,8 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="ChangedBy" Type="Int32" />
           <Property Name="ChangedTime" Type="DateTime" Precision="3" />
-          <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="LessionLearnt" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Customer" Relationship="CmAgencyModel.FK_Project_Customer" FromRole="Project" ToRole="Customer" />
+          <Property Name="CustomerFeedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Lists" Relationship="CmAgencyModel.FK_Stage_Project" FromRole="Project" ToRole="List" />
           <NavigationProperty Name="Feedbacks" Relationship="CmAgencyModel.FK_Feedback_Project" FromRole="Project" ToRole="Feedback" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Project_User" FromRole="Project" ToRole="User" />
@@ -1059,18 +1037,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
             </Principal>
             <Dependent Role="Feedback">
               <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Project_Customer">
-          <End Type="CmAgencyModel.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Project">
-              <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1326,8 +1292,8 @@ warning 6002: The table/view 'marketingagency.dbo.UserTeam' does not have a prim
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="CmAgencyModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="CustomerFeedback" ColumnName="CustomerFeedback" />
                 <ScalarProperty Name="LessionLearnt" ColumnName="LessionLearnt" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="ChangedTime" ColumnName="ChangedTime" />
                 <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
