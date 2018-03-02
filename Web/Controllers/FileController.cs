@@ -10,6 +10,7 @@ using Service;
 
 namespace Web.Controllers
 {
+    [RoutePrefix("api/file")]
     public class FileController : ApiController
     {
         [HttpPut]

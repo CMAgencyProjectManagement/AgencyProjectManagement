@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   isLoading: boolean;
   errorMessage: string;
 
-  constructor(private accountHub: UserService,
+  constructor(private userService: UserService,
               private storeService: StoreService,
               private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
@@ -49,8 +49,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
       this.isLoading = true;
-      console.log(this.isLoading);
-      this.accountHub.login(
+      this.userService.login(
         formValue.username,
         formValue.password
       ).then(value => {

@@ -1,10 +1,14 @@
 const serverPath = {
   token: '/token',
+  // User
   user: '/api/user',
   allUser: '/api/user/all',
+  createUser: 'api/user',
+  // Project
   allProject: '/api/project/all',
-  allTeam: '/api/team/all',
   myProject: '/api/project',
+  // Team
+  allTeam: '/api/team/all'
 };
 
 export {

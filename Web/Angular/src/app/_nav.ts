@@ -45,12 +45,6 @@ const admin_navigation = [
       variant: 'info'
     }
   },
-  // {
-  //   name: 'Manage teams',
-  //   url: '/admin/teamManagePage',
-  //   icon: 'icon-people',
-  //   badge: undefined
-  // },
 
 ];
 

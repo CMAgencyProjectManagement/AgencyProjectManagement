@@ -44,7 +44,7 @@ namespace Web
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
                 Provider = new AgencyAuthorizationServerProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1)
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(2)
             };
 
             app.UseOAuthAuthorizationServer(authorizationServerOptions);

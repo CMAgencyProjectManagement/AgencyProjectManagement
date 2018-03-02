@@ -51,7 +51,12 @@
           </div>
         </div>
         <div class="form-actions" style="margin-left: 100px">
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary"
+                  (click)="handleCreate()">Save changes
+          </button>
+          <button type="button" class="btn btn-primary"
+                  (click)="handleCreate()">Save changes 1
+          </button>
           <button class="btn btn-secondary" type="button">Cancel</button>
         </div>
       </form>

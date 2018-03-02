@@ -9,9 +9,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
-import { Cursor, StoreService } from '../../../services/tree.service';
-import { Router } from '@angular/router';
+import {UserService} from '../../../services/user.service';
+import {Cursor, StoreService} from '../../../services/tree.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -25,9 +25,9 @@ export class CreateUserComponent implements OnInit {
   isLoading: boolean;
   errorMessage: string;
 
-  constructor(private accountHub: UserService,
-    private storeService: StoreService,
-    private router: Router) {
+  constructor(private userService: UserService,
+              private storeService: StoreService,
+              private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
     this.isLoading = false;
@@ -44,28 +44,37 @@ export class CreateUserComponent implements OnInit {
     })
   }
 
-  handleEnterPressed($event) {
-    if ($event.keyCode === 13) {
-      this.handleLogin();
-    }
-  }
+  handleCreate() {
+    console.debug('handleCreate 1');
 
-  handleLogin() {
     if (this.signupForm.valid) {
       const formValue = this.signupForm.value;
       this.isLoading = true;
-      console.log(this.isLoading);
-      this.accountHub.login(
+      console.debug('handleCreate 2', formValue);
+      this.userService.createUser(
         formValue.username,
         formValue.password,
+        formValue.fullname,
+        undefined,
+        undefined,
+        formValue.email
       ).then(value => {
         this.isLoading = false;
-        this.router.navigate(['dashboard'])
       }).catch(reason => {
         this.isLoading = false;
-        this.errorMessage = reason.message;
+        console.debug(reason);
+        this.handleCreateError(reason.Data);
       })
     }
   }
+
+  handleCreateError(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      console.debug('handleCreateUserError', fieldName, errorMessage);
+    }
+  }
+
 
 }

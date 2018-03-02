@@ -23,48 +23,6 @@ export class UserService {
     }
   }
 
-  public getLocalToken(): string {
-    if (typeof(Storage) !== 'undefined') {
-      let token = localStorage.getItem('AgencyToken');
-      if (token) {
-        let expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
-        let now = moment().unix();
-        console.debug('getLocalToken', token, expireTime, now);
-        if (now < expireTime) {
-          return token;
-        }
-      }
-
-    }
-  }
-
-  setLocalToken(token: string, expiresIn: number) {
-    if (typeof(Storage) !== 'undefined') {
-      localStorage.setItem('AgencyToken', token);
-      if (expiresIn) {
-        let now = moment().unix();
-        localStorage.setItem('AgencyTokenExpireTime', String(now + expiresIn));
-        console.debug('getLocalToken', token, expiresIn, now);
-      }
-
-    }
-  }
-
-  public getLocalUser(): User {
-    if (typeof(Storage) !== 'undefined') {
-      let userJson = localStorage.getItem('AgencyUser');
-      return JSON.parse(userJson);
-    }
-  }
-
-  setLocalUser(user: User) {
-    if (typeof(Storage) !== 'undefined') {
-      let userJson = JSON.stringify(user);
-      localStorage.setItem('AgencyUser', userJson);
-    }
-  }
-
-
   /**
    * @param username
    * @param password
@@ -81,7 +39,7 @@ export class UserService {
           console.debug('Login - getInfo', type, token.substring(10) + '.....');
           this.tokenCursor.set(token);
           this.setLocalToken(token, expiresIn);
-          this.getCurrentUserInfo(token)
+          this.getCurrentUserInfo()
             .then(user => {
               resolve(user);
               this.currentUserCursor.set(user);
@@ -116,11 +74,15 @@ export class UserService {
   }
 
   private getToken(username: string, password: string): Promise<any> {
+    const postDataObject = {
+      grant_type: 'password',
+      username: username,
+      password: password,
+    };
     return new Promise<string>((resolve, reject) => {
       post(serverPath.token)
-        .send('grant_type=password')
-        .send(`username=${username}`)
-        .send(`password=${password}`)
+        .send(postDataObject)
+        .type('form')
         .then(res => {
           if (res.ok) {
             resolve(res.body);
@@ -131,10 +93,11 @@ export class UserService {
     })
   }
 
-  private getCurrentUserInfo(authorization): Promise<User> {
+  private getCurrentUserInfo(): Promise<User> {
     return new Promise<User>((resolve, reject) => {
+      const token = this.tokenCursor.get();
       get(serverPath.user)
-        .set('token', authorization)
+        .set('token', token)
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
@@ -142,9 +105,85 @@ export class UserService {
           } else {
             reject(content.Message);
           }
-        }).catch(reject)
+        })
+        .catch(reject)
     });
   }
 
+  public createUser(
+    username: string,
+    password: string,
+    name: string,
+    phone: string,
+    birthdate: string,
+    email: string): Promise<User> {
 
+    const postDataObject = {
+      Username: username,
+      Password: password,
+      Name: name,
+      Phone: phone,
+      Birthdate: birthdate,
+      Email: email
+    };
+    return new Promise<User>((resolve, reject) => {
+      const token = this.tokenCursor.get();
+      post(serverPath.createUser)
+        .set('token', token)
+        .send(postDataObject)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reject);
+    });
+  }
+
+  public getLocalToken(): string {
+    if (typeof(Storage) !== 'undefined') {
+      let token = localStorage.getItem('AgencyToken');
+      if (token) {
+        let expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
+        let now = moment().unix();
+        if (now < expireTime) {
+          return token;
+        }
+      }
+
+    }
+  }
+
+  setLocalToken(token: string, expiresIn: number) {
+    if (typeof(Storage) !== 'undefined') {
+      localStorage.setItem('AgencyToken', token);
+      if (expiresIn) {
+        let now = moment().unix();
+        localStorage.setItem('AgencyTokenExpireTime', String(now + expiresIn));
+      }
+
+    }
+  }
+
+  public getLocalUser(): User {
+    if (typeof(Storage) !== 'undefined') {
+      let expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
+      let now = moment().unix();
+      if (now < expireTime) {
+        let userJson = localStorage.getItem('AgencyUser');
+        return JSON.parse(userJson);
+      }
+    }
+  }
+
+  setLocalUser(user: User) {
+    if (typeof(Storage) !== 'undefined') {
+      let userJson = JSON.stringify(user);
+      localStorage.setItem('AgencyUser', userJson);
+    }
+  }
 }
