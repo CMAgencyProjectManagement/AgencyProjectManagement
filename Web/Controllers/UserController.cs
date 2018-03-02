@@ -42,7 +42,7 @@ namespace Web.Controllers
         [HttpGet]
         [Route("")]
         [Authorize]
-        public IHttpActionResult GetUser()
+        public IHttpActionResult GetCurrentUser()
         {
             try
             {
