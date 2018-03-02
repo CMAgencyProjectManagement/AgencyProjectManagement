@@ -8,11 +8,13 @@ namespace Web.ViewModels
 {
     public class CreateUserModel
     {
+        [Required]
         [MaxLength(255)]
         public string Username { get; set; }
         [Required]
         [MaxLength(255)]
         public string Password { get; set; }
+        [Required]
         [MaxLength(255)]
         public string Name { get; set; }
         [Phone]

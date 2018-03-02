@@ -92,17 +92,23 @@ namespace Web.Controllers
         {
             try
             {
-                // Call service
-                User newUser = UserService.CreateAccount(
-                    createUserModel.Name,
-                    createUserModel.Phone,
-                    createUserModel.Birthdate,
-                    createUserModel.Email,
-                    createUserModel.Username,
-                    createUserModel.Password
-                );
-                
-                return Ok(ResponseHelper.GetResponse(newUser.ToJson()));
+                if (ModelState.IsValid)
+                {
+                    User newUser = UserService.CreateAccount(
+                        createUserModel.Name,
+                        createUserModel.Phone,
+                        createUserModel.Birthdate,
+                        createUserModel.Email,
+                        createUserModel.Username,
+                        createUserModel.Password
+                    );
+                    return Ok(ResponseHelper.GetResponse(newUser.ToJson()));
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
             }
             catch (Exception ex)
             {
