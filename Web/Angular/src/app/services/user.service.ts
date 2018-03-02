@@ -3,25 +3,38 @@ import {User} from '../interfaces/user';
 import {Cursor, StoreService} from './tree.service';
 import {serverPath} from '../_serverPath';
 import {post, get} from 'superagent';
-import * as moment from 'moment';
 
 @Injectable()
 export class UserService {
+  private userHub: any;
   private currentUserCursor: Cursor;
   private tokenCursor: Cursor;
+  private securityTypeCursor: Cursor;
 
   constructor(private storeService: StoreService) {
     this.currentUserCursor = storeService.select(['currentUser']);
     this.tokenCursor = storeService.select(['token', 'access_token']);
+    this.securityTypeCursor = storeService.select(['token', 'type']);
   }
 
   public logout() {
     this.currentUserCursor.set(undefined);
     this.tokenCursor.set(undefined);
-    if (typeof(Storage) !== 'undefined') {
-      localStorage.clear();
-    }
+    this.securityTypeCursor.set(undefined);
   }
+
+  // getLocalToken(): string {
+  //   if (typeof(Storage) !== 'undefined') {
+  //     let token = localStorage.getItem('AgencyToken');
+  //     let expire = localStorage.getItem('AgencyTokenExpireTime');
+  //   }
+  // }
+  //
+  // setLocalToken() {
+  //   if (typeof(Storage) !== 'undefined') {
+  //
+  //   }
+  // }
 
   /**
    * @param username
@@ -29,21 +42,20 @@ export class UserService {
    * @returns {Promise<User>}
    */
   public login(username: string, password: string): Promise<User> {
+    const _this = this;
     // return new Promise<User>();
     return new Promise<User>((resolve, reject) => {
-      this.getToken(username, password)
+      _this.getToken(username, password)
         .then(res => {
           const type = res.token_type;
-          const expiresIn = res.expires_in;
           const token = res.access_token;
           console.debug('Login - getInfo', type, token.substring(10) + '.....');
-          this.tokenCursor.set(token);
-          this.setLocalToken(token, expiresIn);
-          this.getCurrentUserInfo()
+          _this.tokenCursor.set(token);
+          _this.securityTypeCursor.set(type);
+          _this.getCurrentUserInfo(token)
             .then(user => {
               resolve(user);
-              this.currentUserCursor.set(user);
-              this.setLocalUser(user);
+              _this.currentUserCursor.set(user);
             })
             .catch(reject);
         })
@@ -74,15 +86,11 @@ export class UserService {
   }
 
   private getToken(username: string, password: string): Promise<any> {
-    const postDataObject = {
-      grant_type: 'password',
-      username: username,
-      password: password,
-    };
     return new Promise<string>((resolve, reject) => {
       post(serverPath.token)
-        .send(postDataObject)
-        .type('form')
+        .send('grant_type=password')
+        .send(`username=${username}`)
+        .send(`password=${password}`)
         .then(res => {
           if (res.ok) {
             resolve(res.body);
@@ -93,11 +101,10 @@ export class UserService {
     })
   }
 
-  private getCurrentUserInfo(): Promise<User> {
+  private getCurrentUserInfo(authorization): Promise<User> {
     return new Promise<User>((resolve, reject) => {
-      const token = this.tokenCursor.get();
       get(serverPath.user)
-        .set('token', token)
+        .set('token', authorization)
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
@@ -105,85 +112,9 @@ export class UserService {
           } else {
             reject(content.Message);
           }
-        })
-        .catch(reject)
+        }).catch(reject)
     });
   }
 
-  public createUser(
-    username: string,
-    password: string,
-    name: string,
-    phone: string,
-    birthdate: string,
-    email: string): Promise<User> {
 
-    const postDataObject = {
-      Username: username,
-      Password: password,
-      Name: name,
-      Phone: phone,
-      Birthdate: birthdate,
-      Email: email
-    };
-    return new Promise<User>((resolve, reject) => {
-      const token = this.tokenCursor.get();
-      post(serverPath.createUser)
-        .set('token', token)
-        .send(postDataObject)
-        .type('form')
-        .then((res) => {
-          const content = res.body;
-          if (content.IsSuccess) {
-            resolve(content.data);
-          } else {
-            reject(content);
-          }
-        })
-        .catch(reject);
-    });
-  }
-
-  public getLocalToken(): string {
-    if (typeof(Storage) !== 'undefined') {
-      let token = localStorage.getItem('AgencyToken');
-      if (token) {
-        let expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
-        let now = moment().unix();
-        if (now < expireTime) {
-          return token;
-        }
-      }
-
-    }
-  }
-
-  setLocalToken(token: string, expiresIn: number) {
-    if (typeof(Storage) !== 'undefined') {
-      localStorage.setItem('AgencyToken', token);
-      if (expiresIn) {
-        let now = moment().unix();
-        localStorage.setItem('AgencyTokenExpireTime', String(now + expiresIn));
-      }
-
-    }
-  }
-
-  public getLocalUser(): User {
-    if (typeof(Storage) !== 'undefined') {
-      let expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
-      let now = moment().unix();
-      if (now < expireTime) {
-        let userJson = localStorage.getItem('AgencyUser');
-        return JSON.parse(userJson);
-      }
-    }
-  }
-
-  setLocalUser(user: User) {
-    if (typeof(Storage) !== 'undefined') {
-      let userJson = JSON.stringify(user);
-      localStorage.setItem('AgencyUser', userJson);
-    }
-  }
 }

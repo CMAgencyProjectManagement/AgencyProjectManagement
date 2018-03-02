@@ -16,7 +16,7 @@
     <tr *ngFor="let user of users;let i = index">
       <th scope="row">{{i+1}}</th>
       <td>
-        <a href="/account/update">{{user.username}}</a>
+        <a href="#/account/update?username={{user.username}}">{{user.username}}</a>
       </td>
       <td>
         <p *ngIf="user.name">{{user.name}}</p>
