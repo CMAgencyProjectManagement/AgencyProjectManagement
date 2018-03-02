@@ -85,33 +85,6 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("all/{page:int}")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetAllUser(int page)
-        {
-            try
-            {
-                IEnumerable<User> allUser = UserService.GetAll();
-                string avatarPath = AgencyConfig.AvatarPath;
-
-                JArray data = new JArray();
-
-                foreach (User user in allUser)
-                {
-                    //Dont expose password
-                    data.Add(user.ToJson(avatarPath));
-                }
-
-                return Ok(ResponseHelper.GetResponse(data));
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
-
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "Admin")]

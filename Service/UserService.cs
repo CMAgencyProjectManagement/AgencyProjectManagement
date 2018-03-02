@@ -111,7 +111,10 @@ namespace Service
             return newUser;
         }
 
-        public static JObject ToJson(this User user, string avatarPath = null, bool includePassword = false)
+        public static JObject ToJson(
+        this User user, 
+        string avatarPath = null,
+         bool includePassword = false)
         {
             JObject result = new JObject
             {
@@ -122,7 +125,8 @@ namespace Service
                 ["email"] = user.Email,
                 ["username"] = user.Username,
                 ["isAdmin"] = user.IsAdmin,
-                ["isManager"] = user.IsManager
+                ["isManager"] = user.IsManager,
+                ["isActive"] = user.IsActive
             };
 
             string avatar = user.Avatar;
