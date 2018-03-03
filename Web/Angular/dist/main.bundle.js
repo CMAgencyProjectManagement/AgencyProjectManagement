@@ -246,6 +246,7 @@ var project_service_1 = __webpack_require__("../../../../../src/app/services/pro
 var team_service_1 = __webpack_require__("../../../../../src/app/services/team.service.ts");
 var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var dependency_service_1 = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
+var pager_service_1 = __webpack_require__("../../../../../src/app/services/pager.service.ts");
 var SERVICES = [
     auth_guard_1.AlwaysAuthGuard,
     tree_service_1.StoreService,
@@ -255,7 +256,8 @@ var SERVICES = [
     project_service_1.ProjectService,
     team_service_1.TeamService,
     task_service_1.TaskService,
-    dependency_service_1.DependencyService
+    dependency_service_1.DependencyService,
+    pager_service_1.PagerService
 ];
 // Import 3rd party components
 var dropdown_1 = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
@@ -1778,6 +1780,68 @@ exports.NavService = NavService;
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/pager.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var _ = __webpack_require__("../../../../lodash/lodash.js");
+// http://jasonwatmore.com/post/2016/08/23/angular-2-pagination-example-with-logic-like-google
+var PagerService = /** @class */ (function () {
+    function PagerService() {
+    }
+    PagerService.prototype.getPager = function (totalItems, currentPage, pageSize) {
+        if (currentPage === void 0) { currentPage = 1; }
+        if (pageSize === void 0) { pageSize = 10; }
+        // calculate total pages
+        var totalPages = Math.ceil(totalItems / pageSize);
+        var startPage, endPage;
+        if (totalPages <= 10) {
+            // less than 10 total pages so show all
+            startPage = 1;
+            endPage = totalPages;
+        }
+        else {
+            // more than 10 total pages so calculate start and end pages
+            if (currentPage <= 6) {
+                startPage = 1;
+                endPage = 10;
+            }
+            else if (currentPage + 4 >= totalPages) {
+                startPage = totalPages - 9;
+                endPage = totalPages;
+            }
+            else {
+                startPage = currentPage - 5;
+                endPage = currentPage + 4;
+            }
+        }
+        // calculate start and end item indexes
+        var startIndex = (currentPage - 1) * pageSize;
+        var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+        // create an array of pages to ng-repeat in the pager control
+        var pages = _.range(startPage, endPage + 1);
+        // return object with all pager properties required by the view
+        return {
+            totalItems: totalItems,
+            currentPage: currentPage,
+            pageSize: pageSize,
+            totalPages: totalPages,
+            startPage: startPage,
+            endPage: endPage,
+            startIndex: startIndex,
+            endIndex: endIndex,
+            pages: pages
+        };
+    };
+    return PagerService;
+}());
+exports.PagerService = PagerService;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/project.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2047,7 +2111,6 @@ var UserService = /** @class */ (function () {
     UserService.prototype.getAllUser = function () {
         var _this = this;
         var users = this.usersCursor.get();
-        console.debug('getAllUser', users);
         if (users !== undefined) {
             return Promise.resolve(users);
         }

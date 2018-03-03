@@ -1,32 +1,41 @@
-<h1>
-  <strong>Manage team</strong>
-</h1>
-<table class="table table-info">
-  <thead class="thead-light">
-    <tr>
-      <th>#</th>
+<div style="align-content: left">
+  <div class="card align-items-left">
+    <h1 style="margin-left: 300px"><strong>Manage team</strong></h1>
+    <div class="card-body">
+      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
-      <th>Name</th>
-      <th>Team leader</th>
-      <th>createdBy</th>
-      <th>createdDate</th>
-      <th>isClose</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let team of teams;let i = index">
-    <th scope="row">{{i+1}}</th>
-    <td>{{team.name}}</td>
-    <td>{{team.manager.username}}</td>
-    <td>{{team.createdBy.username}}</td>
-    <td>{{team.createdDate}}</td>
-    <td>
-      <label class="switch switch-default switch-pill switch-primary-outline-alt">
-        <input type="checkbox" class="switch-input" [attr.checked]="team.isClosed ? '' : null">
-        <span class="switch-label"></span>
-        <span class="switch-handle"></span>
-      </label>
-    </td>
-  </tr>
-  </tbody>
-</table>
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>No.</th>
+        
+              <th>Name</th>
+              <th>Team leader</th>
+              <th>Created by</th>
+              <th>Created date</th>
+              <th>Is close</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let team of teams;let i = index">
+              <th scope="row">{{i+1}}</th>
+              <td>{{team.name}}</td>
+              <td>{{team.manager.username}}</td>
+              <td>{{team.createdBy.username}}</td>
+              <td>{{team.createdDate}}</td>
+              <td>
+                <label class="switch switch-default switch-pill switch-primary-outline-alt">
+                  <input type="checkbox" class="switch-input" [attr.checked]="team.isClosed ? '' : null">
+                  <span class="switch-label"></span>
+                  <span class="switch-handle"></span>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </form>
+    </div>
+  </div>
+</div>
+

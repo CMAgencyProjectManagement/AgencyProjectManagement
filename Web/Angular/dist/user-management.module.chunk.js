@@ -274,7 +274,7 @@ exports.UserManagementModule = UserManagementModule;
 /***/ "../../../../../src/app/views/user-management/view-user/view-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-bordered\">\r\n  <thead>\r\n    <tr>\r\n      <th>No.</th>\r\n      <th>Username</th>\r\n      <th>Full Name</th>\r\n      <th>Birthdate</th>\r\n      <th>Email</th>\r\n      <th>Phone Number</th>\r\n      <th>Avatar</th>\r\n      <th>Admin</th>\r\n      <th>Status</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr *ngFor=\"let user of users;let i = index\">\r\n      <th scope=\"row\">{{i+1}}</th>\r\n      <td>\r\n        <a href=\"#/account/update?username={{user.username}}\">{{user.username}}</a>\r\n      </td>\r\n      <td>\r\n        <p *ngIf=\"user.name\">{{user.name}}</p>\r\n        <p *ngIf=\"!user.name\">N/A</p>\r\n      </td>\r\n      <td>\r\n        <p *ngIf=\"user.birthDate\">{{user.birthDate}}</p>\r\n        <p *ngIf=\"!user.birthDate\">N/A</p>\r\n      </td>\r\n      <td>\r\n        <p *ngIf=\"user.email\">{{user.email}}</p>\r\n        <p *ngIf=\"!user.email\">N/A</p>\r\n      </td>\r\n      <td>\r\n        <p *ngIf=\"user.phone\">{{user.phone}}</p>\r\n        <p *ngIf=\"!user.phone\">N/A</p>\r\n      </td>\r\n      <td>\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n        <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar avatar-lg\">\r\n      </td>\r\n      <td>\r\n        <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\r\n          <input type=\"checkbox\" disabled=\"true\" class=\"switch-input\" [attr.checked]=\"user.isAdmin ? '' : null\">\r\n          <span class=\"switch-label\"></span>\r\n          <span class=\"switch-handle\"></span>\r\n        </label>\r\n      </td>\r\n      <td>\r\n        <span *ngIf=\"user.isActive\" class=\"badge badge-success\">Active</span>\r\n        <span *ngIf=\"!user.isActive\" class=\"badge badge-danger\">Disable</span>\r\n      </td>\r\n    </tr>\r\n\r\n    <!-- <tr>\r\n      <td>Pompeius René</td>\r\n      <td>2012/01/01</td>\r\n      <td>Member</td>\r\n      <td>\r\n        <span class=\"badge badge-success\">Active</span>\r\n      </td>\r\n    </tr>\r\n    <tr>\r\n      <td>Paĉjo Jadon</td>\r\n      <td>2012/02/01</td>\r\n      <td>Staff</td>\r\n      <td>\r\n        <span class=\"badge badge-danger\">Banned</span>\r\n      </td>\r\n    </tr>\r\n    <tr>\r\n      <td>Micheal Mercurius</td>\r\n      <td>2012/02/01</td>\r\n      <td>Admin</td>\r\n      <td>\r\n        <span class=\"badge badge-secondary\">Inactive</span>\r\n      </td>\r\n    </tr>\r\n    <tr>\r\n      <td>Ganesha Dubhghall</td>\r\n      <td>2012/03/01</td>\r\n      <td>Member</td>\r\n      <td>\r\n        <span class=\"badge badge-warning\">Pending</span>\r\n      </td>\r\n    </tr>\r\n    <tr>\r\n      <td>Hiroto Šimun</td>\r\n      <td>2012/01/21</td>\r\n      <td>Staff</td>\r\n      <td>\r\n        <span class=\"badge badge-success\">Active</span>\r\n      </td>\r\n    </tr> -->\r\n  </tbody>\r\n</table>"
+module.exports = "<div class=\"input-group\">\r\n  <span class=\"input-group-btn\">\r\n    <button class=\"btn btn-primary\" type=\"button\"\r\n            (click)=\"search(searchUsername.value)\">\r\n      <i class=\"fa fa-search\"></i> Search\r\n    </button>\r\n  </span>\r\n  <input class=\"form-control\" placeholder=\"Name\" type=\"text\"\r\n         #searchUsername>\r\n</div>\r\n<br/>\r\n<table class=\"table table-bordered\">\r\n  <thead>\r\n  <tr>\r\n    <th>No.</th>\r\n    <th>Username</th>\r\n    <th>Full Name</th>\r\n    <th>Birthdate</th>\r\n    <th>Email</th>\r\n    <th>Phone Number</th>\r\n    <th>Avatar</th>\r\n    <th>Admin</th>\r\n    <th>Status</th>\r\n  </tr>\r\n  </thead>\r\n  <tbody>\r\n  <tr *ngFor=\"let user of pagedUsers;let i = index\">\r\n    <th scope=\"row\">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>\r\n    <td>\r\n      <a href=\"#/account/update?username={{user.username}}\">{{user.username}}</a>\r\n    </td>\r\n    <td>\r\n      <p *ngIf=\"user.name\">{{user.name}}</p>\r\n      <p *ngIf=\"!user.name\">N/A</p>\r\n    </td>\r\n    <td>\r\n      <p *ngIf=\"user.birthDate\">{{user.birthDate}}</p>\r\n      <p *ngIf=\"!user.birthDate\">N/A</p>\r\n    </td>\r\n    <td>\r\n      <p *ngIf=\"user.email\">{{user.email}}</p>\r\n      <p *ngIf=\"!user.email\">N/A</p>\r\n    </td>\r\n    <td>\r\n      <p *ngIf=\"user.phone\">{{user.phone}}</p>\r\n      <p *ngIf=\"!user.phone\">N/A</p>\r\n    </td>\r\n    <td>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar avatar-lg\">\r\n    </td>\r\n    <td>\r\n      <label class=\"switch switch-default switch-pill switch-primary-outline-alt\">\r\n        <input type=\"checkbox\" disabled=\"true\" class=\"switch-input\" [attr.checked]=\"user.isAdmin ? '' : null\">\r\n        <span class=\"switch-label\"></span>\r\n        <span class=\"switch-handle\"></span>\r\n      </label>\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.isActive\" class=\"badge badge-success\">Active</span>\r\n      <span *ngIf=\"!user.isActive\" class=\"badge badge-danger\">Disable</span>\r\n    </td>\r\n  </tr>\r\n  </tbody>\r\n</table>\r\n\r\n<!-- pager -->\r\n<ul *ngIf=\"pager.pages && pager.pages.length\" class=\"pagination\">\r\n  <li [ngClass]=\"[pager.currentPage === 1 ? 'disabled' : '', 'page-item']\">\r\n    <a class=\"page-link fake-link\" (click)=\"setPage(1)\">First</a>\r\n  </li>\r\n  <li [ngClass]=\"[pager.currentPage === 1 ? 'disabled' : '', 'page-item']\">\r\n    <a class=\"page-link fake-link\" (click)=\"setPage(pager.currentPage - 1)\">Previous</a>\r\n  </li>\r\n  <li *ngFor=\"let page of pager.pages\" [ngClass]=\"[pager.currentPage === page ? 'active' : '', 'page-item']\">\r\n    <a class=\"page-link fake-link\" (click)=\"setPage(page)\">{{page}}</a>\r\n  </li>\r\n  <li [ngClass]=\"[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']\">\r\n    <a class=\"page-link fake-link\" (click)=\"setPage(pager.currentPage + 1)\">Next</a>\r\n  </li>\r\n  <li [ngClass]=\"[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']\">\r\n    <a class=\"page-link fake-link\" (click)=\"setPage(pager.totalPages)\">Last</a>\r\n  </li>\r\n</ul>\r\n"
 
 /***/ }),
 
@@ -286,7 +286,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".table.table-bordered {\n  background-color: white; }\n", ""]);
+exports.push([module.i, ".table.table-bordered {\n  background-color: white;\n  margin-bottom: 0; }\n\n.fake-link {\n  cursor: pointer; }\n", ""]);
 
 // exports
 
@@ -313,26 +313,61 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var user_service_1 = __webpack_require__("../../../../../src/app/services/user.service.ts");
+var pager_service_1 = __webpack_require__("../../../../../src/app/services/pager.service.ts");
+var _ = __webpack_require__("../../../../lodash/lodash.js");
 var ViewUserComponent = /** @class */ (function () {
-    function ViewUserComponent(userService) {
+    function ViewUserComponent(userService, pagerService) {
         this.userService = userService;
+        this.pagerService = pagerService;
+        // pager object
+        this.pager = {};
     }
     ViewUserComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.userService.getAllUser()
             .then(function (value) {
-            return _this.users = value;
+            _this.users = value;
+            _this.setPage(1);
         });
     };
-    ViewUserComponent.prototype.search = function () {
+    ViewUserComponent.prototype.setPage = function (page, users) {
+        if (users === void 0) { users = undefined; }
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+        if (!users) {
+            users = this.users;
+        }
+        console.debug('setPage', users);
+        this.pager = this.pagerService.getPager(users.length, page, 7);
+        this.pagedUsers = users.slice(this.pager.startIndex, this.pager.endIndex + 1);
     };
+    // search by username
+    ViewUserComponent.prototype.search = function (name) {
+        if (name) {
+            var filteredUser = _.filter(this.users, function (user) {
+                return user.name && _.toLower(user.name).indexOf(_.toLower(name)) >= 0;
+            });
+            console.debug('search', name, this.users, this.pagedUsers, filteredUser);
+            this.pager = {};
+            this.setPage(1, filteredUser);
+        }
+        else {
+            this.setPage(1);
+        }
+    };
+    __decorate([
+        core_1.ViewChild('searchUsername'),
+        __metadata("design:type", core_1.ElementRef)
+    ], ViewUserComponent.prototype, "input", void 0);
     ViewUserComponent = __decorate([
         core_1.Component({
             selector: 'app-view-user',
             template: __webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.scss")]
         }),
-        __metadata("design:paramtypes", [user_service_1.UserService])
+        __metadata("design:paramtypes", [user_service_1.UserService,
+            pager_service_1.PagerService])
     ], ViewUserComponent);
     return ViewUserComponent;
 }());
