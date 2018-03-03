@@ -72,6 +72,7 @@ import {ProjectService} from './services/project.service';
 import {TeamService} from './services/team.service';
 import {TaskService} from './services/task.service';
 import {DependencyService} from './services/dependency.service';
+import {PagerService} from './services/pager.service';
 
 const SERVICES = [
   AlwaysAuthGuard,
@@ -82,7 +83,8 @@ const SERVICES = [
   ProjectService,
   TeamService,
   TaskService,
-  DependencyService
+  DependencyService,
+  PagerService
 ];
 
 // Import 3rd party components

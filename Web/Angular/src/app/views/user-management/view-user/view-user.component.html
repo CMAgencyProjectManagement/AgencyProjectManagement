@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users;let i = index">
+    <tr *ngFor="let user of pagedUsers;let i = index">
       <th scope="row">{{i+1}}</th>
       <td>
         <a href="#/account/update?username={{user.username}}">{{user.username}}</a>
@@ -50,46 +50,24 @@
         <span *ngIf="!user.isActive" class="badge badge-danger">Disable</span>
       </td>
     </tr>
-
-    <!-- <tr>
-      <td>Pompeius René</td>
-      <td>2012/01/01</td>
-      <td>Member</td>
-      <td>
-        <span class="badge badge-success">Active</span>
-      </td>
-    </tr>
-    <tr>
-      <td>Paĉjo Jadon</td>
-      <td>2012/02/01</td>
-      <td>Staff</td>
-      <td>
-        <span class="badge badge-danger">Banned</span>
-      </td>
-    </tr>
-    <tr>
-      <td>Micheal Mercurius</td>
-      <td>2012/02/01</td>
-      <td>Admin</td>
-      <td>
-        <span class="badge badge-secondary">Inactive</span>
-      </td>
-    </tr>
-    <tr>
-      <td>Ganesha Dubhghall</td>
-      <td>2012/03/01</td>
-      <td>Member</td>
-      <td>
-        <span class="badge badge-warning">Pending</span>
-      </td>
-    </tr>
-    <tr>
-      <td>Hiroto Šimun</td>
-      <td>2012/01/21</td>
-      <td>Staff</td>
-      <td>
-        <span class="badge badge-success">Active</span>
-      </td>
-    </tr> -->
   </tbody>
 </table>
+
+<!-- pager -->
+<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+  <li [ngClass]="{disabled:pager.currentPage === 1}">
+    <a (click)="setPage(1)">First</a>
+  </li>
+  <li [ngClass]="{disabled:pager.currentPage === 1}">
+    <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+  </li>
+  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+    <a (click)="setPage(page)">{{page}}</a>
+  </li>
+  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+    <a (click)="setPage(pager.currentPage + 1)">Next</a>
+  </li>
+  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+    <a (click)="setPage(pager.totalPages)">Last</a>
+  </li>
+</ul>
