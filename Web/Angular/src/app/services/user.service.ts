@@ -61,7 +61,6 @@ export class UserService {
 
   public getAllUser(): Promise<any> {
     const users = this.usersCursor.get() as User[];
-    console.debug('getAllUser', users);
     if (users !== undefined) {
       return Promise.resolve(users);
     } else {

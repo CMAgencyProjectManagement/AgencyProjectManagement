@@ -1,3 +1,14 @@
+<div class="input-group">
+  <span class="input-group-btn">
+    <button class="btn btn-primary" type="button"
+            (click)="search(searchUsername.value)">
+      <i class="fa fa-search"></i> Search
+    </button>
+  </span>
+  <input class="form-control" placeholder="Name" type="text"
+         #searchUsername>
+</div>
+<br/>
 <table class="table table-bordered">
   <thead>
   <tr>
@@ -56,18 +67,18 @@
 <!-- pager -->
 <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
   <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-    <a class="page-link" (click)="setPage(1)">First</a>
+    <a class="page-link fake-link" (click)="setPage(1)">First</a>
   </li>
   <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-    <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+    <a class="page-link fake-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
   </li>
   <li *ngFor="let page of pager.pages" [ngClass]="[pager.currentPage === page ? 'active' : '', 'page-item']">
-    <a class="page-link" (click)="setPage(page)">{{page}}</a>
+    <a class="page-link fake-link" (click)="setPage(page)">{{page}}</a>
   </li>
   <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-    <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+    <a class="page-link fake-link" (click)="setPage(pager.currentPage + 1)">Next</a>
   </li>
   <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-    <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+    <a class="page-link fake-link" (click)="setPage(pager.totalPages)">Last</a>
   </li>
 </ul>
