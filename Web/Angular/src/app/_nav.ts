@@ -30,6 +30,22 @@ const admin_navigation = [
     }
   },
   {
+    name: 'Team-create',
+    url: '/team/create',
+    icon: 'icon-people',
+    badge: {
+      variant: 'info'
+    }
+  },
+  {
+    name: 'Team-update',
+    url: '/team/update',
+    icon: 'icon-people',
+    badge: {
+      variant: 'info'
+    }
+  },
+  {
     name: 'Account',
     url: '/account/view',
     icon: 'icon-user',

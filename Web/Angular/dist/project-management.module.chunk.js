@@ -1,35 +1,32 @@
 webpackJsonp(["project-management.module"],{
 
 /***/ "../../../../../src/app/views/project/project-management-routing.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectManagementRoutingModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__ = __webpack_require__("../../../../../src/app/views/project/view/project-management.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__ = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var project_management_component_1 = __webpack_require__("../../../../../src/app/views/project/view/project-management.component.ts");
+var project_scheduling_component_1 = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
 var routes = [
     {
         path: '',
-        component: __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__["a" /* ProjectManagementComponent */],
+        component: project_management_component_1.ProjectManagementComponent,
         data: {
             title: 'Projects'
         }
     },
     {
         path: 'schedule',
-        component: __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__["a" /* ProjectSchedulingComponent */],
+        component: project_scheduling_component_1.ProjectSchedulingComponent,
         data: {
             title: 'Scheduling'
         }
@@ -39,61 +36,55 @@ var ProjectManagementRoutingModule = /** @class */ (function () {
     function ProjectManagementRoutingModule() {
     }
     ProjectManagementRoutingModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forChild(routes)],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
+        core_1.NgModule({
+            imports: [router_1.RouterModule.forChild(routes)],
+            exports: [router_1.RouterModule]
         })
     ], ProjectManagementRoutingModule);
     return ProjectManagementRoutingModule;
 }());
-
+exports.ProjectManagementRoutingModule = ProjectManagementRoutingModule;
 
 
 /***/ }),
 
 /***/ "../../../../../src/app/views/project/project-management.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProjectManagementModule", function() { return ProjectManagementModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_management_routing_module__ = __webpack_require__("../../../../../src/app/views/project/project-management-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__ = __webpack_require__("../../../../../src/app/views/project/view/project-management.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__ = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__directives_pipe_truncateText_pipe__ = __webpack_require__("../../../../../src/app/directives/pipe/truncateText.pipe.ts");
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
-
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var project_management_routing_module_1 = __webpack_require__("../../../../../src/app/views/project/project-management-routing.module.ts");
+var project_management_component_1 = __webpack_require__("../../../../../src/app/views/project/view/project-management.component.ts");
+var project_scheduling_component_1 = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
+var common_1 = __webpack_require__("../../../common/esm5/common.js");
+var truncateText_pipe_1 = __webpack_require__("../../../../../src/app/directives/pipe/truncateText.pipe.ts");
 var ProjectManagementModule = /** @class */ (function () {
     function ProjectManagementModule() {
     }
     ProjectManagementModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        core_1.NgModule({
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1__project_management_routing_module__["a" /* ProjectManagementRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_4__angular_common__["b" /* CommonModule */]
+                project_management_routing_module_1.ProjectManagementRoutingModule,
+                common_1.CommonModule
             ],
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__["a" /* ProjectManagementComponent */],
-                __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__["a" /* ProjectSchedulingComponent */],
-                __WEBPACK_IMPORTED_MODULE_5__directives_pipe_truncateText_pipe__["a" /* TruncateTextPipe */]
+                project_management_component_1.ProjectManagementComponent,
+                project_scheduling_component_1.ProjectSchedulingComponent,
+                truncateText_pipe_1.TruncateTextPipe
             ]
         })
     ], ProjectManagementModule);
     return ProjectManagementModule;
 }());
-
+exports.ProjectManagementModule = ProjectManagementModule;
 
 
 /***/ }),
@@ -124,15 +115,10 @@ module.exports = module.exports.toString();
 /***/ }),
 
 /***/ "../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectSchedulingComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_dhtmlx_gantt__ = __webpack_require__("../../../../dhtmlx-gantt/codebase/dhtmlxgantt.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_dhtmlx_gantt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_dhtmlx_gantt__);
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -142,10 +128,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var task_service_1 = __webpack_require__("../../../../../src/app/services/task.service.ts");
+var dependency_service_1 = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
+__webpack_require__("../../../../dhtmlx-gantt/codebase/dhtmlxgantt.js");
 var ProjectSchedulingComponent = /** @class */ (function () {
     function ProjectSchedulingComponent(taskService, dependencyService) {
         this.taskService = taskService;
@@ -161,20 +148,20 @@ var ProjectSchedulingComponent = /** @class */ (function () {
         });
     };
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('gantt_here'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"])
+        core_1.ViewChild('gantt_here'),
+        __metadata("design:type", core_1.ElementRef)
     ], ProjectSchedulingComponent.prototype, "ganttContainer", void 0);
     ProjectSchedulingComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        core_1.Component({
             selector: 'app-project-scheduling',
             template: __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_task_service__["a" /* TaskService */], __WEBPACK_IMPORTED_MODULE_2__services_dependency_service__["a" /* DependencyService */]])
+        __metadata("design:paramtypes", [task_service_1.TaskService, dependency_service_1.DependencyService])
     ], ProjectSchedulingComponent);
     return ProjectSchedulingComponent;
 }());
-
+exports.ProjectSchedulingComponent = ProjectSchedulingComponent;
 
 
 /***/ }),
@@ -182,7 +169,7 @@ var ProjectSchedulingComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/view/project-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-md-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        All projects\n      </div>\n      <div class=\"card-body\">\n        <table class=\"table table-hover table-outline mb-0\"\n               *ngIf=\"projects\">\n          <thead class=\"thead-default\">\n          <tr>\n            <th>Name</th>\n            <th>Description</th>\n            <th>Deadline</th>\n            <th>Start date</th>\n            <th>Created</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let project of projects\">\n            <td>{{project.name | truncatetext:80}}</td>\n            <td>{{project.description | truncatetext:100}}</td>\n            <td *ngIf=\"!project.deadline\">N/A</td>\n            <td *ngIf=\"project.deadline\">{{project.deadline | date:'d/M/y'}}</td>\n            <td *ngIf=\"!project.startDate\">N/A</td>\n            <td *ngIf=\"project.startDate\">{{project.startDate | date:'d/M/y'}}</td>\n            <td>{{project.createdTime | date:'d/M/y'}}</td>\n          </tr>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        All projects\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <table class=\"table table-hover table-outline mb-0\"\r\n               *ngIf=\"projects\">\r\n          <thead class=\"thead-default\">\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Description</th>\r\n            <th>Deadline</th>\r\n            <th>Start date</th>\r\n            <th>Created</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n          <tr *ngFor=\"let project of projects\">\r\n            <td>{{project.name | truncatetext:80}}</td>\r\n            <td>{{project.description | truncatetext:100}}</td>\r\n            <td *ngIf=\"!project.deadline\">N/A</td>\r\n            <td *ngIf=\"project.deadline\">{{project.deadline | date:'d/M/y'}}</td>\r\n            <td *ngIf=\"!project.startDate\">N/A</td>\r\n            <td *ngIf=\"project.startDate\">{{project.startDate | date:'d/M/y'}}</td>\r\n            <td>{{project.createdTime | date:'d/M/y'}}</td>\r\n          </tr>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -205,12 +192,10 @@ module.exports = module.exports.toString();
 /***/ }),
 
 /***/ "../../../../../src/app/views/project/view/project-management.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectManagementComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -220,8 +205,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var project_service_1 = __webpack_require__("../../../../../src/app/services/project.service.ts");
 var ProjectManagementComponent = /** @class */ (function () {
     function ProjectManagementComponent(projectService) {
         this.projectService = projectService;
@@ -237,16 +223,16 @@ var ProjectManagementComponent = /** @class */ (function () {
         });
     };
     ProjectManagementComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        core_1.Component({
             selector: 'app-project-management',
             template: __webpack_require__("../../../../../src/app/views/project/view/project-management.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/project/view/project-management.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]])
+        __metadata("design:paramtypes", [project_service_1.ProjectService])
     ], ProjectManagementComponent);
     return ProjectManagementComponent;
 }());
-
+exports.ProjectManagementComponent = ProjectManagementComponent;
 
 
 /***/ }),
