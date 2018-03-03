@@ -37,7 +37,7 @@ export class ViewUserComponent implements OnInit {
     }
 
     // get pager object from service
-    this.pager = this.pagerService.getPager(this.users.length, page);
+    this.pager = this.pagerService.getPager(this.users.length, page, 7);
 
     // get current page of items
     this.pagedUsers = this.users.slice(this.pager.startIndex, this.pager.endIndex + 1);
