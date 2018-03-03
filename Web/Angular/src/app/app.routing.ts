@@ -52,6 +52,14 @@ export const routes: Routes = [
         path: 'updateemployee',
         loadChildren: './views/user-management/user-management.module#UserManagementModule'
       },
+      {
+        path: 'team-create',
+        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+      },
+      {
+        path: 'team-update',
+        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+      },
     ]
   },
   {
