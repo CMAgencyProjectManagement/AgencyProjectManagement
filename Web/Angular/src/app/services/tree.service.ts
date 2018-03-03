@@ -7,9 +7,10 @@ const StoreTree = {
   token: {
     access_token: '',
   },
-  bearerToken: undefined,
   currentUser: undefined,
-  isWebSocketConnected: false
+  isWebSocketConnected: false,
+  // all user from from server
+  users: undefined
 };
 
 @Injectable()
