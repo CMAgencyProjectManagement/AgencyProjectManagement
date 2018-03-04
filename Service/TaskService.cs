@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Service
 {
-    static class TaskService
+    public static class TaskService
     {
         public static List<Task> GetTasksOfProject(int projectId)
         {
