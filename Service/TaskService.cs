@@ -57,6 +57,38 @@ namespace Service
                 }
             }
         }
+        public static Task GetTask(int id)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                return entities.Tasks.Find(id);
+            }
+        }
+        //xoa
+        public static IEnumerable<Task> GetTaskOfUser(int userId)
+        {
+            using (var db = new CmAgencyEntities())
+            {
+                return db.Tasks
+                    .Where(
+                        task => task.UserTasks.Any(user => user.UserID.Equals(userId))
+                    ).ToList();
+            }
+        }
+
+        //public static IEnumerable<Project> GetProjectOfUser(int userId)
+        //{
+        //    using (var db = new CmAgencyEntities())
+        //    {
+        //        return db.Projects
+        //            .Where(
+        //                project => project.Users.Any(user => user.ID.Equals(userId))
+        //            )
+        //            .Include(p => p.Lists)
+        //            .ToList();
+        //    }
+        //}
+
 
         public static JObject ToJson(this Task task)
         {
