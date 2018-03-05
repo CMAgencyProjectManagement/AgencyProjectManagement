@@ -42,7 +42,6 @@ export class ViewUserComponent implements OnInit {
     if (!users) {
       users = this.users;
     }
-    console.debug('setPage', users);
 
 
     this.pager = this.pagerService.getPager(users.length, page, 7);
@@ -56,7 +55,6 @@ export class ViewUserComponent implements OnInit {
           return user.name && _.toLower(user.name).indexOf(_.toLower(name)) >= 0;
         }
       );
-      console.debug('search', name, this.users, this.pagedUsers, filteredUser);
       this.pager = {} as Pager;
       this.setPage(1, filteredUser);
     } else {

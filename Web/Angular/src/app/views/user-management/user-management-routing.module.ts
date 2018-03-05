@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Account'
+      title: 'Manage account'
     },
     children: [
       {

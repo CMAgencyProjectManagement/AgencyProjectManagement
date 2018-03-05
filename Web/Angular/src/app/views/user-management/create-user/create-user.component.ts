@@ -12,6 +12,8 @@ import {
 import {UserService} from '../../../services/user.service';
 import {Cursor, StoreService} from '../../../services/tree.service';
 import {Router} from '@angular/router';
+// import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-create-user',
@@ -39,7 +41,10 @@ export class CreateUserComponent implements OnInit {
       password: new FormControl(undefined, Validators.required),
       fullname: new FormControl(undefined, Validators.required),
       email: new FormControl(undefined, Validators.required),
-      gender: new FormControl(undefined, Validators.required),
+      phone: new FormControl(undefined, Validators.required),
+      day: new FormControl(undefined, Validators.required),
+      month: new FormControl(undefined, Validators.required),
+      year: new FormControl(undefined, Validators.required),
       avatar: new FormControl(undefined, Validators.required)
     })
   }
@@ -51,11 +56,17 @@ export class CreateUserComponent implements OnInit {
       const formValue = this.signupForm.value;
       this.isLoading = true;
       console.debug('handleCreate 2', formValue);
+      // birthdate
+      const day = formValue.day;
+      const month = formValue.month;
+      const year = formValue.year;
+      // const time = moment('2010-10-20 4:30', 'YYYY-MM-DD');
+
       this.userService.createUser(
         formValue.username,
         formValue.password,
         formValue.fullname,
-        undefined,
+        formValue.phone,
         undefined,
         formValue.email
       ).then(value => {
@@ -66,6 +77,11 @@ export class CreateUserComponent implements OnInit {
         this.handleCreateError(reason.Data);
       })
     }
+  }
+
+  resetForm() {
+    const formValue = this.signupForm.value;
+
   }
 
   handleCreateError(errors: any[]) {
