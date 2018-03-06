@@ -6,55 +6,32 @@
                 <strong>Projects Detail</strong>
             </div>
             <div class="card-body">
-                <div class="card-body" style="font-size:20px">
+                <div class="card-body" style="font-size:23px">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                        <div class="form-group row" style="font-size: 30px">
-                            Project Name:
+                        <div class="form-group row" style="font-size: 30px" *ngIf="foundProject.name">
+                            Project Name: {{foundProject.name}}
                         </div>
                         <div class="form-group row">
-                                Customer Name:
+                                Customer Name:  
                             </div>
                         <div class="form-group row">
                             Description:<br/><br/>
-                            <textarea id="textarea-input" name="textarea-input" rows="3" class="form-control" style="font-size:20px" disabled="true"></textarea>
+                            <textarea id="textarea-input" name="textarea-input" rows="4" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea>
                         </div>
                         <div class="form-group row">
-                            <div>Created Time:</div>
-                            <div class="col-md-9">
-                                <input type="text" id="disabled-input" name="disabled-input" class="form-control" disabled>
-                            </div>
+                            Created Time: {{foundProject.createdTime | date:'d/M/y'}}
                         </div>
                         <div class="form-group row">
-                            <div>Start Date:</div>
-                            <div class="col-md-9">
-                                <input type="text" id="disabled-input" name="disabled-input" class="form-control" disabled>
-                            </div>
+                            Start Date: {{foundProject.startDate | date:'d/M/y'}}
                         </div>
                         <div class="form-group row">
-                            <div>Deadline:</div>
-                            <div class="col-md-9">
-                                <input type="text" id="disabled-input" name="disabled-input" class="form-control" disabled>
-                            </div>
+                            Deadline: {{foundProject.deadline}}
                         </div>
                         <div class="form-group row">
-                            <div>Changed By:</div>
-                            <div class="col-md-9">
-                                <input type="text" id="disabled-input" name="disabled-input" class="form-control" disabled>
-                            </div>
+                            Changed By: {{foundProject.changedBy.fullname}}
                         </div>
                         <div class="form-group row">
-                            <div>Changed Time:</div>
-                            <div class="col-md-9">
-                                <input type="text" id="disabled-input" name="disabled-input" class="form-control" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div>Lession Learnt:</div>
-                            <textarea id="textarea-input" name="textarea-input" rows="2" class="form-control" style="font-size:20px" disabled="true"></textarea>
-                        </div>
-                        <div class="form-group row">
-                            <div>Customer's Feedback:</div>
-                            <textarea id="textarea-input" name="textarea-input" rows="2" class="form-control" style="font-size:20px" disabled="true"></textarea>
+                            Changed Time: {{foundProject.changedTime | date:'d/M/y'}}
                         </div>
                         <button type="button" class="btn btn-outline-primary btn-lg" style="margin-left: 600px;">Update</button>
                         <button type="button" class="btn btn-outline-danger btn-lg" style="margin-left: 50px;">Delete</button>
