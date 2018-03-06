@@ -3,7 +3,7 @@ import { UserService, } from '../../../services/user.service';
 import { PagerService } from '../../../services/pager.service';
 import { User } from 'app/interfaces/user';
 import { Pager } from '../../../interfaces/pager';
-
+import { Directive, HostListener, Input } from '@angular/core';
 import * as _ from 'lodash';
 import {
     FormControl,
@@ -27,7 +27,7 @@ export class UpdateUserComponent implements OnInit {
     errorMessage: string;
     users: User[];
     foundUser: User;
-    username: string;
+    userID: number;
     constructor(private userService: UserService,
         private storeService: StoreService,
         private router: Router) {
@@ -35,23 +35,27 @@ export class UpdateUserComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.username = this.GetURLParameter('username');
+        this.userID = Number(this.GetURLParameter('id'));
         this.userService.getAllUser()
             .then(value => {
                 this.users = value;
                 for (let i = 0; i < this.users.length; i++) {
-                    if (this.users[i].username == this.username) {
+                    if (this.users[i].id == this.userID) {
                         this.foundUser = this.users[i];
-                        this.updateForm = new FormGroup({
-                            fullname: new FormControl(this.foundUser.name),
-                            email: new FormControl(this.foundUser.email),
-                            phone: new FormControl(this.foundUser.phone)
-                        })
+                        // this.updateForm.value.fullname= this.foundUser.name;
+                        this.updateForm.controls['fullname'].setValue(this.foundUser.name);
+                        this.updateForm.value.email=this.foundUser.email;
+                        this.updateForm.value.phone=this.foundUser.phone;
                     }
                 }
             }
             )
-        
+            this.updateForm = new FormGroup({
+                fullname: new FormControl(undefined,Validators.compose([Validators.required,Validators.minLength(6)])),
+                email: new FormControl(undefined, Validators.compose([Validators.required,Validators.minLength(6)])),
+                phone: new FormControl(undefined, Validators.compose([Validators.required,Validators.minLength(9)]))
+            })
+
     }
 
     handleEnterPressed($event) {
@@ -60,8 +64,8 @@ export class UpdateUserComponent implements OnInit {
         }
     }
 
-    updateUser(username:string, fullname:string, email: string, phone: string) {
-            console.debug("updateUser :",username, fullname, email, phone);
+    updateUser(username: string, fullname: string, email: string, phone: string) {
+        console.debug("updateUser :", username, fullname, email, phone);
     }
 
 
@@ -73,27 +77,19 @@ export class UpdateUserComponent implements OnInit {
     }
 
     handleUpdate() {
-        console.debug("updateUser :",this.updateForm.value);
-        if (this.updateForm.valid) {
-            this.isLoading = true;
-             const formValue = this.updateForm.value;
-             console.debug("updateUser :",this.username,formValue.fullname, formValue.email, formValue.phone);
-            // this.updateUser(this.username,formValue.name, formValue.email, formValue.phone);
+        if(confirm("Save change?")){
+            if (this.updateForm.valid) {
+                this.isLoading = true;
+                const formValue = this.updateForm.value; 
+                this.userService.updateUser(this.foundUser.id, formValue.fullname, formValue.phone, "12/24/2018", formValue.email).then(value => {
+                    this.isLoading = false;
+                    this.router.navigate(['dashboard'])
+                }).catch(reason => {
+                    this.isLoading = false;
+                    this.errorMessage = reason.message;
+                })
+                //console.debug("updateUser :", this.username, formValue.fullname, formValue.email, formValue.phone)
+            }
         }
-       
-        // if (this.updateForm.valid) {
-        //     const formValue = this.updateForm.value;
-        //     this.isLoading = true;
-        //     this.userService.login(
-        //         formValue.username,
-        //         formValue.password
-        //     ).then(value => {
-        //         this.isLoading = false;
-        //         this.router.navigate(['account'])
-        //     }).catch(reason => {
-        //         this.isLoading = false;
-        //         this.errorMessage = reason.message;
-        //     })
-        // }
     }
 }
