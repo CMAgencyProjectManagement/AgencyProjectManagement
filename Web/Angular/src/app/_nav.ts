@@ -29,6 +29,7 @@ const admin_navigation = [
       variant: 'info'
     }
   },
+  /*
   {
     name: 'Team-create',
     url: '/team/create',
@@ -45,6 +46,7 @@ const admin_navigation = [
       variant: 'info'
     }
   },
+  */
   {
     name: 'Account',
     url: '/account/view',
