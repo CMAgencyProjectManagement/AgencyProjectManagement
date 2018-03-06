@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from '../interfaces/user';
 import {Cursor, StoreService} from './tree.service';
 import {serverPath} from '../_serverPath';
-import {post, get} from 'superagent';
+import {post, get, put} from 'superagent';
 import * as moment from 'moment';
 
 @Injectable()
@@ -138,6 +138,38 @@ export class UserService {
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();
       post(serverPath.createUser)
+        .set('token', token)
+        .send(postDataObject)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reject);
+    });
+  }
+
+  public updateUser(
+    id: number,
+    name: string,
+    phone: string,
+    birthdate: string,
+    email: string): Promise<User> {
+
+    const postDataObject = {
+      ID: id,
+      Name: name,
+      Phone: phone,
+      Email: email,
+      Birthdate: birthdate,
+    };
+    return new Promise<User>((resolve, reject) => {
+      const token = this.tokenCursor.get();
+      put(serverPath.updateUser)
         .set('token', token)
         .send(postDataObject)
         .type('form')

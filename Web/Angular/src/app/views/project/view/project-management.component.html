@@ -1,8 +1,9 @@
+<title>Project Management</title>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <strong>All projects</strong>
+        <strong>Projects Management</strong>
       </div>
       <div class="card-body">
         <table class="table table-hover table-outline mb-0"
@@ -17,7 +18,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let project of projects">
+          <tr *ngFor="let project of projects" style="cursor: pointer" onclick="">
             <td>{{project.name | truncatetext:80}}</td>
             <td>{{project.description | truncatetext:100}}</td>
             <td *ngIf="!project.deadline">N/A</td>

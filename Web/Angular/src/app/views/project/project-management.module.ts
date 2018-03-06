@@ -4,6 +4,7 @@ import {ProjectManagementComponent} from './view/project-management.component';
 import {ProjectSchedulingComponent} from './project-scheduling/project-scheduling.component';
 import {CommonModule} from '@angular/common';
 import {TruncateTextPipe} from '../../directives/pipe/truncateText.pipe';
+import { ProjectDetailComponent } from 'app/views/project/project-detail/project-detail.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import {TruncateTextPipe} from '../../directives/pipe/truncateText.pipe';
   declarations: [
     ProjectManagementComponent,
     ProjectSchedulingComponent,
+    ProjectDetailComponent,
     TruncateTextPipe]
 })
 export class ProjectManagementModule {

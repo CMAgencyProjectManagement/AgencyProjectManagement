@@ -7,7 +7,6 @@ import {UpdateUserComponent} from './update-user/update-user.component';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
-
 @NgModule({
   imports: [
     CommonModule,
