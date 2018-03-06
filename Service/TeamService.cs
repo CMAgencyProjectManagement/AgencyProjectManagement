@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using Entity;
 using Newtonsoft.Json.Linq;
@@ -31,6 +33,32 @@ namespace Service
                     }
                 }
                 return null;
+            }
+        }
+           public static Team Updateteam(
+            int id,
+            string name,
+            string createdBy,
+            DateTime? createdDate,
+            Boolean isClosed,
+            string manager)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                Team team = entities.Teams.Find(id);
+                if (team != null)
+                {
+                    team.Name = name;
+                    
+                    
+                    
+                    entities.SaveChanges();
+                    return team;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with ID{id} not found");
+                }
             }
         }
 

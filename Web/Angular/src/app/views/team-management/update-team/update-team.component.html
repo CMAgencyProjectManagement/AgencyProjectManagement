@@ -30,13 +30,26 @@
         <div class="form-group row">
           <label class="col-md-2 col-form-label" for="teamLeader-input">Team leader:</label>
           <div class="col-md-8">
-            <input type="text" id="teamLeader-input" name="teamLeader-input" class="form-control" style="position: relative;
-            
-            width: 208px;">
+            <div class="btn-group">
+              <div class="btn-group" dropdown>
+                <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+                  Button dropdown <span class="caret"></span>
+                </button>
+                <ul *dropdownMenu class="dropdown-menu" role="menu">
+                  <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+                  <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+                  <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li class="divider dropdown-divider"></li>
+                  <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <span class="help-block" style="position: relative;
             ">Please enter Team leader's name</span>
           </div>
         </div>
+        <!--
         <div class="form-group row">
           <label class="col-md-2 col-form-label" for="createdBy-input">Created by:</label>
           <div class="col-md-8">
@@ -150,12 +163,14 @@
             </label>
           </div>
         </div>
+      -->
         <div class="form-actions" style="margin-left: 100px">
           <button type="submit" class="btn btn-primary" (click)="handleCreate()">Update
           </button>
 
           <button class="btn btn-secondary" type="button">Cancel</button>
         </div>
+      
       </form>
     </div>
   </div>
