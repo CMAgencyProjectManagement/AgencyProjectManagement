@@ -6,27 +6,28 @@
         <strong>Projects Management</strong>
       </div>
       <div class="card-body">
-        <table class="table table-hover table-outline mb-0"
-               *ngIf="projects">
+        <table class="table table-hover table-outline mb-0" *ngIf="projects">
           <thead class="thead-default">
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Deadline</th>
-            <th>Start date</th>
-            <th>Created</th>
-          </tr>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Deadline</th>
+              <th>Start date</th>
+              <th>Created</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let project of projects" style="cursor: pointer" onclick="">
-            <td>{{project.name | truncatetext:80}}</td>
-            <td>{{project.description | truncatetext:100}}</td>
-            <td *ngIf="!project.deadline">N/A</td>
-            <td *ngIf="project.deadline">{{project.deadline | date:'d/M/y'}}</td>
-            <td *ngIf="!project.startDate">N/A</td>
-            <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
-            <td>{{project.createdTime | date:'d/M/y'}}</td>
-          </tr>
+            <tr *ngFor="let project of projects" style="cursor: pointer">
+            <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
+              
+              <td><a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.name | truncatetext:80}}</a></td>
+              <td><a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.description | truncatetext:100}}</a></td>
+              <td *ngIf="!project.deadline">N/A</td>
+              <td *ngIf="project.deadline">{{project.deadline | date:'d/M/y'}}</td>
+              <td *ngIf="!project.startDate">N/A</td>
+              <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
+              <td>{{project.createdTime | date:'d/M/y'}}</td>
+            </tr>
         </table>
       </div>
     </div>
