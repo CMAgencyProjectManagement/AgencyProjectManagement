@@ -111,10 +111,36 @@ namespace Service
             return newUser;
         }
 
+        public static User Updateuser(
+            int id,
+            string name,
+            string phone,
+            DateTime? birthdate,
+            string email)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                User user = entities.Users.Find(id);
+                if (user != null)
+                {
+                    user.Name = name;
+                    user.Phone = phone;
+                    user.Birthdate = birthdate;
+                    user.Email = email;
+                    entities.SaveChanges();
+                    return user;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with ID{id} not found");
+                }
+            }
+        }
+
         public static JObject ToJson(
-        this User user, 
-        string avatarPath = null,
-         bool includePassword = false)
+            this User user,
+            string avatarPath = null,
+            bool includePassword = false)
         {
             JObject result = new JObject
             {

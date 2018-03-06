@@ -120,31 +120,28 @@ namespace Web.Controllers
         [HttpPut]
         [Route("")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult UpdateUser(CreateUserModel createUserModel)
+        public IHttpActionResult UpdateUser(UpdateUserModel updateUserModel)
         {
             try
             {
-                throw new NotImplementedException();
-/*
-                User newUser = UserService.CreateAccount(
-                    createUserModel.Username,
-                    createUserModel.Password,
-                    createUserModel.Avatar
-                );
-                //Dont expose password
-                JObject dataObject = new JObject
+                if (ModelState.IsValid)
                 {
-                    ["id"] = newUser.ID,
-                    ["name"] = newUser.Name,
-                    ["phone"] = newUser.Phone,
-                    ["birthday"] = newUser.Birthdate,
-                    ["email"] = newUser.Email,
-                    ["username"] = newUser.Username,
-                    ["avatar"] = newUser.Avatar,
-                    ["isAdmin"] = newUser.IsAdmin
-                };
-                return Ok(ResponseHelper.GetResponse(dataObject));
-*/
+                    User updatedUser = UserService.Updateuser(
+                        updateUserModel.ID,
+                        updateUserModel.Name,
+                        updateUserModel.Phone,
+                        updateUserModel.Birthdate,
+                        updateUserModel.Email
+                    );
+                    return Ok(ResponseHelper.GetResponse(updatedUser.ToJson()));
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState)); 
+                }
+                
+
             }
             catch (Exception ex)
             {

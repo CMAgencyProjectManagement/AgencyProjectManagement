@@ -472,6 +472,7 @@
     <Compile Include="ViewModels\CreateProjectModel.cs" />
     <Compile Include="ViewModels\EditUserModel.cs" />
     <Compile Include="ViewModels\CreateUserModel.cs" />
+    <Compile Include="ViewModels\UpdateUserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entity\Entity.csproj">
