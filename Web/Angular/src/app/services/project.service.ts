@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StoreService} from './tree.service';
-import {get} from 'superagent';
+import {get, put} from 'superagent';
 import {serverPath} from '../_serverPath';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ProjectService {
   }
 
   public getMyProjects(): Promise<any> {
-    return new Promise<any>( (resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       get(serverPath.myProject)
         .set('token', this.tokenCursor.get())
         .then(res => {
@@ -27,7 +27,7 @@ export class ProjectService {
   }
 
   public getAllProjects(): Promise<any> {
-    return new Promise<any>( (resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       get(serverPath.allProject)
         .set('token', this.tokenCursor.get())
         .then(res => {
@@ -39,5 +39,36 @@ export class ProjectService {
           }
         })
     });
+  }
+
+  public updateProject(
+    projectId: number,
+    name: string,
+    description: string,
+    startdate: string,
+    deadline: string
+  ): Promise<any> {
+    const objData = {
+      id: projectId,
+      name: name,
+      description: description,
+      startdate: startdate,
+      deadline: deadline
+    };
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.updateProject)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reject);
+    })
   }
 }

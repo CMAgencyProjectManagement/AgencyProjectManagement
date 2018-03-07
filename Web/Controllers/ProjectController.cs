@@ -76,7 +76,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
+        [Route("")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult CreateProject(CreateProjectModel createProjectModel)
         {
@@ -99,6 +99,50 @@ namespace Web.Controllers
 
                     JObject dataObject = newProject.ToJson();
                     return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult UpdateProject(UpdateProjectViewModel updateProjectViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    DateTime? deadline = null;
+                    DateTime? startdate = null;
+                    
+                    DateTime tmp;
+                    if (DateTime.TryParse(updateProjectViewModel.deadline, out tmp))
+                    {
+                        deadline = tmp;
+                    }
+                    if (DateTime.TryParse(updateProjectViewModel.startdate, out tmp))
+                    {
+                        startdate = tmp;
+                    }
+                    
+                    var updatedProject = ProjectService.UpdateProject(
+                        updateProjectViewModel.id,
+                        updateProjectViewModel.name,
+                        updateProjectViewModel.description,
+                        deadline,
+                        startdate
+                    );
+                    return Ok(ResponseHelper.GetResponse(updatedProject.ToJson()));
                 }
                 else
                 {

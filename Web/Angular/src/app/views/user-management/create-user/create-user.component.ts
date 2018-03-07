@@ -13,7 +13,7 @@ import {UserService} from '../../../services/user.service';
 import {Cursor, StoreService} from '../../../services/tree.service';
 import {Router} from '@angular/router';
 // import * as moment from 'moment';
-import {IMyDpOptions} from 'mydatepicker';
+import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 
 
 @Component({
