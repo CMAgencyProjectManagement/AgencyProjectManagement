@@ -12,21 +12,21 @@ const routes: Routes = [
     children: [
       {
         data: {
-          title: 'View'
+          title: 'View accounts'
         },
         path: 'view',
         component: ViewUserComponent,
       },
       {
         data: {
-          title: 'Create'
+          title: 'Create accounts'
         },
         path: 'create',
         component: CreateUserComponent
       },
       {
         data: {
-          title: 'Update'
+          title: 'Update accounts'
         },
         path: 'update',
         component: UpdateUserComponent

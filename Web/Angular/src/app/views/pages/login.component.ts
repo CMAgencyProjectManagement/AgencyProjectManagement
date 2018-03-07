@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
       ).then(value => {
         this.isLoading = false;
         this.router.navigate(['dashboard'])
+
       }).catch(reason => {
         this.isLoading = false;
         this.errorMessage = reason.message;

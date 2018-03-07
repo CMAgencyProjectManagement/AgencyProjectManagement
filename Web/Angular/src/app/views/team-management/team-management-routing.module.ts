@@ -14,21 +14,21 @@ const routes: Routes = [
         path: 'view',
         component: TeamManagePageComponent,
         data: {
-          title: 'View'
+          title: 'View teams'
         }
       },
       {
         path: 'create',
         component: CreateTeamComponent,
         data: {
-          title: 'Create'
+          title: 'Create team'
         }
       },
       {
         path: 'update',
         component: UpdateTeamComponent,
         data: {
-          title: 'Update'
+          title: 'Update update'
         }
       }
     ]
