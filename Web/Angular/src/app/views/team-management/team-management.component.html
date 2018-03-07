@@ -7,9 +7,7 @@
 
   <div style="align-content: left">
     <div class="card align-items-left">
-      <h1 style="margin-left: 300px">
-        <strong>Manage team</strong>
-      </h1>
+
       <div class="card-body">
         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
@@ -30,7 +28,8 @@
               <tr *ngFor="let team of teams;let i = index">
                 <th scope="row">{{i+1}}</th>
                 <td>
-                    <a href="#/team/update?id={{team.id}}">{{team.name}}</a>
+                    <!-- <a href="#/team/update?id={{team.id}}">{{team.name}}</a> -->
+                    {{team.name}}
                 </td>
                 <td>{{team.manager.username}}</td>
                 <!--  <td>{{team.createdBy.username}}</td>
@@ -46,7 +45,7 @@
             -->
                 <td>
                   <a href="#/team/update?teamid={{team.id}}">
-                    <button type="button" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-primary">Change</button>
                   </a>
                   <!--
                   <a href="#/team/delete?teamid={{team.id}}">

@@ -17,12 +17,25 @@ import {
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DISABLED } from '@angular/forms/src/model';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+// Modal Component
+import { ModalModule } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-project-detail',
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss']
+  styleUrls: ['./project-detail.component.scss'],
+  
 })
 export class ProjectDetailComponent implements OnInit {
+  public myModal;
+  public largeModal;
+  public smallModal;
+  public primaryModal;
+  public successModal;
+  public warningModal;
+  public dangerModal;
+  public infoModal;
   projects: Project[];
   viewForm: FormGroup
   foundProject: Project;
@@ -31,7 +44,8 @@ export class ProjectDetailComponent implements OnInit {
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
-  constructor(private projectService: ProjectService) {
+  constructor(private projectService: ProjectService,
+  ) {
   }
 
   ngOnInit() {
