@@ -94,10 +94,21 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    DateTime? birthdate = null;
+                    if (createUserModel.Birthdate != null)
+                    {
+                        DateTime dt;
+                        if (DateTime.TryParse(createUserModel.Birthdate, out dt))
+                        {
+                            birthdate = dt;
+                        }
+                        
+                    }
+
                     User newUser = UserService.CreateAccount(
                         createUserModel.Name,
                         createUserModel.Phone,
-                        createUserModel.Birthdate,
+                        birthdate,
                         createUserModel.Email,
                         createUserModel.Username,
                         createUserModel.Password
@@ -138,10 +149,8 @@ namespace Web.Controllers
                 else
                 {
                     return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState)); 
+                        ResponseHelper.GetExceptionResponse(ModelState));
                 }
-                
-
             }
             catch (Exception ex)
             {

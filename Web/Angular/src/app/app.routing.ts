@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 
 
 // Import Containers
@@ -12,7 +12,7 @@ import {
 } from './containers';
 
 // Import Guards
-import { AlwaysAuthGuard } from './services/auth.guard';
+import {AlwaysAuthGuard} from './services/auth.guard';
 
 export const routes: Routes = [
   {
@@ -43,14 +43,6 @@ export const routes: Routes = [
       {
         path: 'team',
         loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-      },
-      {
-        path: 'newemployee',
-        loadChildren: './views/user-management/user-management.module#UserManagementModule'
-      },
-      {
-        path: 'updateemployee',
-        loadChildren: './views/user-management/user-management.module#UserManagementModule'
       },
       {
         path: 'team-create',

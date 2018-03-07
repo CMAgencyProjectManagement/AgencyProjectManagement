@@ -7,7 +7,7 @@ const PROXY_CONFIG = [
       "/Resource",
       "/token"
     ],
-    target: "http://localhost:62558",
+    target: "http://agencypm.gear.host",
     secure: false,
     "changeOrigin": true
   },
