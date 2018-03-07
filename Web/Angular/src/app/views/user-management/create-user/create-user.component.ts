@@ -12,6 +12,8 @@ import {
 import {UserService} from '../../../services/user.service';
 import {Cursor, StoreService} from '../../../services/tree.service';
 import {Router} from '@angular/router';
+import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
+
 // import * as moment from 'moment';
 
 
@@ -27,6 +29,17 @@ export class CreateUserComponent implements OnInit {
   isLoading: boolean;
   errorMessage: string;
 
+  myDatePickerOptions: IMyDpOptions = {
+    showInputField: true,
+    dateFormat: 'dd/mm/yyyy',
+  };
+
+  // For example initialize to specific date (09.10.2018 - 19.10.2018). It is also possible
+  // to set initial date range value using the selDateRange attribute.
+  // mode {date: {year,month,day}}
+  model: any = {date: {year: 2018, month: 10, day: 9}};
+
+
   constructor(private userService: UserService,
               private storeService: StoreService,
               private router: Router) {
@@ -34,6 +47,7 @@ export class CreateUserComponent implements OnInit {
     this.tokenCursor = this.storeService.select(['token']);
     this.isLoading = false;
   }
+
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -45,8 +59,10 @@ export class CreateUserComponent implements OnInit {
       day: new FormControl(undefined, Validators.required),
       month: new FormControl(undefined, Validators.required),
       year: new FormControl(undefined, Validators.required),
+      myDate: new FormControl(undefined, Validators.required),
       avatar: new FormControl(undefined, Validators.required)
-    })
+    });
+    this.setDate()
   }
 
   handleCreate() {
@@ -84,6 +100,25 @@ export class CreateUserComponent implements OnInit {
 
   }
 
+  setDate(): void {
+    // Set today date using the patchValue function
+    let date = new Date();
+    this.signupForm.patchValue({
+      myDate: {
+        date: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate()
+        }
+      }
+    });
+  }
+
+  clearDate(): void {
+    // Clear the date using the patchValue function
+    this.signupForm.patchValue({myDate: null});
+  }
+
   handleCreateError(errors: any[]) {
     for (let error of errors) {
       const fieldName = error.key;
@@ -92,5 +127,8 @@ export class CreateUserComponent implements OnInit {
     }
   }
 
+  onDateChanged(event: IMyDateModel) {
+    console.debug('onDateChanged', event.date);
+  }
 
 }

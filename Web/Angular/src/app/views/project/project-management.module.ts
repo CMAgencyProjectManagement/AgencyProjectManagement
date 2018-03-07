@@ -5,17 +5,21 @@ import {ProjectSchedulingComponent} from './project-scheduling/project-schedulin
 import {CommonModule} from '@angular/common';
 import {TruncateTextPipe} from '../../directives/pipe/truncateText.pipe';
 import { ProjectDetailComponent } from 'app/views/project/project-detail/project-detail.component';
-
+import { AddProjectComponent } from 'app/views/project/add-project/add-project.component';
+// Modal Component
+import { ModalModule } from 'ngx-bootstrap/modal';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
-    CommonModule
+    CommonModule,
+    ModalModule.forRoot()
   ],
   declarations: [
     ProjectManagementComponent,
     ProjectSchedulingComponent,
     ProjectDetailComponent,
-    TruncateTextPipe]
+    TruncateTextPipe,
+  AddProjectComponent]
 })
 export class ProjectManagementModule {
 }

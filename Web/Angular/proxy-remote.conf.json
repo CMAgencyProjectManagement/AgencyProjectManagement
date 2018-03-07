@@ -1,7 +1,26 @@
 {
-  "/": {
+  "/api": {
+    "target":  {
+      "host": "agencypm.gear.host",
+      "protocol": "http:"
+    },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/Resource/": {
+    "target": "http://agencypm.gear.host",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/Scripts/": {
+    "target": "http://agencypm.gear.host",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/signalr/": {
     "target": "http://agencypm.gear.host",
     "secure": false,
     "changeOrigin": true
   }
+
 }

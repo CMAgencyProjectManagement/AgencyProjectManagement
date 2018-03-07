@@ -91,6 +91,7 @@ const SERVICES = [
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
+import {MyDatePickerModule} from 'mydatepicker';
 
 @NgModule({
   imports: [
@@ -98,7 +99,8 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
     AppRoutingModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    MyDatePickerModule
   ],
   declarations: [
     AppComponent,
