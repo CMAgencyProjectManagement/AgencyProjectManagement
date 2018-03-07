@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace Service
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
-                return entities.Users.ToList();
+                return entities.Users.Include( user => user.Teams1).ToList();
             }
         }
 
@@ -185,8 +186,7 @@ namespace Service
 
             if (includeTeam)
             {
-                
-                result["team"] = user.
+                result["team"] = user.Teams1.First().ToJson();
             }
 
             return result;

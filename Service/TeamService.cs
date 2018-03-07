@@ -53,7 +53,8 @@ namespace Service
                 User foundUser = db.Users.Find(userId);
                 if (foundUser != null)
                 {
-                    foundUser.Teams
+                    Team team = foundUser.Teams1.First();
+                    return team;
                 }
                 else
                 {
