@@ -92,6 +92,24 @@ namespace Service
             }
         }
 
+        public static int CloseProject(int id)
+        {
+            using (var db = new CmAgencyEntities())
+            {
+                var project = db.Projects.Find(id);
+                if (project != null)
+                {
+                    project.Status = (int) ProjectStatus.Closed;
+                    db.SaveChanges();
+                    return id;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Can't find project with ID {id}");
+                }
+            }
+        }
+
         public static JObject ToJson(this Project project, bool isDetailed = true)
         {
             User creator = UserService.GetUser(project.CreatedBy);
