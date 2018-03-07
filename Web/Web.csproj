@@ -443,6 +443,16 @@
     <Content Include="Resource\avatar\25994855_974611699354326_8726051274387094426_n.jpg" />
     <Content Include="Resource\avatar\26910289_1302577266544804_2727893603664003986_o.jpg" />
     <Content Include="Resource\avatar\27867360_1708511502521042_7024456728235995189_n.jpg" />
+    <Content Include="Resource\avatar\avatar_1.jpg" />
+    <Content Include="Resource\avatar\avatar_10.jpg" />
+    <Content Include="Resource\avatar\avatar_2.jpg" />
+    <Content Include="Resource\avatar\avatar_3.jpg" />
+    <Content Include="Resource\avatar\avatar_4.jpg" />
+    <Content Include="Resource\avatar\avatar_5.jpg" />
+    <Content Include="Resource\avatar\avatar_6.jpg" />
+    <Content Include="Resource\avatar\avatar_7.jpg" />
+    <Content Include="Resource\avatar\avatar_8.jpg" />
+    <Content Include="Resource\avatar\avatar_9.jpg" />
     <Content Include="Resource\avatar\Elon_Musk_2015.jpg" />
     <Content Include="Resource\avatar\user_id_1.jpg" />
     <Content Include="Resource\avatar\user_phat.png" />
@@ -470,6 +480,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\AgencyDateValidation.cs" />
     <Compile Include="ViewModels\CreateProjectModel.cs" />
+    <Compile Include="ViewModels\DeleteUserModel.cs" />
     <Compile Include="ViewModels\EditUserModel.cs" />
     <Compile Include="ViewModels\CreateUserModel.cs" />
     <Compile Include="ViewModels\UpdateUserModel.cs" />

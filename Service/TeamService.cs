@@ -16,7 +16,13 @@ namespace Service
                 return db.Teams.ToList();
             }
         }
-
+        public static Team GetTeamById(int id)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                return entities.Teams.Find(id);
+            }
+        }
         public static User GetManager(int teamId)
         {
             using (var db = new CmAgencyEntities())

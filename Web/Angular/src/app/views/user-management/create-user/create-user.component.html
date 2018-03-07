@@ -1,7 +1,7 @@
 <div style="align-content: center">
   <div class="card align-items-center">
-    <h1 style="margin-top: 20px">Create new team</h1>
-
+    <h1>Create new account</h1>
+    <div class="card-body">
       <div [formGroup]="signupForm" class="form-horizontal">
         <div class="form-group row">
           <label class="col-md-4 col-form-label" for="username-input">Username:</label>
@@ -45,13 +45,12 @@
         </div>
         <div class="form-group row">
           <label class="col-md-4 col-form-label" for="email-input">Date of Birth:</label>
-          <my-date-picker name="mydate" [options]="myDatePickerOptions" class="form-control-mydatepicker col-md-8"
-                          (dateChanged)="onDateChanged($event)"
-                          formControlName="myDate"></my-date-picker>
+            <my-date-picker class="col-md-8" name="mydate" [options]="myDatePickerOptions"
+                            required></my-date-picker>
         </div>
         <div class="form-group row">
           <label class="col-md-4 col-form-label" for="file-input">Avatar</label>
-          <div class="col-md-8">
+          <div class="col-md-8  ">
             <input type="file" id="file-input" name="file-input"
                    #avatarFile>
           </div>
@@ -62,5 +61,6 @@
           <button class="btn btn-secondary" type="button" (click)="resetForm()">Cancel</button>
         </div>
       </div>
+    </div>
   </div>
 </div>

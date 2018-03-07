@@ -20,7 +20,8 @@ namespace Web.ViewModels
         [Phone]
         [MaxLength(255)]
         public string Phone { get; set; }
-        public DateTime? Birthdate { get; set; }
+        [AgencyDateValidation]
+        public string Birthdate { get; set; }
         [EmailAddress]
         [MaxLength(255)]
         public string Email { get; set; }

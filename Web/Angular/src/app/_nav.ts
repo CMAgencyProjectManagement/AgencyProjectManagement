@@ -2,10 +2,7 @@ const staff_navigation = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-speedometer',
-    badge: {
-      variant: 'info'
-    }
+    icon: 'icon-speedometer'
   }
 ];
 
@@ -16,18 +13,12 @@ const admin_navigation = [
   {
     name: 'Project',
     url: '/project',
-    icon: 'icon-calendar',
-    badge: {
-      variant: 'info'
-    }
+    icon: 'icon-calendar'
   },
   {
     name: 'Team',
     url: '/team/view',
-    icon: 'icon-people',
-    badge: {
-      variant: 'info'
-    }
+    icon: 'icon-people'
   },
   /*
   {
@@ -51,19 +42,18 @@ const admin_navigation = [
     name: 'Account',
     url: '/account/view',
     icon: 'icon-user',
-    badge: {
-      variant: 'info'
-    }
-  },
-  {
-    name: 'New Employee',
-    url: '/account/create',
-    icon: 'icon-user',
-    badge: {
-      variant: 'info'
-    }
-  },
+    children: [
+      {
+        name: 'View',
+        url: '/account/view'
 
+      },
+      {
+        name: 'Create',
+        url: '/account/create'
+      }
+    ]
+  }
 ];
 
 

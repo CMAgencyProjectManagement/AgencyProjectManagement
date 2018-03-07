@@ -94,10 +94,21 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    DateTime? birthdate = null;
+                    if (createUserModel.Birthdate != null)
+                    {
+                        DateTime dt;
+                        if (DateTime.TryParse(createUserModel.Birthdate, out dt))
+                        {
+                            birthdate = dt;
+                        }
+                        
+                    }
+
                     User newUser = UserService.CreateAccount(
                         createUserModel.Name,
                         createUserModel.Phone,
-                        createUserModel.Birthdate,
+                        birthdate,
                         createUserModel.Email,
                         createUserModel.Username,
                         createUserModel.Password
@@ -109,6 +120,26 @@ namespace Web.Controllers
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
                 }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpDelete]
+        [Route("")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult DeactiveUser(DeleteUserModel deleteUserModel)
+        {
+            try
+            {
+                int id = UserService.DeactiveUser(deleteUserModel.ID);
+                return Ok(ResponseHelper.GetResponse(new JObject
+                {
+                    ["id"] = id
+                }));
             }
             catch (Exception ex)
             {
@@ -138,10 +169,8 @@ namespace Web.Controllers
                 else
                 {
                     return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState)); 
+                        ResponseHelper.GetExceptionResponse(ModelState));
                 }
-                
-
             }
             catch (Exception ex)
             {

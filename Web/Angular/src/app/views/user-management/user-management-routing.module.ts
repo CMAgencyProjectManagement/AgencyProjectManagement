@@ -7,18 +7,27 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Manage account'
+      title: 'Account'
     },
     children: [
       {
+        data: {
+          title: 'View'
+        },
         path: 'view',
         component: ViewUserComponent,
       },
       {
+        data: {
+          title: 'Create'
+        },
         path: 'create',
         component: CreateUserComponent
       },
       {
+        data: {
+          title: 'Update'
+        },
         path: 'update',
         component: UpdateUserComponent
       },
