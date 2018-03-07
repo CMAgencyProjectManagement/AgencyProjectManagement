@@ -71,4 +71,27 @@ export class ProjectService {
         .catch(reject);
     })
   }
+
+  public closeProject(
+    projectId: number
+  ): Promise<any> {
+    const objData = {
+      id: projectId
+    };
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.updateProject)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reject);
+    })
+  }
 }

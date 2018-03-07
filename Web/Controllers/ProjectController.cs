@@ -156,5 +156,27 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
+
+        [HttpPut]
+        [Route("close")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult CloseProject(DeleteProjectViewModel deleteProjectViewModel)
+        {
+            try
+            {
+                var id = ProjectService.CloseProject(deleteProjectViewModel.id);
+                return Ok(ResponseHelper.GetResponse(new JObject
+                {
+                    ["id"] = id
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
     }
 }
