@@ -131,11 +131,13 @@ var serverPath = {
     user: '/api/user',
     allUser: '/api/user/all',
     createUser: 'api/user',
+    updateUser: 'api/user',
     // Project
     allProject: '/api/project/all',
     myProject: '/api/project',
     // Team
-    allTeam: '/api/team/all'
+    allTeam: '/api/team/all',
+    deleteTeam: '/api/team'
 };
 
 
@@ -1977,6 +1979,8 @@ var TaskService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_superagent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__("../../../../moment/moment.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1986,6 +1990,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -2010,6 +2015,22 @@ var TeamService = /** @class */ (function () {
                 }
             });
         });
+    };
+    TeamService.prototype.getLocalTeam = function () {
+        if (typeof (Storage) !== 'undefined') {
+            var expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
+            var now = __WEBPACK_IMPORTED_MODULE_4_moment__().unix();
+            if (now < expireTime) {
+                var teamJson = localStorage.getItem('AgencyTeam');
+                return JSON.parse(teamJson);
+            }
+        }
+    };
+    TeamService.prototype.setLocalTeam = function (team) {
+        if (typeof (Storage) !== 'undefined') {
+            var teamJson = JSON.stringify(team);
+            localStorage.setItem('AgencyTeam', teamJson);
+        }
     };
     TeamService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -2219,6 +2240,33 @@ var UserService = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             var token = _this.tokenCursor.get();
             Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createUser)
+                .set('token', token)
+                .send(postDataObject)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(reject);
+        });
+    };
+    UserService.prototype.updateUser = function (id, name, phone, birthdate, email) {
+        var _this = this;
+        var postDataObject = {
+            ID: id,
+            Name: name,
+            Phone: phone,
+            Email: email,
+            Birthdate: birthdate,
+        };
+        return new Promise(function (resolve, reject) {
+            var token = _this.tokenCursor.get();
+            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateUser)
                 .set('token', token)
                 .send(postDataObject)
                 .type('form')

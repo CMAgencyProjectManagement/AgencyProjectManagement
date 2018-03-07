@@ -23,13 +23,15 @@
                 <!-- <th>Created by</th>
               <th>Created date</th>
               <th>Is close</th>-->
-                <th>change team leader</th>
+                <th>Change team leader</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let team of teams;let i = index">
                 <th scope="row">{{i+1}}</th>
-                <td>{{team.name}}</td>
+                <td>
+                    <a href="#/team/update?id={{team.id}}">{{team.name}}</a>
+                </td>
                 <td>{{team.manager.username}}</td>
                 <!--  <td>{{team.createdBy.username}}</td>
               <td>{{team.createdDate}}</td>
@@ -43,10 +45,14 @@
               </td>
             -->
                 <td>
-                  <a href="#/team/update?teamname={{team.name}}">
+                  <a href="#/team/update?teamid={{team.id}}">
                     <button type="button" class="btn btn-primary">Update</button>
                   </a>
-
+                  <!--
+                  <a href="#/team/delete?teamid={{team.id}}">
+                    <button type="button" class="btn btn-danger">Delete</button>
+                  </a>
+                -->
 
                   <!-- Modal -->
                   <!--

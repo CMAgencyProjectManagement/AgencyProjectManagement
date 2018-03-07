@@ -9,7 +9,8 @@ const serverPath = {
   allProject: '/api/project/all',
   myProject: '/api/project',
   // Team
-  allTeam: '/api/team/all'
+  allTeam: '/api/team/all',
+  deleteTeam: '/api/team'
 };
 
 export {

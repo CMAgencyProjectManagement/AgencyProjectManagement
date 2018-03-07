@@ -5,6 +5,7 @@ import {CommonModule} from '@angular/common';
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { UpdateTeamComponent } from './update-team/update-team.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import { DetailTeamComponent } from './detail-team/detail-team.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
     TeamManagementRoutingModule,
     BsDropdownModule.forRoot(),
   ],
-  declarations: [TeamManagePageComponent, CreateTeamComponent, UpdateTeamComponent]
+  declarations: [TeamManagePageComponent, CreateTeamComponent, UpdateTeamComponent, DetailTeamComponent]
 })
 export class TeamManagementModule {
 }
