@@ -137,6 +137,21 @@ namespace Service
             }
         }
 
+        public static int DeactiveUser(int id)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                User user = entities.Users.Find(id);
+                if (user != null)
+                {
+                    user.IsActive = false;
+                    entities.SaveChanges();
+                    return id;
+                }
+                throw new ObjectNotFoundException($"User with ID{id} not found");
+            }            
+        }
+
         public static JObject ToJson(
             this User user,
             string avatarPath = null,

@@ -26,6 +26,7 @@ namespace Web
                 ["Data"] = data
             };
         }
+        
 
         public static JObject GetExceptionResponse(ModelStateDictionary modelStates)
         {

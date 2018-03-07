@@ -47,7 +47,6 @@ export class CreateUserComponent implements OnInit {
     this.isLoading = false;
   }
 
-
   ngOnInit() {
     this.signupForm = new FormGroup({
       username: new FormControl(undefined),
@@ -95,6 +94,25 @@ export class CreateUserComponent implements OnInit {
 
   }
 
+  setDate(): void {
+    // Set today date using the patchValue function
+    let date = new Date();
+    this.signupForm.patchValue({
+      myDate: {
+        date: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate()
+        }
+      }
+    });
+  }
+
+  clearDate(): void {
+    // Clear the date using the patchValue function
+    this.signupForm.patchValue({myDate: null});
+  }
+
   handleCreateError(errors: any[]) {
     for (let error of errors) {
       const fieldName = error.key;
@@ -103,5 +121,8 @@ export class CreateUserComponent implements OnInit {
     }
   }
 
+  onDateChanged(event: IMyDateModel) {
+    console.debug('onDateChanged', event.date);
+  }
 
 }

@@ -6,6 +6,10 @@
         <strong>Projects Management</strong>
       </div>
       <div class="card-body">
+        <button type="button" class="btn btn-success" style="font-size: 20px" onclick="location.href='#/project/add';">
+          <i class="fa fa-magic"></i>&nbsp; New Project</button>
+      </div>
+      <div class="card-body">
         <table class="table table-hover table-outline mb-0" *ngIf="projects">
           <thead class="thead-default">
             <tr>
@@ -14,22 +18,61 @@
               <th>Deadline</th>
               <th>Start date</th>
               <th>Created</th>
+              <th>Delete</th>
+              <th>Update</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let project of projects" style="cursor: pointer">
-            <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
-              
-              <td><a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.name | truncatetext:80}}</a></td>
-              <td><a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.description | truncatetext:100}}</a></td>
+              <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
+
+              <td>
+                <a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.name | truncatetext:80}}</a>
+              </td>
+              <td>
+                <a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.description | truncatetext:100}}</a>
+              </td>
               <td *ngIf="!project.deadline">N/A</td>
               <td *ngIf="project.deadline">{{project.deadline | date:'d/M/y'}}</td>
               <td *ngIf="!project.startDate">N/A</td>
               <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
               <td>{{project.createdTime | date:'d/M/y'}}</td>
+              <td>
+                <button type="button" class="btn btn-primary">
+                  Update
+                </button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger" data-toggle="modal" (click)="dangerModal.show()" style="padding: 0.3rem">
+                  Delete
+                </button>
+              </td>
             </tr>
         </table>
       </div>
     </div>
   </div>
 </div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Confirmation message!</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure to delete this project?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">No</button>
+        <button type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

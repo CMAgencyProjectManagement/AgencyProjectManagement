@@ -1,4 +1,4 @@
-<title>Project Management</title>
+<title>Project Detail</title>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -11,12 +11,9 @@
                         <div class="form-group row" style="font-size: 30px" *ngIf="foundProject.name">
                             Project Name: {{foundProject.name}}
                         </div>
-                        <div class="form-group row">
-                                Customer Name:  
-                            </div>
-                        <div class="form-group row">
+                        <div>
                             Description:<br/><br/>
-                            <textarea id="textarea-input" name="textarea-input" rows="4" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea>
+                            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea>
                         </div>
                         <div class="form-group row">
                             Created Time: {{foundProject.createdTime | date:'d/M/y'}}
@@ -33,8 +30,8 @@
                         <div class="form-group row">
                             Changed Time: {{foundProject.changedTime | date:'d/M/y'}}
                         </div>
-                        <button type="button" class="btn btn-outline-primary btn-lg" style="margin-left: 600px;">Update</button>
-                        <button type="button" class="btn btn-outline-danger btn-lg" style="margin-left: 50px;">Delete</button>
+                        <button type="button" class="btn btn-primary btn-lg"  style="margin-left: 600px;">Update</button>
+                        <button type="button" class="btn btn-danger btn-lg" style="margin-left: 50px;">Delete</button>
                     </form>
                 </div>
             </div>

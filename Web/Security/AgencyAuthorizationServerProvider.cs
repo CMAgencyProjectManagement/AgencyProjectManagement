@@ -59,6 +59,10 @@ namespace Web.Security
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                 }
+                if (user.IsManager)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "Manager"));
+                }
                 context.Validated(new ClaimsIdentity(claims, context.Options.AuthenticationType));
             }
             catch (Exception ex)
