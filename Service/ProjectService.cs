@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,6 +64,32 @@ namespace Service
             }
 
             return newProject;
+        }
+
+        public static Project UpdateProject(
+            int id,
+            string name,
+            string description,
+            DateTime? deadline,
+            DateTime? startDate)
+        {
+            using (var db = new CmAgencyEntities())
+            {
+                var foundProject = db.Projects.Find(id);
+                if (foundProject != null)
+                {
+                    foundProject.Name = name;
+                    foundProject.Description = description;
+                    foundProject.Deadline = deadline;
+                    foundProject.StartDate = startDate;
+                    db.SaveChanges();
+                    return foundProject;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Can't find project with ID {id}");
+                }
+            }
         }
 
         public static JObject ToJson(this Project project, bool isDetailed = true)
