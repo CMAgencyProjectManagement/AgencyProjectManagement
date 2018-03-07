@@ -1,5 +1,105 @@
 webpackJsonp(["project-management.module"],{
 
+/***/ "../../../../../src/app/views/project/project-detail/project-detail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<title>Project Management</title>\r\n<div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <div class=\"card\">\r\n            <div class=\"card-header\">\r\n                <strong>Projects Detail</strong>\r\n            </div>\r\n            <div class=\"card-body\">\r\n                <div class=\"card-body\" style=\"font-size:23px\">\r\n                    <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n                        <div class=\"form-group row\" style=\"font-size: 30px\" *ngIf=\"foundProject.name\">\r\n                            Project Name: {{foundProject.name}}\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                                Customer Name:  \r\n                            </div>\r\n                        <div class=\"form-group row\">\r\n                            Description:<br/><br/>\r\n                            <textarea id=\"textarea-input\" name=\"textarea-input\" rows=\"4\" class=\"form-control\" style=\"font-size:20px\" disabled=\"true\">{{foundProject.description}}</textarea>\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            Created Time: {{foundProject.createdTime | date:'d/M/y'}}\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            Start Date: {{foundProject.startDate | date:'d/M/y'}}\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            Deadline: {{foundProject.deadline}}\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            Changed By: {{foundProject.changedBy.fullname}}\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            Changed Time: {{foundProject.changedTime | date:'d/M/y'}}\r\n                        </div>\r\n                        <button type=\"button\" class=\"btn btn-outline-primary btn-lg\" style=\"margin-left: 600px;\">Update</button>\r\n                        <button type=\"button\" class=\"btn btn-outline-danger btn-lg\" style=\"margin-left: 50px;\">Delete</button>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/views/project/project-detail/project-detail.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "button {\n  padding: 1rem 2rem;\n  position: relative; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/views/project/project-detail/project-detail.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectDetailComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ProjectDetailComponent = /** @class */ (function () {
+    function ProjectDetailComponent(projectService) {
+        this.projectService = projectService;
+    }
+    ProjectDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.projectID = Number(this.GetURLParameter('projectID'));
+        this.projectService.getAllProjects()
+            .then(function (data) {
+            _this.projects = data;
+            for (var i = 0; i < _this.projects.length; i++) {
+                if (_this.projects[i].id == _this.projectID) {
+                    _this.foundProject = _this.projects[i];
+                    // this.updateForm.value.fullname= this.foundUser.name;
+                    // this.viewForm.controls['projectName'].setValue(this.foundProject.name);
+                    // this.updateForm.value.email=this.foundUser.email;
+                    // this.updateForm.value.phone=this.foundUser.phone;
+                }
+            }
+        })
+            .catch(function (reason) {
+            console.debug('ProjectDetailComponent', reason);
+        });
+        this.viewForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
+            projectname: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            customername: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            description: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            createdTime: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            startDate: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            deadline: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            changedBy: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+            changedTime: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required),
+        });
+    };
+    ProjectDetailComponent.prototype.GetURLParameter = function (sParam) {
+        var sPageURL = window.location.href;
+        var sURLVariables = sPageURL.split('?');
+        var sUsername = sURLVariables[1].split('=');
+        return sUsername[1];
+    };
+    ProjectDetailComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-project-detail',
+            template: __webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]])
+    ], ProjectDetailComponent);
+    return ProjectDetailComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/views/project/project-management-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9,12 +109,14 @@ webpackJsonp(["project-management.module"],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__ = __webpack_require__("../../../../../src/app/views/project/view/project-management.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__ = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__project_detail_project_detail_component__ = __webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -32,6 +134,13 @@ var routes = [
         component: __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__["a" /* ProjectSchedulingComponent */],
         data: {
             title: 'Scheduling'
+        }
+    },
+    {
+        path: 'detail',
+        component: __WEBPACK_IMPORTED_MODULE_4__project_detail_project_detail_component__["a" /* ProjectDetailComponent */],
+        data: {
+            title: 'Project Detail'
         }
     }
 ];
@@ -63,12 +172,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__ = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__directives_pipe_truncateText_pipe__ = __webpack_require__("../../../../../src/app/directives/pipe/truncateText.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_views_project_project_detail_project_detail_component__ = __webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -87,6 +198,7 @@ var ProjectManagementModule = /** @class */ (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__["a" /* ProjectManagementComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__["a" /* ProjectSchedulingComponent */],
+                __WEBPACK_IMPORTED_MODULE_6_app_views_project_project_detail_project_detail_component__["a" /* ProjectDetailComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__directives_pipe_truncateText_pipe__["a" /* TruncateTextPipe */]
             ]
         })
@@ -182,7 +294,7 @@ var ProjectSchedulingComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/view/project-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>All projects</strong>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <table class=\"table table-hover table-outline mb-0\"\r\n               *ngIf=\"projects\">\r\n          <thead class=\"thead-default\">\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Description</th>\r\n            <th>Deadline</th>\r\n            <th>Start date</th>\r\n            <th>Created</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n          <tr *ngFor=\"let project of projects\">\r\n            <td>{{project.name | truncatetext:80}}</td>\r\n            <td>{{project.description | truncatetext:100}}</td>\r\n            <td *ngIf=\"!project.deadline\">N/A</td>\r\n            <td *ngIf=\"project.deadline\">{{project.deadline | date:'d/M/y'}}</td>\r\n            <td *ngIf=\"!project.startDate\">N/A</td>\r\n            <td *ngIf=\"project.startDate\">{{project.startDate | date:'d/M/y'}}</td>\r\n            <td>{{project.createdTime | date:'d/M/y'}}</td>\r\n          </tr>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<title>Project Management</title>\r\n<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Projects Management</strong>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <table class=\"table table-hover table-outline mb-0\" *ngIf=\"projects\">\r\n          <thead class=\"thead-default\">\r\n            <tr>\r\n              <th>Name</th>\r\n              <th>Description</th>\r\n              <th>Deadline</th>\r\n              <th>Start date</th>\r\n              <th>Created</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let project of projects\" style=\"cursor: pointer\">\r\n            <!-- <tr *ngFor=\"let project of projects\" style=\"cursor: pointer\" onclick=\"location.href='#/project/detail'\"> -->\r\n              \r\n              <td><a href=\"#/project/detail?projectID={{project.id}}\" style=\"color: black\">{{project.name | truncatetext:80}}</a></td>\r\n              <td><a href=\"#/project/detail?projectID={{project.id}}\" style=\"color: black\">{{project.description | truncatetext:100}}</a></td>\r\n              <td *ngIf=\"!project.deadline\">N/A</td>\r\n              <td *ngIf=\"project.deadline\">{{project.deadline | date:'d/M/y'}}</td>\r\n              <td *ngIf=\"!project.startDate\">N/A</td>\r\n              <td *ngIf=\"project.startDate\">{{project.startDate | date:'d/M/y'}}</td>\r\n              <td>{{project.createdTime | date:'d/M/y'}}</td>\r\n            </tr>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
