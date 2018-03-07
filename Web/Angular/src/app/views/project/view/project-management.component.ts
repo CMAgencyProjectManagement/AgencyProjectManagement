@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProjectService} from '../../../services/project.service';
 import {Project} from '../../../interfaces/project';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-project-management',
   templateUrl: './project-management.component.html',
@@ -17,7 +18,7 @@ export class ProjectManagementComponent implements OnInit {
   public warningModal;
   public dangerModal;
   public infoModal;
-  constructor(private projectService: ProjectService) {
+  constructor(private projectService: ProjectService,private router: Router ) {
   }
 
   ngOnInit() {
@@ -29,5 +30,10 @@ export class ProjectManagementComponent implements OnInit {
         console.debug('ProjectManagementComponent', reason);
       })
   }
+
+  // handleViewProject(projectID: number) {
+  // //  let url = "/project/detail?projectID=" + projectID;
+  //   this.router.navigate(['detail']);
+  // }
 
 }

@@ -23,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let project of projects" style="cursor: pointer">
+            <tr *ngFor="let project of projects" style="cursor: pointer" (click)="handleViewProject(project.id)">
               <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
 
               <td>

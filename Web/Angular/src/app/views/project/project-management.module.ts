@@ -8,18 +8,21 @@ import { ProjectDetailComponent } from 'app/views/project/project-detail/project
 import { AddProjectComponent } from 'app/views/project/add-project/add-project.component';
 // Modal Component
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { MyDatePickerModule, MyDatePicker } from 'mydatepicker';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
     CommonModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    MyDatePickerModule
   ],
   declarations: [
     ProjectManagementComponent,
     ProjectSchedulingComponent,
     ProjectDetailComponent,
     TruncateTextPipe,
-  AddProjectComponent]
+  AddProjectComponent,
+  ]
 })
 export class ProjectManagementModule {
 }
