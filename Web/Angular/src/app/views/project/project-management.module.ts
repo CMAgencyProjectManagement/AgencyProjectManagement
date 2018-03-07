@@ -9,12 +9,17 @@ import { AddProjectComponent } from 'app/views/project/add-project/add-project.c
 // Modal Component
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MyDatePickerModule, MyDatePicker } from 'mydatepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser/src/browser';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
     CommonModule,
     ModalModule.forRoot(),
-    MyDatePickerModule
+    MyDatePickerModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ProjectManagementComponent,

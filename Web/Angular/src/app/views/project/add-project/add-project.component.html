@@ -8,31 +8,29 @@
             </div>
             <div class="card-body">
                 <div class="card-body" style="font-size:23px">
-                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div [formGroup]="ProjectForm" class="form-horizontal">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="text-input">Project Name</label>
+                            <label class="col-md-3 col-form-label" for="projectName-input">Project Name</label>
                             <div class="col-md-6">
-                                <input type="text" id="text-input" name="projectName-input" class="form-control" formControlName="projectName" placeholder="Please enter the project's name">
+                                <input type="text" id="projectName-input" name="projectName-input" class="form-control" formControlName="projectName" placeholder="Please enter the project's name">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="textarea-input">Description</label>
+                            <label class="col-md-3 col-form-label" for="projectDescription-input">Description</label>
                             <div class="col-md-6">
-                                <textarea id="textarea-input" name="projectDescription-input" rows="5" class="form-control" formControlName="projectDescription"></textarea>
+                                <textarea id="projectDescription-input" name="projectDescription-input" rows="5" class="form-control" formControlName="projectDescription" placeholder="About project..."></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="text-input">Start Date: </label>
+                            <label class="col-md-3 col-form-label" for="projectStartDate-input">Start Date: </label>
                             <div class="col-md-6">
-                                <my-date-picker name="mydate" [options]="myDatePickerOptions" class="form-control-mydatepicker" (dateChanged)="onDateChanged($event)"
-                                    formControlName="myDate"></my-date-picker>
+                                <my-date-picker name="projectStartDate-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="projectStartDate"></my-date-picker>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="text-input">Deadline: </label>
+                            <label class="col-md-3 col-form-label" for="projectDeadline-input">Deadline: </label>
                             <div class="col-md-6">
-                                <my-date-picker name="mydate" [options]="myDatePickerOptions" class="form-control-mydatepicker" (dateChanged)="onDateChanged($event)"
-                                    formControlName="myDate"></my-date-picker>
+                                <my-date-picker name="projectDeadline-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="projectDeadline"></my-date-picker>
                             </div>
                         </div>
                         <div>
@@ -45,7 +43,7 @@
                                 Cancel
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,7 +64,7 @@
             </div>
             <div class="modal-footer" style="padding: 1rem 2.5rem;">
                 <button type="button" class="btn btn-secondary" (click)="successModal.hide()">No</button>
-                <button type="button" class="btn btn-success">Yes</button>
+                <button type="button" class="btn btn-success" (click)="handleCreate()">Yes</button>
             </div>
         </div>
         <!-- /.modal-content -->

@@ -9,6 +9,7 @@ import { User } from 'app/interfaces/user';
 import { Pager } from '../../../interfaces/pager';
 import { Directive, HostListener, Input } from '@angular/core';
 import * as _ from 'lodash';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   FormControl,
   FormGroup,
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DISABLED } from '@angular/forms/src/model';
 import { IMyDateModel, IMyDpOptions } from 'mydatepicker';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-add-project',
   templateUrl: './add-project.component.html',
@@ -37,24 +39,48 @@ export class AddProjectComponent implements OnInit {
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
-  constructor(private projectService: ProjectService) {
+  ProjectForm: FormGroup;
+  constructor(private projectService: ProjectService,
+    private router: Router) {
   }
 
   ngOnInit() {
-    // this.newProjectForm = new FormGroup({
-    //   username: new FormControl(undefined, Validators.required),
-    //   password: new FormControl(undefined, Validators.required),
-    //   fullname: new FormControl(undefined, Validators.required),
-    //   email: new FormControl(undefined, Validators.required),
-    //   phone: new FormControl(undefined, Validators.required),
-    //   day: new FormControl(undefined, Validators.required),
-    //   month: new FormControl(undefined, Validators.required),
-    //   year: new FormControl(undefined, Validators.required),
-    //   myDate: new FormControl(undefined, Validators.required),
-    //   avatar: new FormControl(undefined, Validators.required)
-    // });
+    this.ProjectForm = new FormGroup({
+      projectName: new FormControl(undefined, Validators.required),
+      projectDescription: new FormControl(undefined, Validators.required),
+      projectStartDate: new FormControl(undefined, Validators.required),
+      projectDeadline: new FormControl(undefined, Validators.required),
+    });
+  }
+  handleCreate(){
+    if (this.ProjectForm.valid) {
+      
+      const formValue = this.ProjectForm.value;
+      this.isLoading = true;
+      console.debug("here");
+      this.projectService.createProject(
+        formValue.projectName,
+        formValue.projectDescription,
+        formValue.projectStartDate.formatted,
+        formValue.projectDeadline.formatted,
+      ).then(value => {
+        this.isLoading = false;
+        this.router.navigate(['project'])
+      }).catch(reason => {
+        this.isLoading = false;
+        console.debug(reason);
+        this.handleCreateError(reason.Data);
+      })
+    }
   }
 
+  handleCreateError(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      console.debug('handleCreateProjectError', fieldName, errorMessage);
+    }
+  }
   // setDate(): void {
   //   // Set today date using the patchValue function
   //   let date = new Date();
