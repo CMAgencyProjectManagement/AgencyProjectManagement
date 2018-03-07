@@ -1,3 +1,5 @@
+import {Team} from './team';
+
 export interface User {
   id: number,
   name: string,
@@ -9,5 +11,6 @@ export interface User {
   avatar: string,
   isAdmin: boolean,
   isManager: boolean,
-  isActive: boolean
+  isActive: boolean,
+  team: Team
 }

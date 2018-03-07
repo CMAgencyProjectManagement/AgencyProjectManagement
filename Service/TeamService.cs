@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -89,20 +90,26 @@ namespace Service
             }
         }
 
-        public static JObject ToJson(this Team team)
+        public static JObject ToJson(this Team team, bool includeManager = true)
         {
             var creator = UserService.GetUser(team.CreatedBy);
-            var manager = GetManager(team.ID);
 
-            return new JObject
+            var result =  new JObject
             {
                 ["id"] = team.ID,
                 ["name"] = team.Name,
                 ["createdBy"] = creator.ToJson(),
                 ["createdDate"] = team.CreatedDate.ToShortDateString(),
                 ["isClosed"] = team.IsClosed,
-                ["manager"] = manager.ToJson()
             };
+
+            if (includeManager)
+            {
+                var manager = GetManager(team.ID);
+                result["manager"] = manager.ToJson();
+            }
+
+            return result;
         }
     }
 }

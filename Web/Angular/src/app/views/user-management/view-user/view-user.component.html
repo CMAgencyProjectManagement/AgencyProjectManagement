@@ -13,52 +13,38 @@
   <thead>
   <tr>
     <th>No.</th>
-    <th>Username</th>
-    <th>Full Name</th>
-    <th>Birthdate</th>
-    <th>Email</th>
-    <th>Phone Number</th>
     <th>Avatar</th>
-    <th>Admin</th>
-    <th>Status</th>
+    <th>Full Name</th>
+    <th>Username</th>
+    <th>Birthdate</th>
+    <th>Team</th>
+    <th>Role</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let user of pagedUsers;let i = index">
     <th scope="row">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>
     <td>
-      <a href="#/account/update?id={{user.id}}">{{user.username}}</a>
+      <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
+      <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
     </td>
     <td>
       <p *ngIf="user.name">{{user.name}}</p>
       <p *ngIf="!user.name">N/A</p>
     </td>
     <td>
+      <a href="#/account/update?id={{user.id}}">{{user.username}}</a>
+    </td>
+    <td>
       <p *ngIf="user.birthDate">{{user.birthDate}}</p>
       <p *ngIf="!user.birthDate">N/A</p>
     </td>
     <td>
-      <p *ngIf="user.email">{{user.email}}</p>
-      <p *ngIf="!user.email">N/A</p>
+      <p>{{user.team.name}}</p>
     </td>
     <td>
-      <p *ngIf="user.phone">{{user.phone}}</p>
-      <p *ngIf="!user.phone">N/A</p>
-    </td>
-    <td>
-      <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
-      <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
-    </td>
-    <td>
-      <label class="switch switch-default switch-pill switch-primary-outline-alt">
-        <input type="checkbox" disabled="true" class="switch-input" [attr.checked]="user.isAdmin ? '' : null">
-        <span class="switch-label"></span>
-        <span class="switch-handle"></span>
-      </label>
-    </td>
-    <td>
-      <span *ngIf="user.isActive" class="badge badge-success">Active</span>
-      <span *ngIf="!user.isActive" class="badge badge-danger">Disable</span>
+      <strong><p *ngIf="user.isManager" >Manager</p></strong>
+      <p *ngIf="!user.isManager">Staff</p>
     </td>
   </tr>
   </tbody>

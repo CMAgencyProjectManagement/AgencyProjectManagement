@@ -61,7 +61,7 @@ namespace Service
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
-                return entities.Users.Include( user => user.Teams1).ToList();
+                return entities.Users.Include(user => user.Teams1).ToList();
             }
         }
 
@@ -186,7 +186,7 @@ namespace Service
 
             if (includeTeam)
             {
-                result["team"] = user.Teams1.First().ToJson();
+                result["team"] = user.Teams1.First().ToJson(false);
             }
 
             return result;
