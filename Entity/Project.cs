@@ -18,7 +18,6 @@ namespace Entity
         public Project()
         {
             this.Lists = new HashSet<List>();
-            this.Feedbacks = new HashSet<Feedback>();
             this.Teams = new HashSet<Team>();
             this.Users = new HashSet<User>();
         }
@@ -34,11 +33,10 @@ namespace Entity
         public Nullable<System.DateTime> ChangedTime { get; set; }
         public string LessionLearnt { get; set; }
         public string CustomerFeedback { get; set; }
+        public Nullable<int> Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<List> Lists { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
