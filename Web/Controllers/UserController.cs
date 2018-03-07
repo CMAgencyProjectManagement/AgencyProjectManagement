@@ -117,6 +117,26 @@ namespace Web.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult DeactiveUser(DeleteUserModel deleteUserModel)
+        {
+            try
+            {
+                int id = UserService.DeactiveUser(deleteUserModel.ID);
+                return Ok(ResponseHelper.GetResponse(new JObject
+                {
+                    ["id"] = id
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
         [HttpPut]
         [Route("")]
         [Authorize(Roles = "Admin")]
@@ -138,10 +158,8 @@ namespace Web.Controllers
                 else
                 {
                     return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState)); 
+                        ResponseHelper.GetExceptionResponse(ModelState));
                 }
-                
-
             }
             catch (Exception ex)
             {

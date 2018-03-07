@@ -470,6 +470,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\AgencyDateValidation.cs" />
     <Compile Include="ViewModels\CreateProjectModel.cs" />
+    <Compile Include="ViewModels\DeleteUserModel.cs" />
     <Compile Include="ViewModels\EditUserModel.cs" />
     <Compile Include="ViewModels\CreateUserModel.cs" />
     <Compile Include="ViewModels\UpdateUserModel.cs" />
