@@ -1,8 +1,9 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {ProjectManagementComponent} from './view/project-management.component';
-import {ProjectSchedulingComponent} from './project-scheduling/project-scheduling.component';
-import {ProjectDetailComponent} from './project-detail/project-detail.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProjectManagementComponent } from './view/project-management.component';
+import { ProjectSchedulingComponent } from './project-scheduling/project-scheduling.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { AddProjectComponent } from './add-project/add-project.component';
 const routes: Routes = [
   {
     path: '',
@@ -24,7 +25,15 @@ const routes: Routes = [
     data: {
       title: 'Project Detail'
     }
+  },
+  {
+    path: 'add',
+    component: AddProjectComponent,
+    data: {
+      title: 'New Project'
+    }
   }
+
 ];
 
 @NgModule({
