@@ -73,7 +73,7 @@ namespace Web.Controllers
                 foreach (User user in allUser)
                 {
                     //Dont expose password
-                    data.Add(user.ToJson(avatarPath));
+                    data.Add(user.ToJson(avatarPath, includeTeam: true));
                 }
 
                 return Ok(ResponseHelper.GetResponse(data));
@@ -102,7 +102,6 @@ namespace Web.Controllers
                         {
                             birthdate = dt;
                         }
-                        
                     }
 
                     User newUser = UserService.CreateAccount(

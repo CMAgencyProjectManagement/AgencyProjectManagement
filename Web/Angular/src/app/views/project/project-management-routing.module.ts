@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     component: ProjectManagementComponent,
     data: {
-      title: 'Projects'
+      title: 'View projects'
     }
   },
   {
@@ -24,14 +24,14 @@ const routes: Routes = [
     path: 'detail',
     component: ProjectDetailComponent,
     data: {
-      title: 'Project Detail'
+      title: 'Update project'
     }
   },
   {
     path: 'add',
     component: AddProjectComponent,
     data: {
-      title: 'New Project'
+      title: 'Create project'
     }
   },
 

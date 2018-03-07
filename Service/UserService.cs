@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace Service
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
-                return entities.Users.ToList();
+                return entities.Users.Include(user => user.Teams1).ToList();
             }
         }
 
@@ -148,14 +149,16 @@ namespace Service
                     entities.SaveChanges();
                     return id;
                 }
+
                 throw new ObjectNotFoundException($"User with ID{id} not found");
-            }            
+            }
         }
 
         public static JObject ToJson(
             this User user,
             string avatarPath = null,
-            bool includePassword = false)
+            bool includePassword = false,
+            bool includeTeam = false)
         {
             JObject result = new JObject
             {
@@ -179,6 +182,11 @@ namespace Service
             if (includePassword)
             {
                 result["password"] = user.Password;
+            }
+
+            if (includeTeam)
+            {
+                result["team"] = user.Teams1.First().ToJson(false);
             }
 
             return result;

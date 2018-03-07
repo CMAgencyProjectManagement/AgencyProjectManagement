@@ -10,35 +10,35 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Example Pages'
+      title: 'Pages'
     },
     children: [
       {
         path: '404',
         component: P404Component,
         data: {
-          title: 'Page 404'
+          title: '404'
         }
       },
       {
         path: '500',
         component: P500Component,
         data: {
-          title: 'Page 500'
+          title: '500'
         }
       },
       {
         path: 'login',
         component: LoginComponent,
         data: {
-          title: 'Login Page'
+          title: 'Login'
         }
       },
       {
         path: 'register',
         component: RegisterComponent,
         data: {
-          title: 'Register Page'
+          title: 'Register'
         }
       }
     ]

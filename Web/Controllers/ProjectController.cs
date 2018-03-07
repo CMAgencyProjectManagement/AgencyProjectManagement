@@ -37,7 +37,8 @@ namespace Web.Controllers
                         ["createdBy"] = project.CreatedBy,
                         ["startDate"] = project.StartDate,
                         ["changedBy"] = project.ChangedBy,
-                        ["changedTime"] = project.ChangedTime
+                        ["changedTime"] = project.ChangedTime,
+                        ["status"] = project.Status,
                     });
                 }
 
@@ -124,17 +125,18 @@ namespace Web.Controllers
                 {
                     DateTime? deadline = null;
                     DateTime? startdate = null;
-                    
+
                     DateTime tmp;
                     if (DateTime.TryParse(updateProjectViewModel.deadline, out tmp))
                     {
                         deadline = tmp;
                     }
+
                     if (DateTime.TryParse(updateProjectViewModel.startdate, out tmp))
                     {
                         startdate = tmp;
                     }
-                    
+
                     var updatedProject = ProjectService.UpdateProject(
                         updateProjectViewModel.id,
                         updateProjectViewModel.name,
@@ -156,7 +158,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
 
         [HttpPut]
         [Route("close")]
@@ -177,6 +179,5 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
     }
 }

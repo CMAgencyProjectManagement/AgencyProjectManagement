@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
+using System.Net;
+using System.Runtime.Remoting.Messaging;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -16,6 +18,7 @@ namespace Service
                 return db.Teams.ToList();
             }
         }
+
         public static Team GetTeamById(int id)
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
@@ -23,6 +26,7 @@ namespace Service
                 return entities.Teams.Find(id);
             }
         }
+
         public static User GetManager(int teamId)
         {
             using (var db = new CmAgencyEntities())
@@ -38,10 +42,29 @@ namespace Service
                         }
                     }
                 }
+
                 return null;
             }
         }
-           public static Team Updateteam(
+
+        public static Team GetTeamOfUser(int userId)
+        {
+            using (var db = new CmAgencyEntities())
+            {
+                User foundUser = db.Users.Find(userId);
+                if (foundUser != null)
+                {
+                    Team team = foundUser.Teams1.First();
+                    return team;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Can't find team with ID{userId}");
+                }
+            }
+        }
+
+        public static Team Updateteam(
             int id,
             string name,
             string createdBy,
@@ -55,9 +78,8 @@ namespace Service
                 if (team != null)
                 {
                     team.Name = name;
-                    
-                    
-                    
+
+
                     entities.SaveChanges();
                     return team;
                 }
@@ -68,20 +90,26 @@ namespace Service
             }
         }
 
-        public static JObject ToJson(this Team team)
+        public static JObject ToJson(this Team team, bool includeManager = true)
         {
             var creator = UserService.GetUser(team.CreatedBy);
-            var manager = GetManager(team.ID);
 
-            return new JObject
+            var result =  new JObject
             {
                 ["id"] = team.ID,
                 ["name"] = team.Name,
                 ["createdBy"] = creator.ToJson(),
                 ["createdDate"] = team.CreatedDate.ToShortDateString(),
                 ["isClosed"] = team.IsClosed,
-                ["manager"] = manager.ToJson()
             };
+
+            if (includeManager)
+            {
+                var manager = GetManager(team.ID);
+                result["manager"] = manager.ToJson();
+            }
+
+            return result;
         }
     }
 }
