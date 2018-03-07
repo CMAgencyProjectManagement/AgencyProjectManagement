@@ -5,18 +5,22 @@ import {CreateUserComponent} from './create-user/create-user.component';
 import {ViewUserComponent} from './view-user/view-user.component';
 import {UpdateUserComponent} from './update-user/update-user.component';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
+import {MyDatePickerModule} from 'mydatepicker';
+
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     UserManagementRoutingModule,
     ReactiveFormsModule,
     LaddaModule.forRoot({
       style: 'expand-left'
     }),
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    MyDatePickerModule
   ],
   declarations: [CreateUserComponent, ViewUserComponent, UpdateUserComponent]
 })

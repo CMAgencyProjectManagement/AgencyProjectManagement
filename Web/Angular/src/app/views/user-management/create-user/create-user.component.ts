@@ -13,6 +13,7 @@ import {UserService} from '../../../services/user.service';
 import {Cursor, StoreService} from '../../../services/tree.service';
 import {Router} from '@angular/router';
 // import * as moment from 'moment';
+import {IMyDpOptions} from 'mydatepicker';
 
 
 @Component({
@@ -27,6 +28,17 @@ export class CreateUserComponent implements OnInit {
   isLoading: boolean;
   errorMessage: string;
 
+  // https://github.com/kekeh/mydatepicker
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd/mm/yyyy',
+    showInputField: true,
+    openSelectorTopOfInput: true,
+    showTodayBtn: false
+  };
+
+  public model: any = {date: {year: 2018, month: 10, day: 9}};
+
   constructor(private userService: UserService,
               private storeService: StoreService,
               private router: Router) {
@@ -35,17 +47,16 @@ export class CreateUserComponent implements OnInit {
     this.isLoading = false;
   }
 
+
   ngOnInit() {
     this.signupForm = new FormGroup({
-      username: new FormControl(undefined, Validators.required),
-      password: new FormControl(undefined, Validators.required),
-      fullname: new FormControl(undefined, Validators.required),
-      email: new FormControl(undefined, Validators.required),
-      phone: new FormControl(undefined, Validators.required),
-      day: new FormControl(undefined, Validators.required),
-      month: new FormControl(undefined, Validators.required),
-      year: new FormControl(undefined, Validators.required),
-      avatar: new FormControl(undefined, Validators.required)
+      username: new FormControl(undefined),
+      password: new FormControl(undefined),
+      fullname: new FormControl(undefined),
+      email: new FormControl(undefined),
+      phone: new FormControl(undefined),
+      birthDate: new FormControl(undefined),
+      avatar: new FormControl(undefined)
     })
   }
 
