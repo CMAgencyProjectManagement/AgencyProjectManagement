@@ -31,15 +31,42 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+        [HttpGet]
+        [Route("user/{id:int}")]
+        [Authorize(Roles = "Admin,Staff,Manager")]
+        public IHttpActionResult GetTask1(int id)
+        {
+            try
+            {
+
+                //Dont expose password
+                //List list = ListService.GetListOfTask(id);
+                IEnumerable<Task> tasks = TaskService.GetTasksOfUser(id);
+                JArray dataObject = new JArray();
+                foreach (var task in tasks)
+                {
+                    dataObject.Add(task.ToJson());
+                }
+                return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+
         [HttpGet]
         [Route("myTask")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Staff,Manager")]
         public IHttpActionResult GetMyTask()
         {
             try
             {
                 string userId = User.Identity.GetUserId();
-                IEnumerable<Task> tasks = TaskService.GetTaskOfUser(Int32.Parse(userId));
+                IEnumerable<Task> tasks = TaskService.GetTasksOfUser(Int32.Parse(userId));  
                 JArray dataObject = new JArray();
                 foreach (var task in tasks)
                 {
