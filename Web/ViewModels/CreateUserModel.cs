@@ -25,5 +25,7 @@ namespace Web.ViewModels
         [EmailAddress]
         [MaxLength(255)]
         public string Email { get; set; }
+        [Required]
+        public int Team { get; set; }
     }
 }    

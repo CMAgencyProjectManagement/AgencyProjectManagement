@@ -34,11 +34,12 @@ namespace Service
                 Team foundTeam = db.Teams.Find(teamId);
                 if (foundTeam != null)
                 {
-                    foreach (var user in foundTeam.Users)
+                    IEnumerable<UserTeam> userTeams = foundTeam.UserTeams;
+                    foreach (UserTeam userTeam in userTeams)
                     {
-                        if (user.IsManager)
+                        if (userTeam.User.IsManager)
                         {
-                            return user;
+                            return userTeam.User;
                         }
                     }
                 }
@@ -54,7 +55,7 @@ namespace Service
                 User foundUser = db.Users.Find(userId);
                 if (foundUser != null)
                 {
-                    Team team = foundUser.Teams1.First();
+                    Team team = db.UserTeams.First(userteam => userteam.UserID == foundUser.ID).Team;
                     return team;
                 }
                 else

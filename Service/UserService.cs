@@ -61,7 +61,7 @@ namespace Service
         {
             using (CmAgencyEntities entities = new CmAgencyEntities())
             {
-                return entities.Users.Include(user => user.Teams1).ToList();
+                return entities.Users.ToList();
             }
         }
 
@@ -88,7 +88,8 @@ namespace Service
             DateTime? birthday,
             string email,
             string username,
-            string password)
+            string password,
+            int teamId)
         {
             User newUser;
             using (CmAgencyEntities entities = new CmAgencyEntities())
@@ -106,6 +107,12 @@ namespace Service
                     IsActive = true
                 };
                 entities.Users.Add(newUser);
+                Team team = entities.Teams.Find(teamId);
+                UserTeam userTeam = new UserTeam();
+                userTeam.User = newUser;
+                userTeam.Team = team;
+                entities.UserTeams.Add(userTeam);
+                
                 entities.SaveChanges();
             }
 
@@ -186,7 +193,7 @@ namespace Service
 
             if (includeTeam)
             {
-                result["team"] = user.Teams1.First().ToJson(false);
+                result["team"] = TeamService.GetTeamOfUser(user.ID).ToJson();
             }
 
             return result;

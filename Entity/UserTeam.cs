@@ -14,9 +14,9 @@ namespace Entity
     
     public partial class UserTeam
     {
+        public int ID { get; set; }
         public int TeamID { get; set; }
         public int UserID { get; set; }
-        public bool IsManager { get; set; }
     
         public virtual Team Team { get; set; }
         public virtual User User { get; set; }

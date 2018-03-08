@@ -110,7 +110,8 @@ namespace Web.Controllers
                         birthdate,
                         createUserModel.Email,
                         createUserModel.Username,
-                        createUserModel.Password
+                        createUserModel.Password,
+                        createUserModel.Team
                     );
                     return Ok(ResponseHelper.GetResponse(newUser.ToJson()));
                 }
