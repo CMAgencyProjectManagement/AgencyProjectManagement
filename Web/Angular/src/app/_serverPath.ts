@@ -10,7 +10,7 @@ const serverPath = {
   myProject: '/api/project',
   updateProject: '/api/project',
   createProject: '/api/project',
-  closeProject: '/api/project',
+  closeProject: '/api/project/close',
   // Team
   allTeam: '/api/team/all',
   deleteTeam: '/api/team'
