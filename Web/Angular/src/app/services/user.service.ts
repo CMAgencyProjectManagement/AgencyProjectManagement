@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {User} from '../interfaces/user';
 import {Cursor, StoreService} from './tree.service';
 import {serverPath} from '../_serverPath';
-import {post, get, put} from 'superagent';
+import {post, get, put, delete as deleteReq} from 'superagent';
 import * as moment from 'moment';
 
 @Injectable()
@@ -169,7 +169,7 @@ export class UserService {
     };
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();
-      put(serverPath.updateUser)
+      deleteReq(serverPath.closeProject)
         .set('token', token)
         .send(postDataObject)
         .type('form')
