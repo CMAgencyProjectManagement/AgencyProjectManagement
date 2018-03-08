@@ -1,17 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectService} from '../../../services/project.service';
 import {Project} from '../../../interfaces/project';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Router } from '@angular/router';
-import { Cursor, StoreService } from '../../../services/tree.service';
+import {ModalDirective} from 'ngx-bootstrap/modal';
+import {Router} from '@angular/router';
+import {Cursor, StoreService} from '../../../services/tree.service';
 import {Pager} from '../../../interfaces/pager';
 import {PagerService} from '../../../services/pager.service';
 import * as _ from 'lodash';
+
 @Component({
   selector: 'app-project-management',
   templateUrl: './project-management.component.html',
   styleUrls: ['./project-management.component.scss']
-  
+
 })
 export class ProjectManagementComponent implements OnInit {
   // pager object
@@ -27,14 +28,19 @@ export class ProjectManagementComponent implements OnInit {
   public warningModal;
   public dangerModal;
   public infoModal;
-  
-  constructor(private projectService: ProjectService,private router: Router ,private pagerService: PagerService) {
-  }
 
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
+
+  constructor(private projectService: ProjectService, private router: Router, private pagerService: PagerService) {
+  }
+
   ngOnInit() {
+    this.loadProject();
+  }
+
+  loadProject() {
     this.projectService.getAllProjects()
       .then(data => {
         this.projects = this.projectsFilter(data);
@@ -43,15 +49,15 @@ export class ProjectManagementComponent implements OnInit {
       .catch(reason => {
         console.debug('ProjectManagementComponent', reason);
       })
-  } 
+  }
 
-  handleClose(projectID: number){
+  handleClose(projectID: number) {
     console.debug(projectID);
     this.projectService.closeProject(
       projectID
     ).then(value => {
       this.isLoading = false;
-      window.location.reload();
+      this.loadProject();
     }).catch(reason => {
       this.isLoading = false;
       console.debug(reason);
@@ -59,7 +65,7 @@ export class ProjectManagementComponent implements OnInit {
     })
   }
 
-  
+
   handleCloseError(errors: any[]) {
     for (let error of errors) {
       const fieldName = error.key;
@@ -69,7 +75,7 @@ export class ProjectManagementComponent implements OnInit {
   }
 
   handleViewProject(projectID: number) {
-  console.debug("Here!!")
+    console.debug('Here!!')
   }
 
   setPage(page: number, projects: Project[] = undefined) {
@@ -86,10 +92,10 @@ export class ProjectManagementComponent implements OnInit {
     this.pagedProjects = projects.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
-  projectsFilter(data: Project[]):Project[]{
+  projectsFilter(data: Project[]): Project[] {
     let newData = [];
-    for(let i=0;i<data.length;i++){
-      if(data[i].status!=2){
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].status !== 2) {
         newData.push(data[i]);
       }
     }
