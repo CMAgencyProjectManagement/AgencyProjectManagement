@@ -8,6 +8,7 @@ export interface Project {
   createdTime: string,
   createdBy: User,
   startDate: string,
-  changedBy: User
-  changedTime: string
+  changedBy: User,
+  changedTime: string,
+  status: number
 }

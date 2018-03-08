@@ -10,9 +10,21 @@
           <i class="fa fa-magic"></i>&nbsp; New Project</button>
       </div>
       <div class="card-body">
-        <table class="table table-hover table-outline mb-0" *ngIf="projects">
+          <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button"
+                        (click)="search(searchProject.value)">
+                  <i class="fa fa-search"></i> Search
+                </button>
+              </span>
+              <input class="form-control" placeholder="Name" type="text" (input)="search(searchProject.value)"
+                     #searchProject>
+            </div>
+            <br/>
+        <table class="table table-hover table-outline mb-0" *ngIf="pagedProjects">
           <thead class="thead-default">
             <tr>
+              <th>No.</th>
               <th>Name</th>
               <th>Description</th>
               <th>Deadline</th>
@@ -23,10 +35,13 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let project of projects">
-            <tr style="cursor: pointer" (click)="handleViewProject(project.id)" *ngIf="project.status!=2">
+            <ng-container *ngFor="let project of pagedProjects;let i = index">
+              <tr style="cursor: pointer" (click)="handleViewProject(project.id)">
                 <!-- (click)="handleViewProject(project.id)" -->
                 <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
+                  <td>
+                      {{i + (pager.currentPage-1)*pager.pageSize + 1}}
+                  </td>
                 <td>
                   <a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.name | truncatetext:80}}</a>
                 </td>
@@ -71,9 +86,29 @@
                   <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-            </tr>
-          </ng-container>
+              </tr>
+            </ng-container>
         </table>
+
+        <!-- pager -->
+        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(1)">First</a>
+          </li>
+          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="[pager.currentPage === page ? 'active' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+          </li>
+          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(pager.totalPages)">Last</a>
+          </li>
+        </ul>
+
       </div>
     </div>
   </div>

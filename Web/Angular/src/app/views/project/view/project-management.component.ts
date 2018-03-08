@@ -4,6 +4,9 @@ import {Project} from '../../../interfaces/project';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { Cursor, StoreService } from '../../../services/tree.service';
+import {Pager} from '../../../interfaces/pager';
+import {PagerService} from '../../../services/pager.service';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-project-management',
   templateUrl: './project-management.component.html',
@@ -11,6 +14,10 @@ import { Cursor, StoreService } from '../../../services/tree.service';
   
 })
 export class ProjectManagementComponent implements OnInit {
+  // pager object
+  pager: Pager = {} as Pager;
+  // paged && search items
+  pagedProjects: Project[];
   projects: Project[];
   public myModal;
   public largeModal;
@@ -21,7 +28,7 @@ export class ProjectManagementComponent implements OnInit {
   public dangerModal;
   public infoModal;
   
-  constructor(private projectService: ProjectService,private router: Router ) {
+  constructor(private projectService: ProjectService,private router: Router ,private pagerService: PagerService) {
   }
 
   tokenCursor: Cursor;
@@ -30,7 +37,8 @@ export class ProjectManagementComponent implements OnInit {
   ngOnInit() {
     this.projectService.getAllProjects()
       .then(data => {
-        this.projects = data
+        this.projects = this.projectsFilter(data);
+        this.setPage(1);
       })
       .catch(reason => {
         console.debug('ProjectManagementComponent', reason);
@@ -64,4 +72,41 @@ export class ProjectManagementComponent implements OnInit {
   console.debug("Here!!")
   }
 
+  setPage(page: number, projects: Project[] = undefined) {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
+
+    if (!projects) {
+      projects = this.projects;
+    }
+
+
+    this.pager = this.pagerService.getPager(projects.length, page, 7);
+    this.pagedProjects = projects.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+  projectsFilter(data: Project[]):Project[]{
+    let newData = [];
+    for(let i=0;i<data.length;i++){
+      if(data[i].status!=2){
+        newData.push(data[i]);
+      }
+    }
+    return newData;
+  }
+
+  search(name: string) {
+    if (name) {
+      const filteredProject = _.filter(this.projects, (project: Project) => {
+          return project.name && _.toLower(project.name).indexOf(_.toLower(name)) >= 0;
+        }
+      );
+      this.pager = {} as Pager;
+      this.setPage(1, filteredProject);
+    } else {
+      this.setPage(1);
+    }
+
+  }
 }
