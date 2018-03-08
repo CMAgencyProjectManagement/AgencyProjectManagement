@@ -17,12 +17,25 @@ import {
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DISABLED } from '@angular/forms/src/model';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+// Modal Component
+import { ModalModule } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-project-detail',
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss']
+  styleUrls: ['./project-detail.component.scss'],
+
 })
 export class ProjectDetailComponent implements OnInit {
+  public myModal;
+  public largeModal;
+  public smallModal;
+  public primaryModal;
+  public successModal;
+  public warningModal;
+  public dangerModal;
+  public infoModal;
   projects: Project[];
   viewForm: FormGroup
   foundProject: Project;
@@ -31,37 +44,39 @@ export class ProjectDetailComponent implements OnInit {
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
-  constructor(private projectService: ProjectService) {
+  constructor(private projectService: ProjectService,private router: Router
+  ) {
   }
 
   ngOnInit() {
-    this.projectID =  Number(this.GetURLParameter('projectID'));
+
+    this.projectID = Number(this.GetURLParameter('projectID'));
     this.projectService.getAllProjects()
       .then(data => {
         this.projects = data;
         for (let i = 0; i < this.projects.length; i++) {
           if (this.projects[i].id == this.projectID) {
-              this.foundProject = this.projects[i];
-              // this.updateForm.value.fullname= this.foundUser.name;
-              // this.viewForm.controls['projectName'].setValue(this.foundProject.name);
-              // this.updateForm.value.email=this.foundUser.email;
-              // this.updateForm.value.phone=this.foundUser.phone;
+            this.foundProject = this.projects[i];
+            // this.updateForm.value.fullname= this.foundUser.name;
+            // this.viewForm.controls['projectName'].setValue(this.foundProject.name);
+            // this.updateForm.value.email=this.foundUser.email;
+            // this.updateForm.value.phone=this.foundUser.phone;
           }
-      }
+        }
       })
       .catch(reason => {
         console.debug('ProjectDetailComponent', reason);
       })
-      this.viewForm = new FormGroup({
-        projectname: new FormControl(undefined,Validators.required),
-        customername: new FormControl(undefined, Validators.required),
-        description: new FormControl(undefined, Validators.required),
-        createdTime: new FormControl(undefined, Validators.required),
-        startDate: new FormControl(undefined, Validators.required),
-        deadline: new FormControl(undefined, Validators.required),
-        changedBy: new FormControl(undefined, Validators.required),
-        changedTime: new FormControl(undefined, Validators.required),
-        
+    this.viewForm = new FormGroup({
+      projectname: new FormControl(undefined, Validators.required),
+      customername: new FormControl(undefined, Validators.required),
+      description: new FormControl(undefined, Validators.required),
+      createdTime: new FormControl(undefined, Validators.required),
+      startDate: new FormControl(undefined, Validators.required),
+      deadline: new FormControl(undefined, Validators.required),
+      changedBy: new FormControl(undefined, Validators.required),
+      changedTime: new FormControl(undefined, Validators.required),
+
     })
   }
   GetURLParameter(sParam) {
@@ -69,6 +84,27 @@ export class ProjectDetailComponent implements OnInit {
     var sURLVariables = sPageURL.split('?');
     var sUsername = sURLVariables[1].split('=');
     return sUsername[1];
-}
+  }
 
+  handleClose(projectID: number) {
+    this.projectService.closeProject(
+      projectID
+    ).then(value => {
+      this.isLoading = false;
+      this.router.navigate(['project']);
+    }).catch(reason => {
+      this.isLoading = false;
+      console.debug(reason);
+      this.handleCloseError(reason.Data);
+    })
+  }
+
+
+  handleCloseError(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      console.debug('handleCreateProjectError', fieldName, errorMessage);
+    }
+  } 
 }

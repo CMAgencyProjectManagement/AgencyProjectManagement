@@ -56,10 +56,7 @@ var staff_navigation = [
     {
         name: 'Dashboard',
         url: '/dashboard',
-        icon: 'icon-speedometer',
-        badge: {
-            variant: 'info'
-        }
+        icon: 'icon-speedometer'
     }
 ];
 var manager_navigation = [];
@@ -67,18 +64,12 @@ var admin_navigation = [
     {
         name: 'Project',
         url: '/project',
-        icon: 'icon-calendar',
-        badge: {
-            variant: 'info'
-        }
+        icon: 'icon-calendar'
     },
     {
         name: 'Team',
         url: '/team/view',
-        icon: 'icon-people',
-        badge: {
-            variant: 'info'
-        }
+        icon: 'icon-people'
     },
     /*
     {
@@ -102,18 +93,17 @@ var admin_navigation = [
         name: 'Account',
         url: '/account/view',
         icon: 'icon-user',
-        badge: {
-            variant: 'info'
-        }
-    },
-    {
-        name: 'New Employee',
-        url: '/account/create',
-        icon: 'icon-user',
-        badge: {
-            variant: 'info'
-        }
-    },
+        children: [
+            {
+                name: 'View',
+                url: '/account/view'
+            },
+            {
+                name: 'Create',
+                url: '/account/create'
+            }
+        ]
+    }
 ];
 
 
@@ -135,6 +125,9 @@ var serverPath = {
     // Project
     allProject: '/api/project/all',
     myProject: '/api/project',
+    updateProject: '/api/project',
+    createProject: '/api/project',
+    closeProject: '/api/project/close',
     // Team
     allTeam: '/api/team/all',
     deleteTeam: '/api/team'
@@ -152,6 +145,9 @@ var serverPath = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -164,12 +160,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(storeService, userService) {
+    function AppComponent(storeService, userService, activatedRoute, router, titleService) {
         this.storeService = storeService;
         this.userService = userService;
+        this.activatedRoute = activatedRoute;
+        this.router = router;
+        this.titleService = titleService;
     }
+    AppComponent.prototype.getDeepestTitle = function (routeSnapshot) {
+        var title = routeSnapshot.data ? routeSnapshot.data['title'] : '';
+        if (routeSnapshot.firstChild) {
+            title = this.getDeepestTitle(routeSnapshot.firstChild) || title;
+        }
+        return title;
+    };
     AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
         console.log('AppComponent-ngOnInit');
         var token = this.userService.getLocalToken();
         var user = this.userService.getLocalUser();
@@ -177,15 +187,38 @@ var AppComponent = /** @class */ (function () {
             this.storeService.set(['token', 'access_token'], token);
             this.storeService.set(['currentUser'], user);
         }
+        this.router
+            .events
+            .filter(function (event) { return event instanceof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* NavigationEnd */]; })
+            .map(function () {
+            var child = _this.activatedRoute.firstChild;
+            while (child) {
+                if (child.firstChild) {
+                    child = child.firstChild;
+                }
+                else if (child.snapshot.data && child.snapshot.data['title']) {
+                    return child.snapshot.data['title'];
+                }
+                else {
+                    return null;
+                }
+            }
+            return null;
+        }).subscribe(function (title) {
+            _this.titleService.setTitle(title);
+        });
     };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             // tslint:disable-next-line
             selector: 'body',
-            template: '<router-outlet></router-outlet>'
+            template: '<h1>{{title | async}}</h1> <router-outlet></router-outlet>'
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_tree_service__["a" /* StoreService */],
-            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]])
+            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["b" /* Title */]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -202,25 +235,28 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__containers__ = __webpack_require__("../../../../../src/app/containers/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components__ = __webpack_require__("../../../../../src/app/components/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__directives__ = __webpack_require__("../../../../../src/app/directives/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_auth_guard__ = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_websocket_service__ = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_nav_service__ = __webpack_require__("../../../../../src/app/services/nav.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__containers__ = __webpack_require__("../../../../../src/app/containers/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components__ = __webpack_require__("../../../../../src/app/components/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__directives__ = __webpack_require__("../../../../../src/app/directives/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_auth_guard__ = __webpack_require__("../../../../../src/app/services/auth.guard.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_websocket_service__ = __webpack_require__("../../../../../src/app/services/websocket.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_nav_service__ = __webpack_require__("../../../../../src/app/services/nav.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -231,33 +267,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 // Import containers
 
 var APP_CONTAINERS = [
-    __WEBPACK_IMPORTED_MODULE_4__containers__["a" /* FullLayoutComponent */],
-    __WEBPACK_IMPORTED_MODULE_4__containers__["b" /* SimpleLayoutComponent */]
+    __WEBPACK_IMPORTED_MODULE_5__containers__["a" /* FullLayoutComponent */],
+    __WEBPACK_IMPORTED_MODULE_5__containers__["b" /* SimpleLayoutComponent */]
 ];
 // Import components
 
 var APP_COMPONENTS = [
-    __WEBPACK_IMPORTED_MODULE_5__components__["b" /* AppAsideComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["c" /* AppBreadcrumbsComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["d" /* AppFooterComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["e" /* AppHeaderComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["f" /* AppSidebarComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["g" /* AppSidebarFooterComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["h" /* AppSidebarFormComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["i" /* AppSidebarHeaderComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["j" /* AppSidebarMinimizerComponent */],
-    __WEBPACK_IMPORTED_MODULE_5__components__["a" /* APP_SIDEBAR_NAV */]
+    __WEBPACK_IMPORTED_MODULE_6__components__["b" /* AppAsideComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["c" /* AppBreadcrumbsComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["d" /* AppFooterComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["e" /* AppHeaderComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["f" /* AppSidebarComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["g" /* AppSidebarFooterComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["h" /* AppSidebarFormComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["i" /* AppSidebarHeaderComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["j" /* AppSidebarMinimizerComponent */],
+    __WEBPACK_IMPORTED_MODULE_6__components__["a" /* APP_SIDEBAR_NAV */]
 ];
 // Import directives
 
 var APP_DIRECTIVES = [
-    __WEBPACK_IMPORTED_MODULE_6__directives__["a" /* AsideToggleDirective */],
-    __WEBPACK_IMPORTED_MODULE_6__directives__["b" /* NAV_DROPDOWN_DIRECTIVES */],
-    __WEBPACK_IMPORTED_MODULE_6__directives__["c" /* ReplaceDirective */],
-    __WEBPACK_IMPORTED_MODULE_6__directives__["d" /* SIDEBAR_TOGGLE_DIRECTIVES */],
+    __WEBPACK_IMPORTED_MODULE_7__directives__["a" /* AsideToggleDirective */],
+    __WEBPACK_IMPORTED_MODULE_7__directives__["b" /* NAV_DROPDOWN_DIRECTIVES */],
+    __WEBPACK_IMPORTED_MODULE_7__directives__["c" /* ReplaceDirective */],
+    __WEBPACK_IMPORTED_MODULE_7__directives__["d" /* SIDEBAR_TOGGLE_DIRECTIVES */],
 ];
 // Import routing module
 
@@ -273,18 +310,20 @@ var APP_DIRECTIVES = [
 
 
 var SERVICES = [
-    __WEBPACK_IMPORTED_MODULE_8__services_auth_guard__["a" /* AlwaysAuthGuard */],
-    __WEBPACK_IMPORTED_MODULE_9__services_tree_service__["a" /* StoreService */],
-    __WEBPACK_IMPORTED_MODULE_10__services_websocket_service__["a" /* WebsocketService */],
-    __WEBPACK_IMPORTED_MODULE_11__services_nav_service__["a" /* NavService */],
-    __WEBPACK_IMPORTED_MODULE_12__services_user_service__["a" /* UserService */],
-    __WEBPACK_IMPORTED_MODULE_13__services_project_service__["a" /* ProjectService */],
-    __WEBPACK_IMPORTED_MODULE_14__services_team_service__["a" /* TeamService */],
-    __WEBPACK_IMPORTED_MODULE_15__services_task_service__["a" /* TaskService */],
-    __WEBPACK_IMPORTED_MODULE_16__services_dependency_service__["a" /* DependencyService */],
-    __WEBPACK_IMPORTED_MODULE_17__services_pager_service__["a" /* PagerService */]
+    __WEBPACK_IMPORTED_MODULE_9__services_auth_guard__["a" /* AlwaysAuthGuard */],
+    __WEBPACK_IMPORTED_MODULE_10__services_tree_service__["a" /* StoreService */],
+    __WEBPACK_IMPORTED_MODULE_11__services_websocket_service__["a" /* WebsocketService */],
+    __WEBPACK_IMPORTED_MODULE_12__services_nav_service__["a" /* NavService */],
+    __WEBPACK_IMPORTED_MODULE_13__services_user_service__["a" /* UserService */],
+    __WEBPACK_IMPORTED_MODULE_14__services_project_service__["a" /* ProjectService */],
+    __WEBPACK_IMPORTED_MODULE_15__services_team_service__["a" /* TeamService */],
+    __WEBPACK_IMPORTED_MODULE_16__services_task_service__["a" /* TaskService */],
+    __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__["a" /* DependencyService */],
+    __WEBPACK_IMPORTED_MODULE_18__services_pager_service__["a" /* PagerService */]
 ];
 // Import 3rd party components
+
+
 
 
 
@@ -295,19 +334,22 @@ var AppModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_18_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_19_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_20_ng2_charts_ng2_charts__["ChartsModule"]
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_8__app_routing__["a" /* AppRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_19_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_20_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts__["ChartsModule"],
+                __WEBPACK_IMPORTED_MODULE_22_mydatepicker__["MyDatePickerModule"],
+                __WEBPACK_IMPORTED_MODULE_23_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */]
             ],
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]
+                __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]
             ].concat(APP_CONTAINERS, APP_COMPONENTS, APP_DIRECTIVES),
             providers: [{
                     provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["g" /* LocationStrategy */],
                     useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["d" /* HashLocationStrategy */]
                 }].concat(SERVICES),
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
@@ -368,14 +410,6 @@ var routes = [
             {
                 path: 'team',
                 loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-            },
-            {
-                path: 'newemployee',
-                loadChildren: './views/user-management/user-management.module#UserManagementModule'
-            },
-            {
-                path: 'updateemployee',
-                loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
                 path: 'team-create',
@@ -1924,6 +1958,79 @@ var ProjectService = /** @class */ (function () {
                     reject(content.Message);
                 }
             });
+        });
+    };
+    ProjectService.prototype.createProject = function (name, description, startdate, deadline) {
+        var _this = this;
+        var objData = {
+            name: name,
+            description: description,
+            deadline: deadline,
+            startdate: startdate
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].updateProject)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(reject);
+        });
+    };
+    ProjectService.prototype.updateProject = function (projectId, name, description, startdate, deadline) {
+        var _this = this;
+        var objData = {
+            id: projectId,
+            name: name,
+            description: description,
+            startdate: startdate,
+            deadline: deadline
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].updateProject)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(reject);
+        });
+    };
+    ProjectService.prototype.closeProject = function (projectId) {
+        var _this = this;
+        var objData = {
+            id: projectId
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].closeProject)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(reject);
         });
     };
     ProjectService = __decorate([

@@ -22,7 +22,8 @@ export class ViewUserComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private pagerService: PagerService) {
+    private pagerService: PagerService
+      ) {
   }
 
   ngOnInit() {

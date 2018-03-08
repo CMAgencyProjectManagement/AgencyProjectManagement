@@ -1,17 +1,24 @@
-import {NgModule} from '@angular/core';
-import {TeamManagePageComponent} from './team-management.component';
-import {TeamManagementRoutingModule} from './team-management-routing.module';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { TeamManagePageComponent } from './team-management.component';
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { UpdateTeamComponent } from './update-team/update-team.component';
-import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { DetailTeamComponent } from './detail-team/detail-team.component';
+
+import { TeamManagementRoutingModule } from './team-management-routing.module';
+
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     TeamManagementRoutingModule,
     BsDropdownModule.forRoot(),
+    AngularMultiSelectModule
   ],
   declarations: [TeamManagePageComponent, CreateTeamComponent, UpdateTeamComponent, DetailTeamComponent]
 })
