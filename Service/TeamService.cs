@@ -78,7 +78,7 @@ namespace Service
                 if (team != null)
                 {
                     team.Name = name;
-
+                    team.User.Username = manager;
 
                     entities.SaveChanges();
                     return team;
