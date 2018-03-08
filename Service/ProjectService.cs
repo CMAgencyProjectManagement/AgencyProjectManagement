@@ -66,6 +66,12 @@ namespace Service
             return newProject;
         }
 
+        public static Project GetProjectOfTask(int taskId)
+        {
+            return ListService.GetListOfTask(taskId).Project;
+
+        }
+
         public static Project UpdateProject(
             int id,
             string name,

@@ -29,6 +29,7 @@
     "@angular/upgrade": "5.0.1",
     "@types/dhtmlxgantt": "^4.0.34",
     "angular2-ladda": "^1.2.3",
+    "angular2-multiselect-dropdown": "^2.5.0",
     "baobab": "^2.5.0",
     "bootstrap": "4.0.0-beta.2",
     "chart.js": "2.7.1",

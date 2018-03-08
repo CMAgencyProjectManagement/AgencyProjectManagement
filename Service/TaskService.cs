@@ -53,7 +53,29 @@ namespace Service
                 }
                 else
                 {
-                    throw new ObjectNotFoundException($"Project with ID {listId} not found");
+                    throw new ObjectNotFoundException($"List with ID {listId} not found");
+                }
+            }
+        }
+        public static List<Task> GetTasksOfUser(int userId)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                
+                User user = entities.Users.Find(userId);
+                if (user != null)
+                {
+                    var taskList = new List<Task>();
+                    
+                    foreach (var task in user.Tasks)
+                    {
+                            taskList.Add(task);
+                    }
+                    return taskList;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with ID {userId} not found");
                 }
             }
         }
@@ -65,33 +87,23 @@ namespace Service
             }
         }
         //xoa
-        public static IEnumerable<Task> GetTaskOfUser(int userId)
-        {
-            using (var db = new CmAgencyEntities())
-            {
-                return db.Tasks
-                    .Where(
-                        task => task.UserTasks.Any(user => user.UserID.Equals(userId))
-                    ).ToList();
-            }
-        }
-
-        //public static IEnumerable<Project> GetProjectOfUser(int userId)
+        //public static IEnumerable<Task> GetTaskOfUser(int userId)
         //{
         //    using (var db = new CmAgencyEntities())
         //    {
-        //        return db.Projects
+        //        return db.Tasks
         //            .Where(
-        //                project => project.Users.Any(user => user.ID.Equals(userId))
-        //            )
-        //            .Include(p => p.Lists)
-        //            .ToList();
+        //                task => task.UserTasks.Any(user => user.UserID.Equals(userId))
+        //            ).ToList();
         //    }
         //}
 
+        
 
-        public static JObject ToJson(this Task task)
+
+        public static JObject ToJson(this Task task, bool isDetailed = true, bool isIncludeProject = true)
         {
+            User creator = UserService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
                 ["ID"] = task.ID,
@@ -107,6 +119,11 @@ namespace Service
                 ["Priority"] = task.Priority,
                 ["StartDate"] = task.StartDate
             };
+            if (task.ChangedBy.HasValue)
+            {
+                var changer = UserService.GetUser(task.ChangedBy.Value);
+                result["changedby"] = changer.ToJson();
+            }
 
             return result;
         }

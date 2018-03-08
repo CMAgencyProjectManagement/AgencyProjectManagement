@@ -120,8 +120,8 @@ var LoginComponent = /** @class */ (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.loginForm = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
-            username: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required),
-            password: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required)
+            username: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
+            password: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required)
         });
     };
     LoginComponent.prototype.handleEnterPressed = function ($event) {
@@ -185,35 +185,35 @@ var routes = [
     {
         path: '',
         data: {
-            title: 'Example Pages'
+            title: 'Pages'
         },
         children: [
             {
                 path: '404',
                 component: __WEBPACK_IMPORTED_MODULE_2__404_component__["a" /* P404Component */],
                 data: {
-                    title: 'Page 404'
+                    title: '404'
                 }
             },
             {
                 path: '500',
                 component: __WEBPACK_IMPORTED_MODULE_3__500_component__["a" /* P500Component */],
                 data: {
-                    title: 'Page 500'
+                    title: '500'
                 }
             },
             {
                 path: 'login',
                 component: __WEBPACK_IMPORTED_MODULE_4__login_component__["a" /* LoginComponent */],
                 data: {
-                    title: 'Login Page'
+                    title: 'Login'
                 }
             },
             {
                 path: 'register',
                 component: __WEBPACK_IMPORTED_MODULE_5__register_component__["a" /* RegisterComponent */],
                 data: {
-                    title: 'Register Page'
+                    title: 'Register'
                 }
             }
         ]
@@ -274,7 +274,7 @@ var PagesModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_8__angular_common__["b" /* CommonModule */],
                 __WEBPACK_IMPORTED_MODULE_6__pages_routing_module__["a" /* PagesRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["e" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["f" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_5_angular2_ladda__["LaddaModule"].forRoot({
                     style: 'expand-left'
                 })
