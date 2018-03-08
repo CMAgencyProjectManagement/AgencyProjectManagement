@@ -23,55 +23,56 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let project of projects" style="cursor: pointer" (click)="handleViewProject(project.id)">
-              <!-- (click)="handleViewProject(project.id)" -->
-              <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
+            <ng-container *ngFor="let project of projects">
+            <tr style="cursor: pointer" (click)="handleViewProject(project.id)" *ngIf="project.status!=2">
+                <!-- (click)="handleViewProject(project.id)" -->
+                <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
+                <td>
+                  <a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.name | truncatetext:80}}</a>
+                </td>
+                <td>
+                  <a href="#/project/detail?projectID={{project.id}}" style="color: black" *ngIf="project.description">{{project.description | truncatetext:100}}</a>
+                </td>
+                <td *ngIf="!project.deadline">N/A</td>
+                <td *ngIf="project.deadline">{{project.deadline | date:'d/M/y'}}</td>
+                <td *ngIf="!project.startDate">N/A</td>
+                <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
+                <td>{{project.createdTime | date:'d/M/y'}}</td>
+                <td>
+                  <button type="button" class="btn btn-primary">
+                    Update
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger" data-toggle="modal" (click)="dangerModal.show()" style="padding: 0.3rem">
+                    Close
+                  </button>
+                </td>
 
-              <td>
-                <a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.name | truncatetext:80}}</a>
-              </td>
-              <td>
-                <a href="#/project/detail?projectID={{project.id}}" style="color: black">{{project.description | truncatetext:100}}</a>
-              </td>
-              <td *ngIf="!project.deadline">N/A</td>
-              <td *ngIf="project.deadline">{{project.deadline | date:'d/M/y'}}</td>
-              <td *ngIf="!project.startDate">N/A</td>
-              <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
-              <td>{{project.createdTime | date:'d/M/y'}}</td>
-              <td>
-                <button type="button" class="btn btn-primary">
-                  Update
-                </button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-danger" data-toggle="modal" (click)="dangerModal.show()" style="padding: 0.3rem">
-                  Close
-                </button>
-              </td>
-
-              <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-danger" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Confirmation message!</h4>
-                      <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-danger" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Confirmation message!</h4>
+                        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure to close this project?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">No</button>
+                        <button type="button" class="btn btn-danger" (click)="handleClose(project.id)">Yes</button>
+                      </div>
                     </div>
-                    <div class="modal-body">
-                      <p>Are you sure to close this project?</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">No</button>
-                      <button type="button" class="btn btn-danger" (click)="handleClose(project.id)">Yes</button>
-                    </div>
+                    <!-- /.modal-content -->
                   </div>
-                  <!-- /.modal-content -->
+                  <!-- /.modal-dialog -->
                 </div>
-                <!-- /.modal-dialog -->
-              </div>
-              <!-- /.modal -->
+                <!-- /.modal -->
             </tr>
+          </ng-container>
         </table>
       </div>
     </div>

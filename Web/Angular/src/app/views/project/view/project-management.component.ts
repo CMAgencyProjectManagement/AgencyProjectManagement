@@ -43,6 +43,7 @@ export class ProjectManagementComponent implements OnInit {
       projectID
     ).then(value => {
       this.isLoading = false;
+      window.location.reload();
     }).catch(reason => {
       this.isLoading = false;
       console.debug(reason);
