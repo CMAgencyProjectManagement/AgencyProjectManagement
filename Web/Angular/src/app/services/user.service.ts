@@ -125,7 +125,8 @@ export class UserService {
     name: string,
     phone: string,
     birthdate: string,
-    email: string): Promise<User> {
+    email: string,
+    team: number): Promise<User> {
 
     const postDataObject = {
       Username: username,
@@ -133,7 +134,8 @@ export class UserService {
       Name: name,
       Phone: phone,
       Birthdate: birthdate,
-      Email: email
+      Email: email,
+      Team: team
     };
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();

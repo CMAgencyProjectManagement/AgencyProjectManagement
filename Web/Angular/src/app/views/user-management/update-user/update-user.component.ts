@@ -14,6 +14,7 @@ import { Cursor, StoreService } from '../../../services/tree.service';
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DISABLED } from '@angular/forms/src/model';
+import {IMyDpOptions} from 'mydatepicker';
 @Component({
     selector: 'app-update-user',
     templateUrl: './update-user.component.html',
@@ -28,6 +29,15 @@ export class UpdateUserComponent implements OnInit {
     users: User[];
     foundUser: User;
     userID: number;
+
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd/mm/yyyy',
+    showInputField: true,
+    openSelectorTopOfInput: true,
+    showTodayBtn: false
+  };
+  
     constructor(private userService: UserService,
         private storeService: StoreService,
         private router: Router) {
@@ -80,7 +90,7 @@ export class UpdateUserComponent implements OnInit {
         if(confirm("Save change?")){
             if (this.updateForm.valid) {
                 this.isLoading = true;
-                const formValue = this.updateForm.value; 
+                const formValue = this.updateForm.value;
                 this.userService.updateUser(this.foundUser.id, formValue.fullname, formValue.phone, "12/24/2018", formValue.email).then(value => {
                     this.isLoading = false;
                     this.router.navigate(['dashboard'])

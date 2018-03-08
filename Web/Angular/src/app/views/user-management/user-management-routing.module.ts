@@ -19,14 +19,14 @@ const routes: Routes = [
       },
       {
         data: {
-          title: 'Create accounts'
+          title: 'Create account'
         },
         path: 'create',
         component: CreateUserComponent
       },
       {
         data: {
-          title: 'Update accounts'
+          title: 'Update account'
         },
         path: 'update',
         component: UpdateUserComponent

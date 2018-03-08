@@ -14,6 +14,8 @@ import {Cursor, StoreService} from '../../../services/tree.service';
 import {Router} from '@angular/router';
 // import * as moment from 'moment';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
+import {Team} from '../../../interfaces/team';
+import {TeamService} from '../../../services/team.service';
 
 
 @Component({
@@ -27,6 +29,7 @@ export class CreateUserComponent implements OnInit {
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
+  teams: Team[];
 
   // https://github.com/kekeh/mydatepicker
   public myDatePickerOptions: IMyDpOptions = {
@@ -41,6 +44,7 @@ export class CreateUserComponent implements OnInit {
 
   constructor(private userService: UserService,
               private storeService: StoreService,
+              private teamService: TeamService,
               private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
@@ -48,6 +52,10 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.teamService.getAllTeam()
+      .then(value => {
+        this.teams = value;
+      });
     this.signupForm = new FormGroup({
       username: new FormControl(undefined),
       password: new FormControl(undefined),
@@ -55,6 +63,7 @@ export class CreateUserComponent implements OnInit {
       email: new FormControl(undefined),
       phone: new FormControl(undefined),
       birthDate: new FormControl(undefined),
+      team: new FormControl(undefined),
       avatar: new FormControl(undefined)
     })
   }
@@ -66,10 +75,6 @@ export class CreateUserComponent implements OnInit {
       const formValue = this.signupForm.value;
       this.isLoading = true;
       console.debug('handleCreate 2', formValue);
-      // birthdate
-      const day = formValue.day;
-      const month = formValue.month;
-      const year = formValue.year;
       // const time = moment('2010-10-20 4:30', 'YYYY-MM-DD');
 
       this.userService.createUser(
@@ -77,8 +82,9 @@ export class CreateUserComponent implements OnInit {
         formValue.password,
         formValue.fullname,
         formValue.phone,
-        undefined,
-        formValue.email
+        formValue.birthDate.formatted,
+        formValue.email,
+        formValue.team
       ).then(value => {
         this.isLoading = false;
       }).catch(reason => {
