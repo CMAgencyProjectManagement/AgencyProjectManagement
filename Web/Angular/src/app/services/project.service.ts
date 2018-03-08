@@ -41,7 +41,7 @@ export class ProjectService {
     });
   }
 
-  public createProject( 
+  public createProject(
     name: string,
     description: string,
     startdate: string,
@@ -108,7 +108,7 @@ export class ProjectService {
       id: projectId
     };
     return new Promise<any>((resolve, reject) => {
-      put(serverPath.updateProject)
+      put(serverPath.closeProject)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .type('form')
