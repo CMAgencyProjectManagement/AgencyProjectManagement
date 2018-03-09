@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {TeamManagePageComponent} from './team-management.component';
 import {CreateTeamComponent} from './create-team/create-team.component';
 import {UpdateTeamComponent} from './update-team/update-team.component';
+import { DetailTeamComponent } from './detail-team/detail-team.component';
 const routes: Routes = [
   {
     path: '',
@@ -15,6 +16,13 @@ const routes: Routes = [
         component: TeamManagePageComponent,
         data: {
           title: 'View '
+        }
+      },
+      {
+        path: 'detail',
+        component: DetailTeamComponent,
+        data: {
+          title: 'Detail '
         }
       },
       {

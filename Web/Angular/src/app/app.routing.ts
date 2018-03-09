@@ -52,6 +52,11 @@ export const routes: Routes = [
         path: 'team-update',
         loadChildren: './views/team-management/team-management.module#TeamManagementModule'
       },
+      {
+        path: 'team-detail',
+        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+      },
+    
     ]
   },
   {

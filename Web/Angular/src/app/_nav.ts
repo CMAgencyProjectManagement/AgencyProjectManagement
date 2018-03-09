@@ -19,6 +19,15 @@ const admin_navigation = [
     name: 'Team',
     url: '/team/view',
     icon: 'icon-people'
+    
+  },
+  {
+    name: 'detail-team',
+    url: '/team/detail',
+    icon: 'icon-people',
+    badge: {
+      variant: 'info'
+    }
   },
   /*
   {
