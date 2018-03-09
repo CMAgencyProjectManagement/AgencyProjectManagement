@@ -48,23 +48,6 @@ namespace Service
             }
         }
 
-        public static Team GetTeamOfUser(int userId)
-        {
-            using (var db = new CmAgencyEntities())
-            {
-                User foundUser = db.Users.Find(userId);
-                if (foundUser != null)
-                {
-                    Team team = db.UserTeams.First(userteam => userteam.UserID == foundUser.ID).Team;
-                    return team;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Can't find team with ID{userId}");
-                }
-            }
-        }
-
         public static Team Updateteam(
             int id,
             string name,
