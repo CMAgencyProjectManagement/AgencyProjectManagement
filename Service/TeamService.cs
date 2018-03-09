@@ -48,23 +48,6 @@ namespace Service
             }
         }
 
-        public static Team GetTeamOfUser(int userId)
-        {
-            using (var db = new CmAgencyEntities())
-            {
-                User foundUser = db.Users.Find(userId);
-                if (foundUser != null)
-                {
-                    Team team = db.UserTeams.First(userteam => userteam.UserID == foundUser.ID).Team;
-                    return team;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Can't find team with ID{userId}");
-                }
-            }
-        }
-
         public static Team Updateteam(
             int id,
             string name,
@@ -91,11 +74,11 @@ namespace Service
             }
         }
 
-        public static JObject ToJson(this Team team, bool includeManager = true)
+        public static JObject ToJson(this Team team, bool includeManager = true, bool includeUsers = false, string avatarPath = null)
         {
             var creator = UserService.GetUser(team.CreatedBy);
 
-            var result =  new JObject
+            var result = new JObject
             {
                 ["id"] = team.ID,
                 ["name"] = team.Name,
@@ -108,6 +91,19 @@ namespace Service
             {
                 var manager = GetManager(team.ID);
                 result["manager"] = manager.ToJson();
+            }
+
+            if (includeUsers)
+            {
+                var users = UserService.GetUsersOfTeam(team.ID);
+                var jArray = new JArray();
+                
+                foreach (User user in users)
+                {
+                    jArray.Add(user.ToJson(avatarPath));
+                }
+
+                result["users"] = jArray;
             }
 
             return result;

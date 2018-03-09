@@ -64,6 +64,15 @@ namespace Service
                 return entities.Users.ToList();
             }
         }
+        
+        public static IEnumerable<User> GetUsersOfTeam(int teamId)
+        {
+            using (CmAgencyEntities db = new CmAgencyEntities())
+            {
+                IEnumerable<User> users = db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
+                return users.ToList();
+            }
+        }
 
         public static void UpdateAvatar(string avatarFileName, int id)
         {
@@ -107,12 +116,15 @@ namespace Service
                     IsActive = true
                 };
                 entities.Users.Add(newUser);
+
                 Team team = entities.Teams.Find(teamId);
-                UserTeam userTeam = new UserTeam();
-                userTeam.User = newUser;
-                userTeam.Team = team;
+                UserTeam userTeam = new UserTeam
+                {
+                    User = newUser,
+                    Team = team
+                };
                 entities.UserTeams.Add(userTeam);
-                
+
                 entities.SaveChanges();
             }
 
@@ -191,12 +203,72 @@ namespace Service
                 result["password"] = user.Password;
             }
 
-            if (includeTeam)
+            using (var db = new CmAgencyEntities())
             {
-                result["team"] = TeamService.GetTeamOfUser(user.ID).ToJson();
+                if (includeTeam)
+                {
+                    Team team = db.UserTeams.First(userteam => userteam.UserID == user.ID).Team;
+                    result["team"] = team.ToJson();
+                }
             }
+
 
             return result;
         }
+
+//        public static JArray ToJson(
+//            this IEnumerable<User> user,
+//            string avatarPath = null,
+//            bool includePassword = false,
+//            bool includeTeam = false)
+//        {
+//            JArray result = new JArray();
+//            using (var db = new CmAgencyEntities())
+//            {
+//                JObject obs = new JObject
+//                {
+//                    ["id"] = user.ID,
+//                    ["name"] = user.Name,
+//                    ["phone"] = user.Phone,
+//                    ["birthday"] = user.Birthdate,
+//                    ["email"] = user.Email,
+//                    ["username"] = user.Username,
+//                    ["isAdmin"] = user.IsAdmin,
+//                    ["isManager"] = user.IsManager,
+//                    ["isActive"] = user.IsActive
+//                };
+//            }
+//            
+//            JObject result = new JObject
+//            {
+//                ["id"] = user.ID,
+//                ["name"] = user.Name,
+//                ["phone"] = user.Phone,
+//                ["birthday"] = user.Birthdate,
+//                ["email"] = user.Email,
+//                ["username"] = user.Username,
+//                ["isAdmin"] = user.IsAdmin,
+//                ["isManager"] = user.IsManager,
+//                ["isActive"] = user.IsActive
+//            };
+//
+//            string avatar = user.Avatar;
+//            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
+//            {
+//                result["avatar"] = Path.Combine(avatarPath, avatar);
+//            }
+//
+//            if (includePassword)
+//            {
+//                result["password"] = user.Password;
+//            }
+//
+//            if (includeTeam)
+//            {
+//                result["team"] = TeamService.GetTeamOfUser(user.ID).ToJson();
+//            }
+//
+//            return result;
+//        }
     }
 }
