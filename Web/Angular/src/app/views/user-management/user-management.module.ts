@@ -7,6 +7,7 @@ import {UpdateUserComponent} from './update-user/update-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
 import { MyDatePickerModule } from 'mydatepicker';
+import { DetailUserComponent } from './detail-user/detail-user.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { MyDatePickerModule } from 'mydatepicker';
     FormsModule,
     MyDatePickerModule
   ],
-  declarations: [CreateUserComponent, ViewUserComponent, UpdateUserComponent]
+  declarations: [CreateUserComponent, ViewUserComponent, UpdateUserComponent, DetailUserComponent]
 })
 export class UserManagementModule {
 }

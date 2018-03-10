@@ -24,7 +24,7 @@ const admin_navigation = [
   {
     name: 'detail-team',
     url: '/team/detail',
-    icon: 'icon-people',
+    icon: 'icon-team',
     badge: {
       variant: 'info'
     }
@@ -60,6 +60,10 @@ const admin_navigation = [
       {
         name: 'Create',
         url: '/account/create'
+      },
+      {
+        name: 'Detail',
+        url: '/account/detail'
       }
     ]
   }
