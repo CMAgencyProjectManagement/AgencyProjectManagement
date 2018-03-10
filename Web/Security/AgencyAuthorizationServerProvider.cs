@@ -19,10 +19,14 @@ namespace Web.Security
                 string password = context.Parameters["password"];
                 if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
                 {
-                    User user = UserService.GetUser(username, password);
-                    if (user != null)
+                    using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        userIdString = user.ID.ToString();
+                        UserService userService = new UserService(db);
+                        User user = userService.GetUser(username, password);
+                        if (user != null)
+                        {
+                            userIdString = user.ID.ToString();
+                        }
                     }
                 }
 
@@ -54,14 +58,19 @@ namespace Web.Security
 
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, userId));
 
-                User user = UserService.GetUser(userId);
-                if (user.IsAdmin)
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-                }
-                if (user.IsManager)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, "Manager"));
+                    UserService userService = new UserService(db);
+                    User user = userService.GetUser(userId);
+                    if (user.IsAdmin)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                    }
+
+                    if (user.IsManager)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, "Manager"));
+                    }
                 }
                 context.Validated(new ClaimsIdentity(claims, context.Options.AuthenticationType));
             }

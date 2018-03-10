@@ -26,11 +26,15 @@ namespace Web.Controllers
         {
             try
             {
-                //Dont expose password
-                User user = UserService.GetUser(id);
-                string avatarPath = AgencyConfig.AvatarPath;
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    //Dont expose password
+                    User user = userService.GetUser(id);
+                    string avatarPath = AgencyConfig.AvatarPath;
 
-                return Ok(ResponseHelper.GetResponse(user.ToJson(avatarPath)));
+                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath)));
+                }
             }
             catch (Exception ex)
             {
@@ -46,10 +50,14 @@ namespace Web.Controllers
         {
             try
             {
-                string userIdString = User.Identity.GetUserId();
-                User user = UserService.GetUser(userIdString);
-                string avatarPath = AgencyConfig.AvatarPath;
-                return Ok(ResponseHelper.GetResponse(user.ToJson(avatarPath)));
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User user = userService.GetUser(userIdString);
+                    string avatarPath = AgencyConfig.AvatarPath;
+                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath)));
+                }
             }
             catch (Exception ex)
             {
@@ -65,18 +73,22 @@ namespace Web.Controllers
         {
             try
             {
-                IEnumerable<User> allUser = UserService.GetAll();
-                string avatarPath = AgencyConfig.AvatarPath;
-
-                JArray data = new JArray();
-
-                foreach (User user in allUser)
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    //Dont expose password
-                    data.Add(user.ToJson(avatarPath, includeTeam: true));
-                }
+                    UserService userService = new UserService(db);
+                    IEnumerable<User> allUser = userService.GetAll();
+                    string avatarPath = AgencyConfig.AvatarPath;
 
-                return Ok(ResponseHelper.GetResponse(data));
+                    JArray data = new JArray();
+
+                    foreach (User user in allUser)
+                    {
+                        //Dont expose password
+                        data.Add(userService.ParseToJson(user, avatarPath, includeTeam: true));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(data));
+                }
             }
             catch (Exception ex)
             {
@@ -94,26 +106,30 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DateTime? birthdate = null;
-                    if (createUserModel.Birthdate != null)
+                    using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        DateTime dt;
-                        if (DateTime.TryParse(createUserModel.Birthdate, out dt))
+                        UserService userService = new UserService(db);
+                        DateTime? birthdate = null;
+                        if (createUserModel.Birthdate != null)
                         {
-                            birthdate = dt;
+                            DateTime dt;
+                            if (DateTime.TryParse(createUserModel.Birthdate, out dt))
+                            {
+                                birthdate = dt;
+                            }
                         }
-                    }
 
-                    User newUser = UserService.CreateAccount(
-                        createUserModel.Name,
-                        createUserModel.Phone,
-                        birthdate,
-                        createUserModel.Email,
-                        createUserModel.Username,
-                        createUserModel.Password,
-                        createUserModel.Team
-                    );
-                    return Ok(ResponseHelper.GetResponse(newUser.ToJson()));
+                        User newUser = userService.CreateAccount(
+                            createUserModel.Name,
+                            createUserModel.Phone,
+                            birthdate,
+                            createUserModel.Email,
+                            createUserModel.Username,
+                            createUserModel.Password,
+                            createUserModel.Team
+                        );
+                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(newUser)));
+                    }
                 }
                 else
                 {
@@ -135,11 +151,12 @@ namespace Web.Controllers
         {
             try
             {
-                int id = UserService.DeactiveUser(deleteUserModel.ID);
-                return Ok(ResponseHelper.GetResponse(new JObject
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    ["id"] = id
-                }));
+                    UserService userService = new UserService(db);
+                    userService.DeactiveUser(deleteUserModel.ID);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
@@ -157,14 +174,18 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    User updatedUser = UserService.Updateuser(
-                        updateUserModel.ID,
-                        updateUserModel.Name,
-                        updateUserModel.Phone,
-                        updateUserModel.Birthdate,
-                        updateUserModel.Email
-                    );
-                    return Ok(ResponseHelper.GetResponse(updatedUser.ToJson()));
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        UserService userService = new UserService(db);
+                        User updatedUser = userService.Updateuser(
+                            updateUserModel.ID,
+                            updateUserModel.Name,
+                            updateUserModel.Phone,
+                            updateUserModel.Birthdate,
+                            updateUserModel.Email
+                        );
+                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(updatedUser)));
+                    }
                 }
                 else
                 {

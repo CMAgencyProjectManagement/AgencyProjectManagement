@@ -8,13 +8,19 @@ using Newtonsoft.Json.Linq;
 
 namespace Service
 {
-    public static class TaskService
+    public class TaskService
     {
-        public static List<Task> GetTasksOfProject(int projectId)
+        private readonly CmAgencyEntities db;
+
+        public TaskService(CmAgencyEntities db)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                Project project = entities.Projects.Find(projectId);
+            this.db = db;
+        }
+
+
+        public List<Task> GetTasksOfProject(int projectId)
+        {
+                Project project = db.Projects.Find(projectId);
                 if (project != null)
                 {
                     var taskList = new List<Task>();
@@ -32,14 +38,12 @@ namespace Service
                 {
                     throw new ObjectNotFoundException($"Project with ID {projectId} not found");
                 }
-            }
+            
         }
 
-        public static List<Task> GetTasksOfList(int listId)
+        public List<Task> GetTasksOfList(int listId)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                List list = entities.Lists.Find(listId);
+                List list = db.Lists.Find(listId);
                 if (list != null)
                 {
                     var taskList = new List<Task>();
@@ -55,14 +59,11 @@ namespace Service
                 {
                     throw new ObjectNotFoundException($"List with ID {listId} not found");
                 }
-            }
+            
         }
-        public static List<Task> GetTasksOfUser(int userId)
+        public List<Task> GetTasksOfUser(int userId)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                
-                User user = entities.Users.Find(userId);
+                User user = db.Users.Find(userId);
                 if (user != null)
                 {
                     var taskList = new List<Task>();
@@ -77,41 +78,26 @@ namespace Service
                 {
                     throw new ObjectNotFoundException($"User with ID {userId} not found");
                 }
-            }
+            
         }
-        public static Task GetTask(int id)
+
+        public Task GetTask(int id)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                return entities.Tasks.Find(id);
-            }
+            return db.Tasks.Find(id);
         }
-        //xoa
-        //public static IEnumerable<Task> GetTaskOfUser(int userId)
-        //{
-        //    using (var db = new CmAgencyEntities())
-        //    {
-        //        return db.Tasks
-        //            .Where(
-        //                task => task.UserTasks.Any(user => user.UserID.Equals(userId))
-        //            ).ToList();
-        //    }
-        //}
-
-        
 
 
-        public static JObject ToJson(this Task task, bool isDetailed = true, bool isIncludeProject = true)
+        public JObject ParseToJson(Task task, bool isDetailed = true, bool isIncludeProject = true)
         {
-            User creator = UserService.GetUser(task.CreatedBy);
+            UserService userService = new UserService(db);
+            User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
                 ["ID"] = task.ID,
                 ["Name"] = task.Name,
                 ["Description"] = task.Description,
-                ["CreatedBy"] = task.CreatedBy,
+                ["CreatedBy"] = userService.ParseToJson(creator),
                 ["CreatedTime"] = task.CreatedTime,
-                ["ChangedBy"] = task.ChangedBy,
                 ["ChangedTime"] = task.ChangedTime,
                 ["Status"] = task.Status,
                 ["Duration"] = task.Duration,
@@ -121,8 +107,8 @@ namespace Service
             };
             if (task.ChangedBy.HasValue)
             {
-                var changer = UserService.GetUser(task.ChangedBy.Value);
-                result["changedby"] = changer.ToJson();
+                var changer = userService.GetUser(task.ChangedBy.Value);
+                result["changedby"] = userService.ParseToJson(changer);
             }
 
             return result;
