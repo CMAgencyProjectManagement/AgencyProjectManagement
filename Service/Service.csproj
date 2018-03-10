@@ -51,6 +51,7 @@
     <Compile Include="ProjectService.cs" />
     <Compile Include="ProjectStatus.cs" />
     <Compile Include="TaskService.cs" />
+    <Compile Include="TaskStatus.cs" />
     <Compile Include="TeamService.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

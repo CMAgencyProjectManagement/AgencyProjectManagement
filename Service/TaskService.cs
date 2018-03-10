@@ -80,6 +80,29 @@ namespace Service
             }
         }
 
+        public List<Task> GetActiveTasksOfUser(int userId)
+        {
+            User user = db.Users.Find(userId);
+            if (user != null)
+            {
+                var taskList = new List<Task>();
+
+                foreach (var task in user.Tasks)
+                {
+                    if (task.Status == 0 || task.Status == 1)
+                    {
+                        taskList.Add(task);
+                    }
+                }
+
+                return taskList;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID {userId} not found");
+            }
+        }
+
         public Task GetTask(int id)
         {
             return db.Tasks.Find(id);
@@ -109,7 +132,7 @@ namespace Service
                 var changer = userService.GetUser(task.ChangedBy.Value);
                 result["changedby"] = userService.ParseToJson(changer);
             }
-
+            
             return result;
         }
     }

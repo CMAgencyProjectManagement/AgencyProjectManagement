@@ -33,22 +33,23 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
         [HttpGet]
         [Route("user/{id:int}")]
-        [Authorize(Roles = "Admin,Staff,Manager")]
-        public IHttpActionResult GetTask1(int id)
+        [Authorize(Roles = "Admin,Manager")]
+        public IHttpActionResult GetTasksOfUser(int id)
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
+
                     TaskService taskService = new TaskService(db);
-                    IEnumerable<Task> tasks = taskService.GetTasksOfUser(id);
+                    IEnumerable<Task> tasks = taskService.GetActiveTasksOfUser(id);
                     JArray dataObject = new JArray();
                     foreach (var task in tasks)
                     {
-                        dataObject.Add(taskService.ParseToJson(task));
+                            dataObject.Add(taskService.ParseToJson(task));
+                        
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -61,23 +62,51 @@ namespace Web.Controllers
             }
         }
 
+        //[HttpGet]
+        //[Route("user/{id:int}")]
+        //[Authorize(Roles = "Admin,Staff,Manager")]
+        //public IHttpActionResult GetTask(int id)
+        //{
+        //    try
+        //    {
+        //        using (CmAgencyEntities db = new CmAgencyEntities())
+        //        {
+        //            TaskService taskService = new TaskService(db);
+        //            IEnumerable<Task> tasks = taskService.GetTasksOfUser(id);
+        //            JArray dataObject = new JArray();
+        //            foreach (var task in tasks)
+        //            {
+        //                dataObject.Add(taskService.ParseToJson(task));
+        //            }
+
+        //            return Ok(ResponseHelper.GetResponse(dataObject));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(HttpStatusCode.InternalServerError,
+        //            ResponseHelper.GetExceptionResponse(ex));
+        //    }
+        //}
+
 
         [HttpGet]
         [Route("myTask")]
-        [Authorize(Roles = "Admin,Staff,Manager")]
+        [Authorize]
         public IHttpActionResult GetMyTask()
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
+                    string userIdString = User.Identity.GetUserId();
                     TaskService taskService = new TaskService(db);
-                    string userId = User.Identity.GetUserId();
-                    IEnumerable<Task> tasks = taskService.GetTasksOfUser(Int32.Parse(userId));
+                    IEnumerable<Task> tasks = taskService.GetActiveTasksOfUser(Int32.Parse(userIdString));
                     JArray dataObject = new JArray();
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));
+
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
