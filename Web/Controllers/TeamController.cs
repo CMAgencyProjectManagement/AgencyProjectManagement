@@ -20,14 +20,18 @@ namespace Web.Controllers
         {
             try
             {
-                var teams = TeamService.GetAll();
-                JArray dataObject = new JArray();
-                foreach (var team in teams)
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    dataObject.Add(team.ToJson());
-                }
+                    TeamService teamService = new TeamService(db);
+                    var teams = teamService.GetAll();
+                    JArray dataObject = new JArray();
+                    foreach (var team in teams)
+                    {
+                        dataObject.Add(teamService.ParseToJson(team));
+                    }
 
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
             }
             catch (Exception ex)
             {
@@ -43,14 +47,20 @@ namespace Web.Controllers
         {
             try
             {
-                var team = TeamService.GetTeamById(id);
-                if (team != null)
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    return Ok(ResponseHelper.GetResponse(team.ToJson(includeUsers: true)));
-                }
-                else
-                {
-                    return Content(HttpStatusCode.BadRequest,$"Can't find team with ID {id}");
+                    TeamService teamService = new TeamService(db);
+                    var team = teamService.GetTeamById(id);
+                    if (team != null)
+                    {
+                        return Ok(ResponseHelper.GetResponse(
+                            teamService.ParseToJson(team, includeUsers: true)
+                        ));
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest, $"Can't find team with ID {id}");
+                    }
                 }
             }
             catch (Exception ex)
@@ -67,10 +77,14 @@ namespace Web.Controllers
         {
             try
             {
-                var teams = TeamService.GetAll();
-                var team = TeamService.GetTeamById(id);
-                teams.Remove(team);
-                return Ok();
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TeamService teamService = new TeamService(db);
+                    var teams = teamService.GetAll();
+                    var team = teamService.GetTeamById(id);
+                    teams.Remove(team);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
@@ -9,38 +10,39 @@ using Newtonsoft.Json.Linq;
 
 namespace Service
 {
-    public static class UserService
+    public class UserService
     {
-        public static User GetUser(string username, string password)
-        {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                User foundUser =
-                    entities.Users.SingleOrDefault(user =>
-                        user.Username == username &&
-                        user.Password == password
-                    );
-                // Check one more time because the sql server not set to case sensitive as default
-                if (foundUser != null &&
-                    foundUser.Username == username &&
-                    foundUser.Password == password)
-                {
-                    return foundUser;
-                }
+        private readonly CmAgencyEntities db;
 
-                return null;
-            }
+        public UserService(CmAgencyEntities db)
+        {
+            this.db = db;
         }
 
-        public static User GetUser(int id)
+        public User GetUser(string username, string password)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
+            User foundUser =
+                db.Users.SingleOrDefault(user =>
+                    user.Username == username &&
+                    user.Password == password
+                );
+            // Check one more time because the sql server not set to case sensitive as default
+            if (foundUser != null &&
+                foundUser.Username == username &&
+                foundUser.Password == password)
             {
-                return entities.Users.Find(id);
+                return foundUser;
             }
+
+            return null;
         }
 
-        public static User GetUser(string id)
+        public User GetUser(int id)
+        {
+            return db.Users.Find(id);
+        }
+
+        public User GetUser(string id)
         {
             try
             {
@@ -57,41 +59,32 @@ namespace Service
             }
         }
 
-        public static IEnumerable<User> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                return entities.Users.ToList();
-            }
+            return db.Users.ToList();
         }
-        
-        public static IEnumerable<User> GetUsersOfTeam(int teamId)
+
+        public IEnumerable<User> GetUsersOfTeam(int teamId)
         {
-            using (CmAgencyEntities db = new CmAgencyEntities())
+            IEnumerable<User> users = db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
+            return users.ToList();
+        }
+
+        public void UpdateAvatar(string avatarFileName, int id)
+        {
+            User user = db.Users.Find(id);
+            if (user != null)
             {
-                IEnumerable<User> users = db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
-                return users.ToList();
+                user.Avatar = avatarFileName;
+                db.SaveChanges();
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with Id {id} not found");
             }
         }
 
-        public static void UpdateAvatar(string avatarFileName, int id)
-        {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
-            {
-                User user = entities.Users.Find(id);
-                if (user != null)
-                {
-                    user.Avatar = avatarFileName;
-                    entities.SaveChanges();
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"User with Id {id} not found");
-                }
-            }
-        }
-
-        public static User CreateAccount(
+        public User CreateAccount(
             string name,
             string phone,
             DateTime? birthday,
@@ -101,80 +94,72 @@ namespace Service
             int teamId)
         {
             User newUser;
-            using (CmAgencyEntities entities = new CmAgencyEntities())
+            newUser = new User
             {
-                newUser = new User
-                {
-                    Name = name,
-                    Phone = phone,
-                    Birthdate = birthday,
-                    Email = email,
-                    Username = username,
-                    Password = password,
-                    Avatar = null,
-                    IsAdmin = false,
-                    IsActive = true
-                };
-                entities.Users.Add(newUser);
+                Name = name,
+                Phone = phone,
+                Birthdate = birthday,
+                Email = email,
+                Username = username,
+                Password = password,
+                Avatar = null,
+                IsAdmin = false,
+                IsActive = true
+            };
+            db.Users.Add(newUser);
 
-                Team team = entities.Teams.Find(teamId);
-                UserTeam userTeam = new UserTeam
-                {
-                    User = newUser,
-                    Team = team
-                };
-                entities.UserTeams.Add(userTeam);
+            Team team = db.Teams.Find(teamId);
+            UserTeam userTeam = new UserTeam
+            {
+                User = newUser,
+                Team = team
+            };
+            db.UserTeams.Add(userTeam);
 
-                entities.SaveChanges();
-            }
+            db.SaveChanges();
+
 
             return newUser;
         }
 
-        public static User Updateuser(
+        public User Updateuser(
             int id,
             string name,
             string phone,
             DateTime? birthdate,
             string email)
         {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
+            User user = db.Users.Find(id);
+            if (user != null)
             {
-                User user = entities.Users.Find(id);
-                if (user != null)
-                {
-                    user.Name = name;
-                    user.Phone = phone;
-                    user.Birthdate = birthdate;
-                    user.Email = email;
-                    entities.SaveChanges();
-                    return user;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"User with ID{id} not found");
-                }
+                user.Name = name;
+                user.Phone = phone;
+                user.Birthdate = birthdate;
+                user.Email = email;
+                db.SaveChanges();
+                return user;
             }
-        }
-
-        public static int DeactiveUser(int id)
-        {
-            using (CmAgencyEntities entities = new CmAgencyEntities())
+            else
             {
-                User user = entities.Users.Find(id);
-                if (user != null)
-                {
-                    user.IsActive = false;
-                    entities.SaveChanges();
-                    return id;
-                }
-
                 throw new ObjectNotFoundException($"User with ID{id} not found");
             }
         }
 
-        public static JObject ToJson(
-            this User user,
+        public int DeactiveUser(int id)
+        {
+            User user = db.Users.Find(id);
+            if (user != null)
+            {
+                user.IsActive = false;
+                db.SaveChanges();
+                return id;
+            }
+
+            throw new ObjectNotFoundException($"User with ID{id} not found");
+        }
+
+        public JObject ParseToJson(
+            User user,
             string avatarPath = null,
             bool includePassword = false,
             bool includeTeam = false)
@@ -203,72 +188,15 @@ namespace Service
                 result["password"] = user.Password;
             }
 
-            using (var db = new CmAgencyEntities())
+            if (includeTeam)
             {
-                if (includeTeam)
-                {
-                    Team team = db.UserTeams.First(userteam => userteam.UserID == user.ID).Team;
-                    result["team"] = team.ToJson();
-                }
+                TeamService teamService = new TeamService(db);
+                Team team = db.UserTeams.First(userteam => userteam.UserID == user.ID).Team;
+                result["team"] = teamService.ParseToJson(team);
             }
 
 
             return result;
         }
-
-//        public static JArray ToJson(
-//            this IEnumerable<User> user,
-//            string avatarPath = null,
-//            bool includePassword = false,
-//            bool includeTeam = false)
-//        {
-//            JArray result = new JArray();
-//            using (var db = new CmAgencyEntities())
-//            {
-//                JObject obs = new JObject
-//                {
-//                    ["id"] = user.ID,
-//                    ["name"] = user.Name,
-//                    ["phone"] = user.Phone,
-//                    ["birthday"] = user.Birthdate,
-//                    ["email"] = user.Email,
-//                    ["username"] = user.Username,
-//                    ["isAdmin"] = user.IsAdmin,
-//                    ["isManager"] = user.IsManager,
-//                    ["isActive"] = user.IsActive
-//                };
-//            }
-//            
-//            JObject result = new JObject
-//            {
-//                ["id"] = user.ID,
-//                ["name"] = user.Name,
-//                ["phone"] = user.Phone,
-//                ["birthday"] = user.Birthdate,
-//                ["email"] = user.Email,
-//                ["username"] = user.Username,
-//                ["isAdmin"] = user.IsAdmin,
-//                ["isManager"] = user.IsManager,
-//                ["isActive"] = user.IsActive
-//            };
-//
-//            string avatar = user.Avatar;
-//            if (user.Avatar != null && !String.IsNullOrEmpty(avatarPath))
-//            {
-//                result["avatar"] = Path.Combine(avatarPath, avatar);
-//            }
-//
-//            if (includePassword)
-//            {
-//                result["password"] = user.Password;
-//            }
-//
-//            if (includeTeam)
-//            {
-//                result["team"] = TeamService.GetTeamOfUser(user.ID).ToJson();
-//            }
-//
-//            return result;
-//        }
     }
 }

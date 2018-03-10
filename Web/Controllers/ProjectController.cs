@@ -22,27 +22,19 @@ namespace Web.Controllers
         {
             try
             {
-                var projects = ProjectService.GetAll();
-                //Dont expose password
-                JArray dataObject = new JArray();
-                foreach (var project in projects)
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    dataObject.Add(new JObject
-                    {
-                        ["id"] = project.ID,
-                        ["name"] = project.Name,
-                        ["description"] = project.Description,
-                        ["deadline"] = project.Deadline,
-                        ["createdTime"] = project.CreatedTime,
-                        ["createdBy"] = project.CreatedBy,
-                        ["startDate"] = project.StartDate,
-                        ["changedBy"] = project.ChangedBy,
-                        ["changedTime"] = project.ChangedTime,
-                        ["status"] = project.Status,
-                    });
-                }
+                    ProjectService projectService = new ProjectService(db);
+                    var projects = projectService.GetAll();
 
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                    JArray dataObject = new JArray();
+                    foreach (var project in projects)
+                    {
+                        dataObject.Add(projectService.ParseToJson(project));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
             }
             catch (Exception ex)
             {
@@ -58,16 +50,21 @@ namespace Web.Controllers
         {
             try
             {
-                string userId = User.Identity.GetUserId();
-                IEnumerable<Project> projects = ProjectService.GetProjectOfUser(Int32.Parse(userId));
-                JArray dataObject = new JArray();
-
-                foreach (var project in projects)
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    dataObject.Add(project.ToJson());
-                }
+                    ProjectService projectService = new ProjectService(db);
 
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                    string userId = User.Identity.GetUserId();
+                    IEnumerable<Project> projects = projectService.GetProjectOfUser(Int32.Parse(userId));
+                    JArray dataObject = new JArray();
+
+                    foreach (var project in projects)
+                    {
+                        dataObject.Add(projectService.ParseToJson(project));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
             }
             catch (Exception ex)
             {
@@ -85,21 +82,26 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string loginedUserId = User.Identity.GetUserId();
-                    User creator = UserService.GetUser(loginedUserId);
-                    DateTime startTime = DateTime.Parse(createProjectModel.StartDate);
-                    DateTime deadline = DateTime.Parse(createProjectModel.Deadline);
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        ProjectService projectService = new ProjectService(db);
+                        UserService userService = new UserService(db);
+                        string loginedUserId = User.Identity.GetUserId();
+                        User creator = userService.GetUser(loginedUserId);
+                        DateTime startTime = DateTime.Parse(createProjectModel.StartDate);
+                        DateTime deadline = DateTime.Parse(createProjectModel.Deadline);
 
-                    Project newProject = ProjectService.CreateProject(
-                        createProjectModel.Name,
-                        createProjectModel.Description,
-                        deadline,
-                        startTime,
-                        creator
-                    );
+                        Project newProject = projectService.CreateProject(
+                            createProjectModel.Name,
+                            createProjectModel.Description,
+                            deadline,
+                            startTime,
+                            creator
+                        );
 
-                    JObject dataObject = newProject.ToJson();
-                    return Ok(ResponseHelper.GetResponse(dataObject));
+                        JObject dataObject = projectService.ParseToJson(newProject);
+                        return Ok(ResponseHelper.GetResponse(dataObject));
+                    }
                 }
                 else
                 {
@@ -137,14 +139,19 @@ namespace Web.Controllers
                         startdate = tmp;
                     }
 
-                    var updatedProject = ProjectService.UpdateProject(
-                        updateProjectViewModel.id,
-                        updateProjectViewModel.name,
-                        updateProjectViewModel.description,
-                        deadline,
-                        startdate
-                    );
-                    return Ok(ResponseHelper.GetResponse(updatedProject.ToJson()));
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        ProjectService projectService = new ProjectService(db);
+                        var updatedProject = projectService.UpdateProject(
+                            updateProjectViewModel.id,
+                            updateProjectViewModel.name,
+                            updateProjectViewModel.description,
+                            deadline,
+                            startdate
+                        );
+                        return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(updatedProject)));
+                    }
+                    
                 }
                 else
                 {
@@ -167,11 +174,13 @@ namespace Web.Controllers
         {
             try
             {
-                var id = ProjectService.CloseProject(deleteProjectViewModel.id);
-                return Ok(ResponseHelper.GetResponse(new JObject
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    ["id"] = id
-                }));
+                    ProjectService projectService = new ProjectService(db);
+                    projectService.CloseProject(deleteProjectViewModel.id);
+                    return Ok();
+                }
+                
             }
             catch (Exception ex)
             {

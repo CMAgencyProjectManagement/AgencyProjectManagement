@@ -11,27 +11,30 @@ using Newtonsoft.Json.Linq;
 
 namespace Service
 {
-    public static class ProjectService
+    public  class ProjectService
     {
-        public static IEnumerable<Project> GetAll()
+        private readonly CmAgencyEntities db;
+
+        public ProjectService(CmAgencyEntities db)
         {
-            using (var db = new CmAgencyEntities())
-            {
-                return db.Projects.ToList();
-            }
+            this.db = db;
         }
 
-        public static IEnumerable<Project> GetProjectOfUser(int userId)
+        public  IEnumerable<Project> GetAll()
         {
-            using (var db = new CmAgencyEntities())
-            {
+                return db.Projects.ToList();
+            
+        }
+
+        public  IEnumerable<Project> GetProjectOfUser(int userId)
+        {
                 return db.Projects
                     .Where(
                         project => project.Users.Any(user => user.ID.Equals(userId))
                     )
                     .Include(p => p.Lists)
                     .ToList();
-            }
+            
         }
 
         /// <summary>
@@ -43,7 +46,7 @@ namespace Service
         /// <param name="startDate"></param>
         /// <param name="creator">creator id</param>
         /// <returns>new project with Id</returns>
-        public static Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
+        public  Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
             User creator)
         {
             Project newProject = new Project
@@ -57,30 +60,27 @@ namespace Service
             };
 
 
-            using (var db = new CmAgencyEntities())
-            {
                 db.Projects.Add(newProject);
                 db.SaveChanges();
-            }
+            
 
             return newProject;
         }
 
-        public static Project GetProjectOfTask(int taskId)
+        public  Project GetProjectOfTask(int taskId)
         {
-            return ListService.GetListOfTask(taskId).Project;
+            ListService listService = new ListService(db);
+            return listService.GetListOfTask(taskId).Project;
 
         }
 
-        public static Project UpdateProject(
+        public  Project UpdateProject(
             int id,
             string name,
             string description,
             DateTime? deadline,
             DateTime? startDate)
         {
-            using (var db = new CmAgencyEntities())
-            {
                 var foundProject = db.Projects.Find(id);
                 if (foundProject != null)
                 {
@@ -95,13 +95,11 @@ namespace Service
                 {
                     throw new ObjectNotFoundException($"Can't find project with ID {id}");
                 }
-            }
+            
         }
 
-        public static int CloseProject(int id)
+        public  int CloseProject(int id)
         {
-            using (var db = new CmAgencyEntities())
-            {
                 var project = db.Projects.Find(id);
                 if (project != null)
                 {
@@ -113,12 +111,15 @@ namespace Service
                 {
                     throw new ObjectNotFoundException($"Can't find project with ID {id}");
                 }
-            }
+            
         }
 
-        public static JObject ToJson(this Project project, bool isDetailed = true)
+        public JObject ParseToJson(Project project, bool isDetailed = true)
         {
-            User creator = UserService.GetUser(project.CreatedBy);
+            UserService userService = new UserService(db);
+            ListService listService = new ListService(db);
+            User creator = userService.GetUser(project.CreatedBy);
+            
             var result = new JObject
             {
                 ["id"] = project.ID,
@@ -126,23 +127,23 @@ namespace Service
                 ["description"] = project.Description,
                 ["deadline"] = project.Deadline,
                 ["createdTime"] = project.CreatedTime,
-                ["createdBy"] = creator.ToJson(),
+                ["createdBy"] = userService.ParseToJson(creator),
                 ["startDate"] = project.StartDate,
                 ["changedTime"] = project.ChangedTime
             };
             if (project.ChangedBy.HasValue)
             {
-                var changer = UserService.GetUser(project.ChangedBy.Value);
-                result["changedBy"] = changer.ToJson();
+                var changer = userService.GetUser(project.ChangedBy.Value);
+                result["changedBy"] = userService.ParseToJson(changer);
             }
 
             if (isDetailed)
             {
-                IEnumerable<List> lists = ListService.GetListOfProject(project.ID);
+                IEnumerable<List> lists = listService.GetListOfProject(project.ID);
                 JArray listJArray = new JArray();
                 foreach (List list in lists)
                 {
-                    listJArray.Add(list.ToJson());
+                    listJArray.Add(listService.ParseToJson(list));
                 }
 
                 result["lists"] = listJArray;

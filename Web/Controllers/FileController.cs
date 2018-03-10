@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using Entity;
 using Newtonsoft.Json.Linq;
 using Service;
 
@@ -33,7 +34,12 @@ namespace Web.Controllers
 
                 if (avatarFile != null)
                 {
-                    UserService.UpdateAvatar(avatarFile.FileName, id);
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        UserService userService = new UserService(db);
+                        userService.UpdateAvatar(avatarFile.FileName, id);
+                    }
+                    
                     string path = Path.Combine(
                         HttpContext.Current.Server.MapPath("~"),
                         AgencyConfig.AvatarPath.Substring(1),
