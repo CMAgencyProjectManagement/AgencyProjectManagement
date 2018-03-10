@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Service
 {
-    public  class ProjectService
+    public class ProjectService
     {
         private readonly CmAgencyEntities db;
 
@@ -20,21 +20,19 @@ namespace Service
             this.db = db;
         }
 
-        public  IEnumerable<Project> GetAll()
+        public IEnumerable<Project> GetAll()
         {
-                return db.Projects.ToList();
-            
+            return db.Projects.ToList();
         }
 
-        public  IEnumerable<Project> GetProjectOfUser(int userId)
+        public IEnumerable<Project> GetProjectOfUser(int userId)
         {
-                return db.Projects
-                    .Where(
-                        project => project.Users.Any(user => user.ID.Equals(userId))
-                    )
-                    .Include(p => p.Lists)
-                    .ToList();
-            
+            return db.Projects
+                .Where(
+                    project => project.Users.Any(user => user.ID.Equals(userId))
+                )
+                .Include(p => p.Lists)
+                .ToList();
         }
 
         /// <summary>
@@ -46,7 +44,7 @@ namespace Service
         /// <param name="startDate"></param>
         /// <param name="creator">creator id</param>
         /// <returns>new project with Id</returns>
-        public  Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
+        public Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
             User creator)
         {
             Project newProject = new Project
@@ -60,58 +58,55 @@ namespace Service
             };
 
 
-                db.Projects.Add(newProject);
-                db.SaveChanges();
-            
+            db.Projects.Add(newProject);
+            db.SaveChanges();
+
 
             return newProject;
         }
 
-        public  Project GetProjectOfTask(int taskId)
+        public Project GetProjectOfTask(int taskId)
         {
             ListService listService = new ListService(db);
             return listService.GetListOfTask(taskId).Project;
-
         }
 
-        public  Project UpdateProject(
+        public Project UpdateProject(
             int id,
             string name,
             string description,
             DateTime? deadline,
             DateTime? startDate)
         {
-                var foundProject = db.Projects.Find(id);
-                if (foundProject != null)
-                {
-                    foundProject.Name = name;
-                    foundProject.Description = description;
-                    foundProject.Deadline = deadline;
-                    foundProject.StartDate = startDate;
-                    db.SaveChanges();
-                    return foundProject;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Can't find project with ID {id}");
-                }
-            
+            var foundProject = db.Projects.Find(id);
+            if (foundProject != null)
+            {
+                foundProject.Name = name;
+                foundProject.Description = description;
+                foundProject.Deadline = deadline;
+                foundProject.StartDate = startDate;
+                db.SaveChanges();
+                return foundProject;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find project with ID {id}");
+            }
         }
 
-        public  int CloseProject(int id)
+        public int CloseProject(int id)
         {
-                var project = db.Projects.Find(id);
-                if (project != null)
-                {
-                    project.Status = (int) ProjectStatus.Closed;
-                    db.SaveChanges();
-                    return id;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Can't find project with ID {id}");
-                }
-            
+            var project = db.Projects.Find(id);
+            if (project != null)
+            {
+                project.Status = (int) ProjectStatus.Closed;
+                db.SaveChanges();
+                return id;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find project with ID {id}");
+            }
         }
 
         public JObject ParseToJson(Project project, bool isDetailed = true)
@@ -119,7 +114,7 @@ namespace Service
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
             User creator = userService.GetUser(project.CreatedBy);
-            
+
             var result = new JObject
             {
                 ["id"] = project.ID,

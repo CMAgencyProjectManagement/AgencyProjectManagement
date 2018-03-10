@@ -151,7 +151,6 @@ namespace Web.Controllers
                         );
                         return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(updatedProject)));
                     }
-                    
                 }
                 else
                 {
@@ -180,7 +179,6 @@ namespace Web.Controllers
                     projectService.CloseProject(deleteProjectViewModel.id);
                     return Ok();
                 }
-                
             }
             catch (Exception ex)
             {

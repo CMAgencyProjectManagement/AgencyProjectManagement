@@ -20,65 +20,64 @@ namespace Service
 
         public List<Task> GetTasksOfProject(int projectId)
         {
-                Project project = db.Projects.Find(projectId);
-                if (project != null)
+            Project project = db.Projects.Find(projectId);
+            if (project != null)
+            {
+                var taskList = new List<Task>();
+                foreach (var list in project.Lists)
                 {
-                    var taskList = new List<Task>();
-                    foreach (var list in project.Lists)
+                    foreach (var task in list.Tasks)
                     {
-                        foreach (var task in list.Tasks)
-                        {
-                            taskList.Add(task);
-                        }
+                        taskList.Add(task);
                     }
+                }
 
-                    return taskList;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Project with ID {projectId} not found");
-                }
-            
+                return taskList;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Project with ID {projectId} not found");
+            }
         }
 
         public List<Task> GetTasksOfList(int listId)
         {
-                List list = db.Lists.Find(listId);
-                if (list != null)
-                {
-                    var taskList = new List<Task>();
+            List list = db.Lists.Find(listId);
+            if (list != null)
+            {
+                var taskList = new List<Task>();
 
-                    foreach (Task task in list.Tasks)
-                    {
-                        taskList.Add(task);
-                    }
-
-                    return taskList;
-                }
-                else
+                foreach (Task task in list.Tasks)
                 {
-                    throw new ObjectNotFoundException($"List with ID {listId} not found");
+                    taskList.Add(task);
                 }
-            
+
+                return taskList;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"List with ID {listId} not found");
+            }
         }
+
         public List<Task> GetTasksOfUser(int userId)
         {
-                User user = db.Users.Find(userId);
-                if (user != null)
+            User user = db.Users.Find(userId);
+            if (user != null)
+            {
+                var taskList = new List<Task>();
+
+                foreach (var task in user.Tasks)
                 {
-                    var taskList = new List<Task>();
-                    
-                    foreach (var task in user.Tasks)
-                    {
-                            taskList.Add(task);
-                    }
-                    return taskList;
+                    taskList.Add(task);
                 }
-                else
-                {
-                    throw new ObjectNotFoundException($"User with ID {userId} not found");
-                }
-            
+
+                return taskList;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID {userId} not found");
+            }
         }
 
         public Task GetTask(int id)

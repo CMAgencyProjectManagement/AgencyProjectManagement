@@ -20,33 +20,30 @@ namespace Service
 
         public List<Team> GetAll()
         {
-                return db.Teams.ToList();
-            
+            return db.Teams.ToList();
         }
 
         public Team GetTeamById(int id)
         {
-                return db.Teams.Find(id);
-            
+            return db.Teams.Find(id);
         }
 
         public User GetManager(int teamId)
         {
-                Team foundTeam = db.Teams.Find(teamId);
-                if (foundTeam != null)
+            Team foundTeam = db.Teams.Find(teamId);
+            if (foundTeam != null)
+            {
+                IEnumerable<UserTeam> userTeams = foundTeam.UserTeams;
+                foreach (UserTeam userTeam in userTeams)
                 {
-                    IEnumerable<UserTeam> userTeams = foundTeam.UserTeams;
-                    foreach (UserTeam userTeam in userTeams)
+                    if (userTeam.User.IsManager)
                     {
-                        if (userTeam.User.IsManager)
-                        {
-                            return userTeam.User;
-                        }
+                        return userTeam.User;
                     }
                 }
+            }
 
-                return null;
-            
+            return null;
         }
 
         public Team Updateteam(
@@ -57,23 +54,23 @@ namespace Service
             Boolean isClosed,
             string manager)
         {
-                Team team = db.Teams.Find(id);
-                if (team != null)
-                {
-                    team.Name = name;
-                    team.User.Username = manager;
+            Team team = db.Teams.Find(id);
+            if (team != null)
+            {
+                team.Name = name;
+                team.User.Username = manager;
 
-                    db.SaveChanges();
-                    return team;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"User with ID{id} not found");
-                }
-            
+                db.SaveChanges();
+                return team;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{id} not found");
+            }
         }
 
-        public JObject ParseToJson(Team team, bool includeManager = true, bool includeUsers = false, string avatarPath = null)
+        public JObject ParseToJson(Team team, bool includeManager = true, bool includeUsers = false,
+            string avatarPath = null)
         {
             UserService userService = new UserService(db);
             var creator = userService.GetUser(team.CreatedBy);
@@ -97,10 +94,10 @@ namespace Service
             {
                 var users = userService.GetUsersOfTeam(team.ID);
                 var jArray = new JArray();
-                
+
                 foreach (User user in users)
                 {
-                    jArray.Add(userService.ParseToJson(user,avatarPath));
+                    jArray.Add(userService.ParseToJson(user, avatarPath));
                 }
 
                 result["users"] = jArray;

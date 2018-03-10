@@ -39,7 +39,7 @@ namespace Web.Controllers
                         UserService userService = new UserService(db);
                         userService.UpdateAvatar(avatarFile.FileName, id);
                     }
-                    
+
                     string path = Path.Combine(
                         HttpContext.Current.Server.MapPath("~"),
                         AgencyConfig.AvatarPath.Substring(1),

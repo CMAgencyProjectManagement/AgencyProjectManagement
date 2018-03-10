@@ -24,9 +24,8 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     Task task = taskService.GetTask(id);
-                    return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task)));    
+                    return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task)));
                 }
-                
             }
             catch (Exception ex)
             {
@@ -51,9 +50,9 @@ namespace Web.Controllers
                     {
                         dataObject.Add(taskService.ParseToJson(task));
                     }
+
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
-                
             }
             catch (Exception ex)
             {
@@ -74,15 +73,15 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     string userId = User.Identity.GetUserId();
-                    IEnumerable<Task> tasks = taskService.GetTasksOfUser(Int32.Parse(userId));  
+                    IEnumerable<Task> tasks = taskService.GetTasksOfUser(Int32.Parse(userId));
                     JArray dataObject = new JArray();
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));
                     }
+
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
-                
             }
             catch (Exception ex)
             {
