@@ -69,28 +69,5 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
-        [HttpDelete]
-        [Route("{id:int}")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult DeleteTeam(int id)
-        {
-            try
-            {
-                using (CmAgencyEntities db = new CmAgencyEntities())
-                {
-                    TeamService teamService = new TeamService(db);
-                    var teams = teamService.GetAll();
-                    var team = teamService.GetTeamById(id);
-                    teams.Remove(team);
-                    return Ok();
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
     }
 }
