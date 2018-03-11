@@ -36,10 +36,14 @@
                         <div>
                             <button type="button" class="btn btn-success" data-toggle="modal" style="padding:1rem 2.5rem;
                             position: relative;
-                            left: 500px;" (click)="successModal.show()">
+                            left: 500px;color: black;
+                            background-color: white;
+                            border-color: black;" (click)="successModal.show()">
                                 Add
                             </button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" onclick="location.href='#/project'" style="padding:1rem 2.5rem;position: relative;left: 550px">
+                            <button type="button" class="btn btn-warning" data-toggle="modal" onclick="location.href='#/project'" style="padding:1rem 2.5rem;position: relative;left: 550px;color: black;
+                            background-color: white;
+                            border-color: black;">
                                 Cancel
                             </button>
                         </div>
@@ -53,7 +57,8 @@
 <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-success" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="color: black;
+            background-color: white;">
                 <h4 class="modal-title">Confirmation message!</h4>
                 <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -63,8 +68,12 @@
                 <p>Are you sure to add a new project?</p>
             </div>
             <div class="modal-footer" style="padding: 1rem 2.5rem;">
-                <button type="button" class="btn btn-secondary" (click)="successModal.hide()">No</button>
-                <button type="button" class="btn btn-success" (click)="handleCreate()">Yes</button>
+                <button type="button" class="btn btn-secondary" (click)="successModal.hide()" style="color: black;
+                background-color: white;
+                border-color: black;">No</button>
+                <button type="button" class="btn btn-success" (click)="handleCreate()" style="color: black;
+                background-color: white;
+                border-color: black;">Yes</button>
             </div>
         </div>
         <!-- /.modal-content -->

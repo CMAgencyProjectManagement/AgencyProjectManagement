@@ -5,7 +5,9 @@
         <strong>Projects Management</strong>
       </div>
       <div class="card-body">
-        <button type="button" class="btn btn-success" style="font-size: 20px" onclick="location.href='#/project/add';">
+        <button type="button" class="btn btn-success" style="font-size: 20px;color: black;
+        background-color: white;
+        border-color: black;" onclick="location.href='#/project/add';">
           <i class="fa fa-magic"></i>&nbsp; New Project</button>
       </div>
       <div class="card-body">
@@ -35,8 +37,8 @@
           </thead>
           <tbody>
             <ng-container *ngFor="let project of pagedProjects;let i = index">
-              <tr style="cursor: pointer" (click)="handleViewProject(project.id)">
-                <!-- (click)="handleViewProject(project.id)" -->
+              <tr style="cursor: pointer">
+                <!-- (click)="handleViewProject(project.id)" --> 
                 <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
                   <td>
                       {{i + (pager.currentPage-1)*pager.pageSize + 1}}
@@ -53,20 +55,25 @@
                 <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
                 <td>{{project.createdTime | date:'d/M/y'}}</td>
                 <td>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn btn-primary" style="color: black;
+                  background-color: white;
+                  border-color: black;">
                     Update
                   </button>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger" data-toggle="modal" (click)="dangerModal.show()" style="padding: 0.3rem">
+                  <button type="button" class="btn btn-danger" data-toggle="modal" (click)="dangerModal.show()" style="padding: 0.3rem" style="color: black;
+                  background-color: white;
+                  border-color: black;">
                     Close
                   </button>
                 </td>
 
                 <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-danger" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
+                    <div class="modal-content" style="border-color: black;">
+                      <div class="modal-header" style="color: black;
+                      background-color: white;">
                         <h4 class="modal-title">Confirmation message!</h4>
                         <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
@@ -76,8 +83,12 @@
                         <p>Are you sure to close this project?</p>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">No</button>
-                        <button type="button" class="btn btn-danger" (click)="handleClose(project.id)">Yes</button>
+                        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
+                        background-color: white;
+                        border-color: black;">No</button>
+                        <button type="button" class="btn btn-danger" (click)="handleClose(project.id)" style="color: black;
+                        background-color: white;
+                        border-color: black;">Yes</button>
                       </div>
                     </div>
                     <!-- /.modal-content -->
