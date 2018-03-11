@@ -148,10 +148,10 @@ export class UserService {
           if (content.IsSuccess) {
             resolve(content.data);
           } else {
-            reject(content);
+            reject(content.data);
           }
         })
-        .catch(reject);
+        .catch(reason => reject(reason.response.body));
     });
   }
 

@@ -8,13 +8,13 @@ namespace Web.ViewModels
 {
     public class CreateUserModel
     {
-        [Required]
+        [Required(ErrorMessage = "Username is required")]
         [MaxLength(255)]
         public string Username { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         [MaxLength(255)]
         public string Password { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Fullname is required")]
         [MaxLength(255)]
         public string Name { get; set; }
         [Phone]
@@ -25,7 +25,7 @@ namespace Web.ViewModels
         [EmailAddress]
         [MaxLength(255)]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Team is required")]
         public int Team { get; set; }
     }
 }    
