@@ -109,6 +109,11 @@ namespace Service
             }
         }
 
+        public Project GetProject(int id)
+        {
+            return db.Projects.Find(id);
+        }
+
         public JObject ParseToJson(Project project, bool isDetailed = true)
         {
             UserService userService = new UserService(db);

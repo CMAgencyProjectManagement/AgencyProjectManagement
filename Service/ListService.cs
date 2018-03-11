@@ -54,13 +54,18 @@ namespace Service
             }
         }
 
-        public JObject ParseToJson(List list, bool isDetailed = true)
+        public JObject ParseToJson(List list, bool isDetailed = true, bool isShowtask = true)
         {
             TaskService taskService = new TaskService(db);
+            ProjectService projectService = new ProjectService(db);
+
+
             JObject result = new JObject
             {
                 ["ID"] = list.ID,
-                ["Name"] = list.Name
+                ["ProjectId"] = list.ProjectID, //
+                ["Name"] = list.Name,
+                
             };
 
             if (isDetailed)
@@ -75,8 +80,36 @@ namespace Service
 
                 result["tasks"] = tasksJArray;
             }
+            if (isShowtask)
+            {
+               Project project = projectService.GetProject(list.ProjectID);
+                result["project"] = projectService.ParseToJson(project,false);
+            }
 
             return result;
         }
+        public List GetList(int id)
+        {
+            using (CmAgencyEntities entities = new CmAgencyEntities())
+            {
+                return entities.Lists.Find(id);
+            }
+        }
+        public List CreateList(int projectId, string name)
+        {
+            List newList = new List
+            {
+                ProjectID = projectId,
+                Name = name,
+               
+            };
+            db.Lists.Add(newList);
+            db.SaveChanges();
+
+
+            return newList;
+        }
+        
+        
     }
 }
