@@ -23,12 +23,22 @@ import {TeamService} from '../../../services/team.service';
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss']
 })
+
 export class CreateUserComponent implements OnInit {
   signupForm: FormGroup;
   currentAccountCursor: Cursor;
   tokenCursor: Cursor;
   isLoading: boolean;
-  errorMessage: string;
+  isLoadingPage: boolean;
+  errors: {
+    username: string,
+    password: string,
+    fullname: string,
+    email: string,
+    birthdate: string,
+    team: string,
+    avatar: string
+  };
   teams: Team[];
 
   // https://github.com/kekeh/mydatepicker
@@ -40,8 +50,6 @@ export class CreateUserComponent implements OnInit {
     showTodayBtn: false
   };
 
-  public model: any = {date: {year: 2018, month: 10, day: 9}};
-
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
@@ -49,12 +57,14 @@ export class CreateUserComponent implements OnInit {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
     this.isLoading = false;
+    this.isLoadingPage = true
   }
 
   ngOnInit() {
     this.teamService.getAllTeam()
       .then(value => {
         this.teams = value;
+        this.isLoadingPage = false;
       });
     this.signupForm = new FormGroup({
       username: new FormControl(undefined),
@@ -69,13 +79,9 @@ export class CreateUserComponent implements OnInit {
   }
 
   handleCreate() {
-    console.debug('handleCreate 1');
-
     if (this.signupForm.valid) {
       const formValue = this.signupForm.value;
       this.isLoading = true;
-      console.debug('handleCreate 2', formValue);
-      // const time = moment('2010-10-20 4:30', 'YYYY-MM-DD');
 
       this.userService.createUser(
         formValue.username,
@@ -89,7 +95,6 @@ export class CreateUserComponent implements OnInit {
         this.isLoading = false;
       }).catch(reason => {
         this.isLoading = false;
-        console.debug(reason);
         this.handleCreateError(reason.Data);
       })
     }

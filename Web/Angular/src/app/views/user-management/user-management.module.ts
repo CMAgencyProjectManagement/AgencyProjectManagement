@@ -6,8 +6,9 @@ import {ViewUserComponent} from './view-user/view-user.component';
 import {UpdateUserComponent} from './update-user/update-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
-import { MyDatePickerModule } from 'mydatepicker';
-import { DetailUserComponent } from './detail-user/detail-user.component';
+import {MyDatePickerModule} from 'mydatepicker';
+import {DetailUserComponent} from './detail-user/detail-user.component';
+import {SpinnerComponent} from '../../components';
 
 @NgModule({
   imports: [
@@ -18,9 +19,9 @@ import { DetailUserComponent } from './detail-user/detail-user.component';
       style: 'expand-left'
     }),
     FormsModule,
-    MyDatePickerModule
+    MyDatePickerModule,
   ],
-  declarations: [CreateUserComponent, ViewUserComponent, UpdateUserComponent, DetailUserComponent]
+  declarations: [CreateUserComponent, ViewUserComponent, UpdateUserComponent, DetailUserComponent, SpinnerComponent]
 })
 export class UserManagementModule {
 }
