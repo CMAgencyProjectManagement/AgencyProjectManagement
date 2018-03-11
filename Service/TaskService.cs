@@ -107,11 +107,51 @@ namespace Service
         {
             return db.Tasks.Find(id);
         }
+        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate, User creator)
+        {
+            Task newTask = new Task
+            {
+                Name = name,
+                Description = description,
+                ListID = listID,
+                Priority = (int)priority,
+                StartDate = startDate,
+                CreatedBy = creator.ID,
+                CreatedTime = DateTime.Now
+            };
+            db.Tasks.Add(newTask);
+            db.SaveChanges();
+            return newTask;
+        }
+        public Task UpdateTask(
+            int id,
+            string name,
+            string description,
+            int listId,
+            TaskPriority priority,
+            DateTime? startDate)
+        {
+            var foundTask = db.Tasks.Find(id);
+            if (foundTask!=null)
+            {
+                foundTask.Name = name;
+                foundTask.Description = description;
+                foundTask.ListID = listId;
+                foundTask.Priority = (int)priority;
+                foundTask.StartDate = startDate;
+                db.SaveChanges();
+                return foundTask;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find project with ID {id}");
+            }
+        }
 
-
-        public JObject ParseToJson(Task task, bool isDetailed = true, bool isIncludeProject = true)
+        public JObject ParseToJson(Task task,  bool isIncludeProject = true)
         {
             UserService userService = new UserService(db);
+            ListService listService = new ListService(db);
             User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
@@ -132,7 +172,7 @@ namespace Service
                 var changer = userService.GetUser(task.ChangedBy.Value);
                 result["changedby"] = userService.ParseToJson(changer);
             }
-            
+
             return result;
         }
     }

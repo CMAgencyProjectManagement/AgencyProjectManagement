@@ -1,73 +1,87 @@
-<div style="align-content: center">
-  <div class="card align-items-center">
-    <h1>Create new account</h1>
-    <div class="card-body">
-      <div [formGroup]="signupForm" class="form-horizontal">
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="username-input">Username:</label>
-          <div class="col-md-8">
-            <input type="text" id="username-input" name="username-input" class="form-control"
-                   formControlName="username">
-            <!--<span class="help-block">Please enter username</span>-->
+<div class="row">
+  <div class="col-12">
+
+    <div class="card">
+      <div class="card-header">
+        <strong>Create account</strong>
+      </div>
+      <app-spinner *ngIf="isLoadingPage"></app-spinner>
+      <div class="card-body animated fadeIn" *ngIf="!isLoadingPage">
+        <div [formGroup]="signupForm" class="form-horizontal col-6 ">
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="username-input">Username</label>
+            <div class="col-8">
+              <input type="text" id="username-input" name="username-input" class="form-control"
+                     formControlName="username">
+              <span class="help-block" *ngIf="errors.username">{{errors.username}}</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="password-input">Password</label>
-          <div class="col-md-8">
-            <input type="password" id="password-input" name="password-input" class="form-control"
-                   formControlName="password">
-            <!--<span class="help-block">Please enter a complex password</span>-->
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="password-input">Password</label>
+            <div class="col-8">
+              <input type="password" id="password-input" name="password-input" class="form-control"
+                     formControlName="password">
+              <span class="help-block" *ngIf="errors.password">{{errors.password}}</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="name-input">Fullname:</label>
-          <div class="col-md-8">
-            <input type="text" id="name-input" name="name-input" class="form-control"
-                   formControlName="fullname">
-            <!--<span class="help-block">Please enter name</span>-->
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="name-input">Fullname</label>
+            <div class="col-8">
+              <input type="text" id="name-input" name="name-input" class="form-control"
+                     formControlName="fullname">
+              <span class="help-block" *ngIf="errors.fullname">{{errors.fullname}}</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="email-input">Email:</label>
-          <div class="col-md-8">
-            <input type="email" id="email-input" name="email-input" class="form-control"
-                   formControlName="email">
-            <!--<span class="help-block">Please enter your email</span>-->
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="email-input">Email</label>
+            <div class="col-8">
+              <input type="email" id="email-input" name="email-input" class="form-control"
+                     formControlName="email">
+              <span class="help-block" *ngIf="errors.email">{{errors.email}}</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="phone-input">Phone:</label>
-          <div class="col-md-8">
-            <input type="text" id="phone-input" name="phone-input" class="form-control"
-                   formControlName="phone">
-            <!--<span class="help-block">Please enter phone number</span>-->
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="phone-input">Phone</label>
+            <div class="col-8">
+              <input type="text" id="phone-input" name="phone-input" class="form-control"
+                     formControlName="phone">
+              <span class="help-block" *ngIf="errors.phone">{{errors.phone}}</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="email-input">Date of Birth:</label>
-          <my-date-picker class="col-md-8" name="mydate" [options]="myDatePickerOptions"
-                          formControlName="birthDate"
-                          required></my-date-picker>
-        </div>
-        <div class="form-group row" *ngIf="teams">
-          <label class="col-md-4 col-form-label" >Team: </label>
-          <div class="col-md-8">
-            <select  class="form-control" formControlName="team">
-              <option *ngFor="let team of teams" value="{{team.id}}">{{team.name}}</option>
-            </select>
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="email-input">Date of Birth</label>
+            <my-date-picker class="col-8" [options]="myDatePickerOptions"
+                            formControlName="birthDate"
+                            required></my-date-picker>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="file-input">Avatar</label>
-          <div class="col-md-8">
-            <input type="file" id="file-input" name="file-input"
-                   #avatarFile>
+          <div class="form-group row" *ngIf="teams">
+            <label class="col-4 col-form-label text-right">Team</label>
+            <div class="col-8">
+              <select class="form-control" formControlName="team">
+                <option *ngFor="let team of teams" value="{{team.id}}">{{team.name}}</option>
+              </select>
+              <span class="help-block" *ngIf="errors.team">{{errors.team}}</span>
+            </div>
           </div>
-        </div>
-        <div class="form-actions" style="margin-left: 100px">
-          <button class="btn btn-primary" (click)="handleCreate()">Save changes
-          </button>
-          <button class="btn btn-secondary" type="button" (click)="resetForm()">Cancel</button>
+          <div class="form-group row">
+            <label class="col-4 col-form-label text-right" for="file-input">Avatar</label>
+            <div class="col-8">
+              <input type="file" id="file-input" name="file-input"
+                     #avatarFile>
+              <span class="help-block" *ngIf="errors.avatar">{{errors.avatar}}</span>
+            </div>
+
+          </div>
+          <div class="form-actions text-center">
+            <div class="col-12">
+              <button class="btn btn-primary"
+                      (click)="handleCreate()"
+                      [ladda] = "isLoading">
+                Save changes
+              </button>
+              <button class="btn btn-secondary" type="button" (click)="signupForm.reset()">Cancel</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

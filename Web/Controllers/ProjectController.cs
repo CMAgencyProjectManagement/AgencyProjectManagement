@@ -177,7 +177,7 @@ namespace Web.Controllers
                 {
                     ProjectService projectService = new ProjectService(db);
                     projectService.CloseProject(deleteProjectViewModel.id);
-                    return Ok();
+                    return Ok(ResponseHelper.GetResponse());
                 }
             }
             catch (Exception ex)

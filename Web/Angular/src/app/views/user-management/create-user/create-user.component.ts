@@ -23,12 +23,23 @@ import {TeamService} from '../../../services/team.service';
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss']
 })
+
 export class CreateUserComponent implements OnInit {
   signupForm: FormGroup;
   currentAccountCursor: Cursor;
   tokenCursor: Cursor;
   isLoading: boolean;
-  errorMessage: string;
+  isLoadingPage: boolean;
+  errors: {
+    username: string,
+    password: string,
+    fullname: string,
+    email: string,
+    phone: string,
+    birthdate: string,
+    team: string,
+    avatar: string
+  };
   teams: Team[];
 
   // https://github.com/kekeh/mydatepicker
@@ -40,8 +51,6 @@ export class CreateUserComponent implements OnInit {
     showTodayBtn: false
   };
 
-  public model: any = {date: {year: 2018, month: 10, day: 9}};
-
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
@@ -49,12 +58,15 @@ export class CreateUserComponent implements OnInit {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
     this.isLoading = false;
+    this.isLoadingPage = true;
+    this.setErrorsNull();
   }
 
   ngOnInit() {
     this.teamService.getAllTeam()
       .then(value => {
         this.teams = value;
+        this.isLoadingPage = false;
       });
     this.signupForm = new FormGroup({
       username: new FormControl(undefined),
@@ -69,66 +81,67 @@ export class CreateUserComponent implements OnInit {
   }
 
   handleCreate() {
-    console.debug('handleCreate 1');
-
-    if (this.signupForm.valid) {
-      const formValue = this.signupForm.value;
-      this.isLoading = true;
-      console.debug('handleCreate 2', formValue);
-      // const time = moment('2010-10-20 4:30', 'YYYY-MM-DD');
-
-      this.userService.createUser(
-        formValue.username,
-        formValue.password,
-        formValue.fullname,
-        formValue.phone,
-        formValue.birthDate.formatted,
-        formValue.email,
-        formValue.team
-      ).then(value => {
-        this.isLoading = false;
-      }).catch(reason => {
-        this.isLoading = false;
-        console.debug(reason);
-        this.handleCreateError(reason.Data);
-      })
-    }
-  }
-
-  resetForm() {
+    this.setErrorsNull();
     const formValue = this.signupForm.value;
-
+    this.isLoading = true;
+    let birthdate = formValue.birthDate ? formValue.birthDate.formatted : undefined;
+    this.userService.createUser(
+      formValue.username,
+      formValue.password,
+      formValue.fullname,
+      formValue.phone,
+      birthdate,
+      formValue.email,
+      formValue.team
+    ).then(value => {
+      this.isLoading = false;
+    }).catch(reason => {
+      this.isLoading = false;
+      this.handleCreateError(reason.Data);
+    })
   }
 
-  setDate(): void {
-    // Set today date using the patchValue function
-    let date = new Date();
-    this.signupForm.patchValue({
-      myDate: {
-        date: {
-          year: date.getFullYear(),
-          month: date.getMonth() + 1,
-          day: date.getDate()
-        }
-      }
-    });
-  }
-
-  clearDate(): void {
-    // Clear the date using the patchValue function
-    this.signupForm.patchValue({myDate: null});
+  setErrorsNull(): void {
+    this.errors = {
+      username: '',
+      password: '',
+      fullname: '',
+      email: '',
+      phone: '',
+      birthdate: '',
+      team: '',
+      avatar: ''
+    };
   }
 
   handleCreateError(errors: any[]) {
     for (let error of errors) {
       const fieldName = error.key;
       const errorMessage = error.message;
-      console.debug('handleCreateUserError', fieldName, errorMessage);
+      switch (fieldName) {
+        case 'Username':
+          this.errors.username = errorMessage;
+          break;
+        case 'Password':
+          this.errors.password = errorMessage;
+          break;
+        case 'Name':
+          this.errors.fullname = errorMessage;
+          break;
+        case 'Phone':
+          this.errors.phone = errorMessage;
+          break;
+        case 'Birthdate':
+          this.errors.birthdate = errorMessage;
+          break;
+        case 'Email':
+          this.errors.email = errorMessage;
+          break;
+        case 'Team':
+          this.errors.team = errorMessage;
+          break;
+
+      }
     }
   }
-
-  onDateChanged(event: IMyDateModel) {
-    console.debug('onDateChanged', event.date);
-  }
-
 }
