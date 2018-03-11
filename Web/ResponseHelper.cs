@@ -27,6 +27,15 @@ namespace Web
             };
         }
         
+        public static JObject GetResponse(bool isSuccess = true)
+        {
+            return new JObject
+            {
+                ["IsSuccess"] = isSuccess,
+                ["Data"] = ""
+            };
+        }
+        
 
         public static JObject GetExceptionResponse(ModelStateDictionary modelStates)
         {

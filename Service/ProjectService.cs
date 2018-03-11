@@ -129,7 +129,8 @@ namespace Service
                 ["createdTime"] = project.CreatedTime,
                 ["createdBy"] = userService.ParseToJson(creator),
                 ["startDate"] = project.StartDate,
-                ["changedTime"] = project.ChangedTime
+                ["changedTime"] = project.ChangedTime,
+                ["status"] = project.Status
             };
             if (project.ChangedBy.HasValue)
             {
