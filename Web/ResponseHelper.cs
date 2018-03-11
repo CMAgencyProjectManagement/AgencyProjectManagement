@@ -27,11 +27,23 @@ namespace Web
             };
         }
         
+        public static JObject GetResponse(bool isSuccess = true)
+        {
+            return new JObject
+            {
+                ["IsSuccess"] = isSuccess,
+                ["Data"] = ""
+            };
+        }
+        
 
         public static JObject GetExceptionResponse(ModelStateDictionary modelStates)
         {
             JArray errors = new JArray();
-
+            var errorList = modelStates.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+            );
             foreach (KeyValuePair<string,ModelState> state in modelStates)
             {
                 var key = state.Key.Split('.').Last();
