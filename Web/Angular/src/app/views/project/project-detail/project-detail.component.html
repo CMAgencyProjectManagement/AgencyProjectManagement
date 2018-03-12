@@ -67,63 +67,27 @@
     </div>
 </div>
 <div class="card">
-        <div class="card-header">
-            <strong>Tasks</strong>
-        </div>
-        <div class="card-body">
-            <div class="row">
-            <div class="col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        To do
-                    </div>
-                    <div class="card-body">
-                        <div class="card task-card">
-                            <div class="card-body">
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    <div class="card-header">
+        <strong>Tasks</strong>
+    </div>
+    <div class="card-body" *ngIf="foundProject">
+        <div class="row">
+            <div class="col-sm-6 col-md-4" *ngFor="let lists of foundProject.lists;let i = index">
+                <ng-container>
+                    <div class="card">
+                        <div class="card-header">
+                            {{lists.Name}}
+                        </div>
+                        <div class="card-body" *ngIf="lists.tasks">
+                            <div class="card task-card" *ngFor="let tasks of lists.tasks">
+                                <div class="card-body">
+                                    {{tasks.Name}}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!--/.col-->
-            <div class="col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        To do
-                    </div>
-                    <div class="card-body">
-                        <div class="card task-card">
-                            <div class="card-body">
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/.col-->
-            <div class="col-sm-6 col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        To do
-                    </div>
-                    <div class="card-body">
-                        <div class="card task-card">
-                            <div class="card-body">
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                                aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-                                suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </ng-container>
             </div>
         </div>
-        </div>
-        <!--/.col-->
+    </div>
 </div>
-<!--/.row-->

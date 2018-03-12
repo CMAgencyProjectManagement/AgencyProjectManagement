@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ProjectService} from '../../../services/project.service';
-import {Project} from '../../../interfaces/project';
-import {ModalDirective} from 'ngx-bootstrap/modal';
-import {Router} from '@angular/router';
-import {Cursor, StoreService} from '../../../services/tree.service';
-import {Pager} from '../../../interfaces/pager';
-import {PagerService} from '../../../services/pager.service';
+import { Component, OnInit } from '@angular/core';
+import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../interfaces/project';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
+import { Cursor, StoreService } from '../../../services/tree.service';
+import { Pager } from '../../../interfaces/pager';
+import { PagerService } from '../../../services/pager.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -102,16 +102,60 @@ export class ProjectManagementComponent implements OnInit {
     return newData;
   }
 
-  search(name: string) {
-    if (name) {
-      const filteredProject = _.filter(this.projects, (project: Project) => {
-          return project.name && _.toLower(project.name).indexOf(_.toLower(name)) >= 0;
+  search(searchValue: string) {
+    //search for name
+    if (searchValue) {
+      // let filteredProject = _.filter(this.projects, (project: Project) => {
+      //   return project.name && _.toLower(project.name).indexOf(_.toLower(searchValue)) >= 0;
+      // }
+      // );
+      let filteredProject = [];
+      for (let i = 0; i < this.projects.length; i++) {
+        if (_.toLower(this.projects[i].name).indexOf(_.toLower(searchValue)) >= 0) {
+          filteredProject.push(this.projects[i]);
+          continue;
         }
-      );
-      this.pager = {} as Pager;
-      this.setPage(1, filteredProject);
-    } else {
-      this.setPage(1);
+        if (_.toLower(this.projects[i].description).indexOf(_.toLower(searchValue)) >= 0) {
+          filteredProject.push(this.projects[i]);
+          continue;
+        }
+        let temp = searchValue.split('/');
+        if (temp.length == 3) {
+          searchValue = temp[2] + "-" + temp[1] + "-" + temp[0];
+        } else if (temp.length == 2) {
+          searchValue = temp[1] + "-" + temp[0];
+        } else {
+          searchValue = temp[0];
+        }
+        if(this.projects[i].deadline){
+          if((this.projects[i].deadline).indexOf(searchValue)>=0){
+            filteredProject.push(this.projects[i]);
+            continue;
+          }
+        }
+        if(this.projects[i].startDate){
+          if((this.projects[i].startDate).indexOf(searchValue)>=0){
+            filteredProject.push(this.projects[i]);
+            continue;
+          }
+        }
+        if(this.projects[i].createdTime){
+          if((this.projects[i].createdTime).indexOf(searchValue)>=0){
+            filteredProject.push(this.projects[i]);
+            continue;
+          }
+        }
+      }
+
+
+      if (filteredProject.length != 0) {
+        this.pager = {} as Pager;
+        this.setPage(1, filteredProject);
+        return;
+      }
+    }
+    else {
+      this.setPage(1, this.projects);
     }
 
   }
