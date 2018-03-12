@@ -13,7 +13,9 @@ const serverPath = {
   closeProject: '/api/project/close',
   // Team
   allTeam: '/api/team/all',
-  deleteTeam: '/api/team'
+  deleteTeam: '/api/team',
+  // File
+  uploadAvatar: userId => `/api/file/user/${userId}/avatar`
 };
 
 export {

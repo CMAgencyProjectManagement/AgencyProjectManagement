@@ -50,9 +50,13 @@
           </div>
           <div class="form-group row">
             <label class="col-4 col-form-label text-right" for="email-input">Date of Birth</label>
-            <my-date-picker class="col-8" [options]="myDatePickerOptions"
-                            formControlName="birthDate"
-                            required></my-date-picker>
+            <div class="col-8">
+              <my-date-picker [options]="myDatePickerOptions"
+                              formControlName="birthDate"
+                              required></my-date-picker>
+              <span class="help-block" *ngIf="errors.birthdate">{{errors.birthdate}}</span>
+            </div>
+
           </div>
           <div class="form-group row" *ngIf="teams">
             <label class="col-4 col-form-label text-right">Team</label>
@@ -67,7 +71,7 @@
             <label class="col-4 col-form-label text-right" for="file-input">Avatar</label>
             <div class="col-8">
               <input type="file" id="file-input" name="file-input"
-                     #avatarFile>
+                     (change)="avatarFileChnage($event)">
               <span class="help-block" *ngIf="errors.avatar">{{errors.avatar}}</span>
             </div>
 

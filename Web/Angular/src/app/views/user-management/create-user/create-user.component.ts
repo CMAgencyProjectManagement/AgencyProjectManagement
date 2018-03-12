@@ -11,11 +11,13 @@ import {
 } from '@angular/forms';
 import {UserService} from '../../../services/user.service';
 import {Cursor, StoreService} from '../../../services/tree.service';
+import {UploadService} from '../../../services/upload.service';
 import {Router} from '@angular/router';
 // import * as moment from 'moment';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {Team} from '../../../interfaces/team';
 import {TeamService} from '../../../services/team.service';
+import {User} from '../../../interfaces/user';
 
 
 @Component({
@@ -54,6 +56,7 @@ export class CreateUserComponent implements OnInit {
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
+              private uploadService: UploadService,
               private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
@@ -93,9 +96,25 @@ export class CreateUserComponent implements OnInit {
       birthdate,
       formValue.email,
       formValue.team
-    ).then(value => {
-      this.isLoading = false;
+    ).then((value: User) => {
+      if (formValue.avatar) {
+        this.uploadAvatar(formValue.avatar.file, value.id)
+      } else {
+        this.isLoading = false;
+        this.setErrorsNull();
+        // show some form of success message here
+      }
     }).catch(reason => {
+      this.isLoading = false;
+      this.handleCreateError(reason.Data);
+    })
+  }
+
+  uploadAvatar(file, userId) {
+    this.uploadService.uploadAvatarFile(file, userId)
+      .then(value => {
+        this.isLoading = false;
+      }).catch(reason => {
       this.isLoading = false;
       this.handleCreateError(reason.Data);
     })
@@ -114,33 +133,44 @@ export class CreateUserComponent implements OnInit {
     };
   }
 
-  handleCreateError(errors: any[]) {
-    for (let error of errors) {
-      const fieldName = error.key;
-      const errorMessage = error.message;
-      switch (fieldName) {
-        case 'Username':
-          this.errors.username = errorMessage;
-          break;
-        case 'Password':
-          this.errors.password = errorMessage;
-          break;
-        case 'Name':
-          this.errors.fullname = errorMessage;
-          break;
-        case 'Phone':
-          this.errors.phone = errorMessage;
-          break;
-        case 'Birthdate':
-          this.errors.birthdate = errorMessage;
-          break;
-        case 'Email':
-          this.errors.email = errorMessage;
-          break;
-        case 'Team':
-          this.errors.team = errorMessage;
-          break;
+  avatarFileChnage(fileInput: any) {
+    let file = fileInput.target.files[0];
+    let fileName = file.name;
+    this.signupForm.controls['avatar'].setValue({file: file, fileName: fileName});
+  }
 
+  handleCreateError(errors: any[]) {
+    if (errors) {
+      for (let error of errors) {
+        const fieldName = error.key;
+        const errorMessage = error.message;
+        switch (fieldName) {
+          case 'Username':
+            this.errors.username = errorMessage;
+            break;
+          case 'Password':
+            this.errors.password = errorMessage;
+            break;
+          case 'Name':
+            this.errors.fullname = errorMessage;
+            break;
+          case 'Phone':
+            this.errors.phone = errorMessage;
+            break;
+          case 'Birthdate':
+            this.errors.birthdate = errorMessage;
+            break;
+          case 'Email':
+            this.errors.email = errorMessage;
+            break;
+          case 'Team':
+            this.errors.team = errorMessage;
+            break;
+          case 'Avatar':
+            this.errors.avatar = errorMessage;
+            break;
+
+        }
       }
     }
   }

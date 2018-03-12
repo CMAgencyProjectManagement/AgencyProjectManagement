@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -34,6 +35,13 @@ namespace Web.Controllers
 
                 if (avatarFile != null)
                 {
+                    string[] supportedImageFileTypes = AgencyConfig.supportedImageTypes;
+                    if (!supportedImageFileTypes.Contains(avatarFile.ContentType))
+                    {
+                        return Content(HttpStatusCode.BadGateway,
+                            ResponseHelper.GetExceptionResponse("Not supported image file type"));
+                    }
+                    
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         UserService userService = new UserService(db);
