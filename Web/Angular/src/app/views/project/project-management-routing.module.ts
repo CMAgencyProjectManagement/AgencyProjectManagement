@@ -4,6 +4,7 @@ import { ProjectManagementComponent } from './view/project-management.component'
 import { ProjectSchedulingComponent } from './project-scheduling/project-scheduling.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { ProjectUpdateComponent} from './project-update/project-update.component'
 let projectID: number;
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
     path: 'detail',
     component: ProjectDetailComponent,
     data: {
-      title: 'Update project'
+      title: 'Detail project'
     }
   },
   {
@@ -34,6 +35,13 @@ const routes: Routes = [
       title: 'Create project'
     }
   },
+  {
+    path: 'update',
+    component: ProjectUpdateComponent,
+    data:{
+      title: 'Update project'
+    }
+  }
 
 ];
 

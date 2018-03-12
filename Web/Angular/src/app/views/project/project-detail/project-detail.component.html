@@ -30,12 +30,17 @@
                         <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
                     <!--</div>-->
                 </form>
-                <button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;">Update</button>
-                <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;">Close</button>
+                <button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;
+                background-color: white;
+                border-color: black;">Update</button>
+                <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;
+                background-color: white;
+                border-color: black;">Close</button>
                 <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-danger" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
+                        <div class="modal-content" style="border-color: black;">
+                            <div class="modal-header" style="color: black;
+                            background-color: white;">
                                 <h4 class="modal-title">Confirmation message!</h4>
                                 <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -45,8 +50,12 @@
                                 <p>Are you sure to close this project?</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">No</button>
-                                <button type="button" class="btn btn-danger" (click)="handleClose(foundProject.id)">Yes</button>
+                                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
+                                background-color: white;
+                                border-color: black;">No</button>
+                                <button type="button" class="btn btn-danger" (click)="handleClose(foundProject.id)" style="color: black;
+                                background-color: white;
+                                border-color: black;">Yes</button>
                             </div>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { MyDatePickerModule, MyDatePicker } from 'mydatepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser/src/browser';
+import { ProjectUpdateComponent } from 'app/views/project/project-update/project-update.component';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -27,6 +28,7 @@ import { BrowserModule } from '@angular/platform-browser/src/browser';
     ProjectDetailComponent,
     TruncateTextPipe,
   AddProjectComponent,
+  ProjectUpdateComponent
   ]
 })
 export class ProjectManagementModule {
