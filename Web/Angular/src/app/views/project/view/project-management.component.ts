@@ -61,18 +61,18 @@ export class ProjectManagementComponent implements OnInit {
     }).catch(reason => {
       this.isLoading = false;
       console.debug(reason);
-      this.handleCloseError(reason.Data);
+      // this.handleCloseError(reason.Data);
     })
   }
 
 
-  handleCloseError(errors: any[]) {
-    for (let error of errors) {
-      const fieldName = error.key;
-      const errorMessage = error.message;
-      console.debug('handleCreateProjectError', fieldName, errorMessage);
-    }
-  }
+  // handleCloseError(errors: any[]) {
+  //   for (let error of errors) {
+  //     const fieldName = error.key;
+  //     const errorMessage = error.message;
+  //     console.debug('handleCreateProjectError', fieldName, errorMessage);
+  //   }
+  // }
 
   handleViewProject(projectID: number) {
     console.debug('Here!!')
