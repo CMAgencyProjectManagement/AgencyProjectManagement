@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map'
 @Component({
   // tslint:disable-next-line
   selector: 'body',
-  template: '<h1>{{title | async}}</h1> <router-outlet></router-outlet>'
+  template: '<title>{{title | async}}</title> <router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
 
