@@ -74,6 +74,7 @@ import {TeamService} from './services/team.service';
 import {TaskService} from './services/task.service';
 import {DependencyService} from './services/dependency.service';
 import {PagerService} from './services/pager.service';
+import {UploadService} from './services/upload.service';
 
 const SERVICES = [
   AlwaysAuthGuard,
@@ -85,7 +86,8 @@ const SERVICES = [
   TeamService,
   TaskService,
   DependencyService,
-  PagerService
+  PagerService,
+  UploadService
 ];
 
 // Import 3rd party components
