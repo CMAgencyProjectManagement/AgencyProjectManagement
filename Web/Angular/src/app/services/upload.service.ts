@@ -15,11 +15,10 @@ export class UploadService {
 
   public uploadAvatarFile(file, userId): Promise<any> {
     return new Promise((resolve, reject) => {
-      request.post(serverPath.uploadAvatar(userId))
+      request.put(serverPath.uploadAvatar(userId))
         .set('token', this.tokenCursor.get())
         .field('id', userId)
         .attach('avatar', file)
-        .type('form')
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {

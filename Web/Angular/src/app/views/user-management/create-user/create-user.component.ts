@@ -14,7 +14,7 @@ import {Cursor, StoreService} from '../../../services/tree.service';
 import {UploadService} from '../../../services/upload.service';
 import {Router} from '@angular/router';
 // import * as moment from 'moment';
-import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
+import {IMyDpOptions} from 'mydatepicker';
 import {Team} from '../../../interfaces/team';
 import {TeamService} from '../../../services/team.service';
 import {User} from '../../../interfaces/user';
@@ -96,9 +96,9 @@ export class CreateUserComponent implements OnInit {
       birthdate,
       formValue.email,
       formValue.team
-    ).then((value: User) => {
+    ).then((value: any) => {
       if (formValue.avatar) {
-        this.uploadAvatar(formValue.avatar.file, value.id)
+        this.uploadAvatar(formValue.avatar, value.id)
       } else {
         this.isLoading = false;
         this.setErrorsNull();
@@ -135,8 +135,7 @@ export class CreateUserComponent implements OnInit {
 
   avatarFileChnage(fileInput: any) {
     let file = fileInput.target.files[0];
-    let fileName = file.name;
-    this.signupForm.controls['avatar'].setValue({file: file, fileName: fileName});
+    this.signupForm.controls['avatar'].setValue(file);
   }
 
   handleCreateError(errors: any[]) {

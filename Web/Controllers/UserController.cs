@@ -126,7 +126,7 @@ namespace Web.Controllers
                             createUserModel.Email,
                             createUserModel.Username,
                             createUserModel.Password,
-                            createUserModel.Team
+                            createUserModel.Team.Value
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(newUser)));
                     }

@@ -26,6 +26,6 @@ namespace Web.ViewModels
         [MaxLength(255)]
         public string Email { get; set; }
         [Required(ErrorMessage = "Team is required")]
-        public int Team { get; set; }
+        public int? Team { get; set; }
     }
 }    

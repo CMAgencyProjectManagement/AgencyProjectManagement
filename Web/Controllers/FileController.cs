@@ -36,7 +36,8 @@ namespace Web.Controllers
                 if (avatarFile != null)
                 {
                     string[] supportedImageFileTypes = AgencyConfig.supportedImageTypes;
-                    if (!supportedImageFileTypes.Contains(avatarFile.ContentType))
+                    // image/gif
+                    if (!supportedImageFileTypes.Contains(avatarFile.ContentType.Split('/').Last()))
                     {
                         return Content(HttpStatusCode.BadGateway,
                             ResponseHelper.GetExceptionResponse("Not supported image file type"));

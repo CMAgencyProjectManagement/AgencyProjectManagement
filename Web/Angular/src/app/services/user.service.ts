@@ -146,9 +146,9 @@ export class UserService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
           } else {
-            reject(content.data);
+            reject(content.Data);
           }
         })
         .catch(reason => reject(reason.response.body));
