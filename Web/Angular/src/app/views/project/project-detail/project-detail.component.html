@@ -1,93 +1,115 @@
 <title>Project Detail</title>
 <div class="card">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Projects Detail</strong>
-                </div>
-                <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
-                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                        <div style="font-size: 30px">
-                            Project Name: {{foundProject.name}}
-                        </div>
-                        <div>
-                            Description:
-                            <textarea id="textarea-input" name="textarea-input" rows="10" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea>
-                        </div>
-                        <div>
-                            Created Time: {{foundProject.createdTime | date:'d/M/y'}}
-                        </div>
-                        <div>
-                            Start Date: {{foundProject.startDate | date:'d/M/y'}}
-                        </div>
-                        <div>
-                            Deadline: {{foundProject.deadline | date:'d/M/y'}}
-                        </div>
-                        <!--<div class="form-group row" >-->
-                        <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
-                        <!--</div>-->
-                        <!--<div class="form-group row">-->
-                        <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
-                        <!--</div>-->
-                    </form>
-                    <button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;
-                background-color: white;
-                border-color: black;">Update</button>
-                    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;
-                background-color: white;
-                border-color: black;">Close</button>
-                    <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-danger" role="document">
-                            <div class="modal-content" style="border-color: black;">
-                                <div class="modal-header" style="color: black;
-                            background-color: white;">
-                                    <h4 class="modal-title">Confirmation message!</h4>
-                                    <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Are you sure to close this project?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
-                                background-color: white;
-                                border-color: black;">No</button>
-                                    <button type="button" class="btn btn-danger" (click)="handleClose(foundProject.id)" style="color: black;
-                                background-color: white;
-                                border-color: black;">Yes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Projects Detail</strong>
         </div>
+        <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
+          <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <div style="font-size: 30px">
+              Project Name: {{foundProject.name}}
+            </div>
+            <div>
+              Description:
+              <textarea id="textarea-input" name="textarea-input" rows="10" class="form-control" style="font-size:20px"
+                        disabled="true">{{foundProject.description}}</textarea>
+            </div>
+            <div>
+              Created Time: {{foundProject.createdTime | date:'d/M/y'}}
+            </div>
+            <div>
+              Start Date: {{foundProject.startDate | date:'d/M/y'}}
+            </div>
+            <div>
+              Deadline: {{foundProject.deadline | date:'d/M/y'}}
+            </div>
+            <!--<div class="form-group row" >-->
+            <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
+            <!--</div>-->
+            <!--<div class="form-group row">-->
+            <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
+            <!--</div>-->
+          </form>
+          <div class="row">
+            <div class="col-5 text-right">
+              <button type="button" class="btn btn-primary btn-lg" style="color: black;
+                background-color: white;
+                border-color: black;">Update
+              </button>
+            </div>
+            <div class="col-5 offset-2 text-left">
+              <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()"
+                      style="color: black;
+                background-color: white;
+                border-color: black;">Close
+              </button>
+            </div>
+          </div>
+          <!--<button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;-->
+          <!--background-color: white;-->
+          <!--border-color: black;">Update</button>-->
+          <!--<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;-->
+          <!--background-color: white;-->
+          <!--border-color: black;">Close</button>-->
+          <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+               aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-danger" role="document">
+              <div class="modal-content" style="border-color: black;">
+                <div class="modal-header" style="color: black;
+                            background-color: white;">
+                  <h4 class="modal-title">Confirmation message!</h4>
+                  <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure to close this project?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
+                                background-color: white;
+                                border-color: black;">No
+                  </button>
+                  <button type="button" class="btn btn-danger" (click)="handleClose(foundProject.id)" style="color: black;
+                                background-color: white;
+                                border-color: black;">Yes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <div class="card">
-    <div class="card-header">
-        <strong>Tasks</strong>
-    </div>
-    <div class="card-body" *ngIf="foundProject">
-        <div class="row">
-            <div class="col-sm-6 col-md-4" *ngFor="let lists of foundProject.lists;let i = index">
-                <ng-container>
-                    <div class="card">
-                        <div class="card-header">
-                            {{lists.Name}}
-                        </div>
-                        <div class="card-body" *ngIf="lists.tasks">
-                            <div class="card task-card" *ngFor="let tasks of lists.tasks">
-                                <div class="card-body">
-                                    {{tasks.Name}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
+  <div class="card-header">
+    <strong>Tasks</strong>
+  </div>
+  <div class="card-body" *ngIf="foundProject">
+    <div class="row">
+      <div class="col-sm-6 col-md-4" *ngFor="let lists of foundProject.lists;let i = index">
+        <ng-container>
+          <div class="card">
+            <div class="card-header">
+              {{lists.Name}}
             </div>
-        </div>
+            <div class="card-body" *ngIf="lists.tasks">
+              <div class="card task-card" *ngFor="let task of lists.tasks">
+                <div class="card-body">
+                  {{task.Name}}
+                </div>
+                <div class="card-footer">
+                  <span class="badge badge-success float-right">Executing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
     </div>
+  </div>
 </div>

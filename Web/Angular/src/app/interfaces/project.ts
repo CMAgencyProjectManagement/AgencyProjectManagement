@@ -1,4 +1,5 @@
 import {User} from './user';
+import {List} from './list';
 
 export interface Project {
   id: number,
@@ -10,5 +11,6 @@ export interface Project {
   startDate: string,
   changedBy: User,
   changedTime: string,
-  status: number
+  status: number,
+  lists: List[]
 }
