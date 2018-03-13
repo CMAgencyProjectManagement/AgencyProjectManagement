@@ -22,6 +22,7 @@ namespace Web.ViewModels
         public string Phone { get; set; }
         [AgencyDateValidation]
         public string Birthdate { get; set; }
+        [Required]
         [EmailAddress]
         [MaxLength(255)]
         public string Email { get; set; }
