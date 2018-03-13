@@ -146,16 +146,18 @@ export class ProjectManagementComponent implements OnInit {
           }
         }
       }
-
-
       if (filteredProject.length != 0) {
+        this.pager = {} as Pager;
+        this.setPage(1, filteredProject);
+        return;
+      } else{
         this.pager = {} as Pager;
         this.setPage(1, filteredProject);
         return;
       }
     }
     else {
-      this.setPage(1, this.projects);
+      this.setPage(1,this.projects);
     }
 
   }
