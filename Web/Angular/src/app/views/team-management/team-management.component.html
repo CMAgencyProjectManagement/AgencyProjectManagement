@@ -28,7 +28,7 @@
               <tr *ngFor="let team of teams;let i = index">
                 <th scope="row">{{i+1}}</th>
                 <td>
-                    <a href="#/team/detail">{{team.name}}</a>
+                    <a href="#/team/detail?teamid={{team.id}}">{{team.name}}</a>
                     <!-- {{team.name}} -->
                 </td>
                 <td>{{team.manager.username}}</td>
