@@ -19,11 +19,12 @@ export class ViewUserComponent implements OnInit {
   pager: Pager = {} as Pager;
   // paged && search items
   pagedUsers: User[];
+  isPageLoading: boolean;
 
   constructor(
     private userService: UserService,
-    private pagerService: PagerService
-      ) {
+    private pagerService: PagerService) {
+    this.isPageLoading = false;
   }
 
   ngOnInit() {
@@ -50,10 +51,41 @@ export class ViewUserComponent implements OnInit {
   }
 
   // search by username
-  search(name: string) {
-    if (name) {
+  search(searchStr: string) {
+    if (searchStr) {
       const filteredUser = _.filter(this.users, (user: User) => {
-          return user.name && _.toLower(user.name).indexOf(_.toLower(name)) >= 0;
+          let result;
+          result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
+
+          if (!result) {
+            result = user.username && _.toLower(user.username).indexOf(_.toLower(searchStr)) >= 0;
+          }
+
+          if (!result) {
+            result = user.birthDate && _.toLower(user.birthDate).indexOf(_.toLower(searchStr)) >= 0;
+          }
+
+          if (!result) {
+            result = user.team && _.toLower(user.team.name).indexOf(_.toLower(searchStr)) >= 0;
+          }
+
+          if (!result) {
+            if (user.isManager) {
+              result = _.toLower('Manager').indexOf(_.toLower(searchStr)) >= 0
+            } else {
+              result = _.toLower('Staff').indexOf(_.toLower(searchStr)) >= 0
+            }
+          }
+
+          if (!result) {
+            if (user.isActive) {
+              result = _.toLower('Active').indexOf(_.toLower(searchStr)) >= 0;
+            } else {
+              result = _.toLower('Banned').indexOf(_.toLower(searchStr)) >= 0;
+            }
+          }
+
+          return result;
         }
       );
       this.pager = {} as Pager;

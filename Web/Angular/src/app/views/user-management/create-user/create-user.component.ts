@@ -133,7 +133,7 @@ export class CreateUserComponent implements OnInit {
     };
   }
 
-  avatarFileChnage(fileInput: any) {
+  avatarFileChange(fileInput: any) {
     let file = fileInput.target.files[0];
     this.signupForm.controls['avatar'].setValue(file);
   }

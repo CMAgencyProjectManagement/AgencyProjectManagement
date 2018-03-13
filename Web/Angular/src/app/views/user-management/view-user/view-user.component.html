@@ -1,70 +1,95 @@
-<div class="input-group">
-  <span class="input-group-btn">
-    <button class="btn btn-primary" type="button"
-            (click)="search(searchUsername.value)">
-      <i class="fa fa-search"></i> Search
-    </button>
-  </span>
-  <input class="form-control" placeholder="Name" type="text" (input)="search(searchUsername.value)"
-         #searchUsername>
-</div>
-<br/>
-<table class="table table-bordered">
-  <thead>
-  <tr>
-    <th>No.</th>
-    <th>Avatar</th>
-    <th>Full Name</th>
-    <th>Username</th>
-    <th>Birthdate</th>
-    <th>Team</th>
-    <th>Role</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of pagedUsers;let i = index">
-    <th scope="row">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>
-    <td>
-      <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
-      <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
-    </td>
-    <td>
-      <p *ngIf="user.name">{{user.name}}</p>
-      <p *ngIf="!user.name">N/A</p>
-    </td>
-    <td>
-      <a href="#/account/update?id={{user.id}}">{{user.username}}</a>
-    </td>
-    <td>
-      <p *ngIf="user.birthDate">{{user.birthDate}}</p>
-      <p *ngIf="!user.birthDate">N/A</p>
-    </td>
-    <td>
-      <p>{{user.team.name}}</p>
-    </td>
-    <td>
-      <strong><p *ngIf="user.isManager" >Manager</p></strong>
-      <p *ngIf="!user.isManager">Staff</p>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>View all accounts</strong>
+      </div>
+      <app-spinner *ngIf="isPageLoading"></app-spinner>
+      <div class="card-body animated fadeIn" *ngIf=!isPageLoading>
+        <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button"
+                  (click)="search(searchUsername.value)">
+            <i class="fa fa-search"></i> Search
+          </button>
+        </span>
+          <input class="form-control" type="text"
+                 (input)="search(searchUsername.value)"
+                 #searchUsername>
+        </div>
+        <br/>
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>No.</th>
+            <th>Avatar</th>
+            <th>Full Name</th>
+            <th>Username</th>
+            <th>Birthdate</th>
+            <th>Team</th>
+            <th>Role</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of pagedUsers;let i = index">
+            <th scope="row">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>
+            <td>
+              <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
+              <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
+            </td>
+            <td>
+              <p *ngIf="user.name">{{user.name}}</p>
+              <p *ngIf="!user.name">N/A</p>
+            </td>
+            <td>
+              <a href="#/account/update?id={{user.id}}">{{user.username}}</a>
+            </td>
+            <td>
+              <p *ngIf="user.birthDate">{{user.birthDate}}</p>
+              <p *ngIf="!user.birthDate">N/A</p>
+            </td>
+            <td>
+              <p>{{user.team.name}}</p>
+            </td>
+            <td>
+              <strong><p *ngIf="user.isManager">Manager</p></strong>
+              <p *ngIf="!user.isManager">Staff</p>
+            </td>
+            <td>
+              <span class="badge badge-success"
+                    *ngIf="user.isActive">
+                Active
+              </span>
+              <span class="badge badge-danger"
+                    *ngIf="!user.isActive">
+                Banned
+              </span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-<!-- pager -->
-<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-  <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-    <a class="page-link fake-link" (click)="setPage(1)">First</a>
-  </li>
-  <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-    <a class="page-link fake-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
-  </li>
-  <li *ngFor="let page of pager.pages" [ngClass]="[pager.currentPage === page ? 'active' : '', 'page-item']">
-    <a class="page-link fake-link" (click)="setPage(page)">{{page}}</a>
-  </li>
-  <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-    <a class="page-link fake-link" (click)="setPage(pager.currentPage + 1)">Next</a>
-  </li>
-  <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-    <a class="page-link fake-link" (click)="setPage(pager.totalPages)">Last</a>
-  </li>
-</ul>
+        <!-- pager -->
+        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(1)">First</a>
+          </li>
+          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="[pager.currentPage === page ? 'active' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+          </li>
+          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
+            <a class="page-link fake-link" (click)="setPage(pager.totalPages)">Last</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
