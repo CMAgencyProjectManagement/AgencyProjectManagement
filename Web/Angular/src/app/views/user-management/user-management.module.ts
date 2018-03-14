@@ -9,6 +9,7 @@ import {LaddaModule} from 'angular2-ladda';
 import {MyDatePickerModule} from 'mydatepicker';
 import {DetailUserComponent} from './detail-user/detail-user.component';
 import {SpinnerComponent} from '../../components';
+import {SortIconComponent} from '../../components';
 
 @NgModule({
   imports: [
@@ -21,7 +22,14 @@ import {SpinnerComponent} from '../../components';
     FormsModule,
     MyDatePickerModule,
   ],
-  declarations: [CreateUserComponent, ViewUserComponent, UpdateUserComponent, DetailUserComponent, SpinnerComponent]
+  declarations: [
+    CreateUserComponent,
+    ViewUserComponent,
+    UpdateUserComponent,
+    DetailUserComponent,
+    SpinnerComponent,
+    SortIconComponent
+  ]
 })
 export class UserManagementModule {
 }

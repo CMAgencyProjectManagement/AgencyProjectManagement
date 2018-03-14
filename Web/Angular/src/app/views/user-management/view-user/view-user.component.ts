@@ -3,7 +3,6 @@ import {UserService} from '../../../services/user.service';
 import {PagerService} from '../../../services/pager.service';
 import {User} from 'app/interfaces/user';
 import {Pager} from '../../../interfaces/pager';
-
 import * as _ from 'lodash';
 
 @Component({
@@ -24,7 +23,7 @@ export class ViewUserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private pagerService: PagerService) {
-    this.isPageLoading = false;
+    this.isPageLoading = true;
   }
 
   ngOnInit() {
@@ -32,6 +31,7 @@ export class ViewUserComponent implements OnInit {
       .then(value => {
           this.users = value;
           this.setPage(1);
+          this.isPageLoading = false;
         }
       )
   }
@@ -48,6 +48,14 @@ export class ViewUserComponent implements OnInit {
 
     this.pager = this.pagerService.getPager(users.length, page, 7);
     this.pagedUsers = users.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+  sort(attr: string) {
+    // switch (attr) {
+    //   case 'No.': {
+    //     this.users = _.sortBy(users);
+    //   }
+    // }
   }
 
   // search by username

@@ -7,12 +7,12 @@
       <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div class="card-body animated fadeIn" *ngIf=!isPageLoading>
         <div class="input-group">
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="button"
-                  (click)="search(searchUsername.value)">
-            <i class="fa fa-search"></i> Search
-          </button>
-        </span>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button"
+                    (click)="search(searchUsername.value)">
+              <i class="fa fa-search"></i> Search
+            </button>
+          </span>
           <input class="form-control" type="text"
                  (input)="search(searchUsername.value)"
                  #searchUsername>
@@ -21,7 +21,9 @@
         <table class="table table-bordered">
           <thead>
           <tr>
-            <th>No.</th>
+            <th>
+              <app-sort-icon [isDesc]="true" (click)="sort('No.')">No.</app-sort-icon>
+            </th>
             <th>Avatar</th>
             <th>Full Name</th>
             <th>Username</th>
