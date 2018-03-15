@@ -45,59 +45,73 @@ export class ViewUserComponent implements OnInit {
       users = this.users;
     }
 
-
     this.pager = this.pagerService.getPager(users.length, page, 7);
     this.pagedUsers = users.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
   sort(attr: string) {
-    // switch (attr) {
-    //   case 'No.': {
-    //     this.users = _.sortBy(users);
-    //   }
-    // }
+    this.userService.getAllUser()
+      .then((value) => {
+        let users = value as User[];
+        switch (attr) {
+          case 'No.': {
+            this.users = users.reverse();
+            this.setPage(1);
+            break;
+          }
+          case 'username': {
+            break;
+          }
+        }
+      });
+
   }
 
   // search by username
   search(searchStr: string) {
     if (searchStr) {
-      const filteredUser = _.filter(this.users, (user: User) => {
-          let result;
-          result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
+      this.isPageLoading = true;
+      this.userService.getAllUser().then(users => {
+        const filteredUser = _.filter(this.users, (user: User) => {
+            let result;
+            result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
 
-          if (!result) {
-            result = user.username && _.toLower(user.username).indexOf(_.toLower(searchStr)) >= 0;
-          }
-
-          if (!result) {
-            result = user.birthDate && _.toLower(user.birthDate).indexOf(_.toLower(searchStr)) >= 0;
-          }
-
-          if (!result) {
-            result = user.team && _.toLower(user.team.name).indexOf(_.toLower(searchStr)) >= 0;
-          }
-
-          if (!result) {
-            if (user.isManager) {
-              result = _.toLower('Manager').indexOf(_.toLower(searchStr)) >= 0
-            } else {
-              result = _.toLower('Staff').indexOf(_.toLower(searchStr)) >= 0
+            if (!result) {
+              result = user.username && _.toLower(user.username).indexOf(_.toLower(searchStr)) >= 0;
             }
-          }
 
-          if (!result) {
-            if (user.isActive) {
-              result = _.toLower('Active').indexOf(_.toLower(searchStr)) >= 0;
-            } else {
-              result = _.toLower('Banned').indexOf(_.toLower(searchStr)) >= 0;
+            if (!result) {
+              result = user.birthDate && _.toLower(user.birthDate).indexOf(_.toLower(searchStr)) >= 0;
             }
-          }
 
-          return result;
-        }
-      );
-      this.pager = {} as Pager;
-      this.setPage(1, filteredUser);
+            if (!result) {
+              result = user.team && _.toLower(user.team.name).indexOf(_.toLower(searchStr)) >= 0;
+            }
+
+            if (!result) {
+              if (user.isManager) {
+                result = _.toLower('Manager').indexOf(_.toLower(searchStr)) >= 0;
+              } else {
+                result = _.toLower('Staff').indexOf(_.toLower(searchStr)) >= 0;
+              }
+            }
+
+            if (!result) {
+              if (user.isActive) {
+                result = _.toLower('Active').indexOf(_.toLower(searchStr)) >= 0;
+              } else {
+                result = _.toLower('Banned').indexOf(_.toLower(searchStr)) >= 0;
+              }
+            }
+
+            return result;
+          }
+        );
+        this.pager = {} as Pager;
+        this.users = filteredUser;
+        this.setPage(1, this.users);
+        this.isPageLoading = false;
+      });
     } else {
       this.setPage(1);
     }
