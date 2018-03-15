@@ -3,7 +3,7 @@ webpackJsonp(["project-management.module"],{
 /***/ "../../../../../src/app/views/project/add-project/add-project.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<title>\r\n    New Project</title>\r\n<div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <div class=\"card\">\r\n            <div class=\"card-header\">\r\n                <strong>New Project</strong>\r\n            </div>\r\n            <div class=\"card-body\">\r\n                <div class=\"card-body\" style=\"font-size:23px\">\r\n                    <div [formGroup]=\"ProjectForm\" class=\"form-horizontal\">\r\n                        <div class=\"form-group row\">\r\n                            <label class=\"col-md-3 col-form-label\" for=\"projectName-input\">Project Name</label>\r\n                            <div class=\"col-md-6\">\r\n                                <input type=\"text\" id=\"projectName-input\" name=\"projectName-input\" class=\"form-control\" formControlName=\"projectName\" placeholder=\"Please enter the project's name\">\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            <label class=\"col-md-3 col-form-label\" for=\"projectDescription-input\">Description</label>\r\n                            <div class=\"col-md-6\">\r\n                                <textarea id=\"projectDescription-input\" name=\"projectDescription-input\" rows=\"5\" class=\"form-control\" formControlName=\"projectDescription\" placeholder=\"About project...\"></textarea>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            <label class=\"col-md-3 col-form-label\" for=\"projectStartDate-input\">Start Date: </label>\r\n                            <div class=\"col-md-6\">\r\n                                <my-date-picker name=\"projectStartDate-input\" [options]=\"myDatePickerOptions\" class=\"form-control-mydatepicker\" formControlName=\"projectStartDate\"></my-date-picker>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"form-group row\">\r\n                            <label class=\"col-md-3 col-form-label\" for=\"projectDeadline-input\">Deadline: </label>\r\n                            <div class=\"col-md-6\">\r\n                                <my-date-picker name=\"projectDeadline-input\" [options]=\"myDatePickerOptions\" class=\"form-control-mydatepicker\" formControlName=\"projectDeadline\"></my-date-picker>\r\n                            </div>\r\n                        </div>\r\n                        <div>\r\n                            <button type=\"button\" class=\"btn btn-success\" data-toggle=\"modal\" style=\"padding:1rem 2.5rem;\r\n                            position: relative;\r\n                            left: 500px;\" (click)=\"successModal.show()\">\r\n                                Add\r\n                            </button>\r\n                            <button type=\"button\" class=\"btn btn-warning\" data-toggle=\"modal\" onclick=\"location.href='#/project'\" style=\"padding:1rem 2.5rem;position: relative;left: 550px\">\r\n                                Cancel\r\n                            </button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div bsModal #successModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n    <div class=\"modal-dialog modal-success\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n                <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                <button type=\"button\" class=\"close\" (click)=\"successModal.hide()\" aria-label=\"Close\">\r\n                    <span aria-hidden=\"true\">&times;</span>\r\n                </button>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n                <p>Are you sure to add a new project?</p>\r\n            </div>\r\n            <div class=\"modal-footer\" style=\"padding: 1rem 2.5rem;\">\r\n                <button type=\"button\" class=\"btn btn-secondary\" (click)=\"successModal.hide()\">No</button>\r\n                <button type=\"button\" class=\"btn btn-success\" (click)=\"handleCreate()\">Yes</button>\r\n            </div>\r\n        </div>\r\n        <!-- /.modal-content -->\r\n    </div>\r\n    <!-- /.modal-dialog -->\r\n</div>\r\n<!-- /.modal -->"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong><h2>New Project</h2></strong>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <div class=\"card-body\" style=\"font-size:23px\">\r\n          <div [formGroup]=\"ProjectForm\" class=\"form-horizontal\">\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\" for=\"projectName-input\">Project Name</label>\r\n              <div class=\"col-md-6\">\r\n                <input type=\"text\" id=\"projectName-input\" name=\"projectName-input\" class=\"form-control\"\r\n                       formControlName=\"projectName\" placeholder=\"Please enter the project's name\">\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\" for=\"projectDescription-input\">Description</label>\r\n              <div class=\"col-md-6\">\r\n                <textarea id=\"projectDescription-input\" name=\"projectDescription-input\" rows=\"5\" class=\"form-control\"\r\n                          formControlName=\"projectDescription\" placeholder=\"About project...\"></textarea>\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\" for=\"projectStartDate-input\">Start Date: </label>\r\n              <div class=\"col-md-6\">\r\n                <my-date-picker name=\"projectStartDate-input\"\r\n                                [options]=\"myDatePickerOptions\" class=\"form-control-mydatepicker\"\r\n                                formControlName=\"projectStartDate\"></my-date-picker>\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\">Deadline: </label>\r\n              <div class=\"col-md-6\">\r\n                <my-date-picker name=\"projectDeadline-input\" [options]=\"myDatePickerOptions\"\r\n                                class=\"form-control-mydatepicker\" formControlName=\"projectDeadline\"></my-date-picker>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-4 text-right\">\r\n                <button type=\"button\" class=\"btn btn-success btn-bw \" data-toggle=\"modal\"\r\n                        (click)=\"successModal.show()\">Add</button>\r\n              </div>\r\n              <div class=\"col-4 offset-1 text-left\">\r\n                <button type=\"button\" class=\"btn btn-success btn-bw\" data-toggle=\"modal\"\r\n                        onclick=\"location.href='#/project'\">Cancel</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div bsModal #successModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\"\r\n     aria-hidden=\"true\">\r\n  <div class=\"modal-dialog modal-success\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\" style=\"color: black;\r\n            background-color: white;\">\r\n        <h4 class=\"modal-title\">Confirmation message!</h4>\r\n        <button type=\"button\" class=\"close\" (click)=\"successModal.hide()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <p>Are you sure to add a new project?</p>\r\n      </div>\r\n      <div class=\"modal-footer\" style=\"padding: 1rem 2.5rem;\">\r\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"successModal.hide()\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black;\">No\r\n        </button>\r\n        <button type=\"button\" class=\"btn btn-success\" (click)=\"handleCreate()\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black;\">Yes\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <!-- /.modal-content -->\r\n  </div>\r\n  <!-- /.modal-dialog -->\r\n</div>\r\n<!-- /.modal -->\r\n"
 
 /***/ }),
 
@@ -15,7 +15,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".btn-bw {\n  padding: 1rem 2.5rem;\n  color: black;\n  background-color: white;\n  border-color: black; }\n", ""]);
 
 // exports
 
@@ -55,10 +55,6 @@ var AddProjectComponent = /** @class */ (function () {
             showInputField: true,
             dateFormat: 'dd/mm/yyyy',
         };
-        // For example initialize to specific date (09.10.2018 - 19.10.2018). It is also possible
-        // to set initial date range value using the selDateRange attribute.
-        // mode {date: {year,month,day}}
-        this.model = { date: { year: 2018, month: 10, day: 9 } };
     }
     AddProjectComponent.prototype.ngOnInit = function () {
         this.ProjectForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
@@ -73,7 +69,7 @@ var AddProjectComponent = /** @class */ (function () {
         if (this.ProjectForm.valid) {
             var formValue = this.ProjectForm.value;
             this.isLoading = true;
-            console.debug("here");
+            console.debug('here');
             this.projectService.createProject(formValue.projectName, formValue.projectDescription, formValue.projectStartDate.formatted, formValue.projectDeadline.formatted).then(function (value) {
                 _this.isLoading = false;
                 _this.router.navigate(['project']);
@@ -111,7 +107,7 @@ var AddProjectComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/project-detail/project-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<title>Project Detail</title>\r\n<div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <div class=\"card\">\r\n            <div class=\"card-header\">\r\n                <strong>Projects Detail</strong>\r\n            </div>\r\n            <div class=\"card-body\" style=\"font-size:23px\" *ngIf=\"foundProject\" [formGroup]=\"viewForm\">\r\n                <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n                    <div class=\"form-group row\" style=\"font-size: 30px\" >\r\n                        Project Name:  {{foundProject.name}}\r\n                    </div>\r\n                    \r\n                    <div>\r\n                        Description:\r\n                        <textarea id=\"textarea-input\" name=\"textarea-input\" rows=\"5\" class=\"form-control\" style=\"font-size:20px\" disabled=\"true\">{{foundProject.description}}</textarea>\r\n                    </div>\r\n                    <div class=\"form-group row\">\r\n                        Created Time: {{foundProject.createdTime | date:'d/M/y'}}\r\n                    </div>\r\n                    <div class=\"form-group row\">\r\n                        Start Date: {{foundProject.startDate | date:'d/M/y'}}\r\n                    </div>\r\n                    <div class=\"form-group row\">\r\n                        Deadline: {{foundProject.deadline | date:'d/M/y'}}\r\n                    </div>\r\n                    <div class=\"form-group row\">\r\n                        Changed By: {{foundProject.changedBy.fullname}}\r\n                    </div>\r\n                    <div class=\"form-group row\">\r\n                        Changed Time: {{foundProject.changedTime | date:'d/M/y'}}\r\n                    </div>\r\n                </form>\r\n                    <button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"margin-left: 600px;\">Update</button>\r\n                    <button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"margin-left: 50px;\">Close</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n    <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n                <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                    <span aria-hidden=\"true\">&times;</span>\r\n                </button>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n                <p>Are you sure to close this project?</p>\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\">No</button>\r\n                <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(project.id)\">Yes</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+module.exports = "<title>Project Detail</title>\n<div class=\"card\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"card\">\n        <div class=\"card-header\">\n          <strong>Projects Detail</strong>\n        </div>\n        <div class=\"card-body\" style=\"font-size:23px\" [formGroup]=\"viewForm\" *ngIf=\"foundProject\">\n          <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\n            <div style=\"font-size: 30px\">\n              Project Name: {{foundProject.name}}\n            </div>\n            <div>\n              Description:\n              <textarea id=\"textarea-input\" name=\"textarea-input\" rows=\"10\" class=\"form-control\" style=\"font-size:20px\"\n                        disabled=\"true\">{{foundProject.description}}</textarea>\n            </div>\n            <div>\n              Created Time: {{foundProject.createdTime | date:'d/M/y'}}\n            </div>\n            <div>\n              Start Date: {{foundProject.startDate | date:'d/M/y'}}\n            </div>\n            <div>\n              Deadline: {{foundProject.deadline | date:'d/M/y'}}\n            </div>\n            <!--<div class=\"form-group row\" >-->\n            <!--Changed By: <input *ngIf=\"foundProject.changedBy\" value=\"{{foundProject.changedBy.fullname}}\"/>-->\n            <!--</div>-->\n            <!--<div class=\"form-group row\">-->\n            <!--Changed Time: <input *ngIf=\"foundProject.changedTime\" value=\"{{foundProject.changedTime | date:'d/M/y'}}\"/>-->\n            <!--</div>-->\n          </form>\n          <div class=\"row\">\n            <div class=\"col-5 text-right\">\n              <button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"color: black;\n                background-color: white;\n                border-color: black;\">Update\n              </button>\n            </div>\n            <div class=\"col-5 offset-2 text-left\">\n              <button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\"\n                      style=\"color: black;\n                background-color: white;\n                border-color: black;\">Close\n              </button>\n            </div>\n          </div>\n          <!--<button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"margin-left: 600px;color: black;-->\n          <!--background-color: white;-->\n          <!--border-color: black;\">Update</button>-->\n          <!--<button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"margin-left: 50px;color: black;-->\n          <!--background-color: white;-->\n          <!--border-color: black;\">Close</button>-->\n          <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\"\n               aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n            <div class=\"modal-dialog modal-danger\" role=\"document\">\n              <div class=\"modal-content\" style=\"border-color: black;\">\n                <div class=\"modal-header\" style=\"color: black;\n                            background-color: white;\">\n                  <h4 class=\"modal-title\">Confirmation message!</h4>\n                  <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\n                    <span aria-hidden=\"true\">&times;</span>\n                  </button>\n                </div>\n                <div class=\"modal-body\">\n                  <p>Are you sure to close this project?</p>\n                </div>\n                <div class=\"modal-footer\">\n                  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\" style=\"color: black;\n                                background-color: white;\n                                border-color: black;\">No\n                  </button>\n                  <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(foundProject.id)\" style=\"color: black;\n                                background-color: white;\n                                border-color: black;\">Yes\n                  </button>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Tasks</strong>\n  </div>\n  <div class=\"card-body\" *ngIf=\"foundProject\">\n    <div class=\"row\">\n      <div class=\"col-sm-6 col-md-4\" *ngFor=\"let lists of foundProject.lists;let i = index\">\n        <ng-container>\n          <div class=\"card\">\n            <div class=\"card-header\">\n              {{lists.Name}}\n            </div>\n            <div class=\"card-body\" *ngIf=\"lists.tasks\">\n              <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\">\n                <div class=\"card-body\">\n                  {{task.Name}}\n                </div>\n                <div class=\"card-footer\">\n                  <span class=\"badge badge-success float-right\">Executing</span>\n                </div>\n              </div>\n            </div>\n          </div>\n        </ng-container>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -123,7 +119,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "button {\n  padding: 1rem 2rem;\n  position: relative; }\n", ""]);
+exports.push([module.i, "button {\n  padding: 1rem 2rem;\n  position: relative; }\n\n.task-card:hover {\n  cursor: pointer;\n  background-color: #f2f2f2; }\n\ntextarea:disabled {\n  background-color: white; }\n", ""]);
 
 // exports
 
@@ -141,6 +137,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -153,9 +150,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectDetailComponent = /** @class */ (function () {
-    function ProjectDetailComponent(projectService) {
+    function ProjectDetailComponent(projectService, router) {
         this.projectService = projectService;
+        this.router = router;
     }
     ProjectDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -193,13 +192,32 @@ var ProjectDetailComponent = /** @class */ (function () {
         var sUsername = sURLVariables[1].split('=');
         return sUsername[1];
     };
+    ProjectDetailComponent.prototype.handleClose = function (projectID) {
+        var _this = this;
+        this.projectService.closeProject(projectID).then(function (value) {
+            _this.isLoading = false;
+            _this.router.navigate(['project']);
+        }).catch(function (reason) {
+            _this.isLoading = false;
+            console.debug(reason);
+            _this.handleCloseError(reason.Data);
+        });
+    };
+    ProjectDetailComponent.prototype.handleCloseError = function (errors) {
+        for (var _i = 0, errors_1 = errors; _i < errors_1.length; _i++) {
+            var error = errors_1[_i];
+            var fieldName = error.key;
+            var errorMessage = error.message;
+            console.debug('handleCreateProjectError', fieldName, errorMessage);
+        }
+    };
     ProjectDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-project-detail',
             template: __webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.scss")],
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]])
     ], ProjectDetailComponent);
     return ProjectDetailComponent;
 }());
@@ -219,12 +237,14 @@ var ProjectDetailComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__ = __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__project_detail_project_detail_component__ = __webpack_require__("../../../../../src/app/views/project/project-detail/project-detail.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__add_project_add_project_component__ = __webpack_require__("../../../../../src/app/views/project/add-project/add-project.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__project_update_project_update_component__ = __webpack_require__("../../../../../src/app/views/project/project-update/project-update.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -251,7 +271,7 @@ var routes = [
         path: 'detail',
         component: __WEBPACK_IMPORTED_MODULE_4__project_detail_project_detail_component__["a" /* ProjectDetailComponent */],
         data: {
-            title: 'Update project'
+            title: 'Detail project'
         }
     },
     {
@@ -261,6 +281,13 @@ var routes = [
             title: 'Create project'
         }
     },
+    {
+        path: 'update',
+        component: __WEBPACK_IMPORTED_MODULE_6__project_update_project_update_component__["a" /* ProjectUpdateComponent */],
+        data: {
+            title: 'Update project'
+        }
+    }
 ];
 var ProjectManagementRoutingModule = /** @class */ (function () {
     function ProjectManagementRoutingModule() {
@@ -295,6 +322,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_views_project_project_update_project_update_component__ = __webpack_require__("../../../../../src/app/views/project/project-update/project-update.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -310,6 +338,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 // Modal Component
+
 
 
 
@@ -333,6 +362,7 @@ var ProjectManagementModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6_app_views_project_project_detail_project_detail_component__["a" /* ProjectDetailComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__directives_pipe_truncateText_pipe__["a" /* TruncateTextPipe */],
                 __WEBPACK_IMPORTED_MODULE_7_app_views_project_add_project_add_project_component__["a" /* AddProjectComponent */],
+                __WEBPACK_IMPORTED_MODULE_11_app_views_project_project_update_project_update_component__["a" /* ProjectUpdateComponent */]
             ]
         })
     ], ProjectManagementModule);
@@ -424,10 +454,98 @@ var ProjectSchedulingComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/views/project/project-update/project-update.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\r\n    <div class=\"col-12\">\r\n        <div class=\"card\">\r\n            <div class=\"card-header\">\r\n                <strong>Project Information</strong>\r\n            </div>\r\n            <div class=\"card-body\">\r\n                <div class=\"form-horizontal col-6\">\r\n                    <div class=\"form-group row\">\r\n                        <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Project Name:</label>\r\n                        <div class=\"col-8\">\r\n                            <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\">\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"form-group row\">\r\n                        <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Project Description:</label>\r\n                        <div class=\"col-8\">\r\n                            <textarea rows=\"3\">\r\n\r\n                        </textarea>\r\n                        </div>\r\n                    </div>\r\n\r\n                    <div class=\"form-actions text-center\">\r\n                        <div class=\"col-12\">\r\n                            <button class=\"btn btn-primary\">\r\n                                Save changes\r\n                            </button>\r\n                            <button class=\"btn btn-secondary\" type=\"button\">Reset</button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/views/project/project-update/project-update.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "textarea {\n  width: 700px;\n  height: 200px; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/views/project/project-update/project-update.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectUpdateComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ProjectUpdateComponent = /** @class */ (function () {
+    function ProjectUpdateComponent(projectService, router, pagerService) {
+        this.projectService = projectService;
+        this.router = router;
+        this.pagerService = pagerService;
+    }
+    ProjectUpdateComponent.prototype.ngOnInit = function () {
+        this.projectID = Number(this.GetURLParameter('projectID'));
+        this.loadProject();
+    };
+    ProjectUpdateComponent.prototype.loadProject = function () {
+        var _this = this;
+        this.projectService.getAllProjects()
+            .then(function (data) {
+            _this.projects = data;
+        })
+            .catch(function (reason) {
+            console.debug('ProjectUpdateComponent', reason);
+        });
+    };
+    ProjectUpdateComponent.prototype.GetURLParameter = function (sParam) {
+        var sPageURL = window.location.href;
+        var sURLVariables = sPageURL.split('?');
+        var sUsername = sURLVariables[1].split('=');
+        return sUsername[1];
+    };
+    ProjectUpdateComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-project-update',
+            template: __webpack_require__("../../../../../src/app/views/project/project-update/project-update.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/views/project/project-update/project-update.component.scss")],
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */], __WEBPACK_IMPORTED_MODULE_2__services_pager_service__["a" /* PagerService */]])
+    ], ProjectUpdateComponent);
+    return ProjectUpdateComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/views/project/view/project-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<title>Project Management</title>\r\n<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Projects Management</strong>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <button type=\"button\" class=\"btn btn-success\" style=\"font-size: 20px\" onclick=\"location.href='#/project/add';\">\r\n          <i class=\"fa fa-magic\"></i>&nbsp; New Project</button>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <table class=\"table table-hover table-outline mb-0\" *ngIf=\"projects\">\r\n          <thead class=\"thead-default\">\r\n            <tr>\r\n              <th>Name</th>\r\n              <th>Description</th>\r\n              <th>Deadline</th>\r\n              <th>Start date</th>\r\n              <th>Created</th>\r\n              <th>Update</th>\r\n              <th>Close</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let project of projects\" style=\"cursor: pointer\" (click)=\"handleViewProject(project.id)\">\r\n              <!-- (click)=\"handleViewProject(project.id)\" -->\r\n              <!-- <tr *ngFor=\"let project of projects\" style=\"cursor: pointer\" onclick=\"location.href='#/project/detail'\"> -->\r\n\r\n              <td>\r\n                <a href=\"#/project/detail?projectID={{project.id}}\" style=\"color: black\">{{project.name | truncatetext:80}}</a>\r\n              </td>\r\n              <td>\r\n                <a href=\"#/project/detail?projectID={{project.id}}\" style=\"color: black\">{{project.description | truncatetext:100}}</a>\r\n              </td>\r\n              <td *ngIf=\"!project.deadline\">N/A</td>\r\n              <td *ngIf=\"project.deadline\">{{project.deadline | date:'d/M/y'}}</td>\r\n              <td *ngIf=\"!project.startDate\">N/A</td>\r\n              <td *ngIf=\"project.startDate\">{{project.startDate | date:'d/M/y'}}</td>\r\n              <td>{{project.createdTime | date:'d/M/y'}}</td>\r\n              <td>\r\n                <button type=\"button\" class=\"btn btn-primary\">\r\n                  Update\r\n                </button>\r\n              </td>\r\n              <td>\r\n                <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"padding: 0.3rem\">\r\n                  Close\r\n                </button>\r\n              </td>\r\n\r\n              <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n                <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n                  <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                      <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                      <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                        <span aria-hidden=\"true\">&times;</span>\r\n                      </button>\r\n                    </div>\r\n                    <div class=\"modal-body\">\r\n                      <p>Are you sure to close this project?</p>\r\n                    </div>\r\n                    <div class=\"modal-footer\">\r\n                      <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\">No</button>\r\n                      <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(project.id)\">Yes</button>\r\n                    </div>\r\n                  </div>\r\n                  <!-- /.modal-content -->\r\n                </div>\r\n                <!-- /.modal-dialog -->\r\n              </div>\r\n              <!-- /.modal -->\r\n            </tr>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Projects Management</strong>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <button type=\"button\" class=\"btn btn-success\" style=\"font-size: 20px;color: black;\r\n          background-color: white;\r\n          border-color: black;\" onclick=\"location.href='#/project/add';\">\r\n          <i class=\"fa fa-magic\"></i>&nbsp; New Project</button>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchProject.value)\" style=\"background-color: black;\r\n                          border-color: black;\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" placeholder=\"Name\" type=\"text\" (input)=\"search(searchProject.value)\" #searchProject placeholder=\"Name, Description, Deadline,...\">\r\n        </div>\r\n        <br/>\r\n        <table class=\"table table-hover table-outline mb-0\" *ngIf=\"pagedProjects\">\r\n          <thead class=\"thead-default\">\r\n            <tr>\r\n              <th>No.</th>\r\n              <th>Name</th>\r\n              <th>Description</th>\r\n              <th>Deadline</th>\r\n              <th>Start date</th>\r\n              <th>Created</th>\r\n              <th>Update</th>\r\n              <th>Close</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <ng-container *ngFor=\"let project of pagedProjects;let i = index\">\r\n              <tr style=\"cursor: pointer\">\r\n                <!-- (click)=\"handleViewProject(project.id)\" -->\r\n                <!-- <tr *ngFor=\"let project of projects\" style=\"cursor: pointer\" onclick=\"location.href='#/project/detail'\"> -->\r\n                <td>\r\n                  {{i + (pager.currentPage-1)*pager.pageSize + 1}}\r\n                </td>\r\n                <td>\r\n                  <a href=\"#/project/detail?projectID={{project.id}}\" style=\"color: blue\">{{project.name | truncatetext:80}}</a>\r\n                </td>\r\n                <td>\r\n                  <p style=\"color: black\" *ngIf=\"project.description\">{{project.description | truncatetext:100}}</p>\r\n                </td>\r\n                <td *ngIf=\"!project.deadline\">N/A</td>\r\n                <td *ngIf=\"project.deadline\">{{project.deadline | date:'dd/M/y'}}</td>\r\n                <td *ngIf=\"!project.startDate\">N/A</td>\r\n                <td *ngIf=\"project.startDate\">{{project.startDate | date:'d/M/y'}}</td>\r\n                <td>{{project.createdTime | date:'d/M/y'}}</td>\r\n                <td>\r\n                  <a href=\"#/project/update?projectID={{project.id}}\">\r\n                    <button type=\"button\" class=\"btn btn-primary\" style=\"color: black;\r\n                    background-color: white;\r\n                    border-color: black;\">\r\n                      Update\r\n                    </button>\r\n                  </a>\r\n\r\n                </td>\r\n                <td>\r\n                  <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"padding: 0.3rem\" style=\"color: black;\r\n                    background-color: white;\r\n                    border-color: black;\">\r\n                    Close\r\n                  </button>\r\n                </td>\r\n\r\n                <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n                  <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n                    <div class=\"modal-content\" style=\"border-color: black;\">\r\n                      <div class=\"modal-header\" style=\"color: black;\r\n                        background-color: white;\">\r\n                        <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                        <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                          <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                      </div>\r\n                      <div class=\"modal-body\">\r\n                        <p>Are you sure to close this project?</p>\r\n                      </div>\r\n                      <div class=\"modal-footer\">\r\n                        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">No</button>\r\n                        <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(project.id)\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">Yes</button>\r\n                      </div>\r\n                    </div>\r\n                    <!-- /.modal-content -->\r\n                  </div>\r\n                  <!-- /.modal-dialog -->\r\n                </div>\r\n                <!-- /.modal -->\r\n              </tr>\r\n            </ng-container>\r\n        </table>\r\n\r\n        <!-- pager -->\r\n        <ul *ngIf=\"pager.pages && pager.pages.length\" class=\"pagination\">\r\n          <li [ngClass]=\"[pager.currentPage === 1 ? 'disabled' : '', 'page-item']\">\r\n            <a class=\"page-link fake-link\" (click)=\"setPage(1)\">First</a>\r\n          </li>\r\n          <li [ngClass]=\"[pager.currentPage === 1 ? 'disabled' : '', 'page-item']\">\r\n            <a class=\"page-link fake-link\" (click)=\"setPage(pager.currentPage - 1)\">Previous</a>\r\n          </li>\r\n          <li *ngFor=\"let page of pager.pages\" [ngClass]=\"[pager.currentPage === page ? 'active' : '', 'page-item']\">\r\n            <a class=\"page-link fake-link\" (click)=\"setPage(page)\">{{page}}</a>\r\n          </li>\r\n          <li [ngClass]=\"[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']\">\r\n            <a class=\"page-link fake-link\" (click)=\"setPage(pager.currentPage + 1)\">Next</a>\r\n          </li>\r\n          <li [ngClass]=\"[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']\">\r\n            <a class=\"page-link fake-link\" (click)=\"setPage(pager.totalPages)\">Last</a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -439,7 +557,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#button {\n  color: black;\n  background-color: white;\n  border-color: black; }\n", ""]);
 
 // exports
 
@@ -457,6 +575,9 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -469,16 +590,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var ProjectManagementComponent = /** @class */ (function () {
-    function ProjectManagementComponent(projectService, router) {
+    function ProjectManagementComponent(projectService, router, pagerService) {
         this.projectService = projectService;
         this.router = router;
+        this.pagerService = pagerService;
+        // pager object
+        this.pager = {};
     }
     ProjectManagementComponent.prototype.ngOnInit = function () {
+        this.loadProject();
+    };
+    ProjectManagementComponent.prototype.loadProject = function () {
         var _this = this;
         this.projectService.getAllProjects()
             .then(function (data) {
-            _this.projects = data;
+            _this.projects = _this.projectsFilter(data);
+            _this.setPage(1);
         })
             .catch(function (reason) {
             console.debug('ProjectManagementComponent', reason);
@@ -489,22 +619,103 @@ var ProjectManagementComponent = /** @class */ (function () {
         console.debug(projectID);
         this.projectService.closeProject(projectID).then(function (value) {
             _this.isLoading = false;
+            _this.loadProject();
         }).catch(function (reason) {
             _this.isLoading = false;
             console.debug(reason);
-            _this.handleCloseError(reason.Data);
+            // this.handleCloseError(reason.Data);
         });
     };
-    ProjectManagementComponent.prototype.handleCloseError = function (errors) {
-        for (var _i = 0, errors_1 = errors; _i < errors_1.length; _i++) {
-            var error = errors_1[_i];
-            var fieldName = error.key;
-            var errorMessage = error.message;
-            console.debug('handleCreateProjectError', fieldName, errorMessage);
-        }
-    };
+    // handleCloseError(errors: any[]) {
+    //   for (let error of errors) {
+    //     const fieldName = error.key;
+    //     const errorMessage = error.message;
+    //     console.debug('handleCreateProjectError', fieldName, errorMessage);
+    //   }
+    // }
     ProjectManagementComponent.prototype.handleViewProject = function (projectID) {
-        console.debug("Here!!");
+        console.debug('Here!!');
+    };
+    ProjectManagementComponent.prototype.setPage = function (page, projects) {
+        if (projects === void 0) { projects = undefined; }
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+        if (!projects) {
+            projects = this.projects;
+        }
+        this.pager = this.pagerService.getPager(projects.length, page, 7);
+        this.pagedProjects = projects.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    };
+    ProjectManagementComponent.prototype.projectsFilter = function (data) {
+        var newData = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].status !== 2) {
+                newData.push(data[i]);
+            }
+        }
+        return newData;
+    };
+    ProjectManagementComponent.prototype.search = function (searchValue) {
+        //search for name
+        if (searchValue) {
+            // let filteredProject = _.filter(this.projects, (project: Project) => {
+            //   return project.name && _.toLower(project.name).indexOf(_.toLower(searchValue)) >= 0;
+            // }
+            // );
+            var filteredProject = [];
+            for (var i = 0; i < this.projects.length; i++) {
+                if (__WEBPACK_IMPORTED_MODULE_4_lodash__["toLower"](this.projects[i].name).indexOf(__WEBPACK_IMPORTED_MODULE_4_lodash__["toLower"](searchValue)) >= 0) {
+                    filteredProject.push(this.projects[i]);
+                    continue;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_4_lodash__["toLower"](this.projects[i].description).indexOf(__WEBPACK_IMPORTED_MODULE_4_lodash__["toLower"](searchValue)) >= 0) {
+                    filteredProject.push(this.projects[i]);
+                    continue;
+                }
+                var temp = searchValue.split('/');
+                if (temp.length == 3) {
+                    searchValue = temp[2] + "-" + temp[1] + "-" + temp[0];
+                }
+                else if (temp.length == 2) {
+                    searchValue = temp[1] + "-" + temp[0];
+                }
+                else {
+                    searchValue = temp[0];
+                }
+                if (this.projects[i].deadline) {
+                    if ((this.projects[i].deadline).indexOf(searchValue) >= 0) {
+                        filteredProject.push(this.projects[i]);
+                        continue;
+                    }
+                }
+                if (this.projects[i].startDate) {
+                    if ((this.projects[i].startDate).indexOf(searchValue) >= 0) {
+                        filteredProject.push(this.projects[i]);
+                        continue;
+                    }
+                }
+                if (this.projects[i].createdTime) {
+                    if ((this.projects[i].createdTime).indexOf(searchValue) >= 0) {
+                        filteredProject.push(this.projects[i]);
+                        continue;
+                    }
+                }
+            }
+            if (filteredProject.length != 0) {
+                this.pager = {};
+                this.setPage(1, filteredProject);
+                return;
+            }
+            else {
+                this.pager = {};
+                this.setPage(1, filteredProject);
+                return;
+            }
+        }
+        else {
+            this.setPage(1, this.projects);
+        }
     };
     ProjectManagementComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -512,7 +723,7 @@ var ProjectManagementComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/views/project/view/project-management.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/project/view/project-management.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */], __WEBPACK_IMPORTED_MODULE_3__services_pager_service__["a" /* PagerService */]])
     ], ProjectManagementComponent);
     return ProjectManagementComponent;
 }());

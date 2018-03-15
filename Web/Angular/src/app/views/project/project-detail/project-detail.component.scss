@@ -1,19 +1,11 @@
-button {
-  padding: 1rem 2rem;
-  position: relative;
+button{
+    padding: 1rem 2rem;
+    position: relative;
 }
-
-.task-card {
-  :hover {
+.task-card:hover{
     cursor: pointer;
     background-color: #f2f2f2;
-  }
-  .card-footer{
-    border-top: 0;
-    background-color: white;
-  }
 }
-
-textarea:disabled {
-  background-color: white;
+textarea:disabled{
+    background-color: white;
 }

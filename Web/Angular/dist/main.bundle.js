@@ -15,13 +15,11 @@ var map = {
 	],
 	"./views/project/project-management.module": [
 		"../../../../../src/app/views/project/project-management.module.ts",
-		"project-management.module",
-		"common"
+		"project-management.module"
 	],
 	"./views/team-management/team-management.module": [
 		"../../../../../src/app/views/team-management/team-management.module.ts",
-		"team-management.module",
-		"common"
+		"team-management.module"
 	],
 	"./views/user-management/user-management.module": [
 		"../../../../../src/app/views/user-management/user-management.module.ts",
@@ -71,6 +69,14 @@ var admin_navigation = [
         url: '/team/view',
         icon: 'icon-people'
     },
+    {
+        name: 'detail-team',
+        url: '/team/detail',
+        icon: 'icon-team',
+        badge: {
+            variant: 'info'
+        }
+    },
     /*
     {
       name: 'Team-create',
@@ -101,6 +107,10 @@ var admin_navigation = [
             {
                 name: 'Create',
                 url: '/account/create'
+            },
+            {
+                name: 'Detail',
+                url: '/account/detail'
             }
         ]
     }
@@ -130,7 +140,9 @@ var serverPath = {
     closeProject: '/api/project/close',
     // Team
     allTeam: '/api/team/all',
-    deleteTeam: '/api/team'
+    deleteTeam: '/api/team',
+    // File
+    uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; }
 };
 
 
@@ -212,7 +224,7 @@ var AppComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             // tslint:disable-next-line
             selector: 'body',
-            template: '<h1>{{title | async}}</h1> <router-outlet></router-outlet>'
+            template: '<title>{{title | async}}</title> <router-outlet></router-outlet>'
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_tree_service__["a" /* StoreService */],
             __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
@@ -251,12 +263,13 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__services_upload_service__ = __webpack_require__("../../../../../src/app/services/upload.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -309,6 +322,7 @@ var APP_DIRECTIVES = [
 
 
 
+
 var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_9__services_auth_guard__["a" /* AlwaysAuthGuard */],
     __WEBPACK_IMPORTED_MODULE_10__services_tree_service__["a" /* StoreService */],
@@ -319,7 +333,8 @@ var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_15__services_team_service__["a" /* TeamService */],
     __WEBPACK_IMPORTED_MODULE_16__services_task_service__["a" /* TaskService */],
     __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__["a" /* DependencyService */],
-    __WEBPACK_IMPORTED_MODULE_18__services_pager_service__["a" /* PagerService */]
+    __WEBPACK_IMPORTED_MODULE_18__services_pager_service__["a" /* PagerService */],
+    __WEBPACK_IMPORTED_MODULE_19__services_upload_service__["a" /* UploadService */]
 ];
 // Import 3rd party components
 
@@ -336,11 +351,11 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8__app_routing__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_19_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_20_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_21_ng2_charts_ng2_charts__["ChartsModule"],
-                __WEBPACK_IMPORTED_MODULE_22_mydatepicker__["MyDatePickerModule"],
-                __WEBPACK_IMPORTED_MODULE_23_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */]
+                __WEBPACK_IMPORTED_MODULE_20_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_21_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__["ChartsModule"],
+                __WEBPACK_IMPORTED_MODULE_23_mydatepicker__["MyDatePickerModule"],
+                __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]
@@ -408,6 +423,10 @@ var routes = [
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
+                path: 'account-detail',
+                loadChildren: './views/user-management/user-management.module#UserManagementModule'
+            },
+            {
                 path: 'team',
                 loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
@@ -417,6 +436,10 @@ var routes = [
             },
             {
                 path: 'team-update',
+                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
+            },
+            {
+                path: 'team-detail',
                 loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
         ]
@@ -1148,6 +1171,10 @@ var AppSidebarComponent = /** @class */ (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_8__app_sidebar_minimizer__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__ = __webpack_require__("../../../../../src/app/components/app-sidebar-nav/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__sort_icon_sort_icon_component__ = __webpack_require__("../../../../../src/app/components/sort-icon/sort-icon.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_11__sort_icon_sort_icon_component__["a"]; });
 
 
 
@@ -1157,6 +1184,134 @@ var AppSidebarComponent = /** @class */ (function () {
 
 
 
+
+
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/sort-icon/sort-icon.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n  <ng-content></ng-content>\n  <div class=\"right\">\n    <i class=\"fa fa-sort-desc\" *ngIf=\"isDesc\"></i>\n    <i class=\"fa fa-sort-asc\" *ngIf=\"!isDesc\"></i>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/sort-icon/sort-icon.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ":host :hover {\n  cursor: pointer; }\n\n.right {\n  float: right; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/sort-icon/sort-icon.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SortIconComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SortIconComponent = /** @class */ (function () {
+    function SortIconComponent() {
+    }
+    SortIconComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], SortIconComponent.prototype, "isDesc", void 0);
+    SortIconComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-sort-icon',
+            template: __webpack_require__("../../../../../src/app/components/sort-icon/sort-icon.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/sort-icon/sort-icon.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SortIconComponent);
+    return SortIconComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/spinner/spinner.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"sk-folding-cube\">\r\n  <div class=\"sk-cube1 sk-cube\"></div>\r\n  <div class=\"sk-cube2 sk-cube\"></div>\r\n  <div class=\"sk-cube4 sk-cube\"></div>\r\n  <div class=\"sk-cube3 sk-cube\"></div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/spinner/spinner.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/spinner/spinner.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SpinnerComponent = /** @class */ (function () {
+    function SpinnerComponent() {
+    }
+    SpinnerComponent.prototype.ngOnInit = function () {
+    };
+    SpinnerComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-spinner',
+            template: __webpack_require__("../../../../../src/app/components/spinner/spinner.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/spinner/spinner.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SpinnerComponent);
+    return SpinnerComponent;
+}());
 
 
 
@@ -2200,6 +2355,65 @@ var StoreService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/upload.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UploadService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_superagent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var UploadService = /** @class */ (function () {
+    function UploadService(storeService) {
+        this.storeService = storeService;
+        this.currentUserCursor = storeService.select(['currentUser']);
+        this.tokenCursor = storeService.select(['token', 'access_token']);
+    }
+    UploadService.prototype.uploadAvatarFile = function (file, userId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_2_superagent__["put"](__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].uploadAvatar(userId))
+                .set('token', _this.tokenCursor.get())
+                .field('id', userId)
+                .attach('avatar', file)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    UploadService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__tree_service__["a" /* StoreService */]])
+    ], UploadService);
+    return UploadService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/user.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2334,7 +2548,7 @@ var UserService = /** @class */ (function () {
                 .catch(reject);
         });
     };
-    UserService.prototype.createUser = function (username, password, name, phone, birthdate, email) {
+    UserService.prototype.createUser = function (username, password, name, phone, birthdate, email, team) {
         var _this = this;
         var postDataObject = {
             Username: username,
@@ -2342,7 +2556,8 @@ var UserService = /** @class */ (function () {
             Name: name,
             Phone: phone,
             Birthdate: birthdate,
-            Email: email
+            Email: email,
+            Team: team
         };
         return new Promise(function (resolve, reject) {
             var token = _this.tokenCursor.get();
@@ -2353,13 +2568,13 @@ var UserService = /** @class */ (function () {
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
-                    resolve(content.data);
+                    resolve(content.Data);
                 }
                 else {
-                    reject(content);
+                    reject(content.Data);
                 }
             })
-                .catch(reject);
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     UserService.prototype.updateUser = function (id, name, phone, birthdate, email) {

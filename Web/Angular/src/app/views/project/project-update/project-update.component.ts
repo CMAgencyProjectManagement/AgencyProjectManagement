@@ -28,8 +28,47 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 })
 export class ProjectUpdateComponent implements OnInit {
+  projects: Project[];
+  projectID: number;
+  errors: {
+    projectName: string;
+    projectDescription: string;
+  };
+  foundProject: any;
+  public myModal;
+  public largeModal;
+  public smallModal;
+  public primaryModal;
+  public successModal;
+  public warningModal;
+  public dangerModal;
+  public infoModal;
+
+  tokenCursor: Cursor;
+  isLoading: boolean;
+  errorMessage: string;
+  constructor(private projectService: ProjectService, private router: Router, private pagerService: PagerService) {
+  }
     ngOnInit() {
-      
+      this.projectID = Number(this.GetURLParameter('projectID'));
+      this.loadProject();
+    }
+
+    loadProject() {
+      this.projectService.getAllProjects()
+        .then(data => {
+          this.projects = data;
+        })
+        .catch(reason => {
+          console.debug('ProjectUpdateComponent', reason);
+        })
+    }
+
+    GetURLParameter(sParam) {
+      var sPageURL = window.location.href;
+      var sURLVariables = sPageURL.split('?');
+      var sUsername = sURLVariables[1].split('=');
+      return sUsername[1];
     }
   
   }
