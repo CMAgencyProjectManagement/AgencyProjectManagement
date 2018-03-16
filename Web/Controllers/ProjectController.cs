@@ -85,6 +85,49 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         ProjectService projectService = new ProjectService(db);
+                        Boolean flag = true;
+                        if (projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
+                        {
+                            ModelState.AddModelError("Name", "Username is taken");
+                            flag = false;
+                            //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                        }
+                        if (createProjectModel.StartDate != null || createProjectModel.Deadline != null)
+                        {
+                            if (createProjectModel.Deadline != null)
+                            {
+                                if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Parse(createProjectModel.Deadline))
+                                {
+                                    ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
+                                    flag = false;
+                                    //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                                }
+                            }
+                            if (createProjectModel.StartDate!=null)
+                            {
+                                if (DateTime.Parse(createProjectModel.Deadline) < DateTime.Parse(createProjectModel.StartDate))
+                                {
+                                    ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
+                                    flag = false;
+                                    // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                                }
+                            }
+                            
+                            if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Now)
+                            {
+                                ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
+                                flag = false;
+                                //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                            }
+                            if (DateTime.Parse(createProjectModel.Deadline) > DateTime.Now)
+                            {
+                                ModelState.AddModelError("Deadline", "Deadline must be smaller than the current time ");
+                                flag = false;
+                            }
+                            
+                        }
+                        
+                        if(flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         UserService userService = new UserService(db);
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);

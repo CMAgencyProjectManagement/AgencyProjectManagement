@@ -147,6 +147,48 @@ namespace Service
                 throw new ObjectNotFoundException($"Can't find project with ID {id}");
             }
         }
+        public UserTask CreAssignTask(int taskId, int UserId)
+        {
+            UserTask newUserTask = new UserTask
+            {
+                TaskID = taskId,
+                UserID = UserId,
+            };
+            db.UserTasks.Add(newUserTask);
+            db.SaveChanges();
+            return newUserTask;
+        }
+
+        public UserTask AssignTask(int taskId, int userId, Boolean isAssigned)
+        {
+            var foundUserTask = db.UserTasks.Find(taskId, userId);
+            if (foundUserTask != null)
+            {
+                foundUserTask.IsAssigned = true;
+                db.SaveChanges();
+                return foundUserTask;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"UserTask with TaskId{taskId} and Userid{userId} not found");
+
+            }
+
+        }
+        public int UnAssignTask(int TaskId, int UserId)
+        {
+            IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
+            if (userTasks != null)
+            {
+                foreach (var userTask in userTasks)
+                {
+                    userTask.IsAssigned = false;
+                    db.SaveChanges();
+                    return userTask.UserID;
+                }
+            }
+            throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
+        }
 
         public JObject ParseToJson(Task task,  bool isIncludeProject = true)
         {
@@ -172,6 +214,23 @@ namespace Service
                 var changer = userService.GetUser(task.ChangedBy.Value);
                 result["changedby"] = userService.ParseToJson(changer);
             }
+
+            return result;
+        }
+        public JObject ParseToJsonofUserTask(UserTask userTask)
+        {
+            UserService userService = new UserService(db);
+
+
+            JObject result = new JObject
+            {
+                ["ID"] = userTask.TaskID,
+                ["Name"] = userTask.UserID,
+                ["IsFollow"] = userTask.IsFollow,
+                ["IsAssigned"] = userTask.IsAssigned,
+
+            };
+
 
             return result;
         }
