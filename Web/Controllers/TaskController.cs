@@ -177,5 +177,58 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpPut]
+        [Route("assign")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult AssignTask(AssignTaskViewModel assignTaskViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        TaskService taskService = new TaskService(db);
+                        var assignedUserTask = taskService.AssignTask(
+                            assignTaskViewModel.TaskId,
+                            assignTaskViewModel.UserId,
+                            assignTaskViewModel.IsAssigned = true
+                            );
+
+                        return Ok(ResponseHelper.GetResponse(taskService.ParseToJsonofUserTask(assignedUserTask)));
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        [HttpDelete]
+        [Route("unassign")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult UnassignTask(UnassignTaskViewModel unassignTaskViewModel)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    return Ok();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
     }
 }

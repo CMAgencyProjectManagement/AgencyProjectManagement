@@ -42,17 +42,21 @@ namespace Web.Controllers
                         return Content(HttpStatusCode.BadGateway,
                             ResponseHelper.GetExceptionResponse("Not supported image file type"));
                     }
-                    
+
+                    //lưu tên file avatar vào db
+                    var renameFile = "avatar_" + id + System.IO.Path.GetExtension(avatarFile.FileName);
+
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         UserService userService = new UserService(db);
-                        userService.UpdateAvatar(avatarFile.FileName, id);
+                        userService.UpdateAvatar(renameFile, id);
                     }
 
+                    //map path và sửa tên file theo regex 'avatar_[username]'
                     string path = Path.Combine(
                         HttpContext.Current.Server.MapPath("~"),
                         AgencyConfig.AvatarPath.Substring(1),
-                        avatarFile.FileName
+                        renameFile
                     );
 
                     using (FileStream fileStream = File.Create(path))

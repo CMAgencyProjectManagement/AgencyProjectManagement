@@ -70,6 +70,16 @@ namespace Service
             ListService listService = new ListService(db);
             return listService.GetListOfTask(taskId).Project;
         }
+        //public bool CheckDuplicatedUsername(string username)
+        //{
+        //    var users = db.Users.Where(user => user.Username == username).ToList();
+        //    return users.Count > 0;
+        //}
+        public bool CheckDuplicatedNameOfProject(string projectname)
+        {
+            var projects = db.Projects.Where(project => project.Name == projectname).ToList();
+            return projects.Count > 0;
+        }
 
         public Project UpdateProject(
             int id,
@@ -109,7 +119,7 @@ namespace Service
             }
         }
 
-        public Project GetProject(int id)
+        public Project GetProjectByID(int id)
         {
             return db.Projects.Find(id);
         }

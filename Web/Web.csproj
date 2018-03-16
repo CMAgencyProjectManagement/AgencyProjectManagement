@@ -480,6 +480,7 @@
     <Compile Include="ResponseHelper.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\AgencyDateValidation.cs" />
+    <Compile Include="ViewModels\AssignTaskViewModel.cs" />
     <Compile Include="ViewModels\CreateListModel.cs" />
     <Compile Include="ViewModels\CreateProjectModel.cs" />
     <Compile Include="ViewModels\CreateTaskModel.cs" />
@@ -487,6 +488,7 @@
     <Compile Include="ViewModels\DeleteUserModel.cs" />
     <Compile Include="ViewModels\EditUserModel.cs" />
     <Compile Include="ViewModels\CreateUserModel.cs" />
+    <Compile Include="ViewModels\UnassignTaskViewModel.cs" />
     <Compile Include="ViewModels\UpdateProjectViewModel.cs" />
     <Compile Include="ViewModels\UpdateTaskViewModel.cs" />
     <Compile Include="ViewModels\UpdateUserModel.cs" />

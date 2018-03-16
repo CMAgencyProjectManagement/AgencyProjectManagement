@@ -19,6 +19,13 @@ namespace Service
             this.db = db;
         }
 
+        public bool CheckDuplicatedUsername(string username)
+        {
+            var users  = db.Users.Where(user => user.Username == username).ToList();
+            return users.Count > 0;
+        }
+        
+
         public User GetUser(string username, string password)
         {
             User foundUser =
