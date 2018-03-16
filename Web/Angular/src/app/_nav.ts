@@ -13,7 +13,17 @@ const admin_navigation = [
   {
     name: 'Project',
     url: '/project',
-    icon: 'icon-calendar'
+    icon: 'icon-calendar',
+    children: [
+      {
+        name: 'View',
+        url: '/project'
+      },
+      {
+        name: 'Create',
+        url: '/project/add'
+      }
+    ]
   },
   {
     name: 'Team',
@@ -61,10 +71,6 @@ const admin_navigation = [
         name: 'Create',
         url: '/account/create'
       },
-      {
-        name: 'Detail',
-        url: '/account/detail'
-      }
     ]
   }
 ];
