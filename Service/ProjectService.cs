@@ -31,7 +31,7 @@ namespace Service
         {
             return db.Projects
                 .Where(
-                    project => project.Users.Any(user => user.ID.Equals(userId))
+                    project => project.UserProjects.Any(user => user.ID.Equals(userId))
                 )
                 .Include(p => p.Lists)
                 .ToList();
