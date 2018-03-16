@@ -229,5 +229,36 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetProjectByID(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    var project = projectService.GetProjectByID(id);
+
+                    if (project != null)
+                    {
+                        return Ok(ResponseHelper.GetResponse(
+                            projectService.ParseToJson(project)
+                        ));
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
     }
 }
