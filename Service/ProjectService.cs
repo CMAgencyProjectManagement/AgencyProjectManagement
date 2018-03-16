@@ -121,7 +121,7 @@ namespace Service
             }
         }
 
-        public Project GetProject(int id)
+        public Project GetProjectByID(int id)
         {
             return db.Projects.Find(id);
         }
