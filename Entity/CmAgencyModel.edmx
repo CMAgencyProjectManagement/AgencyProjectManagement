@@ -74,14 +74,11 @@
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="Content" Type="text" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'marketingagency.dbo.NotificationUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="NotificationUser">
           <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="NotificationID" />
-            <PropertyRef Name="IsRead" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="NotificationID" Type="int" Nullable="false" />
           <Property Name="IsRead" Type="bit" Nullable="false" />
@@ -146,14 +143,11 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="CreatedDate" Type="date" Nullable="false" />
           <Property Name="IsClosed" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'marketingagency.dbo.TeamProject' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TeamProject">
           <Key>
-            <PropertyRef Name="TeamID" />
-            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TeamID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" Nullable="false" />
         </EntityType>
@@ -161,7 +155,7 @@ warning 6002: The table/view 'marketingagency.dbo.TeamProject' does not have a p
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="nvarchar" MaxLength="255" />
           <Property Name="Birthdate" Type="date" />
@@ -172,14 +166,13 @@ warning 6002: The table/view 'marketingagency.dbo.TeamProject' does not have a p
           <Property Name="IsAdmin" Type="bit" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsManager" Type="bit" Nullable="false" />
+          <Property Name="TeamID" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserProject">
           <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" Nullable="false" />
         </EntityType>
@@ -393,6 +386,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_User_Team">
+          <End Role="Team" Type="Self.Team" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserProject_Project1">
           <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
@@ -472,19 +477,15 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="List" EntityType="Self.List" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationUser" EntityType="Self.NotificationUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Team" EntityType="Self.Team" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeamProject" EntityType="Self.TeamProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProject" EntityType="Self.UserProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTask" EntityType="Self.UserTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTeam" EntityType="Self.UserTeam" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="NotificationUser" EntityType="Self.NotificationUser" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [NotificationUser].[UserID] AS [UserID], 
-    [NotificationUser].[NotificationID] AS [NotificationID], 
-    [NotificationUser].[IsRead] AS [IsRead]
-    FROM [dbo].[NotificationUser] AS [NotificationUser]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="TaskDependency" EntityType="Self.TaskDependency" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TaskDependency].[SourceTaskID] AS [SourceTaskID], 
@@ -495,19 +496,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
     [TaskDependency].[ChangedTime] AS [ChangedTime], 
     [TaskDependency].[CreatedTime] AS [CreatedTime]
     FROM [dbo].[TaskDependency] AS [TaskDependency]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="TeamProject" EntityType="Self.TeamProject" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TeamProject].[ID] AS [ID], 
-    [TeamProject].[TeamID] AS [TeamID], 
-    [TeamProject].[ProjectID] AS [ProjectID]
-    FROM [dbo].[TeamProject] AS [TeamProject]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UserProject" EntityType="Self.UserProject" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserProject].[UserID] AS [UserID], 
-    [UserProject].[ProjectID] AS [ProjectID]
-    FROM [dbo].[UserProject] AS [UserProject]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Attachment_Task" Association="Self.FK_Attachment_Task">
             <End Role="Task" EntitySet="Task" />
@@ -573,6 +561,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             <End Role="Team" EntitySet="Team" />
             <End Role="TeamProject" EntitySet="TeamProject" />
           </AssociationSet>
+          <AssociationSet Name="FK_User_Team" Association="Self.FK_User_Team">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserProject_Project1" Association="Self.FK_UserProject_Project1">
             <End Role="Project" EntitySet="Project" />
             <End Role="UserProject" EntitySet="UserProject" />
@@ -610,14 +602,15 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <EntitySet Name="Comments" EntityType="CmAgencyModel.Comment" />
           <EntitySet Name="Lists" EntityType="CmAgencyModel.List" />
           <EntitySet Name="Notifications" EntityType="CmAgencyModel.Notification" />
+          <EntitySet Name="NotificationUsers" EntityType="CmAgencyModel.NotificationUser" />
           <EntitySet Name="Projects" EntityType="CmAgencyModel.Project" />
           <EntitySet Name="Tasks" EntityType="CmAgencyModel.Task" />
           <EntitySet Name="Teams" EntityType="CmAgencyModel.Team" />
-          <EntitySet Name="Users" EntityType="CmAgencyModel.User" />
-          <EntitySet Name="UserTasks" EntityType="CmAgencyModel.UserTask" />
-          <EntitySet Name="NotificationUsers" EntityType="CmAgencyModel.NotificationUser" />
-          <EntitySet Name="TaskDependencies" EntityType="CmAgencyModel.TaskDependency" />
           <EntitySet Name="TeamProjects" EntityType="CmAgencyModel.TeamProject" />
+          <EntitySet Name="Users" EntityType="CmAgencyModel.User" />
+          <EntitySet Name="UserProjects" EntityType="CmAgencyModel.UserProject" />
+          <EntitySet Name="UserTasks" EntityType="CmAgencyModel.UserTask" />
+          <EntitySet Name="TaskDependencies" EntityType="CmAgencyModel.TaskDependency" />
           <AssociationSet Name="FK_Attachment_Task" Association="CmAgencyModel.FK_Attachment_Task">
             <End Role="Task" EntitySet="Tasks" />
             <End Role="Attachment" EntitySet="Attachments" />
@@ -646,6 +639,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             <End Role="Notification" EntitySet="Notifications" />
             <End Role="NotificationUser" EntitySet="NotificationUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_NotificationUser_User" Association="CmAgencyModel.FK_NotificationUser_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="NotificationUser" EntitySet="NotificationUsers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Project_User" Association="CmAgencyModel.FK_Project_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
@@ -657,6 +654,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <AssociationSet Name="FK_TeamProject_Project" Association="CmAgencyModel.FK_TeamProject_Project">
             <End Role="Project" EntitySet="Projects" />
             <End Role="TeamProject" EntitySet="TeamProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProject_Project1" Association="CmAgencyModel.FK_UserProject_Project1">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UserProject" EntitySet="UserProjects" />
           </AssociationSet>
           <AssociationSet Name="FK_Task_User" Association="CmAgencyModel.FK_Task_User">
             <End Role="User" EntitySet="Users" />
@@ -682,13 +683,17 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             <End Role="Team" EntitySet="Teams" />
             <End Role="TeamProject" EntitySet="TeamProjects" />
           </AssociationSet>
+          <AssociationSet Name="FK_User_Team" Association="CmAgencyModel.FK_User_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserTeam_Team" Association="CmAgencyModel.FK_UserTeam_Team">
             <End Role="Team" EntitySet="Teams" />
             <End Role="UserTeam" EntitySet="UserTeams" />
           </AssociationSet>
-          <AssociationSet Name="FK_NotificationUser_User" Association="CmAgencyModel.FK_NotificationUser_User">
+          <AssociationSet Name="FK_UserProject_User" Association="CmAgencyModel.FK_UserProject_User">
             <End Role="User" EntitySet="Users" />
-            <End Role="NotificationUser" EntitySet="NotificationUsers" />
+            <End Role="UserProject" EntitySet="UserProjects" />
           </AssociationSet>
           <AssociationSet Name="FK_UserTask_User" Association="CmAgencyModel.FK_UserTask_User">
             <End Role="User" EntitySet="Users" />
@@ -697,10 +702,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <AssociationSet Name="FK_UserTeam_User" Association="CmAgencyModel.FK_UserTeam_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserTeam" EntitySet="UserTeams" />
-          </AssociationSet>
-          <AssociationSet Name="UserProject" Association="CmAgencyModel.UserProject">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="User" EntitySet="Users" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserTeam">
@@ -790,6 +791,17 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="NotificationUsers" Relationship="CmAgencyModel.FK_NotificationUser_Notification" FromRole="Notification" ToRole="NotificationUser" />
         </EntityType>
+        <EntityType Name="NotificationUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="NotificationID" Type="Int32" Nullable="false" />
+          <Property Name="IsRead" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Notification" Relationship="CmAgencyModel.FK_NotificationUser_Notification" FromRole="NotificationUser" ToRole="Notification" />
+          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_NotificationUser_User" FromRole="NotificationUser" ToRole="User" />
+        </EntityType>
         <EntityType Name="Project">
           <Key>
             <PropertyRef Name="ID" />
@@ -810,7 +822,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Project_User" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CmAgencyModel.FK_Project_User1" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="TeamProjects" Relationship="CmAgencyModel.FK_TeamProject_Project" FromRole="Project" ToRole="TeamProject" />
-          <NavigationProperty Name="Users" Relationship="CmAgencyModel.UserProject" FromRole="Project" ToRole="User" />
+          <NavigationProperty Name="UserProjects" Relationship="CmAgencyModel.FK_UserProject_Project1" FromRole="Project" ToRole="UserProject" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -848,13 +860,24 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <Property Name="IsClosed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Team_User" FromRole="Team" ToRole="User" />
           <NavigationProperty Name="TeamProjects" Relationship="CmAgencyModel.FK_TeamProject_Team" FromRole="Team" ToRole="TeamProject" />
+          <NavigationProperty Name="Users" Relationship="CmAgencyModel.FK_User_Team" FromRole="Team" ToRole="User" />
           <NavigationProperty Name="UserTeams" Relationship="CmAgencyModel.FK_UserTeam_Team" FromRole="Team" ToRole="UserTeam" />
+        </EntityType>
+        <EntityType Name="TeamProject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="CmAgencyModel.FK_TeamProject_Project" FromRole="TeamProject" ToRole="Project" />
+          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_TeamProject_Team" FromRole="TeamProject" ToRole="Team" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Birthdate" Type="DateTime" Precision="0" />
@@ -865,14 +888,26 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsManager" Type="Boolean" Nullable="false" />
+          <Property Name="TeamID" Type="Int32" />
+          <NavigationProperty Name="NotificationUsers" Relationship="CmAgencyModel.FK_NotificationUser_User" FromRole="User" ToRole="NotificationUser" />
           <NavigationProperty Name="Projects" Relationship="CmAgencyModel.FK_Project_User" FromRole="User" ToRole="Project" />
           <NavigationProperty Name="Projects1" Relationship="CmAgencyModel.FK_Project_User1" FromRole="User" ToRole="Project" />
           <NavigationProperty Name="Tasks" Relationship="CmAgencyModel.FK_Task_User" FromRole="User" ToRole="Task" />
           <NavigationProperty Name="Teams" Relationship="CmAgencyModel.FK_Team_User" FromRole="User" ToRole="Team" />
-          <NavigationProperty Name="NotificationUsers" Relationship="CmAgencyModel.FK_NotificationUser_User" FromRole="User" ToRole="NotificationUser" />
+          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_User_Team" FromRole="User" ToRole="Team" />
+          <NavigationProperty Name="UserProjects" Relationship="CmAgencyModel.FK_UserProject_User" FromRole="User" ToRole="UserProject" />
           <NavigationProperty Name="UserTasks" Relationship="CmAgencyModel.FK_UserTask_User" FromRole="User" ToRole="UserTask" />
           <NavigationProperty Name="UserTeams" Relationship="CmAgencyModel.FK_UserTeam_User" FromRole="User" ToRole="UserTeam" />
-          <NavigationProperty Name="Projects2" Relationship="CmAgencyModel.UserProject" FromRole="User" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="UserProject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="CmAgencyModel.FK_UserProject_Project1" FromRole="UserProject" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserProject_User" FromRole="UserProject" ToRole="User" />
         </EntityType>
         <EntityType Name="UserTask">
           <Key>
@@ -885,18 +920,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <Property Name="IsAssigned" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_UserTask_Task" FromRole="UserTask" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTask_User" FromRole="UserTask" ToRole="User" />
-        </EntityType>
-        <EntityType Name="NotificationUser">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="NotificationID" />
-            <PropertyRef Name="IsRead" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="NotificationID" Type="Int32" Nullable="false" />
-          <Property Name="IsRead" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Notification" Relationship="CmAgencyModel.FK_NotificationUser_Notification" FromRole="NotificationUser" ToRole="Notification" />
-          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_NotificationUser_User" FromRole="NotificationUser" ToRole="User" />
         </EntityType>
         <EntityType Name="TaskDependency">
           <Key>
@@ -913,17 +936,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_TaskDependency_Task" FromRole="TaskDependency" ToRole="Task" />
           <NavigationProperty Name="Task1" Relationship="CmAgencyModel.FK_TaskDependency_Task1" FromRole="TaskDependency" ToRole="Task" />
-        </EntityType>
-        <EntityType Name="TeamProject">
-          <Key>
-            <PropertyRef Name="TeamID" />
-            <PropertyRef Name="ProjectID" />
-          </Key>
-          <Property Name="ID" Type="Int32" />
-          <Property Name="TeamID" Type="Int32" Nullable="false" />
-          <Property Name="ProjectID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="CmAgencyModel.FK_TeamProject_Project" FromRole="TeamProject" ToRole="Project" />
-          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_TeamProject_Team" FromRole="TeamProject" ToRole="Team" />
         </EntityType>
         <Association Name="FK_Attachment_Task">
           <End Type="CmAgencyModel.Task" Role="Task" Multiplicity="1" />
@@ -1009,6 +1021,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_NotificationUser_User">
+          <End Type="CmAgencyModel.User" Role="User" Multiplicity="1" />
+          <End Type="CmAgencyModel.NotificationUser" Role="NotificationUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NotificationUser">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Project_User">
           <End Type="CmAgencyModel.User" Role="User" Multiplicity="1" />
           <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="*" />
@@ -1041,6 +1065,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="TeamProject">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProject_Project1">
+          <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="CmAgencyModel.UserProject" Role="UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserProject">
               <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1117,6 +1153,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_User_Team">
+          <End Type="CmAgencyModel.Team" Role="Team" Multiplicity="0..1" />
+          <End Type="CmAgencyModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserTeam_Team">
           <End Type="CmAgencyModel.Team" Role="Team" Multiplicity="1" />
           <End Type="CmAgencyModel.UserTeam" Role="UserTeam" Multiplicity="*" />
@@ -1129,14 +1177,14 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_NotificationUser_User">
+        <Association Name="FK_UserProject_User">
           <End Type="CmAgencyModel.User" Role="User" Multiplicity="1" />
-          <End Type="CmAgencyModel.NotificationUser" Role="NotificationUser" Multiplicity="*" />
+          <End Type="CmAgencyModel.UserProject" Role="UserProject" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="NotificationUser">
+            <Dependent Role="UserProject">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1164,10 +1212,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="UserProject">
-          <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="*" />
-          <End Type="CmAgencyModel.User" Role="User" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1259,6 +1303,16 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="NotificationUsers">
+            <EntityTypeMapping TypeName="CmAgencyModel.NotificationUser">
+              <MappingFragment StoreEntitySet="NotificationUser">
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="CmAgencyModel.Project">
               <MappingFragment StoreEntitySet="Project">
@@ -1306,9 +1360,19 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TeamProjects">
+            <EntityTypeMapping TypeName="CmAgencyModel.TeamProject">
+              <MappingFragment StoreEntitySet="TeamProject">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CmAgencyModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
                 <ScalarProperty Name="IsManager" ColumnName="IsManager" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
@@ -1323,6 +1387,15 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserProjects">
+            <EntityTypeMapping TypeName="CmAgencyModel.UserProject">
+              <MappingFragment StoreEntitySet="UserProject">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UserTasks">
             <EntityTypeMapping TypeName="CmAgencyModel.UserTask">
               <MappingFragment StoreEntitySet="UserTask">
@@ -1331,15 +1404,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="TaskID" ColumnName="TaskID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NotificationUsers">
-            <EntityTypeMapping TypeName="CmAgencyModel.NotificationUser">
-              <MappingFragment StoreEntitySet="NotificationUser">
-                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
-                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1356,23 +1420,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TeamProjects">
-            <EntityTypeMapping TypeName="CmAgencyModel.TeamProject">
-              <MappingFragment StoreEntitySet="TeamProject">
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="UserProject" TypeName="CmAgencyModel.UserProject" StoreEntitySet="UserProject">
-            <EndProperty Name="User">
-              <ScalarProperty Name="ID" ColumnName="UserID" />
-            </EndProperty>
-            <EndProperty Name="Project">
-              <ScalarProperty Name="ID" ColumnName="ProjectID" />
-            </EndProperty>
-          </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

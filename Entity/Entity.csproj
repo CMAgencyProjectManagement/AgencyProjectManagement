@@ -104,6 +104,9 @@
     <Compile Include="User.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserProject.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserTask.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
