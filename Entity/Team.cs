@@ -17,8 +17,8 @@ namespace Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Team()
         {
+            this.TeamProjects = new HashSet<TeamProject>();
             this.UserTeams = new HashSet<UserTeam>();
-            this.Projects = new HashSet<Project>();
         }
     
         public int ID { get; set; }
@@ -29,8 +29,8 @@ namespace Entity
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserTeam> UserTeams { get; set; }
+        public virtual ICollection<TeamProject> TeamProjects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<UserTeam> UserTeams { get; set; }
     }
 }

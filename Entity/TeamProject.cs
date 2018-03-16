@@ -12,15 +12,13 @@ namespace Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class UserTask
+    public partial class TeamProject
     {
-        public int ID { get; set; }
-        public int TaskID { get; set; }
-        public int UserID { get; set; }
-        public bool IsFollow { get; set; }
-        public bool IsAssigned { get; set; }
+        public Nullable<int> ID { get; set; }
+        public int TeamID { get; set; }
+        public int ProjectID { get; set; }
     
-        public virtual Task Task { get; set; }
-        public virtual User User { get; set; }
+        public virtual Project Project { get; set; }
+        public virtual Team Team { get; set; }
     }
 }
