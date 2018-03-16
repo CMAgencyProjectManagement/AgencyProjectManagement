@@ -97,18 +97,40 @@ namespace Web.Controllers
             }
         }
 
+
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult CreateUser(CreateUserModel createUserModel)
         {
+
             try
             {
                 if (ModelState.IsValid)
                 {
+
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
+
                         UserService userService = new UserService(db);
+                        Boolean flag = true;
+                        if (userService.CheckDuplicatedUsername(createUserModel.Username))
+                        {
+                            ModelState.AddModelError("Username", "Username is taken");
+                            //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                            flag = false;
+                        }
+                        
+                        if (createUserModel.Birthdate != null)
+                        {
+                            if (DateTime.Parse(createUserModel.Birthdate) > DateTime.Now)
+                            {
+                                ModelState.AddModelError("Birthdate", "Birthdate must be smaller than the current time ");
+                                // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                                flag = false;
+                            }
+                        }
+                        if(flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         DateTime? birthdate = null;
                         if (createUserModel.Birthdate != null)
                         {
@@ -177,6 +199,12 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         UserService userService = new UserService(db);
+                        if (updateUserModel.Birthdate > DateTime.Now)
+                        {
+                            ModelState.AddModelError("Birthdate", "Birthdate is greater than the current time ");
+                            return Content(HttpStatusCode.BadRequest,
+                            ResponseHelper.GetExceptionResponse(ModelState));
+                        }
                         User updatedUser = userService.Updateuser(
                             updateUserModel.ID,
                             updateUserModel.Name,

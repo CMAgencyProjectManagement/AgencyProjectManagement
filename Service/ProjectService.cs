@@ -15,6 +15,8 @@ namespace Service
     {
         private readonly CmAgencyEntities db;
 
+        
+
         public ProjectService(CmAgencyEntities db)
         {
             this.db = db;
@@ -44,7 +46,7 @@ namespace Service
         /// <param name="startDate"></param>
         /// <param name="creator">creator id</param>
         /// <returns>new project with Id</returns>
-        public Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
+        public Project CreateProject(string name, string description, DateTime? deadline, DateTime? startDate,
             User creator)
         {
             Project newProject = new Project
@@ -70,7 +72,17 @@ namespace Service
             ListService listService = new ListService(db);
             return listService.GetListOfTask(taskId).Project;
         }
-
+        //public bool CheckDuplicatedUsername(string username)
+        //{
+        //    var users = db.Users.Where(user => user.Username == username).ToList();
+        //    return users.Count > 0;
+        //}
+        public bool CheckDuplicatedNameOfProject(string projectname)
+        {
+            var projects = db.Projects.Where(project => project.Name == projectname).ToList();
+            return projects.Count > 0;
+        }
+       
         public Project UpdateProject(
             int id,
             string name,
@@ -109,7 +121,7 @@ namespace Service
             }
         }
 
-        public Project GetProject(int id)
+        public Project GetProjectByID(int id)
         {
             return db.Projects.Find(id);
         }

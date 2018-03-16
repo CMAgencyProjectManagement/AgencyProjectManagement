@@ -25,6 +25,7 @@ namespace Entity
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<UserTeam> UserTeams { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<CheckList> CheckLists { get; set; }
         public virtual DbSet<CheckListItem> CheckListItems { get; set; }
@@ -35,9 +36,9 @@ namespace Entity
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserTeam> UserTeams { get; set; }
+        public virtual DbSet<UserTask> UserTasks { get; set; }
         public virtual DbSet<NotificationUser> NotificationUsers { get; set; }
         public virtual DbSet<TaskDependency> TaskDependencies { get; set; }
-        public virtual DbSet<UserTask> UserTasks { get; set; }
+        public virtual DbSet<TeamProject> TeamProjects { get; set; }
     }
 }

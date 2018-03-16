@@ -54,8 +54,10 @@ export class ViewUserComponent implements OnInit {
       .then((value) => {
         let users = value as User[];
         switch (attr) {
-          case 'No.': {
-            this.users = users.reverse();
+          case 'fullname.': {
+            this.users = _.sort(users, (user) => {
+              return user.username
+            });
             this.setPage(1);
             break;
           }
