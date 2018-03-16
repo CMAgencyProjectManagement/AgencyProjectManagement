@@ -7,73 +7,37 @@
 
   <div style="align-content: left">
     <div class="card align-items-left">
-
+      <div class="card-header">
+        <strong>Team Management</strong>
+      </div>
       <div class="card-body">
         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
           <table class="table table-bordered">
             <thead class="thead-dark">
               <tr>
-                <th>No.</th>
+                <th style="width: 100px">No.</th>
 
-                <th>Name</th>
-                <th>Team leader</th>
+                <th style="width: 300px;">Name</th>
+                <th style="width: 400px">Team Leader</th>
+                <th>Created Date</th>
                 <!-- <th>Created by</th>
               <th>Created date</th>
               <th>Is close</th>-->
-                <th>Change team leader</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let team of teams;let i = index">
                 <th scope="row">{{i+1}}</th>
                 <td>
-                    <a href="#/team/detail?teamid={{team.id}}">{{team.name}}</a>
-                    <!-- {{team.name}} -->
+                  <a href="#/team/detail?teamid={{team.id}}" style="color: blue">{{team.name}}</a>
+                  <!-- {{team.name}} -->
                 </td>
-                <td>{{team.manager.username}}</td>
-                <!--  <td>{{team.createdBy.username}}</td>
-              <td>{{team.createdDate}}</td>
-          
-              <td>
-                <label class="switch switch-default switch-pill switch-primary-outline-alt">
-                  <input type="checkbox" class="switch-input" [attr.checked]="team.isClosed ? '' : null">
-                  <span class="switch-label"></span>
-                  <span class="switch-handle"></span>
-                </label>
-              </td>
-            -->
                 <td>
-                  <a href="#/team/update?teamid={{team.id}}">
-                    <button type="button" class="btn btn-primary">Change</button>
-                  </a>
-                  <!--
-                  <a href="#/team/delete?teamid={{team.id}}">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                  </a>
-                -->
-
-                  <!-- Modal -->
-                  <!--
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Warning !!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        Are you sure you want to delete this file?
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
+                  <p>{{team.manager.username}} </p>
+                </td>
+                <td>
+                  <p>{{team.createdDate}}</p>
                 </td>
               </tr>
             </tbody>
