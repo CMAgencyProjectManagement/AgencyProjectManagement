@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 using Entity;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
@@ -88,52 +89,72 @@ namespace Web.Controllers
                         Boolean flag = true;
                         if (projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
                         {
-                            ModelState.AddModelError("Name", "Username is taken");
+                            ModelState.AddModelError("Name", "Project name is taken");
                             flag = false;
                             //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                         }
-                        if (createProjectModel.StartDate != null || createProjectModel.Deadline != null)
+
+
+                        if (createProjectModel.StartDate != null && createProjectModel.Deadline != null)
                         {
-                            if (createProjectModel.Deadline != null)
+
+                            if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Parse(createProjectModel.Deadline))
                             {
-                                if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Parse(createProjectModel.Deadline))
-                                {
-                                    ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
-                                    flag = false;
-                                    //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
-                                }
+                                ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
+                                flag = false;
+                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
-                            if (createProjectModel.StartDate!=null)
+
+
+                            if (DateTime.Parse(createProjectModel.Deadline) < DateTime.Parse(createProjectModel.StartDate))
                             {
-                                if (DateTime.Parse(createProjectModel.Deadline) < DateTime.Parse(createProjectModel.StartDate))
-                                {
-                                    ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
-                                    flag = false;
-                                    // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
-                                }
+                                ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
+                                flag = false;
+                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
-                            
+                        }
+                        if (createProjectModel.StartDate != null)
+                        {
                             if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Now)
                             {
                                 ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
                                 flag = false;
-                                //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
+                        }
+                        if (createProjectModel.Deadline != null)
+                        {
                             if (DateTime.Parse(createProjectModel.Deadline) > DateTime.Now)
                             {
                                 ModelState.AddModelError("Deadline", "Deadline must be smaller than the current time ");
                                 flag = false;
                             }
-                            
                         }
                         
-                        if(flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         UserService userService = new UserService(db);
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
-                        DateTime startTime = DateTime.Parse(createProjectModel.StartDate);
-                        DateTime deadline = DateTime.Parse(createProjectModel.Deadline);
-
+                        
+                        DateTime? startTime = null;
+                        if (createProjectModel.StartDate != null)
+                        {
+                            DateTime dt;
+                            if (DateTime.TryParse(createProjectModel.StartDate, out dt))
+                            {
+                                startTime = dt;
+                            }
+                        }
+                        DateTime? deadline = null;
+                        if (createProjectModel.Deadline != null)
+                        {
+                            DateTime dt;
+                            if (DateTime.TryParse(createProjectModel.Deadline, out dt))
+                            {
+                                deadline = dt;
+                            }
+                        }
                         Project newProject = projectService.CreateProject(
                             createProjectModel.Name,
                             createProjectModel.Description,
@@ -185,6 +206,55 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         ProjectService projectService = new ProjectService(db);
+                        Boolean flag = true;
+                        //if (projectService.CheckDuplicatedNameOfProject(updateProjectViewModel.name))
+                        //{
+                        //    ModelState.AddModelError("Name", "Project name is taken");
+                        //    flag = false;
+                        //    //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+                        //}
+
+
+                        if (updateProjectViewModel.startdate != null && updateProjectViewModel.deadline != null)
+                        {
+
+                            if (DateTime.Parse(updateProjectViewModel.startdate) > DateTime.Parse(updateProjectViewModel.deadline))
+                            {
+                                ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
+                                flag = false;
+                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                            }
+
+
+                            if (DateTime.Parse(updateProjectViewModel.deadline) < DateTime.Parse(updateProjectViewModel.startdate))
+                            {
+                                ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
+                                flag = false;
+                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                            }
+                        }
+                        if (updateProjectViewModel.startdate != null)
+                        {
+                            if (DateTime.Parse(updateProjectViewModel.startdate) > DateTime.Now)
+                            {
+                                ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
+                                flag = false;
+                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                            }
+                        }
+                        if (updateProjectViewModel.deadline != null)
+                        {
+                            if (DateTime.Parse(updateProjectViewModel.deadline) > DateTime.Now)
+                            {
+                                ModelState.AddModelError("Deadline", "Deadline must be smaller than the current time ");
+                                flag = false;
+                            }
+                        }
+
+
+
+
+                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         var updatedProject = projectService.UpdateProject(
                             updateProjectViewModel.id,
                             updateProjectViewModel.name,
