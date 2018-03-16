@@ -72,6 +72,7 @@ namespace Service
         public JObject ParseToJson(Team team, bool includeManager = true, bool includeUsers = false,
             string avatarPath = null)
         {
+            
             UserService userService = new UserService(db);
             var creator = userService.GetUser(team.CreatedBy);
 

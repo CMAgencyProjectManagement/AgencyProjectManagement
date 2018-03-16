@@ -198,8 +198,20 @@ namespace Service
             if (includeTeam)
             {
                 TeamService teamService = new TeamService(db);
-                Team team = db.UserTeams.First(userteam => userteam.UserID == user.ID).Team;
-                result["team"] = teamService.ParseToJson(team);
+                List<UserTeam> userTeams = db.UserTeams.Where(userteam => userteam.UserID == user.ID).ToList();
+                if(userTeams.Count > 0)
+                {
+                    Team team = userTeams.First().Team;
+                    result["team"] = teamService.ParseToJson(team);
+
+                }
+                else
+                {
+                    result["team"] = null;
+                }
+               
+                
+                
             }
 
 
