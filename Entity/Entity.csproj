@@ -98,6 +98,9 @@
     <Compile Include="Team.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TeamProject.cs">
+      <DependentUpon>CmAgencyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>

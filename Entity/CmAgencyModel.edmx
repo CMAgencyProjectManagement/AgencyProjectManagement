@@ -107,7 +107,7 @@ warning 6002: The table/view 'marketingagency.dbo.NotificationUser' does not hav
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Description" Type="text" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
@@ -153,6 +153,7 @@ warning 6002: The table/view 'marketingagency.dbo.TeamProject' does not have a p
             <PropertyRef Name="TeamID" />
             <PropertyRef Name="ProjectID" />
           </Key>
+          <Property Name="ID" Type="int" />
           <Property Name="TeamID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" Nullable="false" />
         </EntityType>
@@ -182,15 +183,11 @@ warning 6002: The table/view 'marketingagency.dbo.UserProject' does not have a p
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserTask">
           <Key>
-            <PropertyRef Name="TaskID" />
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="IsFollow" />
-            <PropertyRef Name="IsAssigned" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="TaskID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="IsFollow" Type="bit" Nullable="false" />
@@ -479,6 +476,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Team" EntityType="Self.Team" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTask" EntityType="Self.UserTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTeam" EntityType="Self.UserTeam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationUser" EntityType="Self.NotificationUser" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -500,6 +498,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           </EntitySet>
           <EntitySet Name="TeamProject" EntityType="Self.TeamProject" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [TeamProject].[ID] AS [ID], 
     [TeamProject].[TeamID] AS [TeamID], 
     [TeamProject].[ProjectID] AS [ProjectID]
     FROM [dbo].[TeamProject] AS [TeamProject]</DefiningQuery>
@@ -509,14 +508,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
     [UserProject].[UserID] AS [UserID], 
     [UserProject].[ProjectID] AS [ProjectID]
     FROM [dbo].[UserProject] AS [UserProject]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UserTask" EntityType="Self.UserTask" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserTask].[TaskID] AS [TaskID], 
-    [UserTask].[UserID] AS [UserID], 
-    [UserTask].[IsFollow] AS [IsFollow], 
-    [UserTask].[IsAssigned] AS [IsAssigned]
-    FROM [dbo].[UserTask] AS [UserTask]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Attachment_Task" Association="Self.FK_Attachment_Task">
             <End Role="Task" EntitySet="Task" />
@@ -612,6 +603,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
     <edmx:ConceptualModels>
       <Schema Namespace="CmAgencyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CmAgencyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserTeams" EntityType="CmAgencyModel.UserTeam" />
           <EntitySet Name="Attachments" EntityType="CmAgencyModel.Attachment" />
           <EntitySet Name="CheckLists" EntityType="CmAgencyModel.CheckList" />
           <EntitySet Name="CheckListItems" EntityType="CmAgencyModel.CheckListItem" />
@@ -622,10 +614,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           <EntitySet Name="Tasks" EntityType="CmAgencyModel.Task" />
           <EntitySet Name="Teams" EntityType="CmAgencyModel.Team" />
           <EntitySet Name="Users" EntityType="CmAgencyModel.User" />
-          <EntitySet Name="UserTeams" EntityType="CmAgencyModel.UserTeam" />
+          <EntitySet Name="UserTasks" EntityType="CmAgencyModel.UserTask" />
           <EntitySet Name="NotificationUsers" EntityType="CmAgencyModel.NotificationUser" />
           <EntitySet Name="TaskDependencies" EntityType="CmAgencyModel.TaskDependency" />
-          <EntitySet Name="UserTasks" EntityType="CmAgencyModel.UserTask" />
+          <EntitySet Name="TeamProjects" EntityType="CmAgencyModel.TeamProject" />
           <AssociationSet Name="FK_Attachment_Task" Association="CmAgencyModel.FK_Attachment_Task">
             <End Role="Task" EntitySet="Tasks" />
             <End Role="Attachment" EntitySet="Attachments" />
@@ -662,6 +654,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
+          <AssociationSet Name="FK_TeamProject_Project" Association="CmAgencyModel.FK_TeamProject_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="TeamProject" EntitySet="TeamProjects" />
+          </AssociationSet>
           <AssociationSet Name="FK_Task_User" Association="CmAgencyModel.FK_Task_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Task" EntitySet="Tasks" />
@@ -682,6 +678,10 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
             <End Role="User" EntitySet="Users" />
             <End Role="Team" EntitySet="Teams" />
           </AssociationSet>
+          <AssociationSet Name="FK_TeamProject_Team" Association="CmAgencyModel.FK_TeamProject_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="TeamProject" EntitySet="TeamProjects" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserTeam_Team" Association="CmAgencyModel.FK_UserTeam_Team">
             <End Role="Team" EntitySet="Teams" />
             <End Role="UserTeam" EntitySet="UserTeams" />
@@ -698,15 +698,21 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
             <End Role="User" EntitySet="Users" />
             <End Role="UserTeam" EntitySet="UserTeams" />
           </AssociationSet>
-          <AssociationSet Name="TeamProject" Association="CmAgencyModel.TeamProject">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Team" EntitySet="Teams" />
-          </AssociationSet>
           <AssociationSet Name="UserProject" Association="CmAgencyModel.UserProject">
             <End Role="Project" EntitySet="Projects" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
+        <EntityType Name="UserTeam">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_UserTeam_Team" FromRole="UserTeam" ToRole="Team" />
+          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTeam_User" FromRole="UserTeam" ToRole="User" />
+          </EntityType>
         <EntityType Name="Attachment">
           <Key>
             <PropertyRef Name="ID" />
@@ -803,14 +809,14 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           <NavigationProperty Name="Lists" Relationship="CmAgencyModel.FK_Stage_Project" FromRole="Project" ToRole="List" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Project_User" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CmAgencyModel.FK_Project_User1" FromRole="Project" ToRole="User" />
-          <NavigationProperty Name="Teams" Relationship="CmAgencyModel.TeamProject" FromRole="Project" ToRole="Team" />
+          <NavigationProperty Name="TeamProjects" Relationship="CmAgencyModel.FK_TeamProject_Project" FromRole="Project" ToRole="TeamProject" />
           <NavigationProperty Name="Users" Relationship="CmAgencyModel.UserProject" FromRole="Project" ToRole="User" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
@@ -841,8 +847,8 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IsClosed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Team_User" FromRole="Team" ToRole="User" />
+          <NavigationProperty Name="TeamProjects" Relationship="CmAgencyModel.FK_TeamProject_Team" FromRole="Team" ToRole="TeamProject" />
           <NavigationProperty Name="UserTeams" Relationship="CmAgencyModel.FK_UserTeam_Team" FromRole="Team" ToRole="UserTeam" />
-          <NavigationProperty Name="Projects" Relationship="CmAgencyModel.TeamProject" FromRole="Team" ToRole="Project" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -868,15 +874,17 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           <NavigationProperty Name="UserTeams" Relationship="CmAgencyModel.FK_UserTeam_User" FromRole="User" ToRole="UserTeam" />
           <NavigationProperty Name="Projects2" Relationship="CmAgencyModel.UserProject" FromRole="User" ToRole="Project" />
         </EntityType>
-        <EntityType Name="UserTeam">
+        <EntityType Name="UserTask">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TaskID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_UserTeam_Team" FromRole="UserTeam" ToRole="Team" />
-          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTeam_User" FromRole="UserTeam" ToRole="User" />
+          <Property Name="IsFollow" Type="Boolean" Nullable="false" />
+          <Property Name="IsAssigned" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_UserTask_Task" FromRole="UserTask" ToRole="Task" />
+          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTask_User" FromRole="UserTask" ToRole="User" />
         </EntityType>
         <EntityType Name="NotificationUser">
           <Key>
@@ -906,19 +914,16 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
           <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_TaskDependency_Task" FromRole="TaskDependency" ToRole="Task" />
           <NavigationProperty Name="Task1" Relationship="CmAgencyModel.FK_TaskDependency_Task1" FromRole="TaskDependency" ToRole="Task" />
         </EntityType>
-        <EntityType Name="UserTask">
+        <EntityType Name="TeamProject">
           <Key>
-            <PropertyRef Name="TaskID" />
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="IsFollow" />
-            <PropertyRef Name="IsAssigned" />
+            <PropertyRef Name="TeamID" />
+            <PropertyRef Name="ProjectID" />
           </Key>
-          <Property Name="TaskID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="IsFollow" Type="Boolean" Nullable="false" />
-          <Property Name="IsAssigned" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_UserTask_Task" FromRole="UserTask" ToRole="Task" />
-          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTask_User" FromRole="UserTask" ToRole="User" />
+          <Property Name="ID" Type="Int32" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="CmAgencyModel.FK_TeamProject_Project" FromRole="TeamProject" ToRole="Project" />
+          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_TeamProject_Team" FromRole="TeamProject" ToRole="Team" />
         </EntityType>
         <Association Name="FK_Attachment_Task">
           <End Type="CmAgencyModel.Task" Role="Task" Multiplicity="1" />
@@ -1028,6 +1033,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TeamProject_Project">
+          <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="CmAgencyModel.TeamProject" Role="TeamProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeamProject">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Task_User">
           <End Type="CmAgencyModel.User" Role="User" Multiplicity="1" />
           <End Type="CmAgencyModel.Task" Role="Task" Multiplicity="*" />
@@ -1088,6 +1105,18 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TeamProject_Team">
+          <End Type="CmAgencyModel.Team" Role="Team" Multiplicity="1" />
+          <End Type="CmAgencyModel.TeamProject" Role="TeamProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeamProject">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserTeam_Team">
           <End Type="CmAgencyModel.Team" Role="Team" Multiplicity="1" />
           <End Type="CmAgencyModel.UserTeam" Role="UserTeam" Multiplicity="*" />
@@ -1136,10 +1165,6 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TeamProject">
-          <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="*" />
-          <End Type="CmAgencyModel.Team" Role="Team" Multiplicity="*" />
-        </Association>
         <Association Name="UserProject">
           <End Type="CmAgencyModel.Project" Role="Project" Multiplicity="*" />
           <End Type="CmAgencyModel.User" Role="User" Multiplicity="*" />
@@ -1150,6 +1175,15 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CmAgencyModelStoreContainer" CdmEntityContainer="CmAgencyEntities">
+          <EntitySetMapping Name="UserTeams">
+            <EntityTypeMapping TypeName="CmAgencyModel.UserTeam">
+              <MappingFragment StoreEntitySet="UserTeam">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Attachments">
             <EntityTypeMapping TypeName="CmAgencyModel.Attachment">
               <MappingFragment StoreEntitySet="Attachment">
@@ -1289,11 +1323,13 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserTeams">
-            <EntityTypeMapping TypeName="CmAgencyModel.UserTeam">
-              <MappingFragment StoreEntitySet="UserTeam">
+          <EntitySetMapping Name="UserTasks">
+            <EntityTypeMapping TypeName="CmAgencyModel.UserTask">
+              <MappingFragment StoreEntitySet="UserTask">
+                <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
+                <ScalarProperty Name="IsFollow" ColumnName="IsFollow" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1320,24 +1356,15 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserTasks">
-            <EntityTypeMapping TypeName="CmAgencyModel.UserTask">
-              <MappingFragment StoreEntitySet="UserTask">
-                <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
-                <ScalarProperty Name="IsFollow" ColumnName="IsFollow" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+          <EntitySetMapping Name="TeamProjects">
+            <EntityTypeMapping TypeName="CmAgencyModel.TeamProject">
+              <MappingFragment StoreEntitySet="TeamProject">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="TeamProject" TypeName="CmAgencyModel.TeamProject" StoreEntitySet="TeamProject">
-            <EndProperty Name="Team">
-              <ScalarProperty Name="ID" ColumnName="TeamID" />
-            </EndProperty>
-            <EndProperty Name="Project">
-              <ScalarProperty Name="ID" ColumnName="ProjectID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="UserProject" TypeName="CmAgencyModel.UserProject" StoreEntitySet="UserProject">
             <EndProperty Name="User">
               <ScalarProperty Name="ID" ColumnName="UserID" />
@@ -1346,7 +1373,7 @@ warning 6002: The table/view 'marketingagency.dbo.UserTask' does not have a prim
               <ScalarProperty Name="ID" ColumnName="ProjectID" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

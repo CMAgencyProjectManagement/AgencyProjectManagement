@@ -21,16 +21,15 @@
         <table class="table table-bordered">
           <thead>
           <tr>
-            <th (click)="sort('No.')">
-              <app-sort-icon [isDesc]="true">No.</app-sort-icon>
-            </th>
+            <th>No.</th>
             <th>Avatar</th>
-            <th>Full Name</th>
-            <th>Username</th>
-            <th>Birthdate</th>
-            <th>Team</th>
-            <th>Role</th>
-            <th>Status</th>
+            <th class="clickable" (click)="sort('fullname')">
+              <app-sort-icon [isDesc]="true">Full Name</app-sort-icon></th>
+            <th class="clickable">Username</th>
+            <th class="clickable">Birthdate</th>
+            <th class="clickable">Team</th>
+            <th class="clickable">Role</th>
+            <th class="clickable">Status</th>
           </tr>
           </thead>
           <tbody>
