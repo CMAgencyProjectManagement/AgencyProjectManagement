@@ -1,20 +1,26 @@
 <div class="card">
   <div class="card-header">
-    Profile
+    <strong>User Detail</strong>
   </div>
   <div class="card-body">
     <div id="AvaAndDe" class="row">
+
       <div id="left">
         <img class="img-circle" src="assets/img/avatars/5.jpg" height="100%" width="100%">
       </div>
       <div id="left">
-        <div><b id="name">Glady David</b></div>
+        <div>
+          <b id="name" *ngIf="foundUser" style="text-transform: uppercase">{{foundUser.username}}</b>
+        </div>
         <div id="team">Creative Department</div>
-        <div id="role">Manager   <span class="badge badge-success" style="font-size: 20px;">Active</span></div>
+        <div id="role">Manager
+          <span class="badge badge-success" style="font-size: 20px;">Active</span>
+        </div>
         <div id="phone">(+84) 93 523-5133</div>
-        <div><p id="email">lamtdse61743@fpt.edu.vn</p></div>
+        <div>
+          <p id="email">lamtdse61743@fpt.edu.vn</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
