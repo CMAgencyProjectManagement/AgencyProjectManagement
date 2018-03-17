@@ -8,68 +8,76 @@
       <div class="card-body animated fadeIn" *ngIf=!isPageLoading>
         <div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button"
-                    (click)="search(searchUsername.value)">
+            <button class="btn btn-primary" type="button" (click)="search(searchUsername.value)">
               <i class="fa fa-search"></i> Search
             </button>
           </span>
-          <input class="form-control" type="text"
-                 (input)="search(searchUsername.value)"
-                 #searchUsername>
+          <input class="form-control" type="text" (input)="search(searchUsername.value)" #searchUsername>
         </div>
         <br/>
         <table class="table table-bordered">
           <thead>
-          <tr>
-            <th>No.</th>
-            <th>Avatar</th>
-            <th class="clickable" (click)="sort('fullname')">
-              <app-sort-icon [isDesc]="true">Full Name</app-sort-icon></th>
-            <th class="clickable">Username</th>
-            <th class="clickable">Birthdate</th>
-            <th class="clickable">Team</th>
-            <th class="clickable">Role</th>
-            <th class="clickable">Status</th>
-          </tr>
+            <tr>
+              <th>No.</th>
+              <th>Avatar</th>
+              <th class="clickable" (click)="sort('fullname')">
+                <app-sort-icon [isDesc]="true">Full Name</app-sort-icon>
+              </th>
+              <th class="clickable">Username</th>
+              <th class="clickable">Birthdate</th>
+              <th class="clickable">Team</th>
+              <th class="clickable">Role</th>
+              <th class="clickable">Status</th>
+              <th class="clickable">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let user of pagedUsers;let i = index">
-            <th scope="row">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>
-            <td>
-              <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
-              <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
-            </td>
-            <td>
-                <a href="#/account/detail?id={{user.id}}"><p *ngIf="user.name">{{user.name}}</p></a>
-                <a href="#/account/detail?id={{user.id}}"><p *ngIf="!user.name">N/A</p></a>
-            </td>
-            <td>
+            <tr *ngFor="let user of pagedUsers;let i = index">
+              <th scope="row">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>
+              <td>
+                <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
+                <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
+              </td>
+              <td>
+                <p *ngIf="user.name">{{user.name}}</p>
+                <p *ngIf="!user.name">N/A</p>
+              </td>
+              <td>
 
-              <a href="#/account/update?id={{user.id}}">{{user.username}}</a>
-            </td>
-            <td>
-              <p *ngIf="user.birthDate">{{user.birthDate}}</p>
-              <p *ngIf="!user.birthDate">N/A</p>
-            </td>
-            <td>
-              <p>{{user.team.name}}</p>
-            </td>
-            <td>
-              <strong><p *ngIf="user.isAdmin">Admin</p></strong>
-              <strong><p *ngIf="!user.isAdmin && user.isManager">Manager</p></strong>
-              <p *ngIf="!user.isAdmin && !user.isManager">Staff</p>
-            </td>
-            <td>
-              <span class="badge badge-success"
-                    *ngIf="user.isActive">
-                Active
-              </span>
-              <span class="badge badge-danger"
-                    *ngIf="!user.isActive">
-                Banned
-              </span>
-            </td>
-          </tr>
+                <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+              </td>
+              <td>
+                <p *ngIf="user.birthDate">{{user.birthDate}}</p>
+                <p *ngIf="!user.birthDate">N/A</p>
+              </td>
+              <td>
+                <p>{{user.team.name}}</p>
+              </td>
+              <td>
+                <strong>
+                  <p *ngIf="user.isAdmin">Admin</p>
+                </strong>
+                <strong>
+                  <p *ngIf="!user.isAdmin && user.isManager">Manager</p>
+                </strong>
+                <p *ngIf="!user.isAdmin && !user.isManager">Staff</p>
+              </td>
+              <td>
+                <span class="badge badge-success" *ngIf="user.isActive">
+                  Active
+                </span>
+                <span class="badge badge-danger" *ngIf="!user.isActive">
+                  Banned
+                </span>
+              </td>
+              <td>
+
+                <a href="#/account/update?id={{user.id}}">
+                  <button type="button" class="btn btn-primary">Update</button>
+                </a>
+
+              </td>
+            </tr>
           </tbody>
         </table>
 
