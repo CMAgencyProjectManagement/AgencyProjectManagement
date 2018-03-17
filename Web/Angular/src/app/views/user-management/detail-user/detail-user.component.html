@@ -6,19 +6,29 @@
     <div id="AvaAndDe" class="row">
 
       <div id="left">
-        <img class="img-circle" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
+        <img id="img" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
       </div>
-      <div id="left">
+      <div id="right">
         <div>
-          <b id="name" *ngIf="foundUser" style="text-transform: uppercase">{{foundUser.username}}</b>
+          <b id="name" *ngIf="foundUser" style="text-transform: uppercase">{{foundUser.name}}</b>
         </div>
-        <div id="team" *ngIf="foundUser">{{foundUser.team}}</div>
-        <div id="role" *ngIf="foundUser">{{foundUser.isManager}}
+        <div id="username" *ngIf="foundUser">
+          <span>User name: </span> {{foundUser.username}}
+        </div>
+        <div id="team" *ngIf="foundUser">
+          <span>Team: </span> {{foundUser.team}}</div>
+        <!-- <div id="role" *ngIf="foundUser">
+          <span>Role: </span>{{foundUser.isManager}}
           <span class="badge badge-success" style="font-size: 20px;">Active</span>
+        </div> -->
+        <div id="phone" *ngIf="foundUser">
+          <span>Phone number:</span> {{foundUser.phone}}</div>
+        <div id="email" *ngIf="foundUser">
+          <span>Email: </span> {{foundUser.email}}
         </div>
-        <div id="phone" class="row" *ngIf="foundUser">(+84) <span>{{foundUser.phone}}</span></div>
         <div>
-          <p id="email" *ngIf="foundUser">{{foundUser.email}}</p>
+          <p id="birthdate" *ngIf="foundUser">
+            <span>Date of birth: </span> {{foundUser.birthDate}}</p>
         </div>
       </div>
     </div>
