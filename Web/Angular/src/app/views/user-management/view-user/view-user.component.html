@@ -40,10 +40,11 @@
               <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
             </td>
             <td>
-              <p *ngIf="user.name">{{user.name}}</p>
-              <p *ngIf="!user.name">N/A</p>
+                <a href="#/account/detail?id={{user.id}}"><p *ngIf="user.name">{{user.name}}</p></a>
+                <a href="#/account/detail?id={{user.id}}"><p *ngIf="!user.name">N/A</p></a>
             </td>
             <td>
+
               <a href="#/account/update?id={{user.id}}">{{user.username}}</a>
             </td>
             <td>
