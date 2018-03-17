@@ -6,19 +6,19 @@
     <div id="AvaAndDe" class="row">
 
       <div id="left">
-        <img class="img-circle" src="assets/img/avatars/5.jpg" height="100%" width="100%">
+        <img class="img-circle" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
       </div>
       <div id="left">
         <div>
           <b id="name" *ngIf="foundUser" style="text-transform: uppercase">{{foundUser.username}}</b>
         </div>
-        <div id="team">Creative Department</div>
-        <div id="role">Manager
+        <div id="team" *ngIf="foundUser">{{foundUser.team}}</div>
+        <div id="role" *ngIf="foundUser">{{foundUser.isManager}}
           <span class="badge badge-success" style="font-size: 20px;">Active</span>
         </div>
-        <div id="phone">(+84) 93 523-5133</div>
+        <div id="phone" class="row" *ngIf="foundUser">(+84) <span>{{foundUser.phone}}</span></div>
         <div>
-          <p id="email">lamtdse61743@fpt.edu.vn</p>
+          <p id="email" *ngIf="foundUser">{{foundUser.email}}</p>
         </div>
       </div>
     </div>

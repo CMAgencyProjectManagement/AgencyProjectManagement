@@ -43,7 +43,13 @@ export class DetailUserComponent implements OnInit {
             this.foundUser = this.users[i];
             this.selectedUser.push({
               id: this.foundUser.id,
-              itemName: this.foundUser.username
+              itemName: this.foundUser.username,
+              itemAvatar: this.foundUser.avatar,
+              itemPhone: this.foundUser.phone,
+              itemTeam: this.foundUser.team,
+              itemEmail: this.foundUser.email,
+              itemRole: this.foundUser.isManager
+
             });
           }
         }
