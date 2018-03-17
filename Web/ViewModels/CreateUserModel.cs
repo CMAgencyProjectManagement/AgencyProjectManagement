@@ -20,7 +20,7 @@ namespace Web.ViewModels
         [Phone]
         [MaxLength(255)]
         public string Phone { get; set; }
-        [AgencyDateValidation]
+        [AgencyDateValidation(ErrorMessage = "Invalid time format")]
         public string Birthdate { get; set; }
         [Required]
         [EmailAddress]

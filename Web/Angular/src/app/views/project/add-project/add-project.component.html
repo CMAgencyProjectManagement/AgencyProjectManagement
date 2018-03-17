@@ -8,7 +8,7 @@
         <div class="card-body" style="font-size:23px">
           <div [formGroup]="ProjectForm" class="form-horizontal">
             <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="projectName-input">Project Name</label>
+              <label class="col-md-3 col-form-label" for="projectName-input">Project Name <span style="color: #ee0d0d"><strong>*</strong></span></label>
               <div class="col-md-6">
                 <input type="text" id="projectName-input" name="projectName-input" class="form-control"
                        formControlName="projectName" placeholder="Please enter the project's name">
@@ -22,7 +22,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="projectStartDate-input">Start Date: </label>
+              <label class="col-md-3 col-form-label" for="projectStartDate-input">Start Date </label>
               <div class="col-md-6">
                 <my-date-picker name="projectStartDate-input"
                                 [options]="myDatePickerOptions" class="form-control-mydatepicker"
@@ -30,10 +30,10 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-3 col-form-label">Deadline: </label>
+              <label class="col-md-3 col-form-label">Deadline </label>
               <div class="col-md-6">
                 <my-date-picker name="projectDeadline-input" [options]="myDatePickerOptions"
-                                class="form-control-mydatepicker" formControlName="projectDeadline"></my-date-picker>
+                                class="form-control-mydatepicker" formControlName="projectDeadline" disable="true"></my-date-picker>
               </div>
             </div>
             <div class="row">

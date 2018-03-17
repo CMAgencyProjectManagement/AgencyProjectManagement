@@ -14,7 +14,7 @@ namespace Entity
     
     public partial class TeamProject
     {
-        public Nullable<int> ID { get; set; }
+        public int ID { get; set; }
         public int TeamID { get; set; }
         public int ProjectID { get; set; }
     

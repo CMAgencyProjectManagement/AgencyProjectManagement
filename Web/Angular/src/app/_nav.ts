@@ -27,17 +27,14 @@ const admin_navigation = [
   },
   {
     name: 'Team',
-    url: '/team/view',
-    icon: 'icon-people'
-    
-  },
-  {
-    name: 'detail-team',
-    url: '/team/detail',
-    icon: 'icon-team',
-    badge: {
-      variant: 'info'
-    }
+    url: '/team',
+    icon: 'icon-people',
+    children: [
+      {
+        name: 'View',
+        url: '/team/view',
+      }
+    ]
   },
   /*
   {

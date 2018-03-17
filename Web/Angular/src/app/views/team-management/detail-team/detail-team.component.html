@@ -1,41 +1,46 @@
 <div style="align-content: left">
   <div class="card align-items-left">
-
+    <div class="card-header">
+      <strong>Team Detail</strong>
+    </div>
     <div class="card-body">
       <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <h1>
-          <div class="col-md-12 col-form-label" *ngIf="foundTeam">
-            {{foundTeam.name}}
-          </div>
-        </h1>
         <div class="form-group row">
-
-          <label class="col-md-2 col-form-label" for="teamLeader-input">Team leader:</label>
-          <!-- phan card -->
-          <div class="col-md-2">
-            <div class="card  align-items-md-center" style="position: relative;
-            left: -35px;
-            width: 10rem">
-              <div class="card-body">
-                <img class="img-avatar" alt="admin@bootstrapmaster.com" src="..." alt="Card image cap">
-                <h5 class="card-title">
-                  <a href="#/dashboard">Dien Doan </a>
-                </h5>
-              </div>
+          <h1>
+            <div class="col-md-12 col-form-label" *ngIf="foundTeam" style="text-transform: uppercase">
+              {{foundTeam.name}}
             </div>
-          </div>
-
-
+          </h1>
+          <img class="img-circle" src="assets/img/teampic/1.jpg" height="900px" width="100%">
         </div>
-
-
         <div class="form-group row">
-          <label class="col-md-2 col-form-label" for="team-member-input">Team member:</label>
-
-
-
+          <div id="description">
+            In the advertising, digital or marketing sectors, the creative team is responsible for generating attention-grabbing ideas
+            that will entice the consumer or target audience. Members of the team work together to develop conceptual campaigns
+            designed to stand apart from competitors.
+            <br/> The creative team usually consists of an established art director and a copywriter, with some companies looking
+            for individuals who have both skill sets. However, other members involved can include web developers and editors.
+            <br/> Members of this team need to be confident enough to share and sell their ideas, and perceptive enough to know
+            when to encourage others to share theirs. Team members should also be strategic in their thinking, so they can
+            organise thoughts and develop plans to suit the expectations of the client.
+            <br/> Creativity is all about nurturing imagination and turning thoughts into the ideas that give a project the edge.
+            So agencies will expect team members to have a positive approach that encourages their creativity to flourish.
+          </div>
+          <div>
+            <img class="img-circle" src="assets/img/avatars/5.jpg" height="100%" width="100%" id="createdperson">
+          </div>
+          <div>
+            <b id="name">Tran Loi Phong</b>
+            <p id="role">Manager <span class="badge badge-success" style="font-size: 20px;">Active</span></p>
+            <a href="#/account/detail" id="viewInfo">
+              <button type="button" class="btn btn-primary" style="color: black;
+              background-color: white;
+              border-color: black;" id="viewprofilebutton">
+                View profile
+              </button>
+              </a>
+          </div>
         </div>
-
       </form>
     </div>
   </div>

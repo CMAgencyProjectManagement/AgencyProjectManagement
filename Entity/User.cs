@@ -17,14 +17,14 @@ namespace Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.NotificationUsers = new HashSet<NotificationUser>();
             this.Projects = new HashSet<Project>();
             this.Projects1 = new HashSet<Project>();
             this.Tasks = new HashSet<Task>();
             this.Teams = new HashSet<Team>();
-            this.NotificationUsers = new HashSet<NotificationUser>();
+            this.UserProjects = new HashSet<UserProject>();
             this.UserTasks = new HashSet<UserTask>();
             this.UserTeams = new HashSet<UserTeam>();
-            this.Projects2 = new HashSet<Project>();
         }
     
         public int ID { get; set; }
@@ -38,7 +38,10 @@ namespace Entity
         public bool IsAdmin { get; set; }
         public bool IsActive { get; set; }
         public bool IsManager { get; set; }
+        public Nullable<int> TeamID { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NotificationUser> NotificationUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Project> Projects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,13 +50,12 @@ namespace Entity
         public virtual ICollection<Task> Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Team> Teams { get; set; }
+        public virtual Team Team { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotificationUser> NotificationUsers { get; set; }
+        public virtual ICollection<UserProject> UserProjects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserTask> UserTasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserTeam> UserTeams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Project> Projects2 { get; set; }
     }
 }

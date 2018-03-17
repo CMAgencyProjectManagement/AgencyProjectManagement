@@ -15,6 +15,8 @@ namespace Service
     {
         private readonly CmAgencyEntities db;
 
+        
+
         public ProjectService(CmAgencyEntities db)
         {
             this.db = db;
@@ -29,7 +31,7 @@ namespace Service
         {
             return db.Projects
                 .Where(
-                    project => project.Users.Any(user => user.ID.Equals(userId))
+                    project => project.UserProjects.Any(user => user.ID.Equals(userId))
                 )
                 .Include(p => p.Lists)
                 .ToList();
@@ -44,7 +46,7 @@ namespace Service
         /// <param name="startDate"></param>
         /// <param name="creator">creator id</param>
         /// <returns>new project with Id</returns>
-        public Project CreateProject(string name, string description, DateTime deadline, DateTime startDate,
+        public Project CreateProject(string name, string description, DateTime? deadline, DateTime? startDate,
             User creator)
         {
             Project newProject = new Project
@@ -80,7 +82,7 @@ namespace Service
             var projects = db.Projects.Where(project => project.Name == projectname).ToList();
             return projects.Count > 0;
         }
-
+       
         public Project UpdateProject(
             int id,
             string name,
