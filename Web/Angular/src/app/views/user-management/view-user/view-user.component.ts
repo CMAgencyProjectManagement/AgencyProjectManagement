@@ -91,7 +91,9 @@ export class ViewUserComponent implements OnInit {
             }
 
             if (!result) {
-              if (user.isManager) {
+              if (user.isAdmin) {
+                result = _.toLower('Admin').indexOf(_.toLower(searchStr)) >= 0;
+              } else if (user.isManager) {
                 result = _.toLower('Manager').indexOf(_.toLower(searchStr)) >= 0;
               } else {
                 result = _.toLower('Staff').indexOf(_.toLower(searchStr)) >= 0;
