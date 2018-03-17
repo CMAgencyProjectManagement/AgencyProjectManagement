@@ -43,7 +43,9 @@ export class DetailTeamComponent implements OnInit {
             this.foundTeam = this.teams[i];
             this.selectedUser.push({
               id: this.foundTeam.manager.id,
-              itemName: this.foundTeam.manager.username
+              itemName: this.foundTeam.manager.username,
+              itemAvatar: this.foundTeam.manager.avatar,
+              item: this.foundTeam.manager.id,
             });
           }
         }

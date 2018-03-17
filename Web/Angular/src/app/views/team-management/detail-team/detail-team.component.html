@@ -27,12 +27,12 @@
             So agencies will expect team members to have a positive approach that encourages their creativity to flourish.
           </div>
           <div>
-            <img class="img-circle" src="assets/img/avatars/5.jpg" height="100%" width="100%" id="createdperson">
+            <img id="imgAdmin" src="{{foundTeam.manager.avatar}}"  >
           </div>
           <div>
-            <b id="name">Tran Loi Phong</b>
+            <b id="name">{{foundTeam.manager.username}}</b>
             <p id="role">Manager <span class="badge badge-success" style="font-size: 20px;">Active</span></p>
-            <a href="#/account/detail" id="viewInfo">
+            <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
               <button type="button" class="btn btn-primary" style="color: black;
               background-color: white;
               border-color: black;" id="viewprofilebutton">

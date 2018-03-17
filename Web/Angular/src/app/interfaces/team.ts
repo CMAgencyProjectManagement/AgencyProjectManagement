@@ -5,6 +5,6 @@ export interface Team {
   name: string,
   createdBy: User,
   createdDate: string,
-  isClosed: boolean
+  isClosed: boolean,
   manager: User
 }
