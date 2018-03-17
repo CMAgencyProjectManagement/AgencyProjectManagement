@@ -466,6 +466,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgencyConfig.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
@@ -481,6 +482,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\AgencyDateValidation.cs" />
     <Compile Include="ViewModels\AssignTaskViewModel.cs" />
+    <Compile Include="ViewModels\CreateCommentModel.cs" />
     <Compile Include="ViewModels\CreateListModel.cs" />
     <Compile Include="ViewModels\CreateProjectModel.cs" />
     <Compile Include="ViewModels\CreateTaskModel.cs" />
