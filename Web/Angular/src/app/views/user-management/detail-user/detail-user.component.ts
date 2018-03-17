@@ -11,13 +11,11 @@ import { User } from 'app/interfaces/user';
 export class DetailUserComponent implements OnInit {
   entity: any;
   userID: number;
-  teams: Team[];
   users: User[];
-
   foundUser: User;
   selectedUser = [];
-  isLoading: boolean;
-  dropdownSettings = {};
+
+
 
   constructor(
     private teamService: TeamService,
@@ -28,7 +26,7 @@ export class DetailUserComponent implements OnInit {
     
     this.entity = {};
     this.userID = Number(this.GetURLParameter('id'));
-    this.teams = [];
+
     this.users = [];
     this.getAllTeam();
 
