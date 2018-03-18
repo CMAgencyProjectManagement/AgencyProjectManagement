@@ -12,29 +12,27 @@
               <i class="fa fa-search"></i> Search
             </button>
           </span>
-          <input class="form-control" type="text" (input)="search(searchUsername.value)" #searchUsername>
+          <input class="form-control" type="text" (change)="search(searchUsername.value)" #searchUsername>
         </div>
         <br/>
-        <table class="table table-bordered">
+        <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
             <tr>
               <th>No.</th>
               <th>Avatar</th>
-              <th class="clickable" (click)="sort('fullname')">
-                <app-sort-icon [isDesc]="true">Full Name</app-sort-icon>
-              </th>
-              <th class="clickable">Username</th>
-              <th class="clickable">Birthdate</th>
-              <th class="clickable">Team</th>
-              <th class="clickable">Role</th>
-              <th class="clickable">Status</th>
-              <th class="clickable">Action</th>
+              <th>Full Name</th>
+              <th>Username</th>
+              <th>Birthdate</th>
+              <th>Team</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of pagedUsers;let i = index">
-              <th scope="row">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>
-              <td>
+            <tr *ngFor="let user of users;let i = index">
+              <td class="text-center">{{i + 1}}</td>
+              <td class="text-center">
                 <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
                 <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
               </td>
@@ -51,9 +49,10 @@
                 <p *ngIf="!user.birthDate">N/A</p>
               </td>
               <td>
-                <p>{{user.team.name}}</p>
+                <p *ngIf="!user.team">N/A</p>
+                <p *ngIf="user.team">{{user.team.name}}</p>
               </td>
-              <td>
+              <td class="text-center">
                 <strong>
                   <p *ngIf="user.isAdmin">Admin</p>
                 </strong>
@@ -70,35 +69,14 @@
                   Banned
                 </span>
               </td>
-              <td>
-
+              <td class="text-center">
                 <a href="#/account/update?id={{user.id}}">
                   <button type="button" class="btn btn-primary">Update</button>
                 </a>
-
               </td>
             </tr>
           </tbody>
         </table>
-
-        <!-- pager -->
-        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(1)">First</a>
-          </li>
-          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
-          </li>
-          <li *ngFor="let page of pager.pages" [ngClass]="[pager.currentPage === page ? 'active' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(page)">{{page}}</a>
-          </li>
-          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(pager.currentPage + 1)">Next</a>
-          </li>
-          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(pager.totalPages)">Last</a>
-          </li>
-        </ul>
 
       </div>
     </div>

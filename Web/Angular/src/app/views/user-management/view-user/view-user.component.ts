@@ -14,15 +14,22 @@ export class ViewUserComponent implements OnInit {
   @ViewChild('searchUsername') input: ElementRef;
   // all user
   users: User[];
-  // pager object
-  pager: Pager = {} as Pager;
-  // paged && search items
-  pagedUsers: User[];
+  // https://datatables.net/reference/option/
   isPageLoading: boolean;
+  datatableOptions: DataTables.Settings = {
+    'searching': false,
+    'lengthChange': false,
+    'columnDefs': [
+      {
+        'searchable': false,
+        'orderable': false,
+        'targets': [0, 1, 8]
+      }
+    ]
+  };
 
   constructor(
-    private userService: UserService,
-    private pagerService: PagerService) {
+    private userService: UserService) {
     this.isPageLoading = true;
   }
 
@@ -30,51 +37,17 @@ export class ViewUserComponent implements OnInit {
     this.userService.getAllUser()
       .then(value => {
           this.users = value;
-          this.setPage(1);
           this.isPageLoading = false;
         }
       )
   }
 
-  setPage(page: number, users: User[] = undefined) {
-    if (page < 1 || page > this.pager.totalPages) {
-      return;
-    }
-
-    if (!users) {
-      users = this.users;
-    }
-
-    this.pager = this.pagerService.getPager(users.length, page, 7);
-    this.pagedUsers = users.slice(this.pager.startIndex, this.pager.endIndex + 1);
-  }
-
-  sort(attr: string) {
-    this.userService.getAllUser()
-      .then((value) => {
-        let users = value as User[];
-        switch (attr) {
-          case 'fullname.': {
-            this.users = _.sort(users, (user) => {
-              return user.username
-            });
-            this.setPage(1);
-            break;
-          }
-          case 'username': {
-            break;
-          }
-        }
-      });
-
-  }
-
   // search by username
   search(searchStr: string) {
-    if (searchStr) {
-      this.isPageLoading = true;
-      this.userService.getAllUser().then(users => {
-        const filteredUser = _.filter(this.users, (user: User) => {
+    this.isPageLoading = true;
+    this.userService.getAllUser()
+      .then(users => {
+        this.users = _.filter(users, (user: User) => {
             let result;
             result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
 
@@ -111,14 +84,11 @@ export class ViewUserComponent implements OnInit {
             return result;
           }
         );
-        this.pager = {} as Pager;
-        this.users = filteredUser;
-        this.setPage(1, this.users);
+        this.isPageLoading = false;
+      })
+      .catch(reason => {
         this.isPageLoading = false;
       });
-    } else {
-      this.setPage(1);
-    }
 
   }
 
