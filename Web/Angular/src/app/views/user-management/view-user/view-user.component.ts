@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-view-user',
@@ -54,7 +55,10 @@ export class ViewUserComponent implements OnInit {
             }
 
             if (!result) {
-              result = user.birthdate && _.toLower(user.birthdate).indexOf(_.toLower(searchStr)) >= 0;
+              if (user.birthdate) {
+                let formatedBDate = moment(user.birthdate).format('DD/MM/YYYY');
+                result = _.toLower(formatedBDate).indexOf(_.toLower(searchStr)) >= 0;
+              }
             }
 
             if (!result) {
