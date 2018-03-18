@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         data: {
-          title: 'View accounts'
+          title: 'View account'
         },
         path: 'view',
         component: ViewUserComponent,
@@ -22,7 +22,7 @@ const routes: Routes = [
         path: 'detail',
         component: DetailUserComponent,
         data: {
-          title: 'Detail '
+          title: 'Detail account'
         }
       },
       {
