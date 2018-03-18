@@ -23,14 +23,14 @@
               <div class="invalid-feedback" *ngIf="errors.password">{{errors.password}}</div>
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label class="col-4 col-form-label text-right" for="name-input">Full name</label>
             <div class="col-8">
               <input type="text" id="name-input" name="name-input" class="form-control" [ngClass]="{'form-control': true, 'is-invalid': errors.fullname}"
                 formControlName="fullname">
               <div class="invalid-feedback" *ngIf="errors.fullname">{{errors.fullname}}</div>
             </div>
-          </div>
+          </div> -->
           <div class="form-group row">
             <label class="col-4 col-form-label text-right" for="email-input">Email <span style="color: #ee0d0d"><strong>*</strong></span></label>
             <div class="col-8">
@@ -46,7 +46,7 @@
               <div class="invalid-feedback" *ngIf="errors.phone">{{errors.phone}}</div>
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label class="col-4 col-form-label text-right" for="email-input">Date of Birth</label>
             <div class="col-8">
               <my-date-picker [options]="myDatePickerOptions" formControlName="birthDate" [ngClass]="{'form-control': false, 'is-invalid': errors.birthdate}"
@@ -54,7 +54,7 @@
               <div class="invalid-feedback" *ngIf="errors.birthdate">{{errors.birthdate}}</div>
             </div>
 
-          </div>
+          </div> -->
           <div class="form-group row" *ngIf="teams">
 
             <label class="col-4 col-form-label text-right">Team </label>
@@ -67,14 +67,14 @@
               <div class="invalid-feedback" *ngIf="errors.team">{{errors.team}}</div>
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label class="col-4 col-form-label text-right" for="file-input">Avatar</label>
             <div class="col-8">
               <input type="file" id="file-input" name="file-input" [ngClass]="{'form-control': false, 'is-invalid': errors.avatar}" (change)="avatarFileChange($event)">
               <div class="invalid-feedback" *ngIf="errors.avatar">{{errors.avatar}}</div>
             </div>
 
-          </div>
+          </div> -->
 
           <div class="form-actions text-center">
             <div class="col-12">
