@@ -33,6 +33,7 @@ const admin_navigation = [
       {
         name: 'View',
         url: '/team/view',
+        icon: 'icon-people',
       }
     ]
   },
