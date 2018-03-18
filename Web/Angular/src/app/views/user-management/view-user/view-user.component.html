@@ -5,7 +5,7 @@
         <strong>View all accounts</strong>
       </div>
       <app-spinner *ngIf="isPageLoading"></app-spinner>
-      <div class="card-body animated fadeIn" *ngIf=!isPageLoading>
+      <div *ngIf=!isPageLoading class="card-body animated fadeIn" >
         <div class="input-group">
           <span class="input-group-btn">
             <button class="btn btn-primary" type="button" (click)="search(searchUsername.value)">
@@ -14,7 +14,6 @@
           </span>
           <input class="form-control" type="text" (change)="search(searchUsername.value)" #searchUsername>
         </div>
-        <br/>
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
             <tr>
@@ -45,8 +44,8 @@
                 <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
               </td>
               <td>
-                <p *ngIf="user.birthDate">{{user.birthDate}}</p>
-                <p *ngIf="!user.birthDate">N/A</p>
+                <p *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</p>
+                <p *ngIf="!user.birthdate">N/A</p>
               </td>
               <td>
                 <p *ngIf="!user.team">N/A</p>
@@ -61,7 +60,7 @@
                 </strong>
                 <p *ngIf="!user.isAdmin && !user.isManager">Staff</p>
               </td>
-              <td>
+              <td class="text-center">
                 <span class="badge badge-success" *ngIf="user.isActive">
                   Active
                 </span>

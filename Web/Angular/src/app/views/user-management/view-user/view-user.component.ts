@@ -1,8 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
-import {PagerService} from '../../../services/pager.service';
 import {User} from 'app/interfaces/user';
-import {Pager} from '../../../interfaces/pager';
 import * as _ from 'lodash';
 
 @Component({
@@ -23,7 +21,7 @@ export class ViewUserComponent implements OnInit {
       {
         'searchable': false,
         'orderable': false,
-        'targets': [0, 1, 8]
+        'targets': [1, 8]
       }
     ]
   };
@@ -56,7 +54,7 @@ export class ViewUserComponent implements OnInit {
             }
 
             if (!result) {
-              result = user.birthDate && _.toLower(user.birthDate).indexOf(_.toLower(searchStr)) >= 0;
+              result = user.birthdate && _.toLower(user.birthdate).indexOf(_.toLower(searchStr)) >= 0;
             }
 
             if (!result) {

@@ -23,7 +23,7 @@ export class DetailUserComponent implements OnInit {
   ) { }
   ngOnInit() {
 
-    
+
     this.entity = {};
     this.userID = Number(this.GetURLParameter('id'));
 
@@ -43,7 +43,7 @@ export class DetailUserComponent implements OnInit {
               id: this.foundUser.id,
               itemName: this.foundUser.name,
               itemUsername: this.foundUser.username,
-              itemBirthday: this.foundUser.birthDate,
+              itemBirthday: this.foundUser.birthdate,
               itemAvatar: this.foundUser.avatar,
               itemPhone: this.foundUser.phone,
               itemTeam: this.foundUser.team,
