@@ -4,7 +4,8 @@ import { ProjectManagementComponent } from './view/project-management.component'
 import { ProjectSchedulingComponent } from './project-scheduling/project-scheduling.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { AddProjectComponent } from './add-project/add-project.component';
-import { ProjectUpdateComponent} from './project-update/project-update.component'
+import { ProjectUpdateComponent } from './project-update/project-update.component';
+import {ProjectTaskComponent} from './project-task/project-task.component';
 let projectID: number;
 const routes: Routes = [
   {
@@ -38,8 +39,15 @@ const routes: Routes = [
   {
     path: 'update',
     component: ProjectUpdateComponent,
-    data:{
+    data: {
       title: 'Update project'
+    }
+  },
+  {
+    path: 'task',
+    component: ProjectTaskComponent,
+    data: {
+      title: 'Task project'
     }
   }
 

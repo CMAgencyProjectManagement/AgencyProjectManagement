@@ -55,13 +55,13 @@ export class ProjectUpdateComponent implements OnInit {
     }
 
     loadProject() {
-      this.projectService.getAllProjects()
-        .then(data => {
-          this.projects = data;
-        })
-        .catch(reason => {
-          console.debug('ProjectUpdateComponent', reason);
-        })
+        this.projectService.getAllProjects()
+          .then(data => {
+            this.projects = data;
+          })
+          .catch(reason => {
+            console.debug('ProjectUpdateComponent', reason);
+          })
     }
 
     GetURLParameter(sParam) {

@@ -12,6 +12,7 @@ import { MyDatePickerModule, MyDatePicker } from 'mydatepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser/src/browser';
 import { ProjectUpdateComponent } from 'app/views/project/project-update/project-update.component';
+import { ProjectTaskComponent} from 'app/views/project/project-task/project-task.component';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -28,7 +29,8 @@ import { ProjectUpdateComponent } from 'app/views/project/project-update/project
     ProjectDetailComponent,
     TruncateTextPipe,
   AddProjectComponent,
-  ProjectUpdateComponent
+  ProjectUpdateComponent,
+  ProjectTaskComponent
   ]
 })
 export class ProjectManagementModule {

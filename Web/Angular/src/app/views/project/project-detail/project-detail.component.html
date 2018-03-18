@@ -10,11 +10,16 @@
           <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
             <div style="font-size: 30px">
               Project Name: {{foundProject.name}}
+              <a href="#/project/task?projectID={{foundProject.id}}">
+                <button type="button" class="btn btn-primary btn-lg" style="color: black;
+                background-color: white;
+                border-color: black;">View Task
+                </button>
+              </a>
             </div>
             <div>
               Description:
-              <textarea id="textarea-input" name="textarea-input" rows="10" class="form-control" style="font-size:20px"
-                        disabled="true">{{foundProject.description}}</textarea>
+              <textarea id="textarea-input" name="textarea-input" rows="10" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea>
             </div>
             <div>
               Created Time: {{foundProject.createdTime | date:'d/M/y'}}
@@ -34,14 +39,15 @@
           </form>
           <div class="row">
             <div class="col-5 text-right">
-              <button type="button" class="btn btn-primary btn-lg" style="color: black;
+              <a href="#/project/update?projectID={{foundProject.id}}">
+                <button type="button" class="btn btn-primary btn-lg" style="color: black;
                 background-color: white;
                 border-color: black;">Update
               </button>
+              </a>
             </div>
             <div class="col-5 offset-2 text-left">
-              <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()"
-                      style="color: black;
+              <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="color: black;
                 background-color: white;
                 border-color: black;">Close
               </button>
@@ -53,8 +59,7 @@
           <!--<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;-->
           <!--background-color: white;-->
           <!--border-color: black;">Close</button>-->
-          <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-               aria-labelledby="myModalLabel" aria-hidden="true">
+          <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-danger" role="document">
               <div class="modal-content" style="border-color: black;">
                 <div class="modal-header" style="color: black;
@@ -81,34 +86,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header">
-    <strong>Tasks</strong>
-  </div>
-  <div class="card-body" *ngIf="foundProject">
-    <div class="row">
-      <div class="col-sm-6 col-md-4" *ngFor="let lists of foundProject.lists;let i = index">
-        <ng-container>
-          <div class="card">
-            <div class="card-header">
-              {{lists.Name}}
-            </div>
-            <div class="card-body" *ngIf="lists.tasks">
-              <div class="card task-card" *ngFor="let task of lists.tasks">
-                <div class="card-body">
-                  {{task.Name}}
-                </div>
-                <div class="card-footer">
-                  <span class="badge badge-success float-right">Executing</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
       </div>
     </div>
   </div>
