@@ -176,7 +176,7 @@ namespace Service
                 ["id"] = user.ID,
                 ["name"] = user.Name,
                 ["phone"] = user.Phone,
-                ["birthday"] = user.Birthdate,
+                ["birthdate"] = user.Birthdate,
                 ["email"] = user.Email,
                 ["username"] = user.Username,
                 ["isAdmin"] = user.IsAdmin,

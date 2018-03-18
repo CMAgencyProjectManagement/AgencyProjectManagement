@@ -1,9 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
-import {PagerService} from '../../../services/pager.service';
 import {User} from 'app/interfaces/user';
-import {Pager} from '../../../interfaces/pager';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-view-user',
@@ -14,15 +13,22 @@ export class ViewUserComponent implements OnInit {
   @ViewChild('searchUsername') input: ElementRef;
   // all user
   users: User[];
-  // pager object
-  pager: Pager = {} as Pager;
-  // paged && search items
-  pagedUsers: User[];
+  // https://datatables.net/reference/option/
   isPageLoading: boolean;
+  datatableOptions: DataTables.Settings = {
+    'searching': false,
+    'lengthChange': false,
+    'columnDefs': [
+      {
+        'searchable': false,
+        'orderable': false,
+        'targets': [1, 8]
+      }
+    ]
+  };
 
   constructor(
-    private userService: UserService,
-    private pagerService: PagerService) {
+    private userService: UserService) {
     this.isPageLoading = true;
   }
 
@@ -30,51 +36,17 @@ export class ViewUserComponent implements OnInit {
     this.userService.getAllUser()
       .then(value => {
           this.users = value;
-          this.setPage(1);
           this.isPageLoading = false;
         }
       )
   }
 
-  setPage(page: number, users: User[] = undefined) {
-    if (page < 1 || page > this.pager.totalPages) {
-      return;
-    }
-
-    if (!users) {
-      users = this.users;
-    }
-
-    this.pager = this.pagerService.getPager(users.length, page, 7);
-    this.pagedUsers = users.slice(this.pager.startIndex, this.pager.endIndex + 1);
-  }
-
-  sort(attr: string) {
-    this.userService.getAllUser()
-      .then((value) => {
-        let users = value as User[];
-        switch (attr) {
-          case 'fullname.': {
-            this.users = _.sort(users, (user) => {
-              return user.username
-            });
-            this.setPage(1);
-            break;
-          }
-          case 'username': {
-            break;
-          }
-        }
-      });
-
-  }
-
   // search by username
   search(searchStr: string) {
-    if (searchStr) {
-      this.isPageLoading = true;
-      this.userService.getAllUser().then(users => {
-        const filteredUser = _.filter(this.users, (user: User) => {
+    this.isPageLoading = true;
+    this.userService.getAllUser()
+      .then(users => {
+        this.users = _.filter(users, (user: User) => {
             let result;
             result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
 
@@ -83,7 +55,10 @@ export class ViewUserComponent implements OnInit {
             }
 
             if (!result) {
-              result = user.birthDate && _.toLower(user.birthDate).indexOf(_.toLower(searchStr)) >= 0;
+              if (user.birthdate) {
+                let formatedBDate = moment(user.birthdate).format('DD/MM/YYYY');
+                result = _.toLower(formatedBDate).indexOf(_.toLower(searchStr)) >= 0;
+              }
             }
 
             if (!result) {
@@ -111,14 +86,11 @@ export class ViewUserComponent implements OnInit {
             return result;
           }
         );
-        this.pager = {} as Pager;
-        this.users = filteredUser;
-        this.setPage(1, this.users);
+        this.isPageLoading = false;
+      })
+      .catch(reason => {
         this.isPageLoading = false;
       });
-    } else {
-      this.setPage(1);
-    }
 
   }
 

@@ -10,6 +10,7 @@ import {MyDatePickerModule} from 'mydatepicker';
 import {DetailUserComponent} from './detail-user/detail-user.component';
 import {SpinnerComponent} from '../../components';
 import {SortIconComponent} from '../../components';
+import {DataTablesModule} from 'angular-datatables';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {SortIconComponent} from '../../components';
     }),
     FormsModule,
     MyDatePickerModule,
+    DataTablesModule
   ],
   declarations: [
     CreateUserComponent,
