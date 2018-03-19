@@ -103,15 +103,12 @@ namespace Web.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult CreateUser(CreateUserModel createUserModel)
         {
-
             try
             {
                 if (ModelState.IsValid)
                 {
-
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-
                         UserService userService = new UserService(db);
                         Boolean flag = true;
                         if (userService.CheckDuplicatedUsername(createUserModel.Username))
@@ -120,11 +117,13 @@ namespace Web.Controllers
                             //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                             flag = false;
                         }
+
                         if (userService.CheckDuplicatePhone(createUserModel.Phone))
                         {
                             ModelState.AddModelError("Phone", "Phone is taken");
                             flag = false;
                         }
+
                         if (userService.CheckDuplicateEmail(createUserModel.Email))
                         {
                             ModelState.AddModelError("Email", "Email is taken");
@@ -135,12 +134,15 @@ namespace Web.Controllers
                         {
                             if (createUserModel.Birthdate > DateTime.Now)
                             {
-                                ModelState.AddModelError("Birthdate", "Birthdate must be smaller than the current time ");
+                                ModelState.AddModelError("Birthdate",
+                                    "Birthdate must be smaller than the current time ");
                                 // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                                 flag = false;
                             }
                         }
-                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+                        if (flag == false)
+                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         //DateTime? birthdate = null;
                         //if (createUserModel.Birthdate != null)
                         //{
@@ -198,8 +200,8 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("")]
+        [HttpPost]
+        [Route("update")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateUser(UpdateUserModel updateUserModel)
         {
@@ -214,8 +216,9 @@ namespace Web.Controllers
                         {
                             ModelState.AddModelError("Birthdate", "Birthdate is greater than the current time ");
                             return Content(HttpStatusCode.BadRequest,
-                            ResponseHelper.GetExceptionResponse(ModelState));
+                                ResponseHelper.GetExceptionResponse(ModelState));
                         }
+
                         User updatedUser = userService.Updateuser(
                             updateUserModel.ID,
                             updateUserModel.Name,
@@ -230,6 +233,30 @@ namespace Web.Controllers
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpPost]
+        [Route("{id:int}/resetpassword")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult ResetPassword(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    var newPassword = userService.resetPassword(id);
+                    return Ok(ResponseHelper.GetResponse(new JObject
+                    {
+                        ["password"] = newPassword
+                    }));
                 }
             }
             catch (Exception ex)

@@ -1,10 +1,6 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {UserService,} from '../../../services/user.service';
-import {PagerService} from '../../../services/pager.service';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
-import {Pager} from '../../../interfaces/pager';
-import {Directive, HostListener, Input} from '@angular/core';
-import * as _ from 'lodash';
 import {
   FormControl,
   FormGroup,
@@ -12,8 +8,6 @@ import {
 } from '@angular/forms';
 import {Cursor, StoreService} from '../../../services/tree.service';
 import {Router} from '@angular/router';
-import {forEach} from '@angular/router/src/utils/collection';
-import {DISABLED} from '@angular/forms/src/model';
 import {IMyDpOptions} from 'mydatepicker';
 import {TeamService} from '../../../services/team.service';
 import {Team} from '../../../interfaces/team';
@@ -26,7 +20,9 @@ import {Team} from '../../../interfaces/team';
 export class UpdateUserComponent implements OnInit {
   updateForm: FormGroup;
   tokenCursor: Cursor;
-  isLoading: boolean;
+  newpassword: string;
+  isResetPasswordLoading: boolean;
+  isSavingChange: boolean;
   isPageLoading: boolean;
   errorMessage: string;
   users: User[];
@@ -43,20 +39,13 @@ export class UpdateUserComponent implements OnInit {
     team: string,
     avatar: string
   };
-
-  public myDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'dd/mm/yyyy',
-    showInputField: true,
-    openSelectorTopOfInput: true,
-    showTodayBtn: false
-  };
-
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
               private router: Router) {
-    this.isPageLoading = false;
+    this.isPageLoading = true;
+    this.isResetPasswordLoading = false;
+    this.isSavingChange = false;
     this.setErrorsNull();
   }
 
@@ -79,17 +68,12 @@ export class UpdateUserComponent implements OnInit {
         }
       );
     this.updateForm = new FormGroup({
-      fullname: new FormControl(undefined, Validators.compose([Validators.required, Validators.minLength(6)])),
-      email: new FormControl(undefined, Validators.compose([Validators.required, Validators.minLength(6)])),
-      phone: new FormControl(undefined, Validators.compose([Validators.required, Validators.minLength(9)]))
+      fullname: new FormControl(undefined),
+      email: new FormControl(undefined),
+      phone: new FormControl(undefined),
+      team: new FormControl(undefined)
     })
 
-  }
-
-  handleEnterPressed($event) {
-    if ($event.keyCode === 13) {
-      this.handleUpdate();
-    }
   }
 
   setDefaultValue(user: User) {
@@ -98,8 +82,17 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['phone'].setValue(user.phone);
   }
 
-  updateUser(username: string, fullname: string, email: string, phone: string) {
-    console.debug('updateUser :', username, fullname, email, phone);
+  resetPassword(id) {
+    this.isResetPasswordLoading = true;
+    this.userService.resetPassword(id)
+      .then(value => {
+        this.newpassword = value.password;
+        this.isResetPasswordLoading = false;
+      })
+      .catch(reason => {
+        this.isResetPasswordLoading = false;
+        console.debug('resetPassword', reason);
+      })
   }
 
 
@@ -126,13 +119,13 @@ export class UpdateUserComponent implements OnInit {
   handleUpdate() {
     if (confirm('Save change?')) {
       if (this.updateForm.valid) {
-        this.isLoading = true;
+        this.isSavingChange = true;
         const formValue = this.updateForm.value;
         this.userService.updateUser(this.foundUser.id, formValue.fullname, formValue.phone, '12/24/2018', formValue.email).then(value => {
-          this.isLoading = false;
+          this.isSavingChange = false;
           this.router.navigate(['dashboard'])
         }).catch(reason => {
-          this.isLoading = false;
+          this.isSavingChange = false;
           this.errorMessage = reason.message;
         })
       }

@@ -172,14 +172,36 @@ export class UserService {
     };
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();
-      put(serverPath.updateUser)
+      post(serverPath.updateUser)
         .set('token', token)
         .send(postDataObject)
         .type('form')
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reject);
+    });
+  }
+
+  public resetPassword(id: number): Promise<any> {
+    const postDataObject = {
+      id: id,
+    };
+    return new Promise<any>((resolve, reject) => {
+      const token = this.tokenCursor.get();
+      post(serverPath.resetPassword(id))
+        .set('token', token)
+        .send(postDataObject)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
           } else {
             reject(content);
           }

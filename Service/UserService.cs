@@ -197,6 +197,21 @@ namespace Service
             throw new ObjectNotFoundException($"User with ID{id} not found");
         }
 
+        public string resetPassword(int id)
+        {
+            
+            User foundUser = db.Users.Find(id);
+            if (foundUser != null)
+            {
+                Random random = new Random();
+                string newPassword = random.Next(0, 99999).ToString("D4");
+                foundUser.Password = newPassword;
+                db.SaveChanges();
+                return newPassword;
+            }
+            throw new ObjectNotFoundException($"User with ID{id} not found");
+        }
+
         public JObject ParseToJson(
             User user,
             string avatarPath = null,
@@ -241,12 +256,7 @@ namespace Service
                 {
                     result["team"] = null;
                 }
-               
-                
-                
             }
-
-
             return result;
         }
     }
