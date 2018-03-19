@@ -27,6 +27,7 @@ import {User} from '../../../interfaces/user';
 })
 
 export class CreateUserComponent implements OnInit {
+  @ViewChild('datepicker') datepicker;
   signupForm: FormGroup;
   currentAccountCursor: Cursor;
   tokenCursor: Cursor;
@@ -87,7 +88,7 @@ export class CreateUserComponent implements OnInit {
     this.setErrorsNull();
     const formValue = this.signupForm.value;
     this.isLoading = true;
-    let birthdate = formValue.birthDate ? formValue.birthDate.formatted : undefined;
+    let birthdate = formValue.birthDate ? formValue.birthDate.formatted : this.datepicker.selectionDayTxt;
     this.userService.createUser(
       formValue.username,
       formValue.password,
