@@ -24,7 +24,19 @@ namespace Service
             var users  = db.Users.Where(user => user.Username == username).ToList();
             return users.Count > 0;
         }
-        
+        public bool CheckDuplicateEmail(string email)
+        {
+            var users = db.Users.Where(user => user.Email == email).ToList();
+            return users.Count > 0;
+
+        }
+        public bool CheckDuplicatePhone(string phone)
+        {
+            var users = db.Users.Where(user => user.Phone == phone).ToList();
+            return users.Count > 0;
+
+        }
+
 
         public User GetUser(string username, string password)
         {
@@ -75,6 +87,20 @@ namespace Service
         {
             IEnumerable<User> users = db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
             return users.ToList();
+        }
+
+        public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
+        {
+            Team team = db.Teams.Find(teamId);
+            if (team!= null)
+            {
+                return team.Users.ToList();
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
+
+            }
         }
 
         public void UpdateAvatar(string avatarFileName, int id)
