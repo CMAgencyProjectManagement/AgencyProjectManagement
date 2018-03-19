@@ -12,7 +12,7 @@ const routes: Routes = [
     path: '',
     component: ProjectManagementComponent,
     data: {
-      title: 'View projects'
+      title: 'View project'
     }
   },
   {
