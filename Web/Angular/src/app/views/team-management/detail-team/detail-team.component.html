@@ -5,27 +5,13 @@
     </div>
     <div class="card-body">
       <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <div class="form-group row">
+        <div class="col-12 text-center" *ngIf="foundTeam" style=" text-transform: uppercase">
           <h1>
-            <div class="col-md-12 col-form-label" *ngIf="foundTeam" style="text-transform: uppercase">
-              {{foundTeam.name}}
-            </div>
+            {{foundTeam.name}}
           </h1>
-
         </div>
-        <div class="form-group row">
-          <!-- <div id="description">
-            In the advertising, digital or marketing sectors, the creative team is responsible for generating attention-grabbing ideas
-            that will entice the consumer or target audience. Members of the team work together to develop conceptual campaigns
-            designed to stand apart from competitors.
-            <br/> The creative team usually consists of an established art director and a copywriter, with some companies looking
-            for individuals who have both skill sets. However, other members involved can include web developers and editors.
-            <br/> Members of this team need to be confident enough to share and sell their ideas, and perceptive enough to know
-            when to encourage others to share theirs. Team members should also be strategic in their thinking, so they can
-            organise thoughts and develop plans to suit the expectations of the client.
-            <br/> Creativity is all about nurturing imagination and turning thoughts into the ideas that give a project the edge.
-            So agencies will expect team members to have a positive approach that encourages their creativity to flourish.
-          </div> -->
+        <div class=" row">
+
           <!-- thu -->
           <!-- <div *ngFor="let user of value">
 
@@ -35,22 +21,22 @@
           </div> -->
 
 
-          <div>
-            <img id="imgAdmin" src="{{foundTeam.manager.avatar}}">
-          </div>
-          <div>
-            <b id="name">{{foundTeam.manager.username}}</b>
+          <div class="col-4 text-center card" >
+            <strong><h3> <a href="#/account/detail?id={{foundTeam.manager.id}}">{{foundTeam.manager.username}}</a> </h3></strong>
+
             <p id="role">Manager
-              <span class="badge badge-success" style="font-size: 20px;">Active</span>
+              <span  *ngIf="foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Active</span>
+              <span  *ngIf="!foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Banned</span>
             </p>
-            <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
+            <!-- <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
               <button type="button" class="btn btn-primary" style="color: black;
               background-color: white;
               border-color: black;" id="viewprofilebutton">
                 View profile
               </button>
-            </a>
+            </a> -->
           </div>
+
         </div>
       </form>
     </div>
