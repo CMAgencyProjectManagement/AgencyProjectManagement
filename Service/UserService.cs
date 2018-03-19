@@ -89,6 +89,20 @@ namespace Service
             return users.ToList();
         }
 
+        public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
+        {
+            Team team = db.Teams.Find(teamId);
+            if (team!= null)
+            {
+                return team.Users.ToList();
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
+
+            }
+        }
+
         public void UpdateAvatar(string avatarFileName, int id)
         {
             User user = db.Users.Find(id);

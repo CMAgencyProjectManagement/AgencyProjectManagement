@@ -54,7 +54,7 @@ namespace Web.Controllers
                     if (team != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            teamService.ParseToJson(team, includeUsers: true)
+                            teamService.ParseToJsonVer2(team, includeUsers: true, isDetailed: true)
                         ));
                     }
                     else

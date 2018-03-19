@@ -103,8 +103,58 @@ namespace Service
 
                 result["users"] = jArray;
             }
+            
 
             return result;
         }
+
+        public JObject ParseToJsonVer2(Team team, bool includeManager = true, bool includeUsers = false, bool isDetailed = false,
+            string avatarPath = null)
+        {
+
+            UserService userService = new UserService(db);
+            var creator = userService.GetUser(team.CreatedBy);
+
+            var result = new JObject
+            {
+                ["id"] = team.ID,
+                ["name"] = team.Name,
+                ["createdBy"] = userService.ParseToJson(creator),
+                ["createdDate"] = team.CreatedDate.ToShortDateString(),
+                ["isClosed"] = team.IsClosed
+            };
+
+            if (includeManager)
+            {
+                var manager = GetManager(team.ID);
+                result["manager"] = userService.ParseToJson(manager);
+            }
+
+            if (includeUsers)
+            {
+                var users = userService.GetUsersOfTeam(team.ID);
+                var jArray = new JArray();
+
+                foreach (User user in users)
+                {
+                    jArray.Add(userService.ParseToJson(user, avatarPath));
+                }
+
+                result["users"] = jArray;
+            }
+            if (isDetailed)
+            {
+                IEnumerable<User> users = userService.GetUsersOfTeamVer2(team.ID);
+                JArray listArray = new JArray();
+                foreach (var user in users)
+                {
+                    listArray.Add(userService.ParseToJson(user));
+                }
+                result["users"] = listArray;
+            }
+
+            return result;
+        }
+
     }
 }
