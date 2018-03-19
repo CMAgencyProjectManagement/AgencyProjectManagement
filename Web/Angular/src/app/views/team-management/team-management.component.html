@@ -4,8 +4,7 @@
       <div class="card-header">
         View all teams
       </div>
-      <!--<app-spinner *ngIf="isPageLoading"></app-spinner>-->
-      <div *ngIf="isPageLoading" >Loading</div>
+      <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div *ngIf="!isPageLoading" class="card-body">
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
@@ -24,7 +23,7 @@
                 <a href="#/team/detail?id={{team.id}}">{{team.name}}</a>
               </td>
               <td>
-                <p>{{team.manager.username}} </p>
+                <p>{{team.manager.username}}</p>
               </td>
               <td>
                 <p>{{team.createdDate}}</p>

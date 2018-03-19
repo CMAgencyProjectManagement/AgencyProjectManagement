@@ -12,7 +12,9 @@ const StoreTree = {
   // all user from from server
   users: undefined,
   // all teams from server
-  teams: undefined
+  teams: undefined,
+  // all projects
+  projects: undefined
 };
 
 @Injectable()

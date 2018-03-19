@@ -1,14 +1,16 @@
 import {Injectable} from '@angular/core';
-import {StoreService} from './tree.service';
+import {Cursor, StoreService} from './tree.service';
 import {get, put, post} from 'superagent';
 import {serverPath} from '../_serverPath';
 
 @Injectable()
 export class ProjectService {
   private tokenCursor;
+  private projectsCursor: Cursor;
 
   constructor(private store: StoreService) {
-    this.tokenCursor = this.store.select(['token', 'access_token'])
+    this.tokenCursor = this.store.select(['token', 'access_token']);
+    this.projectsCursor = this.store.select(['projects'])
   }
 
   public getMyProjects(): Promise<any> {
@@ -28,16 +30,23 @@ export class ProjectService {
 
   public getAllProjects(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      get(serverPath.allProject)
-        .set('token', this.tokenCursor.get())
-        .then(res => {
-          const content = res.body;
-          if (content.IsSuccess) {
-            resolve(content.Data);
-          } else {
-            reject(content.Message);
-          }
-        })
+      let projects = this.projectsCursor.get();
+      if (projects) {
+        resolve(projects);
+      } else {
+        get(serverPath.allProject)
+          .set('token', this.tokenCursor.get())
+          .then(res => {
+            const content = res.body;
+            if (content.IsSuccess) {
+              this.projectsCursor.set(content.Data);
+              resolve(content.Data);
+            } else {
+              reject(content.Message);
+            }
+          })
+      }
+
     });
   }
 

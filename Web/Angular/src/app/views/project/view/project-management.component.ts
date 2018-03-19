@@ -1,12 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../../../services/project.service';
-import { Project } from '../../../interfaces/project';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Router } from '@angular/router';
-import { Cursor, StoreService } from '../../../services/tree.service';
-import { Pager } from '../../../interfaces/pager';
-import { PagerService } from '../../../services/pager.service';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from '../../../services/project.service';
+import {Project} from '../../../interfaces/project';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-project-management',
@@ -15,25 +11,23 @@ import * as _ from 'lodash';
 
 })
 export class ProjectManagementComponent implements OnInit {
-  // pager object
-  pager: Pager = {} as Pager;
-  // paged && search items
-  pagedProjects: Project[];
   projects: Project[];
-  public myModal;
-  public largeModal;
-  public smallModal;
-  public primaryModal;
-  public successModal;
-  public warningModal;
-  public dangerModal;
-  public infoModal;
-
-  tokenCursor: Cursor;
   isLoading: boolean;
-  errorMessage: string;
+  isPageLoading: boolean;
+  datatableOptions: DataTables.Settings = {
+    searching: false,
+    lengthChange: false,
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: [6]
+      }
+    ]
+  };
 
-  constructor(private projectService: ProjectService, private router: Router, private pagerService: PagerService) {
+  constructor(private projectService: ProjectService) {
+    this.isPageLoading = true;
   }
 
   ngOnInit() {
@@ -43,8 +37,8 @@ export class ProjectManagementComponent implements OnInit {
   loadProject() {
     this.projectService.getAllProjects()
       .then(data => {
-        this.projects = this.projectsFilter(data);
-        this.setPage(1);
+        this.projects = data;
+        this.isPageLoading = false;
       })
       .catch(reason => {
         console.debug('ProjectManagementComponent', reason);
@@ -65,100 +59,44 @@ export class ProjectManagementComponent implements OnInit {
     })
   }
 
+  search(searchStr: string) {
+    this.isPageLoading = true;
+    this.projectService.getAllProjects()
+      .then(projects => {
+        this.projects = _.filter(projects, (project: Project) => {
+          let result = false;
+          if (project.name) {
+            result = _.toLower(project.name).indexOf(_.toLower(searchStr)) >= 0;
 
-  // handleCloseError(errors: any[]) {
-  //   for (let error of errors) {
-  //     const fieldName = error.key;
-  //     const errorMessage = error.message;
-  //     console.debug('handleCreateProjectError', fieldName, errorMessage);
-  //   }
-  // }
-
-  handleViewProject(projectID: number) {
-    console.debug('Here!!')
-  }
-
-  setPage(page: number, projects: Project[] = undefined) {
-    if (page < 1 || page > this.pager.totalPages) {
-      return;
-    }
-
-    if (!projects) {
-      projects = this.projects;
-    }
-
-
-    this.pager = this.pagerService.getPager(projects.length, page, 7);
-    this.pagedProjects = projects.slice(this.pager.startIndex, this.pager.endIndex + 1);
-  }
-
-  projectsFilter(data: Project[]): Project[] {
-    let newData = [];
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].status !== 2) {
-        newData.push(data[i]);
-      }
-    }
-    return newData;
-  }
-
-  search(searchValue: string) {
-    //search for name
-    if (searchValue) {
-      // let filteredProject = _.filter(this.projects, (project: Project) => {
-      //   return project.name && _.toLower(project.name).indexOf(_.toLower(searchValue)) >= 0;
-      // }
-      // );
-      let filteredProject = [];
-      for (let i = 0; i < this.projects.length; i++) {
-        if (_.toLower(this.projects[i].name).indexOf(_.toLower(searchValue)) >= 0) {
-          filteredProject.push(this.projects[i]);
-          continue;
-        }
-        if (_.toLower(this.projects[i].description).indexOf(_.toLower(searchValue)) >= 0) {
-          filteredProject.push(this.projects[i]);
-          continue;
-        }
-        let temp = searchValue.split('/');
-        if (temp.length == 3) {
-          searchValue = temp[2] + "-" + temp[1] + "-" + temp[0];
-        } else if (temp.length == 2) {
-          searchValue = temp[1] + "-" + temp[0];
-        } else {
-          searchValue = temp[0];
-        }
-        if(this.projects[i].deadline){
-          if((this.projects[i].deadline).indexOf(searchValue)>=0){
-            filteredProject.push(this.projects[i]);
-            continue;
           }
-        }
-        if(this.projects[i].startDate){
-          if((this.projects[i].startDate).indexOf(searchValue)>=0){
-            filteredProject.push(this.projects[i]);
-            continue;
-          }
-        }
-        if(this.projects[i].createdTime){
-          if((this.projects[i].createdTime).indexOf(searchValue)>=0){
-            filteredProject.push(this.projects[i]);
-            continue;
-          }
-        }
-      }
-      if (filteredProject.length != 0) {
-        this.pager = {} as Pager;
-        this.setPage(1, filteredProject);
-        return;
-      } else{
-        this.pager = {} as Pager;
-        this.setPage(1, filteredProject);
-        return;
-      }
-    }
-    else {
-      this.setPage(1,this.projects);
-    }
 
+          if (!result && project.description) {
+            result = project.description && _.toLower(project.description).indexOf(_.toLower(searchStr)) >= 0
+          }
+
+          if (!result && project.deadline) {
+            let formatted = moment(project.deadline).format('DD/MM/YYYY');
+            result = _.toLower(formatted).indexOf(_.toLower(searchStr)) >= 0;
+          }
+
+          if (!result && project.startDate) {
+            let formatted = moment(project.startDate).format('DD/MM/YYYY');
+            result = _.toLower(formatted).indexOf(_.toLower(searchStr)) >= 0;
+
+          }
+
+          if (!result && project.createdTime) {
+            let formatted = moment(project.createdTime).format('DD/MM/YYYY');
+            result = _.toLower(formatted).indexOf(_.toLower(searchStr)) >= 0;
+
+          }
+
+          return result;
+        });
+        this.isPageLoading = false;
+      })
+      .catch(reason => {
+        console.log('viewallproject--search ' + reason);
+      })
   }
 }

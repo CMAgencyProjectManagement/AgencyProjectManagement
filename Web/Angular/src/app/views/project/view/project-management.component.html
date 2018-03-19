@@ -4,116 +4,58 @@
       <div class="card-header">
         <strong>Project Management</strong>
       </div>
-      <div class="card-body">
+      <!--<app-spinner *ngIf="isPageLoading"></app-spinner>-->
+      <div *ngIf="!isPageLoading" class="card-body">
         <div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" (click)="search(searchProject.value)" style="background-color: black;
-                          border-color: black;">
+            <button class="btn btn-primary" type="button" (click)="search(searchField.value)">
               <i class="fa fa-search"></i> Search
             </button>
           </span>
-          <input class="form-control" placeholder="Name" type="text" (input)="search(searchProject.value)" #searchProject placeholder="Name, Description, Deadline,...">
+          <input class="form-control" type="text" (change)="search(searchField.value)" #searchField>
         </div>
-        <br/>
-        <table class="table table-hover table-outline mb-0" *ngIf="pagedProjects">
-          <thead class="thead-default">
-            <tr>
-              <th>No.</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Deadline</th>
-              <th>Start date</th>
-              <th>Created</th>
-              <th>Update</th>
-              <th>Close</th>
-            </tr>
+        <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
+          <thead>
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Deadline</th>
+            <th>Start date</th>
+            <th>Created</th>
+            <th>Update</th>
+          </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let project of pagedProjects;let i = index">
-              <tr style="cursor: pointer">
-                <!-- (click)="handleViewProject(project.id)" -->
-                <!-- <tr *ngFor="let project of projects" style="cursor: pointer" onclick="location.href='#/project/detail'"> -->
-                <td>
-                  {{i + (pager.currentPage-1)*pager.pageSize + 1}}
-                </td>
-                <td>
-                  <a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name | truncatetext:80}}</a>
-                </td>
-                <td>
-                  <p style="color: black" *ngIf="project.description">{{project.description | truncatetext:100}}</p>
-                </td>
-                <td *ngIf="!project.deadline">N/A</td>
-                <td *ngIf="project.deadline">{{project.deadline | date:'dd/M/y'}}</td>
-                <td *ngIf="!project.startDate">N/A</td>
-                <td *ngIf="project.startDate">{{project.startDate | date:'d/M/y'}}</td>
-                <td>{{project.createdTime | date:'d/M/y'}}</td>
-                <td>
-                  <a href="#/project/update?projectID={{project.id}}">
-                    <button type="button" class="btn btn-primary" style="color: black;
-                    background-color: white;
-                    border-color: black;">
-                      Update
-                    </button>
-                  </a>
-
-                </td>
-                <td>
-                  <button type="button" class="btn btn-danger" data-toggle="modal" (click)="dangerModal.show()" style="padding: 0.3rem" style="color: black;
-                    background-color: white;
-                    border-color: black;">
-                    Close
-                  </button>
-                </td>
-
-                <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-danger" role="document">
-                    <div class="modal-content" style="border-color: black;">
-                      <div class="modal-header" style="color: black;
-                        background-color: white;">
-                        <h4 class="modal-title">Confirmation message!</h4>
-                        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Are you sure to close this project?</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
-                          background-color: white;
-                          border-color: black;">No</button>
-                        <button type="button" class="btn btn-danger" (click)="handleClose(project.id)" style="color: black;
-                          background-color: white;
-                          border-color: black;">Yes</button>
-                      </div>
-                    </div>
-                    <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-                </div>
-                <!-- /.modal -->
-              </tr>
-            </ng-container>
+          <tr *ngFor="let project of projects;let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{project.name}}</td>
+            <td>
+              <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
+              <p *ngIf="!project.description">N/A</p>
+            </td>
+            <td>
+              <span *ngIf=project.deadline>{{project.deadline | date:'dd/M/y'}}</span>
+              <span *ngIf=!project.deadline>N/A</span>
+            </td>
+            <td>
+              <span *ngIf=project.startDate>{{project.startDate | date:'dd/M/y'}}</span>
+              <span *ngIf=!project.startDate>N/A</span>
+            </td>
+            <td>
+              <span *ngIf=project.createdTime>{{project.createdTime | date:'dd/M/y'}}</span>
+              <span *ngIf=!project.createdTime>N/A</span>
+            </td>
+            <td>
+              <a href="#/project/update?projectID={{project.id}}">
+                <button type="button" class="btn btn-primary">
+                  Update
+                </button>
+              </a>
+            </td>
+          </tr>
+          </tbody>
         </table>
-
-        <!-- pager -->
-        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(1)">First</a>
-          </li>
-          <li [ngClass]="[pager.currentPage === 1 ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
-          </li>
-          <li *ngFor="let page of pager.pages" [ngClass]="[pager.currentPage === page ? 'active' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(page)">{{page}}</a>
-          </li>
-          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(pager.currentPage + 1)">Next</a>
-          </li>
-          <li [ngClass]="[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']">
-            <a class="page-link fake-link" (click)="setPage(pager.totalPages)">Last</a>
-          </li>
-        </ul>
       </div>
     </div>
   </div>

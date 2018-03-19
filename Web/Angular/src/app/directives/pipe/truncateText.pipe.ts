@@ -8,6 +8,9 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class TruncateTextPipe implements PipeTransform {
 
   transform(value: string, length: number): string {
+    if (!value) {
+      return value;
+    }
     const biggestWord = 50;
     const elipses = '...';
 
