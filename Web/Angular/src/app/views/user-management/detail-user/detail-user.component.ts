@@ -46,7 +46,7 @@ export class DetailUserComponent implements OnInit {
               itemBirthday: this.foundUser.birthdate,
               itemAvatar: this.foundUser.avatar,
               itemPhone: this.foundUser.phone,
-              itemTeam: this.foundUser.team,
+              itemTeam: this.foundUser.team.name,
               itemEmail: this.foundUser.email,
               itemRole: this.foundUser.isManager
 

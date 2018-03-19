@@ -8,13 +8,13 @@
         <div class="form-group row">
           <h1>
             <div class="col-md-12 col-form-label" *ngIf="foundTeam" style="text-transform: uppercase">
-              {{foundTeam.name}} 
+              {{foundTeam.name}}
             </div>
           </h1>
-          <img class="img-circle" src="assets/img/teampic/1.jpg" height="900px" width="100%">
+
         </div>
         <div class="form-group row">
-          <div id="description">
+          <!-- <div id="description">
             In the advertising, digital or marketing sectors, the creative team is responsible for generating attention-grabbing ideas
             that will entice the consumer or target audience. Members of the team work together to develop conceptual campaigns
             designed to stand apart from competitors.
@@ -25,20 +25,31 @@
             organise thoughts and develop plans to suit the expectations of the client.
             <br/> Creativity is all about nurturing imagination and turning thoughts into the ideas that give a project the edge.
             So agencies will expect team members to have a positive approach that encourages their creativity to flourish.
-          </div>
+          </div> -->
+          <!-- thu -->
+          <!-- <div *ngFor="let user of value">
+
+            <div>{{user.name}}</div>
+
+            <img src="{{user.avatar}}" class="avatar avatar-lg">
+          </div> -->
+
+
           <div>
-            <img id="imgAdmin" src="{{foundTeam.manager.avatar}}"  >
+            <img id="imgAdmin" src="{{foundTeam.manager.avatar}}">
           </div>
           <div>
             <b id="name">{{foundTeam.manager.username}}</b>
-            <p id="role">Manager <span class="badge badge-success" style="font-size: 20px;">Active</span></p>
+            <p id="role">Manager
+              <span class="badge badge-success" style="font-size: 20px;">Active</span>
+            </p>
             <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
               <button type="button" class="btn btn-primary" style="color: black;
               background-color: white;
               border-color: black;" id="viewprofilebutton">
                 View profile
               </button>
-              </a>
+            </a>
           </div>
         </div>
       </form>
