@@ -58,7 +58,7 @@
         <div>
           <div id="birthdate" *ngIf="foundUser" class="row">
             <div class="col-4  text-right">Date of birth </div>
-            <div class="col-8">{{foundUser.birthdate}}</div>
+            <div class="col-8">{{foundUser.birthdate |date:'dd/MM/yyyy'}}</div>
           </div>
         </div>
       </div>
