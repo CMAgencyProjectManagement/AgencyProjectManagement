@@ -183,6 +183,7 @@ namespace Service
                 throw new ObjectNotFoundException($"User with ID{id} not found");
             }
         }
+        
 
         public int DeactiveUser(int id)
         {

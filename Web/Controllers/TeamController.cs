@@ -7,6 +7,7 @@ using System.Web.Http;
 using Entity;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -61,6 +62,71 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find team with ID {id}");
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        [HttpPut]
+        [Route("assign")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult AssignTeam(AssignTeamModel assignTeamModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        UserService userService = new UserService(db);
+                        TeamService teamService = new TeamService(db);
+                        User assignTeamMember = teamService.AssignTeam(
+                            assignTeamModel.ID,
+                            assignTeamModel.TeamId
+                            );
+                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(assignTeamMember, includeTeam: true)));
+                    }
+
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        [HttpPut]
+        [Route("unassign")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult UnAssignTeam(UnAssignTeamModel unAssignTeamModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        UserService userService = new UserService(db);
+                        TeamService teamService = new TeamService(db);
+                        User assignTeamMember = teamService.UnAssignTask(
+                            unAssignTeamModel.ID
+                            );
+                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(assignTeamMember, includeTeam: true)));
+                    }
+
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
                 }
             }
             catch (Exception ex)
