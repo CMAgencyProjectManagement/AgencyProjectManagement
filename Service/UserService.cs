@@ -92,13 +92,13 @@ namespace Service
         }
 
         public User CreateAccount(
-            string name,
-            string phone,
-            DateTime? birthday,
-            string email,
-            string username,
-            string password,
-            int teamId)
+             string name,
+             string phone,
+             DateTime? birthday,
+             string email,
+             string username,
+             string password,
+             int? teamId)
         {
             User newUser;
             newUser = new User
@@ -115,19 +115,25 @@ namespace Service
             };
             db.Users.Add(newUser);
 
-            Team team = db.Teams.Find(teamId);
-            UserTeam userTeam = new UserTeam
+            if (teamId != null)
             {
-                User = newUser,
-                Team = team
-            };
-            db.UserTeams.Add(userTeam);
+                Team team = db.Teams.Find(teamId);
+                UserTeam userTeam = new UserTeam
+                {
+                    User = newUser,
+                    Team = team
+                };
+                db.UserTeams.Add(userTeam);
+            }
+
 
             db.SaveChanges();
 
 
             return newUser;
         }
+
+
 
         public User Updateuser(
             int id,
