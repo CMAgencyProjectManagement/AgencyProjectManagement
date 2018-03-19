@@ -12,9 +12,9 @@
               <i class="fa fa-search"></i> Search
             </button>
           </span>
-          <input class="form-control" type="text" (change)="search(searchField.value)" #searchField>
+          <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
         </div>
-        <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
+        <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
           <tr>
             <th>No.</th>
