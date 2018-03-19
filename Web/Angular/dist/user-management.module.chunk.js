@@ -3,7 +3,7 @@ webpackJsonp(["user-management.module"],{
 /***/ "../../../../../src/app/views/user-management/create-user/create-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Create account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"signupForm\" class=\"form-horizontal col-6 \">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"username-input\">Username</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"username-input\" name=\"username-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.username}\"\r\n                     formControlName=\"username\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.username\">{{errors.username}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n                     formControlName=\"password\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Fullname</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                     formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\"\r\n                     formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                     formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\r\n            <div class=\"col-8\">\r\n              <my-date-picker [options]=\"myDatePickerOptions\"\r\n                              formControlName=\"birthDate\"\r\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                              required></my-date-picker>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n            <label class=\"col-4 col-form-label text-right\">Team</label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\"\r\n                     [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\"\r\n                     (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\"\r\n                      (click)=\"handleCreate()\"\r\n                      [ladda] = \"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Reset</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Create account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"signupForm\" class=\"form-horizontal col-6 \">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"username-input\">Username <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"username-input\" name=\"username-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.username}\"\r\n                formControlName=\"username\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.username\">{{errors.username}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n                formControlName=\"password\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Full name</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\r\n            <div class=\"col-8\">\r\n              <my-date-picker [options]=\"myDatePickerOptions\" formControlName=\"birthDate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n\r\n            <label class=\"col-4 col-form-label text-right\">Team </label>\r\n\r\n\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\" (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div>\r\n\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreate()\" [ladda]=\"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Reset</button>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -15,7 +15,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#dauSao {\n  color: rgba(245, 7, 66, 0.89); }\n", ""]);
 
 // exports
 
@@ -195,7 +195,7 @@ var CreateUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/detail-user/detail-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>User Detail</strong>\r\n  </div>\r\n  <div class=\"card-body\">\r\n    <div id=\"AvaAndDe\" class=\"row\">\r\n\r\n      <div id=\"left\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div id=\"right\">\r\n        <div>\r\n          <b id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase\">{{foundUser.name}}</b>\r\n        </div>\r\n        <div id=\"username\" *ngIf=\"foundUser\">\r\n          <span>User name: </span> {{foundUser.username}}\r\n        </div>\r\n        <div id=\"team\" *ngIf=\"foundUser\">\r\n          <span>Team: </span> {{foundUser.team.name}}</div>\r\n        <!-- <div id=\"role\" *ngIf=\"foundUser\">\r\n          <span>Role: </span>{{foundUser.isManager}}\r\n          <span class=\"badge badge-success\" style=\"font-size: 20px;\">Active</span>\r\n        </div> -->\r\n        <div id=\"phone\" *ngIf=\"foundUser\">\r\n          <span>Phone number:</span> {{foundUser.phone}}</div>\r\n        <div id=\"email\" *ngIf=\"foundUser\">\r\n          <span>Email: </span> {{foundUser.email}}\r\n        </div>\r\n        <div>\r\n          <p id=\"birthdate\" *ngIf=\"foundUser\">\r\n            <span>Date of birth: </span> {{foundUser.birthdate}}</p>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -207,7 +207,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#left {\n  font-size: 30px;\n  width: 38%;\n  padding-left: 4px;\n  margin-right: 5px; }\n\n#right {\n  font-size: 25px;\n  width: 45%;\n  padding-left: 4px;\n  margin-right: 5px; }\n\n#AvaAndDe {\n  padding-left: 13px; }\n\n#center {\n  padding: 0em;\n  width: 0%;\n  font-size: 30px; }\n\n#avatar {\n  width: 150px;\n  height: 200px;\n  margin-right: 5px; }\n\n#summary {\n  color: rgba(18, 38, 221, 0.89);\n  border-bottom: 2px solid; }\n\n#TechnicalSkills {\n  color: rgba(18, 38, 221, 0.89);\n  border-bottom: 2px solid; }\n\n#role {\n  color: grey;\n  font-size: 25px; }\n\n#phone {\n  font-size: 25px; }\n\n#email {\n  color: blue;\n  font-size: 25px; }\n\n#name {\n  font-size: 45px; }\n\n#username {\n  font-size: 25px; }\n\n#img {\n  width: 350px;\n  height: 350px; }\n\n#birthdate {\n  font-size: 25px; }\n", ""]);
 
 // exports
 
@@ -223,6 +223,8 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DetailUserComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -233,10 +235,64 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var DetailUserComponent = /** @class */ (function () {
-    function DetailUserComponent() {
+    function DetailUserComponent(teamService, userService) {
+        this.teamService = teamService;
+        this.userService = userService;
+        this.selectedUser = [];
     }
     DetailUserComponent.prototype.ngOnInit = function () {
+        this.entity = {};
+        this.userID = Number(this.GetURLParameter('id'));
+        this.users = [];
+        this.getAllTeam();
+    };
+    DetailUserComponent.prototype.getAllTeam = function () {
+        var _this = this;
+        this.userService.getAllUser()
+            .then(function (value) {
+            _this.users = value;
+            for (var i = 0; i < _this.users.length; i++) {
+                if (_this.users[i].id == _this.userID) {
+                    _this.foundUser = _this.users[i];
+                    _this.selectedUser.push({
+                        id: _this.foundUser.id,
+                        itemName: _this.foundUser.name,
+                        itemUsername: _this.foundUser.username,
+                        itemBirthday: _this.foundUser.birthdate,
+                        itemAvatar: _this.foundUser.avatar,
+                        itemPhone: _this.foundUser.phone,
+                        itemTeam: _this.foundUser.team.name,
+                        itemEmail: _this.foundUser.email,
+                        itemRole: _this.foundUser.isManager
+                    });
+                }
+            }
+        });
+    };
+    DetailUserComponent.prototype.GetURLParameter = function (sParam) {
+        var sPageURL = window.location.href;
+        var sURLVariables = sPageURL.split('?');
+        var sTeam = sURLVariables[1].split('=');
+        return sTeam[1];
+    };
+    DetailUserComponent.prototype.onItemSelect = function (item) {
+        console.log(item);
+        console.log(this.selectedUser);
+    };
+    DetailUserComponent.prototype.OnItemDeSelect = function (item) {
+        console.log(item);
+        console.log(this.selectedUser);
+    };
+    DetailUserComponent.prototype.onSelectAll = function (items) {
+        console.log(items);
+    };
+    DetailUserComponent.prototype.onDeSelectAll = function (items) {
+        console.log(items);
+    };
+    DetailUserComponent.prototype.submitChange = function () {
     };
     DetailUserComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -244,7 +300,8 @@ var DetailUserComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/views/user-management/detail-user/detail-user.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/user-management/detail-user/detail-user.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_team_service__["a" /* TeamService */],
+            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]])
     ], DetailUserComponent);
     return DetailUserComponent;
 }());
@@ -256,7 +313,7 @@ var DetailUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/update-user/update-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>Update User</strong>\n      </div>\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-6\">\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Fullname</label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\"\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\n                     formControlName=\"fullname\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email</label>\n            <div class=\"col-8\">\n              <input type=\"email\" id=\"email-input\" name=\"email-input\"\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\"\n                     formControlName=\"email\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone</label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\"\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\n                     formControlName=\"phone\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\n            <div class=\"col-8\">\n              <my-date-picker [options]=\"myDatePickerOptions\"\n                              formControlName=\"birthDate\"\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\n                              required></my-date-picker>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\n            </div>\n\n          </div>\n          <div class=\"form-group row\" *ngIf=\"teams\">\n            <label class=\"col-4 col-form-label text-right\">Team</label>\n            <div class=\"col-8\">\n              <select formControlName=\"team\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\n            <div class=\"col-8\">\n              <input type=\"file\" id=\"file-input\" name=\"file-input\"\n                     [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\"\n                     (change)=\"avatarFileChange($event)\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\n            </div>\n\n          </div>\n          <div class=\"form-actions text-center\">\n            <div class=\"col-12\">\n              <button class=\"btn btn-primary\"\n                      (click)=\"handleUpdate()\"\n                      [ladda]=\"isLoading\">\n                Save changes\n              </button>\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Cancel</button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update User</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-6\">\r\n          <!-- <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Fullname</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div> -->\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\">Password </label>\r\n            <div class=\"col-8\">\r\n              <button type=\"button\" class=\"btn btn-primary\">Reset Password</button>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\r\n            <div class=\"col-8\">\r\n              <my-date-picker [options]=\"myDatePickerOptions\" formControlName=\"birthDate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n          </div> -->\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n            <label class=\"col-4 col-form-label text-right\">Team</label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\" (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div> -->\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdate()\" [ladda]=\"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Cancel</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -441,7 +498,7 @@ var routes = [
         children: [
             {
                 data: {
-                    title: 'View accounts'
+                    title: 'View account'
                 },
                 path: 'view',
                 component: __WEBPACK_IMPORTED_MODULE_3__view_user_view_user_component__["a" /* ViewUserComponent */],
@@ -450,7 +507,7 @@ var routes = [
                 path: 'detail',
                 component: __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__["a" /* DetailUserComponent */],
                 data: {
-                    title: 'Detail '
+                    title: 'Detail account'
                 }
             },
             {
@@ -504,6 +561,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__detail_user_detail_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/detail-user/detail-user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components__ = __webpack_require__("../../../../../src/app/components/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -536,14 +594,14 @@ var UserManagementModule = /** @class */ (function () {
                 }),
                 __WEBPACK_IMPORTED_MODULE_6__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8_mydatepicker__["MyDatePickerModule"],
+                __WEBPACK_IMPORTED_MODULE_11_angular_datatables__["a" /* DataTablesModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_3__create_user_create_user_component__["a" /* CreateUserComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__view_user_view_user_component__["a" /* ViewUserComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__update_user_update_user_component__["a" /* UpdateUserComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__detail_user_detail_user_component__["a" /* DetailUserComponent */],
-                __WEBPACK_IMPORTED_MODULE_10__components__["l" /* SpinnerComponent */],
-                __WEBPACK_IMPORTED_MODULE_10__components__["k" /* SortIconComponent */]
+                __WEBPACK_IMPORTED_MODULE_10__components__["k" /* SpinnerComponent */],
             ]
         })
     ], UserManagementModule);
@@ -557,7 +615,7 @@ var UserManagementModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/view-user/view-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>View all accounts</strong>\n      </div>\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\n      <div class=\"card-body animated fadeIn\" *ngIf=!isPageLoading>\n        <div class=\"input-group\">\n          <span class=\"input-group-btn\">\n            <button class=\"btn btn-primary\" type=\"button\"\n                    (click)=\"search(searchUsername.value)\">\n              <i class=\"fa fa-search\"></i> Search\n            </button>\n          </span>\n          <input class=\"form-control\" type=\"text\"\n                 (input)=\"search(searchUsername.value)\"\n                 #searchUsername>\n        </div>\n        <br/>\n        <table class=\"table table-bordered\">\n          <thead>\n          <tr>\n            <th>\n              <app-sort-icon [isDesc]=\"true\" (click)=\"sort('No.')\">No.</app-sort-icon>\n            </th>\n            <th>Avatar</th>\n            <th>Full Name</th>\n            <th>Username</th>\n            <th>Birthdate</th>\n            <th>Team</th>\n            <th>Role</th>\n            <th>Status</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let user of pagedUsers;let i = index\">\n            <th scope=\"row\">{{i + (pager.currentPage-1)*pager.pageSize + 1}}</th>\n            <td>\n              <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\n              <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar avatar-lg\">\n            </td>\n            <td>\n              <p *ngIf=\"user.name\">{{user.name}}</p>\n              <p *ngIf=\"!user.name\">N/A</p>\n            </td>\n            <td>\n              <a href=\"#/account/update?id={{user.id}}\">{{user.username}}</a>\n            </td>\n            <td>\n              <p *ngIf=\"user.birthDate\">{{user.birthDate}}</p>\n              <p *ngIf=\"!user.birthDate\">N/A</p>\n            </td>\n            <td>\n              <p>{{user.team.name}}</p>\n            </td>\n            <td>\n              <strong><p *ngIf=\"user.isManager\">Manager</p></strong>\n              <p *ngIf=\"!user.isManager\">Staff</p>\n            </td>\n            <td>\n              <span class=\"badge badge-success\"\n                    *ngIf=\"user.isActive\">\n                Active\n              </span>\n              <span class=\"badge badge-danger\"\n                    *ngIf=\"!user.isActive\">\n                Banned\n              </span>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <!-- pager -->\n        <ul *ngIf=\"pager.pages && pager.pages.length\" class=\"pagination\">\n          <li [ngClass]=\"[pager.currentPage === 1 ? 'disabled' : '', 'page-item']\">\n            <a class=\"page-link fake-link\" (click)=\"setPage(1)\">First</a>\n          </li>\n          <li [ngClass]=\"[pager.currentPage === 1 ? 'disabled' : '', 'page-item']\">\n            <a class=\"page-link fake-link\" (click)=\"setPage(pager.currentPage - 1)\">Previous</a>\n          </li>\n          <li *ngFor=\"let page of pager.pages\" [ngClass]=\"[pager.currentPage === page ? 'active' : '', 'page-item']\">\n            <a class=\"page-link fake-link\" (click)=\"setPage(page)\">{{page}}</a>\n          </li>\n          <li [ngClass]=\"[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']\">\n            <a class=\"page-link fake-link\" (click)=\"setPage(pager.currentPage + 1)\">Next</a>\n          </li>\n          <li [ngClass]=\"[pager.currentPage === pager.totalPages ? 'disabled' : '', 'page-item']\">\n            <a class=\"page-link fake-link\" (click)=\"setPage(pager.totalPages)\">Last</a>\n          </li>\n        </ul>\n\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>View all accounts</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=!isPageLoading class=\"card-body animated fadeIn\" >\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchUsername.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchUsername.value)\" #searchUsername>\r\n        </div>\r\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n            <tr>\r\n              <th>No.</th>\r\n              <th>Avatar</th>\r\n              <th>Full Name</th>\r\n              <th>Username</th>\r\n              <th>Birthdate</th>\r\n              <th>Team</th>\r\n              <th>Role</th>\r\n              <th>Status</th>\r\n              <th>Action</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let user of users;let i = index\">\r\n              <td class=\"text-center\">{{i + 1}}</td>\r\n              <td class=\"text-center\">\r\n                <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n                <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar avatar-lg\">\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.name\">{{user.name}}</p>\r\n                <p *ngIf=\"!user.name\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <a href=\"#/account/detail?id={{user.id}}\">{{user.username}}</a>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</p>\r\n                <p *ngIf=\"!user.birthdate\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"!user.team\">N/A</p>\r\n                <p *ngIf=\"user.team\">{{user.team.name}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <strong>\r\n                  <p *ngIf=\"user.isAdmin\">Admin</p>\r\n                </strong>\r\n                <strong>\r\n                  <p *ngIf=\"!user.isAdmin && user.isManager\">Manager</p>\r\n                </strong>\r\n                <p *ngIf=\"!user.isAdmin && !user.isManager\">Staff</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <span class=\"badge badge-success\" *ngIf=\"user.isActive\">\r\n                  Active\r\n                </span>\r\n                <span class=\"badge badge-danger\" *ngIf=\"!user.isActive\">\r\n                  Banned\r\n                </span>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/account/update?id={{user.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -569,7 +627,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".table.table-bordered {\n  background-color: white;\n  margin-bottom: 0; }\n\n.fake-link {\n  cursor: pointer; }\n", ""]);
+exports.push([module.i, ".table.table-bordered {\n  margin-top: 1em; }\n", ""]);
 
 // exports
 
@@ -586,9 +644,10 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewUserComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__("../../../../moment/moment.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -603,11 +662,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ViewUserComponent = /** @class */ (function () {
-    function ViewUserComponent(userService, pagerService) {
+    function ViewUserComponent(userService) {
         this.userService = userService;
-        this.pagerService = pagerService;
-        // pager object
-        this.pager = {};
+        this.datatableOptions = {
+            searching: false,
+            lengthChange: false,
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [1, 8]
+                }
+            ]
+        };
         this.isPageLoading = true;
     }
     ViewUserComponent.prototype.ngOnInit = function () {
@@ -615,67 +682,56 @@ var ViewUserComponent = /** @class */ (function () {
         this.userService.getAllUser()
             .then(function (value) {
             _this.users = value;
-            _this.setPage(1);
             _this.isPageLoading = false;
         });
     };
-    ViewUserComponent.prototype.setPage = function (page, users) {
-        if (users === void 0) { users = undefined; }
-        if (page < 1 || page > this.pager.totalPages) {
-            return;
-        }
-        if (!users) {
-            users = this.users;
-        }
-        this.pager = this.pagerService.getPager(users.length, page, 7);
-        this.pagedUsers = users.slice(this.pager.startIndex, this.pager.endIndex + 1);
-    };
-    ViewUserComponent.prototype.sort = function (attr) {
-        // switch (attr) {
-        //   case 'No.': {
-        //     this.users = _.sortBy(users);
-        //   }
-        // }
-    };
     // search by username
     ViewUserComponent.prototype.search = function (searchStr) {
-        if (searchStr) {
-            var filteredUser = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](this.users, function (user) {
+        var _this = this;
+        this.isPageLoading = true;
+        this.userService.getAllUser()
+            .then(function (users) {
+            _this.users = __WEBPACK_IMPORTED_MODULE_2_lodash__["filter"](users, function (user) {
                 var result;
-                result = user.name && __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](user.name).indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                result = user.name && __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](user.name).indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                 if (!result) {
-                    result = user.username && __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](user.username).indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                    result = user.username && __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](user.username).indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                 }
                 if (!result) {
-                    result = user.birthDate && __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](user.birthDate).indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                    if (user.birthdate) {
+                        var formatedBDate = __WEBPACK_IMPORTED_MODULE_3_moment__(user.birthdate).format('DD/MM/YYYY');
+                        result = __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](formatedBDate).indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
+                    }
                 }
                 if (!result) {
-                    result = user.team && __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](user.team.name).indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                    result = user.team && __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](user.team.name).indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                 }
                 if (!result) {
-                    if (user.isManager) {
-                        result = __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"]('Manager').indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                    if (user.isAdmin) {
+                        result = __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"]('Admin').indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
+                    }
+                    else if (user.isManager) {
+                        result = __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"]('Manager').indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                     }
                     else {
-                        result = __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"]('Staff').indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                        result = __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"]('Staff').indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                     }
                 }
                 if (!result) {
                     if (user.isActive) {
-                        result = __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"]('Active').indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                        result = __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"]('Active').indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                     }
                     else {
-                        result = __WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"]('Banned').indexOf(__WEBPACK_IMPORTED_MODULE_3_lodash__["toLower"](searchStr)) >= 0;
+                        result = __WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"]('Banned').indexOf(__WEBPACK_IMPORTED_MODULE_2_lodash__["toLower"](searchStr)) >= 0;
                     }
                 }
                 return result;
             });
-            this.pager = {};
-            this.setPage(1, filteredUser);
-        }
-        else {
-            this.setPage(1);
-        }
+            _this.isPageLoading = false;
+        })
+            .catch(function (reason) {
+            _this.isPageLoading = false;
+        });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('searchUsername'),
@@ -687,8 +743,7 @@ var ViewUserComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */],
-            __WEBPACK_IMPORTED_MODULE_2__services_pager_service__["a" /* PagerService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */]])
     ], ViewUserComponent);
     return ViewUserComponent;
 }());

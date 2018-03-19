@@ -19,7 +19,8 @@ var map = {
 	],
 	"./views/team-management/team-management.module": [
 		"../../../../../src/app/views/team-management/team-management.module.ts",
-		"team-management.module"
+		"team-management.module",
+		"common"
 	],
 	"./views/user-management/user-management.module": [
 		"../../../../../src/app/views/user-management/user-management.module.ts",
@@ -62,20 +63,31 @@ var admin_navigation = [
     {
         name: 'Project',
         url: '/project',
-        icon: 'icon-calendar'
+        icon: 'icon-calendar',
+        children: [
+            {
+                name: 'View',
+                url: '/project',
+                icon: 'icon-calendar',
+            },
+            {
+                name: 'Create',
+                url: '/project/add',
+                icon: 'icon-calendar',
+            }
+        ]
     },
     {
         name: 'Team',
-        url: '/team/view',
-        icon: 'icon-people'
-    },
-    {
-        name: 'detail-team',
-        url: '/team/detail',
-        icon: 'icon-team',
-        badge: {
-            variant: 'info'
-        }
+        url: '/team',
+        icon: 'icon-people',
+        children: [
+            {
+                name: 'View',
+                url: '/team/view',
+                icon: 'icon-people',
+            }
+        ]
     },
     /*
     {
@@ -102,16 +114,14 @@ var admin_navigation = [
         children: [
             {
                 name: 'View',
-                url: '/account/view'
+                url: '/account/view',
+                icon: 'icon-user',
             },
             {
                 name: 'Create',
-                url: '/account/create'
+                url: '/account/create',
+                icon: 'icon-user',
             },
-            {
-                name: 'Detail',
-                url: '/account/detail'
-            }
         ]
     }
 ];
@@ -130,8 +140,8 @@ var serverPath = {
     // User
     user: '/api/user',
     allUser: '/api/user/all',
-    createUser: 'api/user',
-    updateUser: 'api/user',
+    createUser: '/api/user',
+    updateUser: '/api/user',
     // Project
     allProject: '/api/project/all',
     myProject: '/api/project',
@@ -299,7 +309,7 @@ var APP_COMPONENTS = [
     __WEBPACK_IMPORTED_MODULE_6__components__["h" /* AppSidebarFormComponent */],
     __WEBPACK_IMPORTED_MODULE_6__components__["i" /* AppSidebarHeaderComponent */],
     __WEBPACK_IMPORTED_MODULE_6__components__["j" /* AppSidebarMinimizerComponent */],
-    __WEBPACK_IMPORTED_MODULE_6__components__["a" /* APP_SIDEBAR_NAV */]
+    __WEBPACK_IMPORTED_MODULE_6__components__["a" /* APP_SIDEBAR_NAV */],
 ];
 // Import directives
 
@@ -1172,9 +1182,7 @@ var AppSidebarComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__ = __webpack_require__("../../../../../src/app/components/app-sidebar-nav/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__sort_icon_sort_icon_component__ = __webpack_require__("../../../../../src/app/components/sort-icon/sort-icon.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_11__sort_icon_sort_icon_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__["a"]; });
 
 
 
@@ -1185,72 +1193,6 @@ var AppSidebarComponent = /** @class */ (function () {
 
 
 
-
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/sort-icon/sort-icon.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div>\n  <ng-content></ng-content>\n  <div class=\"right\">\n    <i class=\"fa fa-sort-desc\" *ngIf=\"isDesc\"></i>\n    <i class=\"fa fa-sort-asc\" *ngIf=\"!isDesc\"></i>\n  </div>\n</div>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/sort-icon/sort-icon.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ":host :hover {\n  cursor: pointer; }\n\n.right {\n  float: right; }\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/sort-icon/sort-icon.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SortIconComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var SortIconComponent = /** @class */ (function () {
-    function SortIconComponent() {
-    }
-    SortIconComponent.prototype.ngOnInit = function () {
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-        __metadata("design:type", String)
-    ], SortIconComponent.prototype, "isDesc", void 0);
-    SortIconComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'app-sort-icon',
-            template: __webpack_require__("../../../../../src/app/components/sort-icon/sort-icon.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/sort-icon/sort-icon.component.scss")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], SortIconComponent);
-    return SortIconComponent;
-}());
 
 
 
@@ -2241,8 +2183,8 @@ var TaskService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_superagent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment__ = __webpack_require__("../../../../moment/moment.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2261,38 +2203,29 @@ var TeamService = /** @class */ (function () {
     function TeamService(storeService) {
         this.storeService = storeService;
         this.tokenCursor = storeService.select(['token', 'access_token']);
+        this.teamsCursor = storeService.select(['teams']);
     }
     TeamService.prototype.getAllTeam = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].allTeam)
-                .set('token', _this.tokenCursor.get())
-                .then(function (res) {
-                var content = res.body;
-                if (content.IsSuccess) {
-                    resolve(content.Data);
-                }
-                else {
-                    reject(content.Message);
-                }
-            });
-        });
-    };
-    TeamService.prototype.getLocalTeam = function () {
-        if (typeof (Storage) !== 'undefined') {
-            var expireTime = Number(localStorage.getItem('AgencyTokenExpireTime'));
-            var now = __WEBPACK_IMPORTED_MODULE_4_moment__().unix();
-            if (now < expireTime) {
-                var teamJson = localStorage.getItem('AgencyTeam');
-                return JSON.parse(teamJson);
+            if (_this.teamsCursor.get()) {
+                resolve(__WEBPACK_IMPORTED_MODULE_4_lodash__["cloneDeep"](_this.teamsCursor.get()));
             }
-        }
-    };
-    TeamService.prototype.setLocalTeam = function (team) {
-        if (typeof (Storage) !== 'undefined') {
-            var teamJson = JSON.stringify(team);
-            localStorage.setItem('AgencyTeam', teamJson);
-        }
+            else {
+                Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].allTeam)
+                    .set('token', _this.tokenCursor.get())
+                    .then(function (res) {
+                    var content = res.body;
+                    if (content.IsSuccess) {
+                        _this.teamsCursor.set(content.Data);
+                        resolve(content.Data);
+                    }
+                    else {
+                        reject(content.Message);
+                    }
+                });
+            }
+        });
     };
     TeamService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -2329,7 +2262,9 @@ var StoreTree = {
     currentUser: undefined,
     isWebSocketConnected: false,
     // all user from from server
-    users: undefined
+    users: undefined,
+    // all teams from server
+    teams: undefined
 };
 var StoreService = /** @class */ (function () {
     function StoreService() {

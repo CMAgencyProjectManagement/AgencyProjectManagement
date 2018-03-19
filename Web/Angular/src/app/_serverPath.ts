@@ -3,8 +3,8 @@ const serverPath = {
   // User
   user: '/api/user',
   allUser: '/api/user/all',
-  createUser: 'api/user',
-  updateUser: 'api/user',
+  createUser: '/api/user',
+  updateUser: '/api/user',
   // Project
   allProject: '/api/project/all',
   myProject: '/api/project',
