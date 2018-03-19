@@ -24,7 +24,19 @@ namespace Service
             var users  = db.Users.Where(user => user.Username == username).ToList();
             return users.Count > 0;
         }
-        
+        public bool CheckDuplicateEmail(string email)
+        {
+            var users = db.Users.Where(user => user.Email == email).ToList();
+            return users.Count > 0;
+
+        }
+        public bool CheckDuplicatePhone(string phone)
+        {
+            var users = db.Users.Where(user => user.Phone == phone).ToList();
+            return users.Count > 0;
+
+        }
+
 
         public User GetUser(string username, string password)
         {
