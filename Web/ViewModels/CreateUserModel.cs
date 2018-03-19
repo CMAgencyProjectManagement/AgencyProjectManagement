@@ -16,7 +16,6 @@ namespace Web.ViewModels
         [MaxLength(255)]
         [MinLength(6)]
         public string Password { get; set; }
-        [Required(ErrorMessage = "Fullname is required")]
         [MaxLength(255)]
         [MinLength(3)]
         public string Name { get; set; }
