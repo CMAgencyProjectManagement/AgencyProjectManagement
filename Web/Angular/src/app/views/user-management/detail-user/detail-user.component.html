@@ -16,7 +16,7 @@
           <span>User name: </span> {{foundUser.username}}
         </div>
         <div id="team" *ngIf="foundUser">
-          <span>Team: </span> {{foundUser.team}}</div>
+          <span>Team: </span> {{foundUser.team.name}}</div>
         <!-- <div id="role" *ngIf="foundUser">
           <span>Role: </span>{{foundUser.isManager}}
           <span class="badge badge-success" style="font-size: 20px;">Active</span>
@@ -28,7 +28,7 @@
         </div>
         <div>
           <p id="birthdate" *ngIf="foundUser">
-            <span>Date of birth: </span> {{foundUser.birthDate}}</p>
+            <span>Date of birth: </span> {{foundUser.birthdate}}</p>
         </div>
       </div>
     </div>
