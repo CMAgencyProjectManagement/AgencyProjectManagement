@@ -120,35 +120,45 @@ namespace Web.Controllers
                             //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                             flag = false;
                         }
-                        
+                        if (userService.CheckDuplicatePhone(createUserModel.Phone))
+                        {
+                            ModelState.AddModelError("Phone", "Phone is taken");
+                            flag = false;
+                        }
+                        if (userService.CheckDuplicateEmail(createUserModel.Email))
+                        {
+                            ModelState.AddModelError("Email", "Email is taken");
+                            flag = false;
+                        }
+
                         if (createUserModel.Birthdate != null)
                         {
-                            if (DateTime.Parse(createUserModel.Birthdate) > DateTime.Now)
+                            if (createUserModel.Birthdate > DateTime.Now)
                             {
                                 ModelState.AddModelError("Birthdate", "Birthdate must be smaller than the current time ");
                                 // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                                 flag = false;
                             }
                         }
-                        if(flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-                        DateTime? birthdate = null;
-                        if (createUserModel.Birthdate != null)
-                        {
-                            DateTime dt;
-                            if (DateTime.TryParse(createUserModel.Birthdate, out dt))
-                            {
-                                birthdate = dt;
-                            }
-                        }
+                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        //DateTime? birthdate = null;
+                        //if (createUserModel.Birthdate != null)
+                        //{
+                        //    DateTime dt;
+                        //    if (DateTime.TryParse(createUserModel.Birthdate, out dt))
+                        //    {
+                        //        birthdate = dt;
+                        //    }
+                        //}
 
                         User newUser = userService.CreateAccount(
                             createUserModel.Name,
                             createUserModel.Phone,
-                            birthdate,
+                            createUserModel.Birthdate,
                             createUserModel.Email,
                             createUserModel.Username,
                             createUserModel.Password,
-                            createUserModel.Team.Value
+                            createUserModel.Team
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(newUser)));
                     }
@@ -165,6 +175,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
 
         [HttpDelete]
         [Route("")]

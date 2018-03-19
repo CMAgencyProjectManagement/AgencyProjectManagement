@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <strong>User Detail</strong>
+    <strong>Account's detail</strong>
   </div>
   <div class="card-body">
     <div id="AvaAndDe" class="row">
@@ -9,31 +9,57 @@
         <img id="img" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
       </div>
       <div id="right" class="col-6">
+        <div id="name" *ngIf="foundUser" style="text-transform: uppercase" class="col-8  text-center">
+          <strong>{{foundUser.name}}</strong>
+        </div>
+        <div id="username" *ngIf="foundUser" class="row">
+          <div class="col-4  text-right">User name </div>
+          <div class="col-8">{{foundUser.username}}</div>
+        </div>
+
+        <div id="team" *ngIf="foundUser" class="row">
+          <div class="col-4  text-right">Team </div>
+          <div class="col-8">{{foundUser.team.name}}</div>
+        </div>
+
+        <div id="role" *ngIf="foundUser" class="row">
+          <div class="col-4  text-right">Role </div>
+
+          <div *ngIf="foundUser.isAdmin" class="col-8">
+            <strong>Admin </strong>
+          </div>
+          <div *ngIf="!foundUser.isAdmin && foundUser.isManager" class="col-8">
+            <strong>Manager </strong>
+          </div>
+          <div *ngIf="!foundUser.isAdmin && !foundUser.isManager" class="col-8">
+            Staff
+          </div>
+        </div>
+
+        <div id="ban" *ngIf="foundUser" class="row">
+          <div class="col-4  text-right">Status </div>
+          <div *ngIf="foundUser.isActive" class="col-8">
+            Active
+          </div>
+          <div *ngIf="!foundUser.isActive" class="col-8">
+            Banned
+          </div>
+
+        </div>
+
+        <div id="phone" *ngIf="foundUser" class="row">
+          <div class="col-4  text-right">Phone number </div>
+          <div class="col-8">{{foundUser.phone}}</div>
+        </div>
+        <div id="email" *ngIf="foundUser" class="row">
+          <div class="col-4  text-right">Email </div>
+          <div class="col-8">{{foundUser.email}}</div>
+        </div>
         <div>
-          <b id="name" *ngIf="foundUser" style="text-transform: uppercase">{{foundUser.name}}</b>
-        </div>
-        <div id="username" *ngIf="foundUser">
-          <span>User name: </span> {{foundUser.username}}
-        </div>
-        <div id="team" *ngIf="foundUser">
-          <span>Team: </span> {{foundUser.team.name}}</div>
-        <div id="role" *ngIf="foundUser">
-          <strong>
-            <p *ngIf="foundUser.isAdmin">Admin</p>
-          </strong>
-          <strong>
-            <p *ngIf="!foundUser.isAdmin && foundUser.isManager">Manager</p>
-          </strong>
-          <p *ngIf="!foundUser.isAdmin && !foundUser.isManager">Staff</p>
-        </div>
-        <div id="phone" *ngIf="foundUser">
-          <span>Phone number:</span> {{foundUser.phone}}</div>
-        <div id="email" *ngIf="foundUser">
-          <span>Email: </span> {{foundUser.email}}
-        </div>
-        <div>
-          <p id="birthdate" *ngIf="foundUser">
-            <span>Date of birth: </span> {{foundUser.birthdate}}</p>
+          <div id="birthdate" *ngIf="foundUser" class="row">
+            <div class="col-4  text-right">Date of birth </div>
+            <div class="col-8">{{foundUser.birthdate}}</div>
+          </div>
         </div>
       </div>
     </div>

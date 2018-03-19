@@ -24,7 +24,19 @@ namespace Service
             var users  = db.Users.Where(user => user.Username == username).ToList();
             return users.Count > 0;
         }
-        
+        public bool CheckDuplicateEmail(string email)
+        {
+            var users = db.Users.Where(user => user.Email == email).ToList();
+            return users.Count > 0;
+
+        }
+        public bool CheckDuplicatePhone(string phone)
+        {
+            var users = db.Users.Where(user => user.Phone == phone).ToList();
+            return users.Count > 0;
+
+        }
+
 
         public User GetUser(string username, string password)
         {
@@ -77,6 +89,20 @@ namespace Service
             return users.ToList();
         }
 
+        public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
+        {
+            Team team = db.Teams.Find(teamId);
+            if (team!= null)
+            {
+                return team.Users.ToList();
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
+
+            }
+        }
+
         public void UpdateAvatar(string avatarFileName, int id)
         {
             User user = db.Users.Find(id);
@@ -92,13 +118,13 @@ namespace Service
         }
 
         public User CreateAccount(
-            string name,
-            string phone,
-            DateTime? birthday,
-            string email,
-            string username,
-            string password,
-            int teamId)
+             string name,
+             string phone,
+             DateTime? birthday,
+             string email,
+             string username,
+             string password,
+             int? teamId)
         {
             User newUser;
             newUser = new User
@@ -115,19 +141,25 @@ namespace Service
             };
             db.Users.Add(newUser);
 
-            Team team = db.Teams.Find(teamId);
-            UserTeam userTeam = new UserTeam
+            if (teamId != null)
             {
-                User = newUser,
-                Team = team
-            };
-            db.UserTeams.Add(userTeam);
+                Team team = db.Teams.Find(teamId);
+                UserTeam userTeam = new UserTeam
+                {
+                    User = newUser,
+                    Team = team
+                };
+                db.UserTeams.Add(userTeam);
+            }
+
 
             db.SaveChanges();
 
 
             return newUser;
         }
+
+
 
         public User Updateuser(
             int id,
