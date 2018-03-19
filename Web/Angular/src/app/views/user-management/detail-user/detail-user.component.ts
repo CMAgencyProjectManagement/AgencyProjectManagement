@@ -48,8 +48,9 @@ export class DetailUserComponent implements OnInit {
               itemPhone: this.foundUser.phone,
               itemTeam: this.foundUser.team.name,
               itemEmail: this.foundUser.email,
-              itemRole: this.foundUser.isManager
-
+              itemManager: this.foundUser.isManager,
+              itemAdmin: this.foundUser.isAdmin,
+              itemBan: this.foundUser.isActive,
             });
           }
         }
