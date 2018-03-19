@@ -5,3 +5,7 @@
 .form-control-mydatepicker input{
   @extend .form-control
 }
+
+.dataTables_filter{
+  display: none;
+}
