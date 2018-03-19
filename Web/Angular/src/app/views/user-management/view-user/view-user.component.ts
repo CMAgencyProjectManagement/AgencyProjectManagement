@@ -16,13 +16,13 @@ export class ViewUserComponent implements OnInit {
   // https://datatables.net/reference/option/
   isPageLoading: boolean;
   datatableOptions: DataTables.Settings = {
-    'searching': false,
-    'lengthChange': false,
-    'columnDefs': [
+    searching: false,
+    lengthChange: false,
+    columnDefs: [
       {
-        'searchable': false,
-        'orderable': false,
-        'targets': [1, 8]
+        searchable: false,
+        orderable: false,
+        targets: [1, 8]
       }
     ]
   };

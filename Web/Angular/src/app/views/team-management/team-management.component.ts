@@ -6,7 +6,14 @@ import {Team} from '../../interfaces/team';
   templateUrl: 'team-management.component.html'
 })
 export class TeamManagePageComponent implements OnInit {
-  private teams: Team[] = [];
+  isPageLoading = true;
+  teams: Team[] = [];
+  datatableOptions: DataTables.Settings = {
+    searching: false,
+    lengthChange: false,
+    paging: false,
+    ordering: false
+  };
 
   constructor(private teamService: TeamService) {
   }
@@ -15,6 +22,7 @@ export class TeamManagePageComponent implements OnInit {
     this.teamService.getAllTeam()
       .then(value => {
         this.teams = value;
+        this.isPageLoading = false;
       });
   }
 }

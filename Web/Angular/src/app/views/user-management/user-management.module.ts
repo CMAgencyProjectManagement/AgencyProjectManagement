@@ -9,7 +9,6 @@ import {LaddaModule} from 'angular2-ladda';
 import {MyDatePickerModule} from 'mydatepicker';
 import {DetailUserComponent} from './detail-user/detail-user.component';
 import {SpinnerComponent} from '../../components';
-import {SortIconComponent} from '../../components';
 import {DataTablesModule} from 'angular-datatables';
 
 @NgModule({
@@ -30,7 +29,6 @@ import {DataTablesModule} from 'angular-datatables';
     UpdateUserComponent,
     DetailUserComponent,
     SpinnerComponent,
-    SortIconComponent
   ]
 })
 export class UserManagementModule {

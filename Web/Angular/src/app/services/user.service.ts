@@ -4,6 +4,7 @@ import {Cursor, StoreService} from './tree.service';
 import {serverPath} from '../_serverPath';
 import {post, get, put} from 'superagent';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Injectable()
 export class UserService {
