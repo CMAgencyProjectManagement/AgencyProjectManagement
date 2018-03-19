@@ -12,7 +12,7 @@
               <i class="fa fa-search"></i> Search
             </button>
           </span>
-          <input class="form-control" type="text" (change)="search(searchUsername.value)" #searchUsername>
+          <input class="form-control" type="text" (input)="search(searchUsername.value)" #searchUsername>
         </div>
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
