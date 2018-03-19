@@ -8,8 +8,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
 import {MyDatePickerModule} from 'mydatepicker';
 import {DetailUserComponent} from './detail-user/detail-user.component';
-import {SpinnerComponent} from '../../components';
 import {DataTablesModule} from 'angular-datatables';
+import {SpinnerModule} from '../../components/spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -21,14 +21,14 @@ import {DataTablesModule} from 'angular-datatables';
     }),
     FormsModule,
     MyDatePickerModule,
-    DataTablesModule
+    DataTablesModule,
+    SpinnerModule
   ],
   declarations: [
     CreateUserComponent,
     ViewUserComponent,
     UpdateUserComponent,
-    DetailUserComponent,
-    SpinnerComponent,
+    DetailUserComponent
   ]
 })
 export class UserManagementModule {

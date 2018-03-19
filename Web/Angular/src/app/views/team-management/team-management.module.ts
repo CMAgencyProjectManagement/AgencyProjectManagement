@@ -12,7 +12,7 @@ import {TeamManagementRoutingModule} from './team-management-routing.module';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {DataTablesModule} from 'angular-datatables';
-// import {SpinnerComponent} from '../../components';
+import {SpinnerModule} from '../../components/spinner/spinner.module';
 
 @NgModule({
   imports: [
@@ -21,14 +21,14 @@ import {DataTablesModule} from 'angular-datatables';
     TeamManagementRoutingModule,
     BsDropdownModule.forRoot(),
     AngularMultiSelectModule,
-    DataTablesModule
+    DataTablesModule,
+    SpinnerModule
   ],
   declarations: [
     TeamManagePageComponent,
     CreateTeamComponent,
     UpdateTeamComponent,
     DetailTeamComponent,
-    // SpinnerComponent
   ]
 })
 export class TeamManagementModule {

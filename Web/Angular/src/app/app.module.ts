@@ -27,8 +27,7 @@ import {
   AppSidebarFormComponent,
   AppSidebarHeaderComponent,
   AppSidebarMinimizerComponent,
-  APP_SIDEBAR_NAV,
-  SpinnerComponent
+  APP_SIDEBAR_NAV
 } from './components';
 
 const APP_COMPONENTS = [
@@ -97,6 +96,8 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {MyDatePickerModule} from 'mydatepicker';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
+
 
 @NgModule({
   imports: [

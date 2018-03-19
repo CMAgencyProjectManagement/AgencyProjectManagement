@@ -5,7 +5,7 @@
         <strong>All teams</strong>
 
       </div>
-      <!--<app-spinner *ngIf="isPageLoading"></app-spinner>-->
+      <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div *ngIf="!isPageLoading" class="card-body">
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
