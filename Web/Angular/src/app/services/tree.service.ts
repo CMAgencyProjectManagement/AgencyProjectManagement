@@ -10,7 +10,9 @@ const StoreTree = {
   currentUser: undefined,
   isWebSocketConnected: false,
   // all user from from server
-  users: undefined
+  users: undefined,
+  // all teams from server
+  teams: undefined
 };
 
 @Injectable()

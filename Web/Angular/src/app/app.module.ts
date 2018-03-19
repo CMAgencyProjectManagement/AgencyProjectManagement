@@ -27,7 +27,8 @@ import {
   AppSidebarFormComponent,
   AppSidebarHeaderComponent,
   AppSidebarMinimizerComponent,
-  APP_SIDEBAR_NAV
+  APP_SIDEBAR_NAV,
+  SpinnerComponent
 } from './components';
 
 const APP_COMPONENTS = [
@@ -40,7 +41,7 @@ const APP_COMPONENTS = [
   AppSidebarFormComponent,
   AppSidebarHeaderComponent,
   AppSidebarMinimizerComponent,
-  APP_SIDEBAR_NAV
+  APP_SIDEBAR_NAV,
 ];
 
 // Import directives

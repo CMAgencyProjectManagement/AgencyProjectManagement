@@ -60,7 +60,6 @@ export const routes: Routes = [
         path: 'team-detail',
         loadChildren: './views/team-management/team-management.module#TeamManagementModule'
       },
-    
     ]
   },
   {

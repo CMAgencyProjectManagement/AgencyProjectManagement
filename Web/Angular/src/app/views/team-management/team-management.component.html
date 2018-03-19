@@ -1,50 +1,43 @@
-<head>
-  <title>My Title</title>
-</head>
-
-<body>
-
-
-  <div style="align-content: left">
-    <div class="card align-items-left">
+<div class="row">
+  <div class="col-12">
+    <div class="card">
       <div class="card-header">
-        <strong>Team Management</strong>
+        View all teams
       </div>
-      <div class="card-body">
-        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-
-          <table class="table table-bordered">
-            <thead class="thead-dark">
-              <tr>
-                <th style="width: 100px">No.</th>
-
-                <th style="width: 300px;">Name</th>
-                <th style="width: 400px">Team Leader</th>
-                <th>Created Date</th>
-                <!-- <th>Created by</th>
-              <th>Created date</th>
-              <th>Is close</th>-->
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let team of teams;let i = index">
-                <th scope="row">{{i+1}}</th>
-                <td>
-                  <a href="#/team/detail?teamid={{team.id}}" style="color: blue">{{team.name}}</a>
-                  <!-- {{team.name}} -->
-                </td>
-                <td>
-                  <p>{{team.manager.username}} </p>
-                </td>
-                <td>
-                  <p>{{team.createdDate}}</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-        </form>
+      <!--<app-spinner *ngIf="isPageLoading"></app-spinner>-->
+      <div *ngIf="isPageLoading" >Loading</div>
+      <div *ngIf="!isPageLoading" class="card-body">
+        <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
+          <thead>
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Team Leader</th>
+            <th>Created date</th>
+            <th>Update</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let team of teams;let i = index">
+              <td class="text-center"><strong>{{i+1}}</strong></td>
+              <td>
+                <a href="#/team/detail?id={{team.id}}">{{team.name}}</a>
+              </td>
+              <td>
+                <p>{{team.manager.username}} </p>
+              </td>
+              <td>
+                <p>{{team.createdDate}}</p>
+              </td>
+              <td class="text-center">
+                <a href="#/team/update?id={{team.id}}">
+                  <button type="button" class="btn btn-primary">Update</button>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-</body>
+</div>
