@@ -120,7 +120,7 @@ namespace Web.Controllers
                             //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                             flag = false;
                         }
-                        
+
                         if (createUserModel.Birthdate != null)
                         {
                             if (DateTime.Parse(createUserModel.Birthdate) > DateTime.Now)
@@ -130,7 +130,7 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
-                        if(flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         DateTime? birthdate = null;
                         if (createUserModel.Birthdate != null)
                         {
@@ -148,7 +148,7 @@ namespace Web.Controllers
                             createUserModel.Email,
                             createUserModel.Username,
                             createUserModel.Password,
-                            createUserModel.Team.Value
+                            createUserModel.Team
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(newUser)));
                     }
@@ -165,6 +165,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
 
         [HttpDelete]
         [Route("")]
