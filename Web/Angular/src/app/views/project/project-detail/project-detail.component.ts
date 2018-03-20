@@ -1,28 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../../../services/project.service';
-import { Project } from '../../../interfaces/project';
-import { Cursor, StoreService } from '../../../services/tree.service';
-import { ElementRef, ViewChild } from '@angular/core';
-import { UserService, } from '../../../services/user.service';
-import { PagerService } from '../../../services/pager.service';
-import { User } from 'app/interfaces/user';
-import { Pager } from '../../../interfaces/pager';
-import { Directive, HostListener, Input } from '@angular/core';
-import * as _ from 'lodash';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from '../../../services/project.service';
+import {Project} from '../../../interfaces/project';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { forEach } from '@angular/router/src/utils/collection';
-import { DISABLED } from '@angular/forms/src/model';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-// Modal Component
-import { ModalModule } from 'ngx-bootstrap/modal';
+import {Router} from '@angular/router';
+
 @Component({
-  selector: 'app-project-detail',
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
 
@@ -41,10 +27,9 @@ export class ProjectDetailComponent implements OnInit {
   foundProject: Project;
   projectID: number;
   project: Project;
-  tokenCursor: Cursor;
   isLoading: boolean;
-  errorMessage: string;
-  constructor(private projectService: ProjectService,private router: Router
+
+  constructor(private projectService: ProjectService, private router: Router
   ) {
   }
 
@@ -66,7 +51,7 @@ export class ProjectDetailComponent implements OnInit {
       })
       .catch(reason => {
         console.debug('ProjectDetailComponent', reason);
-      })
+      });
     this.viewForm = new FormGroup({
       projectname: new FormControl(undefined, Validators.required),
       customername: new FormControl(undefined, Validators.required),
@@ -79,6 +64,7 @@ export class ProjectDetailComponent implements OnInit {
 
     })
   }
+
   GetURLParameter(sParam) {
     var sPageURL = window.location.href;
     var sURLVariables = sPageURL.split('?');
@@ -106,5 +92,5 @@ export class ProjectDetailComponent implements OnInit {
       const errorMessage = error.message;
       console.debug('handleCreateProjectError', fieldName, errorMessage);
     }
-  } 
+  }
 }

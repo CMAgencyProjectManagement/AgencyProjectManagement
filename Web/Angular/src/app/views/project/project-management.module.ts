@@ -6,15 +6,18 @@ import {CommonModule} from '@angular/common';
 import {TruncateTextPipe} from '../../directives';
 import {ProjectDetailComponent} from 'app/views/project/project-detail/project-detail.component';
 import {AddProjectComponent} from 'app/views/project/add-project/add-project.component';
-import {SpinnerModule} from '../../components/spinner/spinner.module';
-import {MyDatePickerModule} from 'mydatepicker';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectUpdateComponent} from 'app/views/project/project-update/project-update.component';
 import {ProjectTaskComponent} from 'app/views/project/project-task/project-task.component';
+import {TaskDetailComponent} from 'app/views/project/task-detail/task-detail.component';
+import {MyDatePickerModule} from 'mydatepicker';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataTablesModule} from 'angular-datatables';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {TaskDetailComponent} from 'app/views/project/task-detail/task-detail.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import {CmaModule} from '../../cmaComponents/cma.module';
+import {SpinnerModule} from '../../components/spinner/spinner.module';
+
+
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -26,7 +29,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ReactiveFormsModule,
     DataTablesModule,
     SpinnerModule,
-    BsDropdownModule
+    BsDropdownModule,
+    CmaModule
   ],
   declarations: [
     ProjectManagementComponent,
