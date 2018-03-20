@@ -194,7 +194,7 @@ namespace Service
                 JArray listArray = new JArray();
                 foreach (var user in users)
                 {
-                    listArray.Add(userService.ParseToJson(user));
+                    listArray.Add(userService.ParseToJson(user, avatarPath));
                 }
                 result["users"] = listArray;
             }

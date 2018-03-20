@@ -13,8 +13,8 @@ import {ProjectUpdateComponent} from 'app/views/project/project-update/project-u
 import {ProjectTaskComponent} from 'app/views/project/project-task/project-task.component';
 import {DataTablesModule} from 'angular-datatables';
 import {ModalModule} from 'ngx-bootstrap/modal';
-
-
+import {TaskDetailComponent} from 'app/views/project/task-detail/task-detail.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -25,7 +25,8 @@ import {ModalModule} from 'ngx-bootstrap/modal';
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
-    SpinnerModule
+    SpinnerModule,
+    BsDropdownModule
   ],
   declarations: [
     ProjectManagementComponent,
@@ -35,6 +36,7 @@ import {ModalModule} from 'ngx-bootstrap/modal';
     AddProjectComponent,
     ProjectUpdateComponent,
     ProjectTaskComponent,
+    TaskDetailComponent,
   ]
 })
 export class ProjectManagementModule {
