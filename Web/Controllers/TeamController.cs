@@ -28,7 +28,7 @@ namespace Web.Controllers
                     JArray dataObject = new JArray();
                     foreach (var team in teams)
                     {
-                        dataObject.Add(teamService.ParseToJson(team));
+                        dataObject.Add(teamService.ParseToJsonVer2(team));
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));

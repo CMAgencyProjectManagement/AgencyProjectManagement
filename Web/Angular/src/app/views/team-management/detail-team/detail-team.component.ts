@@ -15,6 +15,7 @@ export class DetailTeamComponent implements OnInit {
   teams: Team[];
   users = [];
   foundTeam: Team;
+  foundUser = [];
   selectedUser = [];
   isLoading: boolean;
   dropdownSettings = {};
@@ -47,20 +48,50 @@ export class DetailTeamComponent implements OnInit {
               itemAvatar: this.foundTeam.manager.avatar,
               item: this.foundTeam.manager.id,
               item1: this.foundTeam.manager.isActive,
+              // item2: this.foundTeam.
             });
           }
         }
+        console.log(value);
+        console.log(this.teams);
+        console.log(this.foundTeam);
+        // for (let i = 0; i < this.teams.length; i++) {
+        //   if (this.teams[i].id == this.teamID) {
+        //     this.foundTeam = this.teams[i];
+        //     this.selectedUser.push({
+        //       id: this.foundTeam.manager.id,
+        //       itemName: this.foundTeam.manager.username,
+        //       itemAvatar: this.foundTeam.manager.avatar,
+        //       item: this.foundTeam.manager.id,
+        //       item1: this.foundTeam.manager.isActive,
+        //       // item2: this.foundTeam.
+        //     });
+        //   }
+        // }
       })
   }
   getAllUser() {
     this.userService.getAllUser()
       .then(value => {
-        for (let user of value) {
-          this.users.push({
-            id: user.id,
-            itemName: user.username
-          });
+        this.users = value;
+        for (let i = 0; i < this.users.length; i++) {
+          let userTeam = this.users[i].team;
+          if (userTeam !== null) {    
+            if (userTeam.id === this.foundTeam.id) {
+              this.foundUser.push({
+                id: this.users[i].id,
+                name: this.users[i].name,
+                username: this.users[i].username,
+                status: this.users[i].isActive,
+                isad: this.users[i].isAdmin,
+                ismng: this.users[i].isManager,
+   
+              })
+            }
+          }
+
         }
+        console.log(this.foundUser);
       })
   }
   GetURLParameter(sParam) {

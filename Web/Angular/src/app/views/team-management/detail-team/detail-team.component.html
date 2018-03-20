@@ -3,39 +3,76 @@
     <div class="card-header">
       <strong>Team's detail</strong>
     </div>
-    <div class="card-body">
+    <div class="card-body" *ngIf="foundTeam">
       <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
         <div class="col-12 text-center" *ngIf="foundTeam" style=" text-transform: uppercase">
           <h1>
             {{foundTeam.name}}
           </h1>
         </div>
-        <div class=" row">
+        <div>
 
-          <!-- thu -->
-          <!-- <div *ngFor="let user of value">
 
-            <div>{{user.name}}</div>
 
-            <img src="{{user.avatar}}" class="avatar avatar-lg">
+
+          <!-- <div class="col-4 text-center card">
+            <strong>
+              <h3>
+                <a href="#/account/detail?id={{foundTeam.manager.id}}">{{foundTeam.manager.username}}</a>
+                
+              </h3>
+            </strong>
+
+            <p id="role">Manager
+              <span *ngIf="foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Active</span>
+              <span *ngIf="!foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Banned</span>
+            </p>
           </div> -->
 
 
-          <div class="col-4 text-center card" >
-            <strong><h3> <a href="#/account/detail?id={{foundTeam.manager.id}}">{{foundTeam.manager.username}}</a> </h3></strong>
 
-            <p id="role">Manager
-              <span  *ngIf="foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Active</span>
-              <span  *ngIf="!foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Banned</span>
-            </p>
-            <!-- <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
-              <button type="button" class="btn btn-primary" style="color: black;
-              background-color: white;
-              border-color: black;" id="viewprofilebutton">
-                View profile
-              </button>
-            </a> -->
+
+
+
+          <div id="1" class="row" *ngIf="foundUser.length !== 0">
+            <div class="col-3 text-center card" *ngFor="let user of foundUser">
+              <div>
+                <strong>
+                  <h3>
+                    <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+                  </h3>
+                </strong>
+
+
+
+                <div class="row" *ngIf="user" >
+                  <div *ngIf="user.isAdmin" class="col-4 text-center">
+                    <strong>Admin </strong>
+                  </div>
+                  <div *ngIf="!user.isAdmin && user.isManager"class="col-4 text-center">
+                    <strong>Manager </strong>
+                  </div>
+                  <div *ngIf="!user.isAdmin && !user.isManager" class="col-4 text-center">
+                    Staff
+                  </div>
+                  <div *ngIf="user.status" class="badge badge-primary" style="font-size: 20px;">Active</div>
+                  <div *ngIf="!user.status" class="badge badge-secondary" style="font-size: 20px;">Banned</div>
+                </div>
+                <!-- <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
+                    <button type="button" class="btn btn-primary" style="color: black;
+                    background-color: white;
+                    border-color: black;" id="viewprofilebutton">
+                      View profile
+                    </button>
+                  </a> -->
+              </div>
+            </div>
+
+
+
+
           </div>
+
 
         </div>
       </form>
