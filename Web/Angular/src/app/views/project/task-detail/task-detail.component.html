@@ -3,7 +3,44 @@
         <strong>Task Detail</strong>
     </div>
     <div class="card-body">
-        <div class="row">
+        <app-spinner *ngIf="isLoadingPage"></app-spinner>
+        <div class="card-body animated fadeIn" *ngIf="!isLoadingPage">
+            <div class="form-horizontal col-9 ">
+                <h2>Place a portable A-frame</h2>
+                <h4>Listed at:
+                    <a href="#/project" style="color: black">Link</a>
+                </h4>
+                <div class="form-group row" style="font-size: 20px;">
+                    <p class="col-4 col-form-label text-left">Members: Tran Loi Phong,...</p>
+                </div>
+                <div class="form-group row" style="font-size: 20px;">
+                    <form action="demo_form.asp" method="get" class="col-3 col-form-label text-left">
+                        <div class="btn-group" dropdown [autoClose]="autoClose">
+                            <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                                To do
+                                <span class="caret"></span>
+                            </button> Deadline: 20/03/2018
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                <li role="menuitem">
+                                    <a class="dropdown-item" href="#">In process</a>
+                                </li>
+                                <li role="menuitem">
+                                    <a class="dropdown-item" href="#">Done</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-group row" style="font-size: 20px;text-decoration: none">
+                        <p class="col-4 col-form-label text-left">Description: </p>
+                </div>
+                <div class="form-group row" style="font-size: 20px">
+                    <textarea class="col-4"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
             <div class="col-sm-4 col-md-8">
                 <h2>Place a portable A-frame</h2>
                 <h4>Listed at:
@@ -12,21 +49,21 @@
                 <div style="font-size:20px">Member: Tran LoiPhong,...</div>
                 <div style="font-size: 20px">
                     <form action="demo_form.asp" method="get">
-                        Deadline: 20/03/2018 
+                        Deadline: 20/03/2018
                         <div class="btn-group" dropdown [autoClose]="autoClose">
-                                <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-                                    To do
-                                    <span class="caret"></span>
-                                </button>
-                                <ul *dropdownMenu class="dropdown-menu" role="menu">
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" href="#">In process</a>
-                                    </li>
-                                    <li role="menuitem">
-                                        <a class="dropdown-item" href="#">Done</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+                                To do
+                                <span class="caret"></span>
+                            </button>
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                <li role="menuitem">
+                                    <a class="dropdown-item" href="#">In process</a>
+                                </li>
+                                <li role="menuitem">
+                                    <a class="dropdown-item" href="#">Done</a>
+                                </li>
+                            </ul>
+                        </div>
                     </form>
                 </div>
                 <div style="font-size: 20px">Description:</div>
@@ -34,6 +71,6 @@
             <div class="col-sm-4 col-md-4">
                 <button>aaa</button>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

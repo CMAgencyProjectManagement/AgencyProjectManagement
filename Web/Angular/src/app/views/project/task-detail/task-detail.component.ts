@@ -44,13 +44,14 @@ export class TaskDetailComponent implements OnInit {
     tokenCursor: Cursor;
     isLoading: boolean;
     errorMessage: string;
+    taskdetailForm:FormGroup;
     items: string[] = [
         'The first choice!',
         'And another choice for you.',
         'but wait! A third!'
-      ];
-    
-    
+    ];
+
+
     constructor(private projectService: ProjectService, private router: Router
     ) {
     }
@@ -78,33 +79,33 @@ export class TaskDetailComponent implements OnInit {
     }
     onHidden(): void {
         console.log('Dropdown is hidden');
-      }
-      onShown(): void {
+    }
+    onShown(): void {
         console.log('Dropdown is shown');
-      }
-      isOpenChange(): void {
+    }
+    isOpenChange(): void {
         console.log('Dropdown state is changed');
-      }
-    
-      status: { isOpen: boolean } = { isOpen: false };
-    
-      toggleDropdown($event: MouseEvent): void {
+    }
+
+    status: { isOpen: boolean } = { isOpen: false };
+
+    toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
         $event.stopPropagation();
         this.status.isOpen = !this.status.isOpen;
-      }
-    
-      change(value: boolean): void {
-        this.status.isOpen = value;
-      }
-    
-      disabled: boolean = false;
-    
-      isDropup: boolean = true;
-    
-      autoClose: boolean = false;
     }
-}  
+
+    change(value: boolean): void {
+        this.status.isOpen = value;
+    }
+
+    disabled: boolean = false;
+
+    isDropup: boolean = true;
+
+    autoClose: boolean = false;
+}
 
 
-  
+
+
