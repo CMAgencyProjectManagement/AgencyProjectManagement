@@ -158,17 +158,18 @@ export class UserService {
 
   public updateUser(
     id: number,
-    name: string,
     phone: string,
-    birthdate: string,
-    email: string): Promise<User> {
+    email: string,
+    team: number,
+    isActive: boolean
+  ): Promise<User> {
 
     const postDataObject = {
       ID: id,
-      Name: name,
       Phone: phone,
       Email: email,
-      Birthdate: birthdate,
+      IsActive: isActive,
+      Team: team
     };
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();

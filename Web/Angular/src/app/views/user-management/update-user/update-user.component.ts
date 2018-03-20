@@ -70,11 +70,10 @@ export class UpdateUserComponent implements OnInit {
         }
       );
     this.updateForm = new FormGroup({
-      fullname: new FormControl(undefined),
       email: new FormControl(undefined),
       phone: new FormControl(undefined),
       team: new FormControl(undefined),
-      isBanned: new FormControl(undefined),
+      isActive: new FormControl(undefined),
     })
   }
 
@@ -85,11 +84,10 @@ export class UpdateUserComponent implements OnInit {
   }
 
   setDefaultValue(user: User) {
-    this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
     this.updateForm.controls['team'].setValue(user.team.id);
-    this.updateForm.controls['isBanned'].setValue(!user.isActive);
+    this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
   resetPassword(id) {
@@ -128,17 +126,20 @@ export class UpdateUserComponent implements OnInit {
 
   handleUpdate() {
     if (confirm('Save change?')) {
-      if (this.updateForm.valid) {
-        this.isSavingChange = true;
-        const formValue = this.updateForm.value;
-        this.userService.updateUser(this.foundUser.id, formValue.fullname, formValue.phone, '12/24/2018', formValue.email).then(value => {
-          this.isSavingChange = false;
-          this.router.navigate(['dashboard'])
-        }).catch(reason => {
-          this.isSavingChange = false;
-          this.errorMessage = reason.message;
-        })
-      }
+      this.isSavingChange = true;
+      const formValue = this.updateForm.value;
+      this.userService.updateUser(
+        this.foundUser.id,
+        formValue.phone,
+        formValue.email,
+        formValue.team,
+        formValue.isActive
+      ).then(value => {
+        this.isSavingChange = false;
+      }).catch(reason => {
+        this.isSavingChange = false;
+        this.errorMessage = reason.message;
+      })
     }
   }
 }
