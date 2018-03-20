@@ -39,6 +39,7 @@ export class UpdateUserComponent implements OnInit {
     team: string,
     avatar: string
   };
+
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
@@ -54,7 +55,7 @@ export class UpdateUserComponent implements OnInit {
     this.teamService.getAllTeam()
       .then(value => {
         this.teams = value;
-        this.isPageLoading = false;
+        this.updateLoadingState();
       });
     this.userService.getAllUser()
       .then(value => {
@@ -63,6 +64,7 @@ export class UpdateUserComponent implements OnInit {
             if (this.users[i].id === this.userID) {
               this.foundUser = this.users[i];
               this.setDefaultValue(this.foundUser);
+              this.updateLoadingState();
             }
           }
         }
@@ -71,15 +73,23 @@ export class UpdateUserComponent implements OnInit {
       fullname: new FormControl(undefined),
       email: new FormControl(undefined),
       phone: new FormControl(undefined),
-      team: new FormControl(undefined)
+      team: new FormControl(undefined),
+      isBanned: new FormControl(undefined),
     })
+  }
 
+  updateLoadingState() {
+    if (this.foundUser && this.teams) {
+      this.isPageLoading = false;
+    }
   }
 
   setDefaultValue(user: User) {
     this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
+    this.updateForm.controls['team'].setValue(user.team.id);
+    this.updateForm.controls['isBanned'].setValue(!user.isActive);
   }
 
   resetPassword(id) {

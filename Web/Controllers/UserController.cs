@@ -33,7 +33,7 @@ namespace Web.Controllers
                     User user = userService.GetUser(id);
                     string avatarPath = AgencyConfig.AvatarPath;
 
-                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath)));
+                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath, includeTeam: true)));
                 }
             }
             catch (Exception ex)
@@ -118,7 +118,7 @@ namespace Web.Controllers
                             flag = false;
                         }
 
-                        if (userService.CheckDuplicatePhone(createUserModel.Phone))
+                        if (userService.CheckDuplicatePhone(createUserModel.Phone)&&createUserModel.Phone!=null)
                         {
                             ModelState.AddModelError("Phone", "Phone is taken");
                             flag = false;

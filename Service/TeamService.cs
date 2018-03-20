@@ -69,6 +69,52 @@ namespace Service
             }
         }
 
+        public User AssignTeam(
+            int id,
+            int teamId)
+        {
+            User user = db.Users.Find(id);
+            if (user!=null)
+            {
+                if (user.TeamID==null)
+                {
+                    user.TeamID = teamId;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"!!Team Id has value");
+                }
+                
+                db.SaveChanges();
+                return user;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{id} not found");
+            }
+        }
+        public User UnAssignTask(int id)
+        {
+            User user = db.Users.Find(id);
+            if (user!=null)
+            {
+                if (user.TeamID!=null)
+                {
+                    user.TeamID = null;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"!!Team Id must be already null or User still have task");
+                }
+                db.SaveChanges();
+                return user;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{id} not found");
+            }
+        }
+
         public JObject ParseToJson(Team team, bool includeManager = true, bool includeUsers = false,
             string avatarPath = null)
         {

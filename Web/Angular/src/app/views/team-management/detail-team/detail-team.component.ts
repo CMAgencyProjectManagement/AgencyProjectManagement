@@ -46,6 +46,7 @@ export class DetailTeamComponent implements OnInit {
               itemName: this.foundTeam.manager.username,
               itemAvatar: this.foundTeam.manager.avatar,
               item: this.foundTeam.manager.id,
+              item1: this.foundTeam.manager.isActive,
             });
           }
         }

@@ -29,7 +29,7 @@
           <tbody>
           <tr *ngFor="let project of projects;let i = index">
             <td>{{i + 1}}</td>
-            <td>{{project.name}}</td>
+            <td><a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name | truncatetext:80}}</a></td>
             <td>
               <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
               <p *ngIf="!project.description">N/A</p>
