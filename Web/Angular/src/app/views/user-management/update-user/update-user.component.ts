@@ -37,7 +37,8 @@ export class UpdateUserComponent implements OnInit {
     phone: string,
     birthdate: string,
     team: string,
-    avatar: string
+    avatar: string,
+    isActive: string
   };
 
   constructor(private userService: UserService,
@@ -120,11 +121,13 @@ export class UpdateUserComponent implements OnInit {
       phone: '',
       birthdate: '',
       team: '',
-      avatar: ''
+      avatar: '',
+      isActive: ''
     };
   }
 
   handleUpdate() {
+    this.setErrorsNull();
     if (confirm('Save change?')) {
       this.isSavingChange = true;
       const formValue = this.updateForm.value;
@@ -137,8 +140,40 @@ export class UpdateUserComponent implements OnInit {
       ).then(value => {
         this.isSavingChange = false;
       }).catch(reason => {
-        this.isSavingChange = false;
         this.errorMessage = reason.message;
+        let errors = reason.response.body.Data;
+        for (let error of errors) {
+          const fieldName = error.key;
+          const errorMessage = error.message;
+          switch (fieldName) {
+            case 'Username':
+              this.errors.username = errorMessage;
+              break;
+            case 'Password':
+              this.errors.password = errorMessage;
+              break;
+            case 'Name':
+              this.errors.fullname = errorMessage;
+              break;
+            case 'Phone':
+              this.errors.phone = errorMessage;
+              break;
+            case 'Birthdate':
+              this.errors.birthdate = errorMessage;
+              break;
+            case 'Email':
+              this.errors.email = errorMessage;
+              break;
+            case 'Team':
+              this.errors.team = errorMessage;
+              break;
+            case 'Avatar':
+              this.errors.avatar = errorMessage;
+              break;
+
+          }
+        }
+        this.isSavingChange = false;
       })
     }
   }
