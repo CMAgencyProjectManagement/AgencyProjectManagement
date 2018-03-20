@@ -224,7 +224,9 @@ namespace Web.Controllers
                             updateUserModel.Name,
                             updateUserModel.Phone,
                             updateUserModel.Birthdate,
-                            updateUserModel.Email
+                            updateUserModel.Email,
+                            updateUserModel.Team,
+                            updateUserModel.IsActive
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(updatedUser)));
                     }

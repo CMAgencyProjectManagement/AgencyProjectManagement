@@ -28,7 +28,7 @@
           </thead>
           <tbody>
           <tr *ngFor="let project of projects;let i = index">
-            <td>{{i + 1}}</td>
+            <td class="text-center">{{i + 1}}</td>
             <td><a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name | truncatetext:80}}</a></td>
             <td>
               <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
@@ -43,9 +43,15 @@
               <span *ngIf=!project.startDate>N/A</span>
             </td>
             <td>
-              <span *ngIf="project.status && project.status == 0">Not started</span>
-              <span *ngIf="project.status && project.status == 1">Executing</span>
-              <span *ngIf="project.status && project.status == 2">Close</span>
+              <span *ngIf="project.status && project.status == 0" class="badge badge-secondary">
+                  Not started
+                </span>
+              <span *ngIf="project.status && project.status == 1" class="badge badge-success">
+                  Executing
+                </span>
+              <span *ngIf="project.status && project.status == 2" class="badge badge-danger">
+                  Closed
+                </span>
               <span *ngIf=!project.status>N/A</span>
             </td>
             <td>

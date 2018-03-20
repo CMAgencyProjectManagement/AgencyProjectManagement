@@ -21,20 +21,20 @@ namespace Service
 
         public bool CheckDuplicatedUsername(string username)
         {
-            var users  = db.Users.Where(user => user.Username == username).ToList();
+            var users = db.Users.Where(user => user.Username == username).ToList();
             return users.Count > 0;
         }
+
         public bool CheckDuplicateEmail(string email)
         {
             var users = db.Users.Where(user => user.Email == email).ToList();
             return users.Count > 0;
-
         }
+
         public bool CheckDuplicatePhone(string phone)
         {
             var users = db.Users.Where(user => user.Phone == phone).ToList();
             return users.Count > 0;
-
         }
 
 
@@ -92,14 +92,13 @@ namespace Service
         public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
         {
             Team team = db.Teams.Find(teamId);
-            if (team!= null)
+            if (team != null)
             {
                 return team.Users.ToList();
             }
             else
             {
                 throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
-
             }
         }
 
@@ -118,13 +117,13 @@ namespace Service
         }
 
         public User CreateAccount(
-             string name,
-             string phone,
-             DateTime? birthday,
-             string email,
-             string username,
-             string password,
-             int? teamId)
+            string name,
+            string phone,
+            DateTime? birthday,
+            string email,
+            string username,
+            string password,
+            int? teamId)
         {
             User newUser;
             newUser = new User
@@ -160,21 +159,48 @@ namespace Service
         }
 
 
-
         public User Updateuser(
             int id,
             string name,
             string phone,
             DateTime? birthdate,
-            string email)
+            string email,
+            int? team,
+            bool? isActive)
         {
             User user = db.Users.Find(id);
             if (user != null)
             {
-                user.Name = name;
-                user.Phone = phone;
-                user.Birthdate = birthdate;
-                user.Email = email;
+                if (name != null)
+                {
+                    user.Name = name;
+                }
+
+                if (phone != null)
+                {
+                    user.Phone = phone;
+                }
+
+                if (email != null)
+                {
+                    user.Email = email;
+                }
+
+                if (birthdate.HasValue)
+                {
+                    user.Birthdate = birthdate;
+                }
+
+                if (team.HasValue)
+                {
+                    user.UserTeams.First().TeamID = team.Value;
+                }
+
+                if (isActive.HasValue)
+                {
+                    user.IsActive = isActive.Value;
+                }
+
                 db.SaveChanges();
                 return user;
             }
@@ -183,7 +209,7 @@ namespace Service
                 throw new ObjectNotFoundException($"User with ID{id} not found"); 
             }
         }
-        
+
 
         public int DeactiveUser(int id)
         {
@@ -200,7 +226,6 @@ namespace Service
 
         public string resetPassword(int id)
         {
-            
             User foundUser = db.Users.Find(id);
             if (foundUser != null)
             {
@@ -210,6 +235,7 @@ namespace Service
                 db.SaveChanges();
                 return newPassword;
             }
+
             throw new ObjectNotFoundException($"User with ID{id} not found");
         }
 
@@ -247,17 +273,17 @@ namespace Service
             {
                 TeamService teamService = new TeamService(db);
                 List<UserTeam> userTeams = db.UserTeams.Where(userteam => userteam.UserID == user.ID).ToList();
-                if(userTeams.Count > 0)
+                if (userTeams.Count > 0)
                 {
                     Team team = userTeams.First().Team;
                     result["team"] = teamService.ParseToJson(team);
-
                 }
                 else
                 {
                     result["team"] = null;
                 }
             }
+
             return result;
         }
     }
