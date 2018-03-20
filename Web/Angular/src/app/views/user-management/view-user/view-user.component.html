@@ -41,7 +41,7 @@
               <td>
                   <p *ngIf="user.name">{{user.name}}</p>
                   <p *ngIf="!user.name">N/A</p>
-                
+
               </td>
               <td>
                 <p *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</p>
@@ -61,12 +61,12 @@
                 <p *ngIf="!user.isAdmin && !user.isManager">Staff</p>
               </td>
               <td class="text-center">
-                <span class="badge badge-success" *ngIf="user.isActive">
+                <p *ngIf="user.isActive">
                   Active
-                </span>
-                <span class="badge badge-danger" *ngIf="!user.isActive">
+                </p>
+                <p *ngIf="!user.isActive">
                   Banned
-                </span>
+                </p>
               </td>
               <td class="text-center">
                 <a href="#/account/update?id={{user.id}}">
