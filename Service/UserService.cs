@@ -37,6 +37,7 @@ namespace Service
             return users.Count > 0;
         }
 
+        
 
         public User GetUser(string username, string password)
         {

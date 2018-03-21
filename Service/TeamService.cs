@@ -195,10 +195,17 @@ namespace Service
                     listArray.Add(userService.ParseToJson(user, avatarPath));
                 }
                 result["users"] = listArray;
+
             }
             if (isDetailedProjects)
             {
-               // IEnumerable<Project> projects = projectService.get
+                IEnumerable<Project> projects = projectService.GetProjectOfTeam(team.ID);
+                JArray listArray = new JArray();
+                foreach (var project in projects)
+                {
+                    listArray.Add(projectService.ParseToJson(project, isDetailed: false));
+                }
+                result["Projects"] = listArray;
             }
 
             return result;

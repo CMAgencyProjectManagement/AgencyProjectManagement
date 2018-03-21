@@ -36,19 +36,14 @@ namespace Service
                 )
                 .ToList();
         }
-
-        //public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
-        //{
-        //    Team team = db.Teams.Find(teamId);
-        //    if (team != null)
-        //    {
-        //        return team.Users.ToList();
-        //    }
-        //    else
-        //    {
-        //        throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
-        //    }
-        //}
+        public IEnumerable<Project> GetProjectOfTeam(int teamId)
+        {
+            return db.Projects
+                .Where(project => project.TeamProjects
+                                    .Any(userTeam => userTeam.TeamID == teamId)
+                ).ToList();
+        }
+        
 
 
         /// <summary>
