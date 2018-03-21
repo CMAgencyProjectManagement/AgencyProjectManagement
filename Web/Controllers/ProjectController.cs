@@ -45,7 +45,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("my")]
         [Authorize]
         public IHttpActionResult GetMyProject()
         {
@@ -61,7 +61,7 @@ namespace Web.Controllers
 
                     foreach (var project in projects)
                     {
-                        dataObject.Add(projectService.ParseToJson(project));
+                        dataObject.Add(projectService.ParseToJson(project, isDetailed: false));
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -179,6 +179,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
 
         [HttpPut]
         [Route("")]
@@ -330,5 +331,36 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        //[HttpPost]
+        //[Route("assign")]
+        //[Authorize(Roles = "Manager")]
+        //public  IHttpActionResult AssignProject(AssignProjectModel assignProjectModel)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            using (CmAgencyEntities db = new CmAgencyEntities())
+        //            {
+        //                ProjectService projectService = new ProjectService(db);
+        //                UserProject userProject = projectService.AssignProject(
+        //                    assignProjectModel.UserId,
+        //                    assignProjectModel.ProjectId
+        //                    );
+        //                JObject dataObject = projectService.ParseToJson(userProject); //
+        //                return Ok(ResponseHelper.GetResponse(dataObject)); //
+        //            }
+        //        }
+        //        else
+        //        {
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(HttpStatusCode.InternalServerError,
+        //            ResponseHelper.GetExceptionResponse(ex));
+        //    }
+        //}
     }
 }
