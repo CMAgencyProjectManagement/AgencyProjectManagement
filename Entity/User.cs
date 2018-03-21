@@ -24,7 +24,6 @@ namespace Entity
             this.Teams = new HashSet<Team>();
             this.UserProjects = new HashSet<UserProject>();
             this.UserTasks = new HashSet<UserTask>();
-            this.UserTeams = new HashSet<UserTeam>();
         }
     
         public int ID { get; set; }
@@ -55,7 +54,5 @@ namespace Entity
         public virtual ICollection<UserProject> UserProjects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserTask> UserTasks { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserTeam> UserTeams { get; set; }
     }
 }

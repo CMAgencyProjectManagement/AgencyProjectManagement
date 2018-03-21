@@ -142,13 +142,7 @@ namespace Service
 
             if (teamId != null)
             {
-                Team team = db.Teams.Find(teamId);
-                UserTeam userTeam = new UserTeam
-                {
-                    User = newUser,
-                    Team = team
-                };
-                db.UserTeams.Add(userTeam);
+                newUser.TeamID = teamId;
             }
 
 
@@ -193,7 +187,7 @@ namespace Service
 
                 if (team.HasValue)
                 {
-                    user.UserTeams.First().TeamID = team.Value;
+                    user.TeamID = team.Value;
                 }
 
                 if (isActive.HasValue)
@@ -272,11 +266,9 @@ namespace Service
             if (includeTeam)
             {
                 TeamService teamService = new TeamService(db);
-                List<UserTeam> userTeams = db.UserTeams.Where(userteam => userteam.UserID == user.ID).ToList();
-                if (userTeams.Count > 0)
+                if (user.Team != null)
                 {
-                    Team team = userTeams.First().Team;
-                    result["team"] = teamService.ParseToJson(team);
+                    result["team"] = teamService.ParseToJson(user.Team);
                 }
                 else
                 {

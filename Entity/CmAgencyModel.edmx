@@ -155,7 +155,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="nvarchar" MaxLength="255" />
           <Property Name="Birthdate" Type="date" />
@@ -185,14 +185,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="IsFollow" Type="bit" Nullable="false" />
           <Property Name="IsAssigned" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserTeam">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TeamID" Type="int" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Attachment_Task">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
@@ -446,30 +438,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserTeam_Team">
-          <End Role="Team" Type="Self.Team" Multiplicity="1" />
-          <End Role="UserTeam" Type="Self.UserTeam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Team">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserTeam">
-              <PropertyRef Name="TeamID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserTeam_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserTeam" Type="Self.UserTeam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserTeam">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="CmAgencyModelStoreContainer">
           <EntitySet Name="Attachment" EntityType="Self.Attachment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CheckList" EntityType="Self.CheckList" Schema="dbo" store:Type="Tables" />
@@ -485,7 +453,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProject" EntityType="Self.UserProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTask" EntityType="Self.UserTask" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserTeam" EntityType="Self.UserTeam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskDependency" EntityType="Self.TaskDependency" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TaskDependency].[SourceTaskID] AS [SourceTaskID], 
@@ -581,21 +548,12 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             <End Role="User" EntitySet="User" />
             <End Role="UserTask" EntitySet="UserTask" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserTeam_Team" Association="Self.FK_UserTeam_Team">
-            <End Role="Team" EntitySet="Team" />
-            <End Role="UserTeam" EntitySet="UserTeam" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserTeam_User" Association="Self.FK_UserTeam_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserTeam" EntitySet="UserTeam" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CmAgencyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CmAgencyEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="UserTeams" EntityType="CmAgencyModel.UserTeam" />
           <EntitySet Name="Attachments" EntityType="CmAgencyModel.Attachment" />
           <EntitySet Name="CheckLists" EntityType="CmAgencyModel.CheckList" />
           <EntitySet Name="CheckListItems" EntityType="CmAgencyModel.CheckListItem" />
@@ -687,10 +645,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             <End Role="Team" EntitySet="Teams" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserTeam_Team" Association="CmAgencyModel.FK_UserTeam_Team">
-            <End Role="Team" EntitySet="Teams" />
-            <End Role="UserTeam" EntitySet="UserTeams" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserProject_User" Association="CmAgencyModel.FK_UserProject_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserProject" EntitySet="UserProjects" />
@@ -699,21 +653,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             <End Role="User" EntitySet="Users" />
             <End Role="UserTask" EntitySet="UserTasks" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserTeam_User" Association="CmAgencyModel.FK_UserTeam_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserTeam" EntitySet="UserTeams" />
-          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="UserTeam">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TeamID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_UserTeam_Team" FromRole="UserTeam" ToRole="Team" />
-          <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTeam_User" FromRole="UserTeam" ToRole="User" />
-          </EntityType>
         <EntityType Name="Attachment">
           <Key>
             <PropertyRef Name="ID" />
@@ -861,7 +801,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Team_User" FromRole="Team" ToRole="User" />
           <NavigationProperty Name="TeamProjects" Relationship="CmAgencyModel.FK_TeamProject_Team" FromRole="Team" ToRole="TeamProject" />
           <NavigationProperty Name="Users" Relationship="CmAgencyModel.FK_User_Team" FromRole="Team" ToRole="User" />
-          <NavigationProperty Name="UserTeams" Relationship="CmAgencyModel.FK_UserTeam_Team" FromRole="Team" ToRole="UserTeam" />
         </EntityType>
         <EntityType Name="TeamProject">
           <Key>
@@ -877,7 +816,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Birthdate" Type="DateTime" Precision="0" />
@@ -897,7 +836,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <NavigationProperty Name="Team" Relationship="CmAgencyModel.FK_User_Team" FromRole="User" ToRole="Team" />
           <NavigationProperty Name="UserProjects" Relationship="CmAgencyModel.FK_UserProject_User" FromRole="User" ToRole="UserProject" />
           <NavigationProperty Name="UserTasks" Relationship="CmAgencyModel.FK_UserTask_User" FromRole="User" ToRole="UserTask" />
-          <NavigationProperty Name="UserTeams" Relationship="CmAgencyModel.FK_UserTeam_User" FromRole="User" ToRole="UserTeam" />
         </EntityType>
         <EntityType Name="UserProject">
           <Key>
@@ -1165,18 +1103,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserTeam_Team">
-          <End Type="CmAgencyModel.Team" Role="Team" Multiplicity="1" />
-          <End Type="CmAgencyModel.UserTeam" Role="UserTeam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Team">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserTeam">
-              <PropertyRef Name="TeamID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserProject_User">
           <End Type="CmAgencyModel.User" Role="User" Multiplicity="1" />
           <End Type="CmAgencyModel.UserProject" Role="UserProject" Multiplicity="*" />
@@ -1201,33 +1127,12 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserTeam_User">
-          <End Type="CmAgencyModel.User" Role="User" Multiplicity="1" />
-          <End Type="CmAgencyModel.UserTeam" Role="UserTeam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserTeam">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CmAgencyModelStoreContainer" CdmEntityContainer="CmAgencyEntities">
-          <EntitySetMapping Name="UserTeams">
-            <EntityTypeMapping TypeName="CmAgencyModel.UserTeam">
-              <MappingFragment StoreEntitySet="UserTeam">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="TeamID" ColumnName="TeamID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Attachments">
             <EntityTypeMapping TypeName="CmAgencyModel.Attachment">
               <MappingFragment StoreEntitySet="Attachment">
@@ -1420,7 +1325,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

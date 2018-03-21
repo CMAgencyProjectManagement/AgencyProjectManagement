@@ -110,9 +110,6 @@
     <Compile Include="UserTask.cs">
       <DependentUpon>CmAgencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserTeam.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

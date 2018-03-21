@@ -25,7 +25,6 @@ namespace Entity
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<UserTeam> UserTeams { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<CheckList> CheckLists { get; set; }
         public virtual DbSet<CheckListItem> CheckListItems { get; set; }
