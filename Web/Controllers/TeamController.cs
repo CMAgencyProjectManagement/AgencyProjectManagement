@@ -55,7 +55,7 @@ namespace Web.Controllers
                     if (team != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            teamService.ParseToJsonVer2(team, includeUsers: true,avatarPath: AgencyConfig.AvatarPath, isDetailedUsers: true)
+                            teamService.ParseToJsonVer2(team, includeUsers: true,avatarPath: AgencyConfig.AvatarPath, isDetailedUsers: true, isDetailedProjects: true)
                         ));
                     }
                     else

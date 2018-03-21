@@ -139,6 +139,14 @@ namespace Web.Controllers
                                 // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                                 flag = false;
                             }
+                            string UpdatedTime = createUserModel.Birthdate.ToString();
+                            DateTime DoB = DateTime.Parse(UpdatedTime);
+                            if ((DateTime.Today.Year- DoB.Year) < 18)
+                            {
+                                ModelState.AddModelError("Birthdate",
+                                    "Age must be greater than 18 ");
+                                flag = false;
+                            }
                         }
 
                         if (flag == false)
@@ -212,11 +220,26 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         UserService userService = new UserService(db);
-                        if (updateUserModel.Birthdate > DateTime.Now)
+                        bool flag = true;
+
+                        if (updateUserModel.Birthdate != null)
                         {
-                            ModelState.AddModelError("Birthdate", "Birthdate is greater than the current time ");
-                            return Content(HttpStatusCode.BadRequest,
-                                ResponseHelper.GetExceptionResponse(ModelState));
+                            if (updateUserModel.Birthdate > DateTime.Now)
+                            {
+                                ModelState.AddModelError("Birthdate",
+                                    "Birthdate must be smaller than the current time ");
+                                flag = false;
+                            }
+                            string UpdatedTime = updateUserModel.Birthdate.ToString();
+                            DateTime DoB = DateTime.Parse(UpdatedTime);
+                            if ((DateTime.Today.Year - DoB.Year) < 18)
+                            {
+                                ModelState.AddModelError("Birthdate",
+                                    "Age must be greater than 18 ");
+                                flag = false;
+                            }
+                            if (flag == false)
+                                return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         }
 
                         User updatedUser = userService.Updateuser(

@@ -75,6 +75,35 @@ namespace Web.Controllers
             }
         }
 
+        [HttpGet]
+        //sửa cái này coi chừng chết front end- thu roi xoa
+        [Route("dd/{id:int}")]
+        [Authorize]
+        public IHttpActionResult GetMyProjectinTeam(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    IEnumerable<Project> projects = projectService.GetProjectOfTeam(id);
+                    JArray dataObject = new JArray();
+
+                    foreach (var project in projects)
+                    {
+                        dataObject.Add(projectService.ParseToJson(project, isDetailed: false));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "Admin")]
