@@ -2,10 +2,13 @@
 .no-padding {
   padding: 0 !important;
 }
-.form-control-mydatepicker input{
+
+.form-control-mydatepicker input {
   @extend .form-control
 }
 
-.dataTables_filter{
-  display: none;
+.dataTable-container.hide-search {
+  .dataTables_filter{
+    display: none;
+  }
 }

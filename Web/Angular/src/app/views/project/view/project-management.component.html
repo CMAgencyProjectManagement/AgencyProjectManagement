@@ -14,54 +14,57 @@
           </span>
           <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
         </div>
-        <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Deadline</th>
-            <th>Start date</th>
-            <th>Status</th>
-            <th>Update</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let project of projects;let i = index">
-            <td><a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name | truncatetext:80}}</a></td>
-            <td>
-              <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
-              <p *ngIf="!project.description">N/A</p>
-            </td>
-            <td>
-              <span *ngIf=project.deadline>{{project.deadline | date:'dd/M/y'}}</span>
-              <span *ngIf=!project.deadline>N/A</span>
-            </td>
-            <td>
-              <span *ngIf=project.startDate>{{project.startDate | date:'dd/M/y'}}</span>
-              <span *ngIf=!project.startDate>N/A</span>
-            </td>
-            <td>
-              <p *ngIf="project.status && project.status == 0">
+        <div class="dataTable-container hide-search">
+          <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Deadline</th>
+              <th>Start date</th>
+              <th>Status</th>
+              <th>Update</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let project of projects;let i = index">
+              <td><a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name |
+                truncatetext:80}}</a></td>
+              <td>
+                <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
+                <p *ngIf="!project.description">N/A</p>
+              </td>
+              <td>
+                <span *ngIf=project.deadline>{{project.deadline | date:'dd/M/y'}}</span>
+                <span *ngIf=!project.deadline>N/A</span>
+              </td>
+              <td>
+                <span *ngIf=project.startDate>{{project.startDate | date:'dd/M/y'}}</span>
+                <span *ngIf=!project.startDate>N/A</span>
+              </td>
+              <td>
+                <p *ngIf="project.status && project.status == 0">
                   Not started
                 </p>
-              <p *ngIf="project.status && project.status == 1">
+                <p *ngIf="project.status && project.status == 1">
                   Executing
                 </p>
-              <p *ngIf="project.status && project.status == 2">
+                <p *ngIf="project.status && project.status == 2">
                   Closed
                 </p>
-              <span *ngIf=!project.status>N/A</span>
-            </td>
-            <td>
-              <a href="#/project/update?projectID={{project.id}}">
-                <button type="button" class="btn btn-primary">
-                  Update
-                </button>
-              </a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+                <span *ngIf=!project.status>N/A</span>
+              </td>
+              <td>
+                <a href="#/project/update?projectID={{project.id}}">
+                  <button type="button" class="btn btn-primary">
+                    Update
+                  </button>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

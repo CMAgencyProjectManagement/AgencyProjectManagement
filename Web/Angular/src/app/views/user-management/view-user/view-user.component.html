@@ -14,8 +14,9 @@
           </span>
           <input class="form-control" type="text" (input)="search(searchUsername.value)" #searchUsername>
         </div>
-        <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
-          <thead>
+        <div class="dataTable-container hide-search">
+          <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
+            <thead>
             <tr>
               <th>Avatar</th>
               <th>Full Name</th>
@@ -26,19 +27,19 @@
               <th>Status</th>
               <th>Action</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             <tr *ngFor="let user of users;let i = index">
               <td class="text-center">
                 <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
                 <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
               </td>
               <td>
-                  <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+                <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
               </td>
               <td>
-                  <p *ngIf="user.name">{{user.name}}</p>
-                  <p *ngIf="!user.name">N/A</p>
+                <p *ngIf="user.name">{{user.name}}</p>
+                <p *ngIf="!user.name">N/A</p>
 
               </td>
               <td>
@@ -72,9 +73,9 @@
                 </a>
               </td>
             </tr>
-          </tbody>
-        </table>
-
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

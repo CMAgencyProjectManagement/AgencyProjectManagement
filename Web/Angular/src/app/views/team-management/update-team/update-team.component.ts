@@ -14,9 +14,19 @@ export class UpdateTeamComponent implements OnInit {
   teamID: number;
   users: User[];
   foundTeam: Team;
-  selectedUser = [];
   isLoading: boolean;
   isPageLoading: boolean;
+  smallAccountTableOpt: DataTables.Settings = {
+    searching: true,
+    lengthChange: false,
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: [0]
+      }
+    ]
+  };
 
   constructor(
     private teamService: TeamService,

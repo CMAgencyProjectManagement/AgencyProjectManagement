@@ -52,9 +52,6 @@ export class DetailTeamComponent implements OnInit {
             });
           }
         }
-        console.log(value);
-        console.log(this.teams);
-        console.log(this.foundTeam);
         // for (let i = 0; i < this.teams.length; i++) {
         //   if (this.teams[i].id == this.teamID) {
         //     this.foundTeam = this.teams[i];
@@ -76,7 +73,7 @@ export class DetailTeamComponent implements OnInit {
         this.users = value;
         for (let i = 0; i < this.users.length; i++) {
           let userTeam = this.users[i].team;
-          if (userTeam !== null) {    
+          if (userTeam !== null) {
             if (userTeam.id === this.foundTeam.id) {
               this.foundUser.push({
                 id: this.users[i].id,
@@ -85,7 +82,7 @@ export class DetailTeamComponent implements OnInit {
                 status: this.users[i].isActive,
                 isad: this.users[i].isAdmin,
                 ismng: this.users[i].isManager,
-   
+
               })
             }
           }
