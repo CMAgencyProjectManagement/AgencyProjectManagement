@@ -155,7 +155,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="nvarchar" MaxLength="255" />
           <Property Name="Birthdate" Type="date" />
@@ -653,7 +653,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
             <End Role="User" EntitySet="Users" />
             <End Role="UserTask" EntitySet="UserTasks" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <EntityType Name="Attachment">
           <Key>
             <PropertyRef Name="ID" />
@@ -816,7 +816,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Birthdate" Type="DateTime" Precision="0" />
