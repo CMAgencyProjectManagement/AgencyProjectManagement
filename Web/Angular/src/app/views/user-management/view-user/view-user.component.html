@@ -19,8 +19,8 @@
             <thead>
             <tr>
               <th>Avatar</th>
-              <th>Full Name</th>
               <th>Username</th>
+              <th>Full Name</th>
               <th>Birthdate</th>
               <th>Team</th>
               <th>Role</th>
@@ -40,7 +40,6 @@
               <td>
                 <p *ngIf="user.name">{{user.name}}</p>
                 <p *ngIf="!user.name">N/A</p>
-
               </td>
               <td>
                 <p *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</p>

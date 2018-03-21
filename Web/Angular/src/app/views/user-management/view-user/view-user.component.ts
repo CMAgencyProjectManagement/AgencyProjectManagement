@@ -26,6 +26,9 @@ export class ViewUserComponent implements OnInit {
         orderable: false,
         targets: [0, 7]
       }
+    ],
+    order: [
+      [1, 'asc']
     ]
   };
 
