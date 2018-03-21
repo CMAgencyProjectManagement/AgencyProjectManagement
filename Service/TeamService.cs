@@ -154,11 +154,15 @@ namespace Service
             return result;
         }
 
-        public JObject ParseToJsonVer2(Team team, bool includeManager = true, bool includeUsers = false, bool isDetailed = false,
+        public JObject ParseToJsonVer2(Team team, bool includeManager = true,
+            bool includeUsers = false, 
+            bool isDetailedUsers = false,
+            bool isDetailedProjects = false,
             string avatarPath = null)
         {
 
             UserService userService = new UserService(db);
+            ProjectService projectService = new ProjectService(db);
             var creator = userService.GetUser(team.CreatedBy);
 
             var result = new JObject
@@ -173,7 +177,7 @@ namespace Service
             if (includeManager)
             {
                 var manager = GetManager(team.ID);
-                result["manager"] = userService.ParseToJson(manager);
+                result["manager"] = userService.ParseToJson(manager, avatarPath);
             }
 
             if (includeUsers)
@@ -188,7 +192,7 @@ namespace Service
 
                 result["users"] = jArray;
             }
-            if (isDetailed)
+            if (isDetailedUsers)
             {
                 IEnumerable<User> users = userService.GetUsersOfTeamVer2(team.ID);
                 JArray listArray = new JArray();
@@ -197,6 +201,10 @@ namespace Service
                     listArray.Add(userService.ParseToJson(user, avatarPath));
                 }
                 result["users"] = listArray;
+            }
+            if (isDetailedProjects)
+            {
+               // IEnumerable<Project> projects = projectService.get
             }
 
             return result;
