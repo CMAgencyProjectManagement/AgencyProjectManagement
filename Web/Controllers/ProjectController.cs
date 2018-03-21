@@ -45,7 +45,8 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Route("my")]
+        //sửa cái này coi chừng chết front end
+        [Route("")]
         [Authorize]
         public IHttpActionResult GetMyProject()
         {

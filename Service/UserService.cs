@@ -125,8 +125,7 @@ namespace Service
             string password,
             int? teamId)
         {
-            User newUser;
-            newUser = new User
+            var newUser = new User
             {
                 Name = name,
                 Phone = phone,
