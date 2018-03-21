@@ -10,7 +10,6 @@
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
           <tr>
-            <th>No.</th>
             <th>Name</th>
             <th>Team Leader</th>
             <th>Created date</th>
@@ -19,7 +18,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let team of teams;let i = index">
-              <td class="text-center"><strong>{{i+1}}</strong></td>
               <td>
                 <a href="#/team/detail?id={{team.id}}">{{team.name}}</a>
               </td>

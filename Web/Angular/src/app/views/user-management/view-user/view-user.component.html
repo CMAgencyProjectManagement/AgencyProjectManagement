@@ -17,7 +17,6 @@
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
             <tr>
-              <th>No.</th>
               <th>Avatar</th>
               <th>Full Name</th>
               <th>Username</th>
@@ -30,7 +29,6 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of users;let i = index">
-              <td class="text-center">{{i + 1}}</td>
               <td class="text-center">
                 <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
                 <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">

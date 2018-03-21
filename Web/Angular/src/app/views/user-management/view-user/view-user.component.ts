@@ -24,7 +24,7 @@ export class ViewUserComponent implements OnInit {
       {
         searchable: false,
         orderable: false,
-        targets: [1, 8]
+        targets: [0, 7]
       }
     ]
   };

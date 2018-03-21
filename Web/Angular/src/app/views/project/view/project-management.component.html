@@ -17,7 +17,6 @@
         <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
           <tr>
-            <th>No.</th>
             <th>Name</th>
             <th>Description</th>
             <th>Deadline</th>
@@ -28,7 +27,6 @@
           </thead>
           <tbody>
           <tr *ngFor="let project of projects;let i = index">
-            <td class="text-center">{{i + 1}}</td>
             <td><a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name | truncatetext:80}}</a></td>
             <td>
               <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>

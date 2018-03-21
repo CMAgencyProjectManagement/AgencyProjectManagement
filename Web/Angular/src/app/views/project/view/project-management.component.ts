@@ -20,7 +20,7 @@ export class ProjectManagementComponent implements OnInit {
       {
         searchable: false,
         orderable: false,
-        targets: [6]
+        targets: [5]
       }
     ]
   };
