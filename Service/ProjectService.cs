@@ -37,6 +37,20 @@ namespace Service
                 .ToList();
         }
 
+        //public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
+        //{
+        //    Team team = db.Teams.Find(teamId);
+        //    if (team != null)
+        //    {
+        //        return team.Users.ToList();
+        //    }
+        //    else
+        //    {
+        //        throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
+        //    }
+        //}
+
+
         /// <summary>
         /// Create new project
         /// </summary>
@@ -125,8 +139,19 @@ namespace Service
         {
             return db.Projects.Find(id);
         }
+        public UserProject AssignProject(int userId, int projectId)
+        {
+            UserProject newUserProject = new UserProject
+            {
+                UserID = userId,
+                ProjectID = projectId,
+            };
+            db.UserProjects.Add(newUserProject);
+            db.SaveChanges();
+            return newUserProject;
+        }
 
-        public JObject ParseToJson(Project project, bool isDetailed = true)
+        public JObject ParseToJson(Project project, bool isDetailed = true, Boolean IsIncludeChangeBy = true)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
@@ -144,7 +169,7 @@ namespace Service
                 ["changedTime"] = project.ChangedTime,
                 ["status"] = project.Status
             };
-            if (project.ChangedBy.HasValue)
+            if (project.ChangedBy.HasValue&&IsIncludeChangeBy==true)
             {
                 var changer = userService.GetUser(project.ChangedBy.Value);
                 result["changedBy"] = userService.ParseToJson(changer);
