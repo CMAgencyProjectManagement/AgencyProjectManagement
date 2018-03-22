@@ -8,4 +8,15 @@ button{
 }
 textarea:disabled{
     background-color: white;
+    width: 95%;
+}
+.div-text{
+    height: 300px;
+    overflow-y: auto;
+    border:1px solid black;
+}
+.blackwhitebutton{
+    color: black;
+                background-color: white;
+                border-color: black;
 }

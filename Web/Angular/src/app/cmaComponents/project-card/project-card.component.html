@@ -2,15 +2,15 @@
   <div class="card-header">
     <strong>Tasks</strong>
   </div>
-  <div class="card-body" *ngIf="project">
+  <div class="card-body scroll" *ngIf="project">
     <div class="row">
-      <div class="col-sm-6 col-md-4" *ngFor="let lists of project.lists;let i = index">
+      <div class="col-sm-6 col-md-6" *ngFor="let lists of project.lists;let i = index">
         <ng-container>
           <div class="card">
-            <div class="card-header">
+            <div class="card-header cardheadertext">
               {{lists.Name}}
             </div>
-            <div class="card-body" *ngIf="lists.tasks">
+            <div class="card-body cardbodytext" *ngIf="lists.tasks">
               <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer"
                    data-toggle="modal" id="task">
                 <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.ID}}&taskID={{task.ID}}" style="text-decoration: none; color: black">
@@ -18,9 +18,6 @@
                     {{task.Name}}
                   </div>
                 </a>
-                <div class="card-footer">
-                  <span class="badge badge-success float-right">Executing</span>
-                </div>
               </div>
             </div>
           </div>
