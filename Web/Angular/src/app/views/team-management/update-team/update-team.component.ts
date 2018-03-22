@@ -3,7 +3,7 @@ import {TeamService} from '../../../services/team.service';
 import {UserService} from '../../../services/user.service';
 import {Team} from 'app/interfaces/team';
 import {User} from 'app/interfaces/user';
-import {forEach} from '@angular/router/src/utils/collection';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-update-team',
@@ -13,6 +13,8 @@ import {forEach} from '@angular/router/src/utils/collection';
 export class UpdateTeamComponent implements OnInit {
   teamID: number;
   users: User[];
+  freeUsers: User[];
+  teamUsers: User[];
   foundTeam: Team;
   isLoading: boolean;
   isPageLoading: boolean;
@@ -23,9 +25,10 @@ export class UpdateTeamComponent implements OnInit {
       {
         searchable: false,
         orderable: false,
-        targets: [0]
+        targets: [0],
       }
-    ]
+    ],
+    rowCallback: this.handleRowCallback.bind(this)
   };
 
   constructor(
@@ -49,15 +52,34 @@ export class UpdateTeamComponent implements OnInit {
       });
     this.userService.getAllUser()
       .then(value => {
-        this.users = value;
+        this.freeUsers = _.filter(value, user => {
+          return !user.team
+        });
         this.updateLoadingState();
       });
   }
 
   updateLoadingState() {
-    if (this.foundTeam && this.users) {
+    if (this.foundTeam && this.freeUsers) {
       this.isPageLoading = false;
     }
+  }
+
+  handleRowCallback(row: Node, data: any[] | Object, index: number) {
+    $('td', row).unbind('click');
+    $('td', row).bind('click', () => {
+      let classesAtr = row.attributes.getNamedItem('class');
+      let classes = _.split(classesAtr.value, ' ') as string[];
+      let isSelected = _.indexOf(classes, 'selected') >= 0;
+      if (isSelected) {
+        classes = _.filter(classes, 'selected');
+      } else {
+        classes.push('selected');
+      }
+      classesAtr.value = _.join(classes, ' ');
+      console.debug('rowCallback', classes, isSelected);
+    });
+    return row;
   }
 
   GetURLParameter(sParam) {
