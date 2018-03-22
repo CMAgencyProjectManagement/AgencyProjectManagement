@@ -21,6 +21,7 @@ export class UpdateTeamComponent implements OnInit {
   smallAccountTableOpt: DataTables.Settings = {
     searching: true,
     lengthChange: false,
+    scrollY: 'true',
     columnDefs: [
       {
         searchable: false,
@@ -52,15 +53,22 @@ export class UpdateTeamComponent implements OnInit {
       });
     this.userService.getAllUser()
       .then(value => {
-        this.freeUsers = _.filter(value, user => {
-          return !user.team
-        });
+        this.users = value;
         this.updateLoadingState();
       });
   }
 
   updateLoadingState() {
-    if (this.foundTeam && this.freeUsers) {
+    if (this.foundTeam && this.users) {
+      this.teamUsers = _.filter(this.users, user => {
+        console.debug('updateLoadingState', user, this.foundTeam);
+        if (user.team) {
+          return user.team.id === this.foundTeam.id;
+        }
+      });
+      this.freeUsers = _.filter(this.users, user => {
+        return !user.team
+      });
       this.isPageLoading = false;
     }
   }
