@@ -8,19 +8,16 @@
         <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
           <div class="row">
             <div class="col-6">
-              <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+              <div class="form-horizontal">
                 <div style="font-size: 30px">
                   Project Name: {{foundProject.name}}
-                  <a href="#/project/task?projectID={{foundProject.id}}">
-                    <button type="button" class="btn btn-primary btn-lg" style="color: black;
-                    background-color: white;
-                    border-color: black;">View Task
-                    </button>
-                  </a>
                 </div>
                 <div>
                   Description:
-                  <textarea id="textarea-input" name="textarea-input" rows="2" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea>
+                  <div class="div-text">
+                    {{foundProject.description}}
+                  </div>
+                  <!-- <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea> -->
                 </div>
                 <div>
                   Created Time: {{foundProject.createdTime | date:'d/M/y'}}
@@ -31,32 +28,29 @@
                 <div>
                   Deadline: {{foundProject.deadline | date:'d/M/y'}}
                 </div>
+                <br/>
+                <div class="row">
+                  <div class="col-6 text-right">
+                    <a href="#/project/update?projectID={{foundProject.id}}">
+                      <button type="button" class="btn btn-primary btn-lg blackwhitebutton">Update
+                      </button>
+                    </a>
+                  </div>
+                  <div class="col-6 text-left">
+                    <button type="button" class="btn btn-danger btn-lg blackwhitebutton" data-toggle="modal" (click)="dangerModal.show()">Close
+                    </button>
+                  </div>
+                </div>
                 <!--<div class="form-group row" >-->
                 <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
                 <!--</div>-->
                 <!--<div class="form-group row">-->
                 <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
                 <!--</div>-->
-              </form>
+              </div>
             </div>
             <div class="col-6">
-              <app-project-card [project]="foundProject" ></app-project-card>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-5 text-right">
-              <a href="#/project/update?projectID={{foundProject.id}}">
-                <button type="button" class="btn btn-primary btn-lg" style="color: black;
-                background-color: white;
-                border-color: black;">Update
-                </button>
-              </a>
-            </div>
-            <div class="col-5 offset-2 text-left">
-              <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="color: black;
-                background-color: white;
-                border-color: black;">Close
-              </button>
+              <app-project-card [project]="foundProject"></app-project-card>
             </div>
           </div>
           <!--<button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;-->
