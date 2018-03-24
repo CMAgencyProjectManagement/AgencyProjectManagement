@@ -15,6 +15,8 @@ const serverPath = {
   // Team
   allTeam: '/api/team/all',
   deleteTeam: '/api/team',
+  assignTeam: '/api/team/assign',
+  unAssignTeam: '/api/team/unassign',
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`
 };

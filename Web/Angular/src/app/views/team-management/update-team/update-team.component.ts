@@ -15,11 +15,11 @@ export class UpdateTeamComponent implements OnInit {
   users: User[];
   freeUsers: {
     data: User[],
-    selected: User[]
+    selectedIds: number[]
   };
   teamUsers: {
     data: User[],
-    selected: User[]
+    selectedIds: number[]
   };
   foundTeam: Team;
   isLoading: boolean;
@@ -33,10 +33,16 @@ export class UpdateTeamComponent implements OnInit {
       {
         searchable: false,
         orderable: false,
+        targets: [1],
+      },
+      {
+        searchable: false,
+        orderable: false,
+        visible: false,
         targets: [0],
       }
     ],
-    rowCallback: this.handleRowCallback.bind(this)
+    rowCallback: this.handleLeftTableRowCallback.bind(this)
   };
   smallTeamUsersTableOpt: DataTables.Settings = {
     searching: true,
@@ -47,10 +53,16 @@ export class UpdateTeamComponent implements OnInit {
       {
         searchable: false,
         orderable: false,
+        targets: [1],
+      },
+      {
+        searchable: false,
+        orderable: false,
+        visible: false,
         targets: [0],
       }
     ],
-    rowCallback: this.handleRowCallback.bind(this)
+    rowCallback: this.handleRightTableRowCallback.bind(this)
   };
 
   constructor(
@@ -59,10 +71,10 @@ export class UpdateTeamComponent implements OnInit {
   ) {
     this.isPageLoading = true;
     this.teamUsers = {
-      data: null, selected: null
+      data: null, selectedIds: []
     };
     this.freeUsers = {
-      data: null, selected: null
+      data: null, selectedIds: []
     };
   }
 
@@ -99,20 +111,64 @@ export class UpdateTeamComponent implements OnInit {
     }
   }
 
+  assignTeam() {
+    this.teamService.assignTeam(this.freeUsers.selectedIds, this.foundTeam.id)
+      .then(value => {
+        console.log('Success', value)
+      })
+      .catch(reason => {
+        console.log('Fail', reason)
+      })
+  }
 
-  handleRowCallback(row: Node, data: any[] | Object, index: number) {
+  unAssignTeam() {
+    this.teamService.unAssignTeam(this.teamUsers.selectedIds)
+      .then(value => {
+        console.log('Success', value)
+      })
+      .catch(reason => {
+        console.log('Fail', reason)
+      })
+  }
+
+  handleLeftTableRowCallback(row: Node, data: any[] | Object, index: number) {
     $('td', row).unbind('click');
     $('td', row).bind('click', () => {
+      let selectedUserId = data[0] as number;
       let classesAtr = row.attributes.getNamedItem('class');
       let classes = _.split(classesAtr.value, ' ') as string[];
       let isSelected = _.indexOf(classes, 'selected') >= 0;
       if (isSelected) {
+        this.freeUsers.selectedIds = _.filter(this.freeUsers.selectedIds, userId => {
+          return userId !== selectedUserId;
+        });
         classes = _.filter(classes, 'selected');
       } else {
+        this.freeUsers.selectedIds.push(selectedUserId);
         classes.push('selected');
       }
       classesAtr.value = _.join(classes, ' ');
-      console.debug('rowCallback', classes, isSelected);
+    });
+    return row;
+  }
+
+  handleRightTableRowCallback(row: Node, data: any[] | Object, index: number) {
+    $('td', row).unbind('click');
+    $('td', row).bind('click', () => {
+      let selectedUserId = data[0] as number;
+      let classesAtr = row.attributes.getNamedItem('class');
+      let classes = _.split(classesAtr.value, ' ') as string[];
+      let isSelected = _.indexOf(classes, 'selected') >= 0;
+      if (isSelected) {
+        this.teamUsers.selectedIds = _.filter(this.teamUsers.selectedIds, userId => {
+          return userId !== selectedUserId;
+        });
+        classes = _.filter(classes, 'selected');
+      } else {
+        this.teamUsers.selectedIds.push(selectedUserId);
+        classes.push('selected');
+      }
+      classesAtr.value = _.join(classes, ' ');
     });
     return row;
   }

@@ -185,7 +185,7 @@ export class UserService {
             reject(content);
           }
         })
-        .catch(reject);
+        .catch(reason => reject(reason.response.body));
     });
   }
 
@@ -207,7 +207,7 @@ export class UserService {
             reject(content);
           }
         })
-        .catch(reject);
+        .catch(reason => reject(reason.response.body));
     });
   }
 

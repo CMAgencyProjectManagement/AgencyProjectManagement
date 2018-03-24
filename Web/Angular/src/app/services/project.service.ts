@@ -25,6 +25,7 @@ export class ProjectService {
             reject(content.Message);
           }
         })
+        .catch(reason => reject(reason.response.body));
     });
   }
 
@@ -45,6 +46,7 @@ export class ProjectService {
               reject(content.Message);
             }
           })
+          .catch(reason => reject(reason.response.body));
       }
 
     });
@@ -75,7 +77,7 @@ export class ProjectService {
             reject(content);
           }
         })
-        .catch(reject);
+        .catch(reason => reject(reason.response.body));
     })
   }
 
@@ -106,7 +108,7 @@ export class ProjectService {
             reject(content);
           }
         })
-        .catch(reject);
+        .catch(reason => reject(reason.response.body));
     })
   }
 
@@ -129,7 +131,7 @@ export class ProjectService {
             reject(content);
           }
         })
-        .catch(reject);
+        .catch(reason => reject(reason.response.body));
     })
   }
 }

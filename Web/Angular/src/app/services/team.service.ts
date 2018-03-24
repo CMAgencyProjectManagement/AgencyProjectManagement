@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StoreService} from './tree.service';
-import {get} from 'superagent';
+import {get, put} from 'superagent';
 import {serverPath} from '../_serverPath';
 import * as _ from 'lodash';
 
@@ -31,6 +31,47 @@ export class TeamService {
             }
           })
       }
+    });
+  }
+
+  public assignTeam(userIdArray: number[], teamId: number): Promise<any> {
+    const dataObj = {
+      UserIds: userIdArray,
+      TeamId: teamId
+    };
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.assignTeam)
+        .set('token', this.tokenCursor.get())
+        .send(dataObj)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
+  public unAssignTeam(userIdArray: number[]): Promise<any> {
+    const dataObj = {
+      UserIds: userIdArray
+    };
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.unAssignTeam)
+        .set('token', this.tokenCursor.get())
+        .send(dataObj)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
     });
   }
 }
