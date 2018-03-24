@@ -34,8 +34,8 @@
   </div>
   <div *ngIf="!showbutton">
     <div class="card-body" *ngIf="project">
-      <div class="row col-sm-12 col-md-12">
-        <div class="input-group">
+      <div class="row" style="margin-bottom: 1rem;">
+        <div class="input-group col-12">
           <span class="input-group-btn">
             <button class="btn btn-primary" type="button" (click)="search(searchField.value)">
               <i class="fa fa-search"></i> Search
@@ -44,6 +44,17 @@
           <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
         </div>
       </div>
+      <!-- -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card" style="width: 100%">
+            <div class="card-header cardheadertext">
+              Place a portable A-frame
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- -->
       <div class="row">
         <div class="col-sm-4 col-md-4" *ngFor="let lists of project.lists;let i = index">
           <ng-container>
