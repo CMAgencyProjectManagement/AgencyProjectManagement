@@ -55,7 +55,8 @@ namespace Web.Controllers
                     if (team != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            teamService.ParseToJsonVer2(team, includeUsers: true,avatarPath: AgencyConfig.AvatarPath, isDetailedUsers: true, isDetailedProjects: true)
+                            teamService.ParseToJsonVer2(team, includeUsers: true, avatarPath: AgencyConfig.AvatarPath,
+                                isDetailedUsers: true, isDetailedProjects: true)
                         ));
                     }
                     else
@@ -70,6 +71,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpPut]
         [Route("assign")]
         [Authorize(Roles = "Admin")]
@@ -81,15 +83,17 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        UserService userService = new UserService(db);
                         TeamService teamService = new TeamService(db);
-                        User assignTeamMember = teamService.AssignTeam(
-                            assignTeamModel.ID,
-                            assignTeamModel.TeamId
+                        foreach (int userId in assignTeamModel.UserIds)
+                        {
+                            teamService.AssignTeam(
+                                userId,
+                                assignTeamModel.TeamId
                             );
-                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(assignTeamMember, includeTeam: true)));
-                    }
+                        }
 
+                        return Ok(ResponseHelper.GetResponse());
+                    }
                 }
                 else
                 {
@@ -103,6 +107,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpPut]
         [Route("unassign")]
         [Authorize(Roles = "Admin")]
@@ -114,14 +119,12 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        UserService userService = new UserService(db);
                         TeamService teamService = new TeamService(db);
-                        User assignTeamMember = teamService.UnAssignTask(
-                            unAssignTeamModel.ID
-                            );
-                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(assignTeamMember, includeTeam: true)));
+                        teamService.UnAssignTeam(
+                            unAssignTeamModel.UserIds
+                        );
+                        return Ok(ResponseHelper.GetResponse());
                     }
-
                 }
                 else
                 {

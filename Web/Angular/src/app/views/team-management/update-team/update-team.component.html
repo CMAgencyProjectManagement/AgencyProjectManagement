@@ -25,6 +25,7 @@
                     <table datatable [dtOptions]="smallFreeUsersTableOpt" class="table">
                       <thead>
                       <tr>
+                        <th>ID</th>
                         <th>Avatar</th>
                         <th>Name</th>
                         <th>Birthdate</th>
@@ -32,6 +33,7 @@
                       </thead>
                       <tbody>
                       <tr *ngFor="let user of freeUsers.data">
+                        <td>{{user.id}}</td>
                         <td class=text-center>
                           <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
                           <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">
@@ -49,10 +51,10 @@
                     </table>
                   </div>
                   <div class="col-2 center-section">
-                    <button class="btn btn-primary btn-block">
+                    <button class="btn btn-primary btn-block" (click)="unAssignTeam()">
                       <i class="fa fa-angle-double-left"></i>
                     </button>
-                    <button class="btn btn-primary btn-block">
+                    <button class="btn btn-primary btn-block" (click)="assignTeam()">
                       <i class="fa fa-angle-double-right"></i>
                     </button>
                   </div>
@@ -60,6 +62,7 @@
                     <table datatable [dtOptions]="smallTeamUsersTableOpt" class="table">
                       <thead>
                       <tr>
+                        <th>ID</th>
                         <th>Avatar</th>
                         <th>Name</th>
                         <th>Birthdate</th>
@@ -67,6 +70,7 @@
                       </thead>
                       <tbody>
                       <tr *ngFor="let user of teamUsers.data">
+                        <td>{{user.id}}</td>
                         <td class=text-center>
                           <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
                           <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">

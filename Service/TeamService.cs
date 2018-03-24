@@ -68,9 +68,9 @@ namespace Service
             int teamId)
         {
             User user = db.Users.Find(id);
-            if (user!=null)
+            if (user != null)
             {
-                if (user.TeamID==null)
+                if (user.TeamID == null)
                 {
                     user.TeamID = teamId;
                 }
@@ -78,28 +78,7 @@ namespace Service
                 {
                     throw new ObjectNotFoundException($"!!Team Id has value");
                 }
-                
-                db.SaveChanges();
-                return user;
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"User with ID{id} not found");
-            }
-        }
-        public User UnAssignTask(int id)
-        {
-            User user = db.Users.Find(id);
-            if (user!=null)
-            {
-                if (user.TeamID!=null)
-                {
-                    user.TeamID = null;
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"!!Team Id must be already null or User still have task");
-                }
+
                 db.SaveChanges();
                 return user;
             }
@@ -109,10 +88,34 @@ namespace Service
             }
         }
 
+        public void UnAssignTeam(int[] userIds)
+        {
+            foreach (int userId in userIds)
+            {
+                User user = db.Users.Find(userId);
+                if (user != null)
+                {
+                    if (user.TeamID != null)
+                    {
+                        user.TeamID = null;
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"!!Team Id must be already null or User still have task");
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with ID{userId} not found");
+                }
+            }
+
+            db.SaveChanges();
+        }
+
         public JObject ParseToJson(Team team, bool includeManager = true, bool includeUsers = false,
             string avatarPath = null)
         {
-            
             UserService userService = new UserService(db);
             var creator = userService.GetUser(team.CreatedBy);
 
@@ -143,18 +146,17 @@ namespace Service
 
                 result["users"] = jArray;
             }
-            
+
 
             return result;
         }
 
         public JObject ParseToJsonVer2(Team team, bool includeManager = true,
-            bool includeUsers = false, 
+            bool includeUsers = false,
             bool isDetailedUsers = false,
             bool isDetailedProjects = false,
             string avatarPath = null)
         {
-
             UserService userService = new UserService(db);
             ProjectService projectService = new ProjectService(db);
             var creator = userService.GetUser(team.CreatedBy);
@@ -186,6 +188,7 @@ namespace Service
 
                 result["users"] = jArray;
             }
+
             if (isDetailedUsers)
             {
                 IEnumerable<User> users = userService.GetUsersOfTeamVer2(team.ID);
@@ -194,9 +197,10 @@ namespace Service
                 {
                     listArray.Add(userService.ParseToJson(user, avatarPath));
                 }
-                result["users"] = listArray;
 
+                result["users"] = listArray;
             }
+
             if (isDetailedProjects)
             {
                 IEnumerable<Project> projects = projectService.GetProjectOfTeam(team.ID);
@@ -205,11 +209,11 @@ namespace Service
                 {
                     listArray.Add(projectService.ParseToJson(project, isDetailed: false));
                 }
+
                 result["projects"] = listArray;
             }
 
             return result;
         }
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Web.ViewModels
+namespace Web.Validators
 {
     public class AgencyDateValidation : ValidationAttribute
     {
