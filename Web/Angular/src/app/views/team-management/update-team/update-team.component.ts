@@ -13,15 +13,36 @@ import * as _ from 'lodash';
 export class UpdateTeamComponent implements OnInit {
   teamID: number;
   users: User[];
-  freeUsers: User[];
-  teamUsers: User[];
+  freeUsers: {
+    data: User[],
+    selected: User[]
+  };
+  teamUsers: {
+    data: User[],
+    selected: User[]
+  };
   foundTeam: Team;
   isLoading: boolean;
   isPageLoading: boolean;
-  smallAccountTableOpt: DataTables.Settings = {
+  smallFreeUsersTableOpt: DataTables.Settings = {
     searching: true,
     lengthChange: false,
-    scrollY: 'true',
+    paging: false,
+    scrollY: '400',
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: [0],
+      }
+    ],
+    rowCallback: this.handleRowCallback.bind(this)
+  };
+  smallTeamUsersTableOpt: DataTables.Settings = {
+    searching: true,
+    lengthChange: false,
+    paging: false,
+    scrollY: '400',
     columnDefs: [
       {
         searchable: false,
@@ -37,6 +58,12 @@ export class UpdateTeamComponent implements OnInit {
     private userService: UserService,
   ) {
     this.isPageLoading = true;
+    this.teamUsers = {
+      data: null, selected: null
+    };
+    this.freeUsers = {
+      data: null, selected: null
+    };
   }
 
   ngOnInit() {
@@ -60,18 +87,18 @@ export class UpdateTeamComponent implements OnInit {
 
   updateLoadingState() {
     if (this.foundTeam && this.users) {
-      this.teamUsers = _.filter(this.users, user => {
-        console.debug('updateLoadingState', user, this.foundTeam);
+      this.teamUsers.data = _.filter(this.users, user => {
         if (user.team) {
           return user.team.id === this.foundTeam.id;
         }
       });
-      this.freeUsers = _.filter(this.users, user => {
+      this.freeUsers.data = _.filter(this.users, user => {
         return !user.team
       });
       this.isPageLoading = false;
     }
   }
+
 
   handleRowCallback(row: Node, data: any[] | Object, index: number) {
     $('td', row).unbind('click');

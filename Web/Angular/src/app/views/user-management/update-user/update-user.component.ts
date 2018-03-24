@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
 import {
@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {IMyDpOptions} from 'mydatepicker';
 import {TeamService} from '../../../services/team.service';
 import {Team} from '../../../interfaces/team';
+import {ModalDialogService, SimpleModalComponent} from 'ngx-modal-dialog';
 
 @Component({
   selector: 'app-update-user',
@@ -44,7 +45,8 @@ export class UpdateUserComponent implements OnInit {
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
-              private router: Router) {
+              private modalService: ModalDialogService,
+              private viewRef: ViewContainerRef) {
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
     this.isSavingChange = false;
@@ -87,7 +89,9 @@ export class UpdateUserComponent implements OnInit {
   setDefaultValue(user: User) {
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
-    this.updateForm.controls['team'].setValue(user.team.id);
+    if (user.team) {
+      this.updateForm.controls['team'].setValue(user.team.id);
+    }
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
@@ -124,6 +128,15 @@ export class UpdateUserComponent implements OnInit {
       avatar: '',
       isActive: ''
     };
+  }
+
+  // TODO study dialog
+  openNewDialog() {
+    this.modalService.openDialog(this.viewRef, {
+      title: 'Some modal title',
+      childComponent: SimpleModalComponent,
+      data: 'the message'
+    });
   }
 
   handleUpdate() {

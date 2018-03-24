@@ -6,40 +6,35 @@
       </div>
       <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div *ngIf="!isPageLoading" class="card-body">
-        <div class="col-12 text-center">
-          <h2>{{foundTeam.name}}</h2>
+        <div class="col-12 text-center margin-down">
+          <h1>{{foundTeam.name}}</h1>
         </div>
         <div class="col-12">
           <table class="table">
             <thead>
             <tr>
-              <th class="text-left">Free member</th>
-              <th></th>
-              <th class="text-right">{{foundTeam.name}}</th>
+              <th class="text-center"><h5>Free member</h5></th>
+              <th class="text-center"><h5>Team member</h5></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <td colspan="3">
+              <td colspan="2">
                 <div class="row" style="margin-top: 1em">
                   <div class="col-5">
-                    <table datatable [dtOptions]="smallAccountTableOpt" class="table">
+                    <table datatable [dtOptions]="smallFreeUsersTableOpt" class="table">
                       <thead>
                       <tr>
                         <th>Avatar</th>
-                        <th>User name</th>
                         <th>Name</th>
                         <th>Birthdate</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let user of freeUsers">
+                      <tr *ngFor="let user of freeUsers.data">
                         <td class=text-center>
                           <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
                           <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">
-                        </td>
-                        <td>
-                          {{user.username}}
                         </td>
                         <td>
                           <span *ngIf="user.name">{{user.name}}</span>
@@ -53,7 +48,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="col-2">
+                  <div class="col-2 center-section">
                     <button class="btn btn-primary btn-block">
                       <i class="fa fa-angle-double-left"></i>
                     </button>
@@ -62,30 +57,26 @@
                     </button>
                   </div>
                   <div class="col-5">
-                    <table datatable [dtOptions]="smallAccountTableOpt" class="table">
+                    <table datatable [dtOptions]="smallTeamUsersTableOpt" class="table">
                       <thead>
                       <tr>
                         <th>Avatar</th>
-                        <th>User name</th>
                         <th>Name</th>
                         <th>Birthdate</th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let user of teamUsers">
+                      <tr *ngFor="let user of teamUsers.data">
                         <td class=text-center>
                           <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
                           <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">
-                        </td>
-                        <td>
-                          {{user.username}}
                         </td>
                         <td>
                           <span *ngIf="user.name">{{user.name}}</span>
                           <span *ngIf="!user.name">N/A</span>
                         </td>
                         <td>
-                          <span *ngIf="user.birthdate">{{user.birthdate}}</span>
+                          <span *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</span>
                           <span *ngIf="!user.birthdate">N/A</span>
                         </td>
                       </tr>
