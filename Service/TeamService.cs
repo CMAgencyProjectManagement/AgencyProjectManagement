@@ -205,7 +205,7 @@ namespace Service
                 {
                     listArray.Add(projectService.ParseToJson(project, isDetailed: false));
                 }
-                result["Projects"] = listArray;
+                result["projects"] = listArray;
             }
 
             return result;
