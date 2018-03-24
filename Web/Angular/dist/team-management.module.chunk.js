@@ -64,7 +64,7 @@ var CreateTeamComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/detail-team/detail-team.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n    <div class=\"card-header\">\r\n      <strong>Team Detail</strong>\r\n    </div>\r\n    <div class=\"card-body\">\r\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n        <div class=\"form-group row\">\r\n          <h1>\r\n            <div class=\"col-md-12 col-form-label\" *ngIf=\"foundTeam\" style=\"text-transform: uppercase\">\r\n              {{foundTeam.name}}\r\n            </div>\r\n          </h1>\r\n\r\n        </div>\r\n        <div class=\"form-group row\">\r\n          <!-- <div id=\"description\">\r\n            In the advertising, digital or marketing sectors, the creative team is responsible for generating attention-grabbing ideas\r\n            that will entice the consumer or target audience. Members of the team work together to develop conceptual campaigns\r\n            designed to stand apart from competitors.\r\n            <br/> The creative team usually consists of an established art director and a copywriter, with some companies looking\r\n            for individuals who have both skill sets. However, other members involved can include web developers and editors.\r\n            <br/> Members of this team need to be confident enough to share and sell their ideas, and perceptive enough to know\r\n            when to encourage others to share theirs. Team members should also be strategic in their thinking, so they can\r\n            organise thoughts and develop plans to suit the expectations of the client.\r\n            <br/> Creativity is all about nurturing imagination and turning thoughts into the ideas that give a project the edge.\r\n            So agencies will expect team members to have a positive approach that encourages their creativity to flourish.\r\n          </div> -->\r\n          <!-- thu -->\r\n          <!-- <div *ngFor=\"let user of value\">\r\n\r\n            <div>{{user.name}}</div>\r\n\r\n            <img src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n          </div> -->\r\n\r\n\r\n          <div>\r\n            <img id=\"imgAdmin\" src=\"{{foundTeam.manager.avatar}}\">\r\n          </div>\r\n          <div>\r\n            <b id=\"name\">{{foundTeam.manager.username}}</b>\r\n            <p id=\"role\">Manager\r\n              <span class=\"badge badge-success\" style=\"font-size: 20px;\">Active</span>\r\n            </p>\r\n            <a href=\"#/account/detail?id={{foundTeam.manager.id}}\" id=\"viewInfo\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"color: black;\r\n              background-color: white;\r\n              border-color: black;\" id=\"viewprofilebutton\">\r\n                View profile\r\n              </button>\r\n            </a>\r\n          </div>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n    <div class=\"card-header\">\r\n      <strong>Team's detail</strong>\r\n    </div>\r\n    <div class=\"card-body\" *ngIf=\"foundTeam\">\r\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n        <div class=\"col-12 text-center\" *ngIf=\"foundTeam\" style=\" text-transform: uppercase\">\r\n          <h1>\r\n            {{foundTeam.name}}\r\n          </h1>\r\n        </div>\r\n        <div>\r\n\r\n\r\n\r\n\r\n          <!-- <div class=\"col-4 text-center card\">\r\n            <strong>\r\n              <h3>\r\n                <a href=\"#/account/detail?id={{foundTeam.manager.id}}\">{{foundTeam.manager.username}}</a>\r\n                \r\n              </h3>\r\n            </strong>\r\n\r\n            <p id=\"role\">Manager\r\n              <span *ngIf=\"foundTeam.manager.isActive\" class=\"badge badge-success\" style=\"font-size: 20px;\">Active</span>\r\n              <span *ngIf=\"!foundTeam.manager.isActive\" class=\"badge badge-success\" style=\"font-size: 20px;\">Banned</span>\r\n            </p>\r\n          </div> -->\r\n\r\n\r\n\r\n\r\n\r\n\r\n          <div id=\"1\" class=\"row\" *ngIf=\"foundUser.length !== 0\">\r\n            <div class=\"col-3 text-center card\" *ngFor=\"let user of foundUser\">\r\n              <div>\r\n                <strong>\r\n                  <h3>\r\n                    <a href=\"#/account/detail?id={{user.id}}\">{{user.username}}</a>\r\n                  </h3>\r\n                </strong>\r\n\r\n\r\n\r\n                <div class=\"row\" *ngIf=\"user\" >\r\n                  <div *ngIf=\"user.isAdmin\" class=\"col-4 text-right\">\r\n                    <strong>Admin </strong>\r\n                  </div>\r\n                  <div *ngIf=\"!user.isAdmin && user.isManager\"class=\"col-4 text-right\">\r\n                    <strong>Manager </strong>\r\n                  </div>\r\n                  <div *ngIf=\"!user.isAdmin && !user.isManager\" class=\"col-4 text-right\">\r\n                    Staff\r\n                  </div>\r\n                  <div *ngIf=\"user.status\" class=\"badge badge-primary\" style=\"font-size: 20px;\">Active</div>\r\n                  <div *ngIf=\"!user.status\" class=\"badge badge-secondary\" style=\"font-size: 20px;\">Banned</div>\r\n                </div>\r\n                <!-- <a href=\"#/account/detail?id={{foundTeam.manager.id}}\" id=\"viewInfo\">\r\n                    <button type=\"button\" class=\"btn btn-primary\" style=\"color: black;\r\n                    background-color: white;\r\n                    border-color: black;\" id=\"viewprofilebutton\">\r\n                      View profile\r\n                    </button>\r\n                  </a> -->\r\n              </div>\r\n            </div>\r\n\r\n\r\n\r\n\r\n          </div>\r\n\r\n\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -76,7 +76,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "div.a {\n  text-transform: uppercase; }\n\n#description {\n  width: 1000px;\n  font-size: 20px; }\n\n#AvaAndDe {\n  padding-left: 13px; }\n\n#left {\n  font-size: 30px;\n  width: 20%;\n  padding-left: 4px;\n  margin-right: 5px; }\n\n#center {\n  padding: 1em;\n  width: 40%;\n  font-size: 30px; }\n\n#avatar {\n  width: 150px;\n  height: 200px;\n  margin-right: 5px; }\n\n#summary {\n  color: rgba(18, 38, 221, 0.89);\n  border-bottom: 2px solid; }\n\n#TechnicalSkills {\n  color: rgba(18, 38, 221, 0.89);\n  border-bottom: 2px solid; }\n\n#role {\n  color: grey;\n  font-size: 23px;\n  margin-left: 70px; }\n\n#phone {\n  font-size: 25px; }\n\n#email {\n  color: blue;\n  font-size: 25px; }\n\n#name {\n  margin-left: 70px;\n  font-size: 45px; }\n\n#createdBy {\n  margin-left: 50px;\n  font-size: 30px; }\n\n#viewInfo {\n  margin-left: 70px; }\n\n#viewprofilebutton {\n  font-size: 25px; }\n\n#imgAdmin {\n  width: 150px;\n  height: 150px;\n  margin-left: 50px; }\n", ""]);
+exports.push([module.i, "div.a {\n  text-transform: uppercase; }\n\n#description {\n  width: 1000px;\n  font-size: 20px; }\n\n#AvaAndDe {\n  padding-left: 13px; }\n\n#left {\n  font-size: 30px;\n  width: 20%;\n  padding-left: 4px;\n  margin-right: 5px; }\n\n#center {\n  padding: 1em;\n  width: 40%;\n  font-size: 30px; }\n\n#avatar {\n  width: 150px;\n  height: 200px;\n  margin-right: 5px; }\n\n#summary {\n  color: rgba(18, 38, 221, 0.89);\n  border-bottom: 2px solid; }\n\n#TechnicalSkills {\n  color: rgba(18, 38, 221, 0.89);\n  border-bottom: 2px solid; }\n\n#role {\n  color: grey;\n  font-size: 23px; }\n\n#phone {\n  font-size: 25px; }\n\n#email {\n  color: blue;\n  font-size: 25px; }\n\n#name {\n  margin-left: 70px;\n  font-size: 45px; }\n\n#createdBy {\n  margin-left: 50px;\n  font-size: 30px; }\n\n#viewInfo {\n  margin-left: 70px; }\n\n#viewprofilebutton {\n  font-size: 25px; }\n\n#imgAdmin {\n  width: 150px;\n  height: 150px;\n  margin-left: 50px; }\n", ""]);
 
 // exports
 
@@ -111,6 +111,7 @@ var DetailTeamComponent = /** @class */ (function () {
         this.teamService = teamService;
         this.userService = userService;
         this.users = [];
+        this.foundUser = [];
         this.selectedUser = [];
         this.dropdownSettings = {};
     }
@@ -135,22 +136,46 @@ var DetailTeamComponent = /** @class */ (function () {
                         itemName: _this.foundTeam.manager.username,
                         itemAvatar: _this.foundTeam.manager.avatar,
                         item: _this.foundTeam.manager.id,
+                        item1: _this.foundTeam.manager.isActive,
                     });
                 }
             }
+            // for (let i = 0; i < this.teams.length; i++) {
+            //   if (this.teams[i].id == this.teamID) {
+            //     this.foundTeam = this.teams[i];
+            //     this.selectedUser.push({
+            //       id: this.foundTeam.manager.id,
+            //       itemName: this.foundTeam.manager.username,
+            //       itemAvatar: this.foundTeam.manager.avatar,
+            //       item: this.foundTeam.manager.id,
+            //       item1: this.foundTeam.manager.isActive,
+            //       // item2: this.foundTeam.
+            //     });
+            //   }
+            // }
         });
     };
     DetailTeamComponent.prototype.getAllUser = function () {
         var _this = this;
         this.userService.getAllUser()
             .then(function (value) {
-            for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
-                var user = value_1[_i];
-                _this.users.push({
-                    id: user.id,
-                    itemName: user.username
-                });
+            _this.users = value;
+            for (var i = 0; i < _this.users.length; i++) {
+                var userTeam = _this.users[i].team;
+                if (userTeam !== null) {
+                    if (userTeam.id === _this.foundTeam.id) {
+                        _this.foundUser.push({
+                            id: _this.users[i].id,
+                            name: _this.users[i].name,
+                            username: _this.users[i].username,
+                            status: _this.users[i].isActive,
+                            isad: _this.users[i].isAdmin,
+                            ismng: _this.users[i].isManager,
+                        });
+                    }
+                }
             }
+            console.log(_this.foundUser);
         });
     };
     DetailTeamComponent.prototype.GetURLParameter = function (sParam) {
@@ -271,7 +296,7 @@ var TeamManagementRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/team-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        View all teams\r\n      </div>\r\n      <!--<app-spinner *ngIf=\"isPageLoading\"></app-spinner>-->\r\n      <div *ngIf=\"isPageLoading\" >Loading</div>\r\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n          <tr>\r\n            <th>No.</th>\r\n            <th>Name</th>\r\n            <th>Team Leader</th>\r\n            <th>Created date</th>\r\n            <th>Update</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let team of teams;let i = index\">\r\n              <td class=\"text-center\"><strong>{{i+1}}</strong></td>\r\n              <td>\r\n                <a href=\"#/team/detail?id={{team.id}}\">{{team.name}}</a>\r\n              </td>\r\n              <td>\r\n                <p>{{team.manager.username}} </p>\r\n              </td>\r\n              <td>\r\n                <p>{{team.createdDate}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/team/update?id={{team.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>All teams</strong>\r\n\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Team Leader</th>\r\n            <th>Created date</th>\r\n            <th>Update</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let team of teams;let i = index\">\r\n              <td>\r\n                <a href=\"#/team/detail?id={{team.id}}\">{{team.name}}</a>\r\n              </td>\r\n              <td>\r\n                <p>{{team.manager.username}}</p>\r\n              </td>\r\n              <td>\r\n                <p>{{team.createdDate}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/team/update?id={{team.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -343,6 +368,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_spinner_spinner_module__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_angular2_ladda__ = __webpack_require__("../../../../angular2-ladda/module/module.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_angular2_ladda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_angular2_ladda__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -360,7 +388,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-// import {SpinnerComponent} from '../../components';
+
+
 var TeamManagementModule = /** @class */ (function () {
     function TeamManagementModule() {
     }
@@ -372,7 +401,11 @@ var TeamManagementModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_7__team_management_routing_module__["a" /* TeamManagementRoutingModule */],
                 __WEBPACK_IMPORTED_MODULE_8_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_9_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_10_angular_datatables__["a" /* DataTablesModule */]
+                __WEBPACK_IMPORTED_MODULE_10_angular_datatables__["b" /* DataTablesModule */],
+                __WEBPACK_IMPORTED_MODULE_11__components_spinner_spinner_module__["a" /* SpinnerModule */],
+                __WEBPACK_IMPORTED_MODULE_12_angular2_ladda__["LaddaModule"].forRoot({
+                    style: 'slide-down'
+                })
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_3__team_management_component__["a" /* TeamManagePageComponent */],
@@ -392,7 +425,7 @@ var TeamManagementModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/update-team/update-team.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">Update team</div>\r\n      <!--<app-spinner *ngIf=\"isPageLoading\"></app-spinner>-->\r\n      <div *ngIf=\"isPageLoading\">Loading...</div>\r\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n        <div class=\"row\">\r\n          <div class=\"col-12\">\r\n            <h2>{{foundTeam.name}}</h2>\r\n          </div>\r\n        </div>\r\n        <div class=\"row form-horizontal\">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-3 col-form-label\">Manager</label>\r\n            <div class=\"col-9\">\r\n              <p class=\"form-control-static\">{{foundTeam.manager.name}}</p>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!--<div style=\"align-content: center\">-->\r\n  <!--<div class=\"card align-items-center\">-->\r\n    <!--<div class=\"card-body\">-->\r\n      <!--<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\" novalidate>-->\r\n        <!--&lt;!&ndash; <div class=\"card-body\" *ngIf=\"foundTeam\" [formGroup]=\"updateForm\">-->\r\n        <!--<div class=\"form-group row\">-->\r\n          <!--<label class=\"col-md-2 col-form-label\" for=\"name-input\">Team name:</label>-->\r\n          <!--<div class=\"col-md-8\">-->\r\n            <!--<input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" disabled=\"true\" style=\"position: relative;-->\r\n\r\n              <!--width: 208px;\" *ngIf=\"foundTeam.name\" value=\" {{foundTeam.name}}\">-->\r\n          <!--</div>-->\r\n        <!--</div>-->\r\n      <!--&ndash;&gt;-->\r\n        <!--<div class=\"form-group row\">-->\r\n          <!--<h1>-->\r\n            <!--<div class=\"col-md-8 col-form-label\" *ngIf=\"foundTeam\">-->\r\n              <!--{{foundTeam.name}}-->\r\n            <!--</div>-->\r\n          <!--</h1>-->\r\n\r\n        <!--</div>-->\r\n        <!--&lt;!&ndash; <p *ngFor=\"let item of users\">{{item.name}}</p> &ndash;&gt;-->\r\n        <!--<div class=\"form-group row\">-->\r\n          <!--<label class=\"col-md-2.1 col-form-label\" for=\"teamLeader-input\">Team leader:</label>-->\r\n          <!--<div class=\"col-md-8\" *ngIf=\"users.length !== 0\">-->\r\n            <!--<angular2-multiselect [data]=\"users\" [(ngModel)]=\"selectedUser\"-->\r\n                                  <!--[ngModelOptions]=\"{standalone: true}\"-->\r\n                                  <!--[settings]=\"dropdownSettings\"-->\r\n                                  <!--(onSelect)=\"onItemSelect($event)\"-->\r\n                                  <!--(onDeSelect)=\"OnItemDeSelect($event)\"-->\r\n                                  <!--(onSelectAll)=\"onSelectAll($event)\"-->\r\n                                  <!--(onDeSelectAll)=\"onDeSelectAll($event)\">-->\r\n            <!--</angular2-multiselect>-->\r\n            <!--&lt;!&ndash; <div class=\"btn-group\" >-->\r\n              <!--<div class=\"btn-group\" dropdown> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">-->\r\n                <!--choose a manager-->\r\n              <!--<span class=\"caret\"></span>-->\r\n            <!--</button> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; <select name=\"user\" [(ngModel)]='selectedUser' >-->\r\n              <!--<option *ngFor=\"let item of users\"  [value]=\"item.name\">{{item.name}}</option>-->\r\n            <!--</select> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">-->\r\n\r\n              <!--<li *ngFor=\"let item of users\" role=\"menuitem\">-->\r\n                <!--<p *ngIf=\"item.name !== null\" class=\"dropdown-item\">{{item.name}}</p>-->\r\n              <!--</li> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; <li role=\"menuitem\">-->\r\n              <!--<a class=\"dropdown-item\" href=\"#\">Action</a>-->\r\n            <!--</li> &ndash;&gt;-->\r\n\r\n            <!--&lt;!&ndash; <li class=\"divider dropdown-divider\"></li> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; <li role=\"menuitem\">-->\r\n              <!--<a class=\"dropdown-item\" href=\"#\">Separated link</a>-->\r\n            <!--</li> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; </ul> &ndash;&gt;-->\r\n            <!--&lt;!&ndash; </div>-->\r\n          <!--</div> &ndash;&gt;-->\r\n\r\n          <!--</div>-->\r\n          <!--<span class=\"help-block\" style=\"position: relative;-->\r\n          <!--\">Please enter Team leader's name</span>-->\r\n        <!--</div>-->\r\n\r\n        <!--<div class=\"form-actions\" style=\"margin-left: 100px\">-->\r\n          <!--<button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"selectedUser.length === 0\" (click)=\"handleCreate()\">-->\r\n            <!--Update-->\r\n          <!--</button>-->\r\n\r\n          <!--<button class=\"btn btn-secondary\" type=\"button\">Cancel</button>-->\r\n        <!--</div>-->\r\n\r\n      <!--</form>-->\r\n    <!--</div>-->\r\n  <!--</div>-->\r\n<!--</div>-->\r\n\r\n<head>\r\n  <title>My Title</title>\r\n</head>\r\n\r\n<body>\r\n\r\n\r\n<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n\r\n    <div class=\"card-body\">\r\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n\r\n        <table border=\"1\" class=\"table table-bordered\">\r\n          <thead class=\"thead-dark\">\r\n          <tr>\r\n            <th>Team</th>\r\n\r\n\r\n            <th>Action</th>\r\n\r\n            <th>Not in team</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n          <tr class=\"left\">\r\n            <th>\r\n              <div class=\"row\">\r\n\r\n                <!-- phan card -->\r\n\r\n                <div class=\"card \" style=\"position: relative; left: 10px; width: 6rem\">\r\n                  <div class=\"card-body\">\r\n                    <img class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\" src=\"assets/img/avatars/6.jpg\"\r\n                         alt=\"Card image cap\">\r\n                    <h5 class=\"card-title\">\r\n                      <a href=\"#/dashboard\">Dien Doan </a>\r\n                    </h5>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n                <!-- phan card -->\r\n\r\n                <div class=\"card \" style=\"position: relative; left: 10px; width: 6rem\">\r\n                  <div class=\"card-body\">\r\n                    <img class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\" src=\"assets/img/avatars/6.jpg\"\r\n                         alt=\"Card image cap\">\r\n                    <h5 class=\"card-title\">\r\n                      <a href=\"#/dashboard\">Dien Doan </a>\r\n                    </h5>\r\n                  </div>\r\n                </div>\r\n\r\n                <!-- phan card -->\r\n\r\n                <div class=\"card \" style=\"position: relative; left: 10px; width: 6rem\">\r\n                  <div class=\"card-body\">\r\n                    <img class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\" src=\"assets/img/avatars/6.jpg\"\r\n                         alt=\"Card image cap\">\r\n                    <h5 class=\"card-title\">\r\n                      <a href=\"#/dashboard\">Dien Doan </a>\r\n                    </h5>\r\n                  </div>\r\n                </div>\r\n\r\n                <!-- phan card -->\r\n\r\n                <div class=\"card \" style=\"position: relative; left: 10px; width: 6rem\">\r\n                  <div class=\"card-body\">\r\n                    <img class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\" src=\"assets/img/avatars/6.jpg\"\r\n                         alt=\"Card image cap\">\r\n                    <h5 class=\"card-title\">\r\n                      <a href=\"#/dashboard\">Dien Doan </a>\r\n                    </h5>\r\n                  </div>\r\n                </div>\r\n\r\n                <!-- phan card -->\r\n\r\n                <div class=\"card \" style=\"position: relative; left: 10px; width: 6rem\">\r\n                  <div class=\"card-body\">\r\n                    <img class=\"img-avatar\" alt=\"admin@bootstrapmaster.com\" src=\"assets/img/avatars/6.jpg\"\r\n                         alt=\"Card image cap\">\r\n                    <h5 class=\"card-title\">\r\n                      <a href=\"#/dashboard\">Dien Doan </a>\r\n                    </h5>\r\n                  </div>\r\n                </div>\r\n\r\n              </div>\r\n\r\n            </th>\r\n\r\n\r\n            <th class=\"center\">\r\n              <div>\r\n                <button type=\"button\" class=\"btn btn-primary\">>></button>\r\n              </div>\r\n              <br>\r\n              <div>\r\n                <button type=\"button\" class=\"btn btn-primary\">\r\n                  <<\r\n                </button>\r\n              </div>\r\n\r\n            </th>\r\n\r\n            <th class=\"right\">3</th>\r\n\r\n          </tr>\r\n\r\n          </tbody>\r\n        </table>\r\n\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n</body>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update team</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"loading.page\"></app-spinner>\r\n      <div *ngIf=\"!loading.page\" class=\"card-body\">\r\n        <div class=\"col-12 text-center margin-down\">\r\n          <h1>{{foundTeam.name}}</h1>\r\n        </div>\r\n        <div class=\"col-12\">\r\n          <table class=\"table\">\r\n            <thead>\r\n            <tr>\r\n              <th class=\"text-center\">\r\n                <h5>Free member</h5>\r\n              </th>\r\n              <th class=\"text-center\">\r\n                <h5>Team member</h5>\r\n              </th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr>\r\n              <td colspan=\"2\">\r\n                <div class=\"row\" style=\"margin-top: 1em\">\r\n                  <div class=\"col-5\">\r\n                    <table datatable [dtOptions]=\"smallFreeUsersTableOpt\" class=\"table\">\r\n                      <thead>\r\n                      <tr>\r\n                        <th>ID</th>\r\n                        <th>Avatar</th>\r\n                        <th>Name</th>\r\n                        <th>Birthdate</th>\r\n                      </tr>\r\n                      </thead>\r\n                      <tbody>\r\n                      <tr *ngFor=\"let user of freeUsers.data\">\r\n                        <td>{{user.id}}</td>\r\n                        <td class=text-center>\r\n                          <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\r\n                          <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\r\n                        </td>\r\n                        <td>\r\n                          <span *ngIf=\"user.name\">{{user.name}}</span>\r\n                          <span *ngIf=\"!user.name\">N/A</span>\r\n                        </td>\r\n                        <td>\r\n                          <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\r\n                          <span *ngIf=\"!user.birthdate\">N/A</span>\r\n                        </td>\r\n                      </tr>\r\n                      </tbody>\r\n                    </table>\r\n                  </div>\r\n                  <div class=\"col-2 center-section\">\r\n                    <button class=\"btn btn-primary btn-block\"\r\n                            (click)=\"unAssignTeam()\"\r\n                            [ladda]=\"loading.unAssign\">\r\n                      <i class=\"fa fa-angle-double-left\"></i>\r\n                    </button>\r\n                    <button class=\"btn btn-primary btn-block\"\r\n                            (click)=\"assignTeam()\"\r\n                            [ladda]=\"loading.assign\">\r\n                      <i class=\"fa fa-angle-double-right\"></i>\r\n                    </button>\r\n                  </div>\r\n                  <div class=\"col-5\">\r\n                    <table datatable [dtOptions]=\"smallTeamUsersTableOpt\" class=\"table\">\r\n                      <thead>\r\n                      <tr>\r\n                        <th>ID</th>\r\n                        <th>Avatar</th>\r\n                        <th>Name</th>\r\n                        <th>Birthdate</th>\r\n                      </tr>\r\n                      </thead>\r\n                      <tbody>\r\n                      <tr *ngFor=\"let user of teamUsers.data\">\r\n                        <td>{{user.id}}</td>\r\n                        <td class=text-center>\r\n                          <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\r\n                          <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\r\n                        </td>\r\n                        <td>\r\n                          <span *ngIf=\"user.name\">{{user.name}}</span>\r\n                          <span *ngIf=\"!user.name\">N/A</span>\r\n                        </td>\r\n                        <td>\r\n                          <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\r\n                          <span *ngIf=\"!user.birthdate\">N/A</span>\r\n                        </td>\r\n                      </tr>\r\n                      </tbody>\r\n                    </table>\r\n                  </div>\r\n                </div>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -404,7 +437,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "th.left {\n  width: 45%; }\n\nth.center {\n  width: 10%; }\n\nth.right {\n  width: 45%; }\n\ndiv.card {\n  margin: 3px 5px; }\n", ""]);
+exports.push([module.i, ".table .table {\n  background-color: white; }\n\n.center-section {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-line-pack: center;\n      align-content: center;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap; }\n\n.table th, .table td {\n  padding-left: 0;\n  padding-right: 0; }\n\n.margin-down {\n  margin-bottom: 2em; }\n", ""]);
 
 // exports
 
@@ -422,6 +455,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -434,12 +469,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UpdateTeamComponent = /** @class */ (function () {
     function UpdateTeamComponent(teamService, userService) {
         this.teamService = teamService;
         this.userService = userService;
-        this.selectedUser = [];
-        this.isPageLoading = true;
+        this.smallFreeUsersTableOpt = {
+            searching: true,
+            lengthChange: false,
+            paging: false,
+            scrollY: '400',
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [1],
+                },
+                {
+                    searchable: false,
+                    orderable: false,
+                    visible: false,
+                    targets: [0],
+                }
+            ],
+            rowCallback: this.handleLeftTableRowCallback.bind(this)
+        };
+        this.smallTeamUsersTableOpt = {
+            searching: true,
+            lengthChange: false,
+            paging: false,
+            scrollY: '400',
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [1],
+                },
+                {
+                    searchable: false,
+                    orderable: false,
+                    visible: false,
+                    targets: [0],
+                }
+            ],
+            rowCallback: this.handleRightTableRowCallback.bind(this)
+        };
+        this.loading = {
+            page: true,
+            assign: false,
+            unAssign: false
+        };
+        this.teamUsers = {
+            data: null, selectedIds: []
+        };
+        this.freeUsers = {
+            data: null, selectedIds: []
+        };
     }
     UpdateTeamComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -462,9 +547,84 @@ var UpdateTeamComponent = /** @class */ (function () {
         });
     };
     UpdateTeamComponent.prototype.updateLoadingState = function () {
+        var _this = this;
         if (this.foundTeam && this.users) {
-            this.isPageLoading = false;
+            this.teamUsers.data = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](this.users, function (user) {
+                if (user.team) {
+                    return user.team.id === _this.foundTeam.id;
+                }
+            });
+            this.freeUsers.data = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](this.users, function (user) {
+                return !user.team;
+            });
+            this.loading.page = false;
         }
+    };
+    UpdateTeamComponent.prototype.assignTeam = function () {
+        var _this = this;
+        this.loading.assign = true;
+        this.teamService.assignTeam(this.freeUsers.selectedIds, this.foundTeam.id)
+            .then(function (value) {
+            _this.loading.assign = false;
+        })
+            .catch(function (reason) {
+            _this.loading.assign = false;
+        });
+    };
+    UpdateTeamComponent.prototype.unAssignTeam = function () {
+        var _this = this;
+        this.loading.unAssign = true;
+        this.teamService.unAssignTeam(this.teamUsers.selectedIds)
+            .then(function (value) {
+            _this.loading.unAssign = false;
+        })
+            .catch(function (reason) {
+            _this.loading.unAssign = false;
+        });
+    };
+    UpdateTeamComponent.prototype.handleLeftTableRowCallback = function (row, data, index) {
+        var _this = this;
+        $('td', row).unbind('click');
+        $('td', row).bind('click', function () {
+            var selectedUserId = data[0];
+            var classesAtr = row.attributes.getNamedItem('class');
+            var classes = __WEBPACK_IMPORTED_MODULE_3_lodash__["split"](classesAtr.value, ' ');
+            var isSelected = __WEBPACK_IMPORTED_MODULE_3_lodash__["indexOf"](classes, 'selected') >= 0;
+            if (isSelected) {
+                _this.freeUsers.selectedIds = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](_this.freeUsers.selectedIds, function (userId) {
+                    return userId !== selectedUserId;
+                });
+                classes = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](classes, 'selected');
+            }
+            else {
+                _this.freeUsers.selectedIds.push(selectedUserId);
+                classes.push('selected');
+            }
+            classesAtr.value = __WEBPACK_IMPORTED_MODULE_3_lodash__["join"](classes, ' ');
+        });
+        return row;
+    };
+    UpdateTeamComponent.prototype.handleRightTableRowCallback = function (row, data, index) {
+        var _this = this;
+        $('td', row).unbind('click');
+        $('td', row).bind('click', function () {
+            var selectedUserId = data[0];
+            var classesAtr = row.attributes.getNamedItem('class');
+            var classes = __WEBPACK_IMPORTED_MODULE_3_lodash__["split"](classesAtr.value, ' ');
+            var isSelected = __WEBPACK_IMPORTED_MODULE_3_lodash__["indexOf"](classes, 'selected') >= 0;
+            if (isSelected) {
+                _this.teamUsers.selectedIds = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](_this.teamUsers.selectedIds, function (userId) {
+                    return userId !== selectedUserId;
+                });
+                classes = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](classes, 'selected');
+            }
+            else {
+                _this.teamUsers.selectedIds.push(selectedUserId);
+                classes.push('selected');
+            }
+            classesAtr.value = __WEBPACK_IMPORTED_MODULE_3_lodash__["join"](classes, ' ');
+        });
+        return row;
     };
     UpdateTeamComponent.prototype.GetURLParameter = function (sParam) {
         var sPageURL = window.location.href;

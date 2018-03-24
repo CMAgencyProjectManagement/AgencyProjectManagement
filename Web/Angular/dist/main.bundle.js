@@ -15,7 +15,8 @@ var map = {
 	],
 	"./views/project/project-management.module": [
 		"../../../../../src/app/views/project/project-management.module.ts",
-		"project-management.module"
+		"project-management.module",
+		"common"
 	],
 	"./views/team-management/team-management.module": [
 		"../../../../../src/app/views/team-management/team-management.module.ts",
@@ -141,7 +142,8 @@ var serverPath = {
     user: '/api/user',
     allUser: '/api/user/all',
     createUser: '/api/user',
-    updateUser: '/api/user',
+    updateUser: '/api/user/update',
+    resetPassword: function (userId) { return "/api/user/" + userId + "/resetpassword"; },
     // Project
     allProject: '/api/project/all',
     myProject: '/api/project',
@@ -151,6 +153,8 @@ var serverPath = {
     // Team
     allTeam: '/api/team/all',
     deleteTeam: '/api/team',
+    assignTeam: '/api/team/assign',
+    unAssignTeam: '/api/team/unassign',
     // File
     uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; }
 };
@@ -280,6 +284,7 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ngx_modal_dialog__ = __webpack_require__("../../../../ngx-modal-dialog/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -352,6 +357,7 @@ var SERVICES = [
 
 
 
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -365,7 +371,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_21_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__["ChartsModule"],
                 __WEBPACK_IMPORTED_MODULE_23_mydatepicker__["MyDatePickerModule"],
-                __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */]
+                __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
+                __WEBPACK_IMPORTED_MODULE_25_ngx_modal_dialog__["a" /* ModalDialogModule */].forRoot()
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]
@@ -1182,7 +1189,7 @@ var AppSidebarComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__ = __webpack_require__("../../../../../src/app/components/app-sidebar-nav/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__["a"]; });
+/* unused harmony reexport SpinnerComponent */
 
 
 
@@ -1201,7 +1208,7 @@ var AppSidebarComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/spinner/spinner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sk-folding-cube\">\r\n  <div class=\"sk-cube1 sk-cube\"></div>\r\n  <div class=\"sk-cube2 sk-cube\"></div>\r\n  <div class=\"sk-cube4 sk-cube\"></div>\r\n  <div class=\"sk-cube3 sk-cube\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"sk-folding-cube\">\n  <div class=\"sk-cube1 sk-cube\"></div>\n  <div class=\"sk-cube2 sk-cube\"></div>\n  <div class=\"sk-cube4 sk-cube\"></div>\n  <div class=\"sk-cube3 sk-cube\"></div>\n</div>\n"
 
 /***/ }),
 
@@ -1429,7 +1436,7 @@ var AsideToggleDirective = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sidebar__ = __webpack_require__("../../../../../src/app/directives/sidebar/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__sidebar__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pipe_truncateText_pipe__ = __webpack_require__("../../../../../src/app/directives/pipe/truncateText.pipe.ts");
-/* unused harmony namespace reexport */
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__pipe_truncateText_pipe__["a"]; });
 
 
 
@@ -1532,6 +1539,9 @@ var TruncateTextPipe = /** @class */ (function () {
     function TruncateTextPipe() {
     }
     TruncateTextPipe.prototype.transform = function (value, length) {
+        if (!value) {
+            return value;
+        }
         var biggestWord = 50;
         var elipses = '...';
         if (typeof value === 'undefined') {
@@ -2024,6 +2034,7 @@ var ProjectService = /** @class */ (function () {
     function ProjectService(store) {
         this.store = store;
         this.tokenCursor = this.store.select(['token', 'access_token']);
+        this.projectsCursor = this.store.select(['projects']);
     }
     ProjectService.prototype.getMyProjects = function () {
         var _this = this;
@@ -2038,23 +2049,32 @@ var ProjectService = /** @class */ (function () {
                 else {
                     reject(content.Message);
                 }
-            });
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     ProjectService.prototype.getAllProjects = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].allProject)
-                .set('token', _this.tokenCursor.get())
-                .then(function (res) {
-                var content = res.body;
-                if (content.IsSuccess) {
-                    resolve(content.Data);
-                }
-                else {
-                    reject(content.Message);
-                }
-            });
+            var projects = _this.projectsCursor.get();
+            if (projects) {
+                resolve(projects);
+            }
+            else {
+                Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].allProject)
+                    .set('token', _this.tokenCursor.get())
+                    .then(function (res) {
+                    var content = res.body;
+                    if (content.IsSuccess) {
+                        _this.projectsCursor.set(content.Data);
+                        resolve(content.Data);
+                    }
+                    else {
+                        reject(content.Message);
+                    }
+                })
+                    .catch(function (reason) { return reject(reason.response.body); });
+            }
         });
     };
     ProjectService.prototype.createProject = function (name, description, startdate, deadline) {
@@ -2079,7 +2099,7 @@ var ProjectService = /** @class */ (function () {
                     reject(content);
                 }
             })
-                .catch(reject);
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     ProjectService.prototype.updateProject = function (projectId, name, description, startdate, deadline) {
@@ -2105,7 +2125,7 @@ var ProjectService = /** @class */ (function () {
                     reject(content);
                 }
             })
-                .catch(reject);
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     ProjectService.prototype.closeProject = function (projectId) {
@@ -2127,7 +2147,7 @@ var ProjectService = /** @class */ (function () {
                     reject(content);
                 }
             })
-                .catch(reject);
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     ProjectService = __decorate([
@@ -2158,10 +2178,7 @@ var TaskService = /** @class */ (function () {
     function TaskService() {
     }
     TaskService.prototype.get = function () {
-        return Promise.resolve([
-            { id: 1, start_date: '2017-04-15 00:00', text: 'Task #1', progress: 0.6, duration: 3, parent: undefined },
-            { id: 2, start_date: '2017-04-18 00:00', text: 'Task #2', progress: 0.4, duration: 3, parent: undefined }
-        ]);
+        return Promise.resolve([]);
     };
     TaskService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
@@ -2227,6 +2244,49 @@ var TeamService = /** @class */ (function () {
             }
         });
     };
+    TeamService.prototype.assignTeam = function (userIdArray, teamId) {
+        var _this = this;
+        var dataObj = {
+            UserIds: userIdArray,
+            TeamId: teamId
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].assignTeam)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObj)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    TeamService.prototype.unAssignTeam = function (userIdArray) {
+        var _this = this;
+        var dataObj = {
+            UserIds: userIdArray
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].unAssignTeam)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObj)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
     TeamService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__tree_service__["a" /* StoreService */]])
@@ -2264,7 +2324,9 @@ var StoreTree = {
     // all user from from server
     users: undefined,
     // all teams from server
-    teams: undefined
+    teams: undefined,
+    // all projects
+    projects: undefined
 };
 var StoreService = /** @class */ (function () {
     function StoreService() {
@@ -2512,31 +2574,54 @@ var UserService = /** @class */ (function () {
                 .catch(function (reason) { return reject(reason.response.body); });
         });
     };
-    UserService.prototype.updateUser = function (id, name, phone, birthdate, email) {
+    UserService.prototype.updateUser = function (id, phone, email, team, isActive) {
         var _this = this;
         var postDataObject = {
             ID: id,
-            Name: name,
             Phone: phone,
             Email: email,
-            Birthdate: birthdate,
+            IsActive: isActive,
+            Team: team
         };
         return new Promise(function (resolve, reject) {
             var token = _this.tokenCursor.get();
-            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateUser)
+            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateUser)
                 .set('token', token)
                 .send(postDataObject)
                 .type('form')
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
-                    resolve(content.data);
+                    resolve(content.Data);
                 }
                 else {
                     reject(content);
                 }
             })
-                .catch(reject);
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    UserService.prototype.resetPassword = function (id) {
+        var _this = this;
+        var postDataObject = {
+            id: id,
+        };
+        return new Promise(function (resolve, reject) {
+            var token = _this.tokenCursor.get();
+            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].resetPassword(id))
+                .set('token', token)
+                .send(postDataObject)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     UserService.prototype.getLocalToken = function () {
