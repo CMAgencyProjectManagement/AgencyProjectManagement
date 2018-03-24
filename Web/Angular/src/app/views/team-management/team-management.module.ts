@@ -13,6 +13,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {DataTablesModule} from 'angular-datatables';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
+import {LaddaModule} from 'angular2-ladda';
 
 @NgModule({
   imports: [
@@ -22,7 +23,10 @@ import {SpinnerModule} from '../../components/spinner/spinner.module';
     BsDropdownModule.forRoot(),
     AngularMultiSelectModule,
     DataTablesModule,
-    SpinnerModule
+    SpinnerModule,
+    LaddaModule.forRoot({
+      style: 'slide-down'
+    })
   ],
   declarations: [
     TeamManagePageComponent,

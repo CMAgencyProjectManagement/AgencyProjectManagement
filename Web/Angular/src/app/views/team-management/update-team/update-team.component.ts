@@ -21,9 +21,12 @@ export class UpdateTeamComponent implements OnInit {
     data: User[],
     selectedIds: number[]
   };
+  loading: {
+    page: boolean,
+    assign: boolean
+    unAssign: boolean
+  };
   foundTeam: Team;
-  isLoading: boolean;
-  isPageLoading: boolean;
   smallFreeUsersTableOpt: DataTables.Settings = {
     searching: true,
     lengthChange: false,
@@ -69,7 +72,11 @@ export class UpdateTeamComponent implements OnInit {
     private teamService: TeamService,
     private userService: UserService,
   ) {
-    this.isPageLoading = true;
+    this.loading = {
+      page: true,
+      assign: false,
+      unAssign: false
+    };
     this.teamUsers = {
       data: null, selectedIds: []
     };
@@ -107,27 +114,29 @@ export class UpdateTeamComponent implements OnInit {
       this.freeUsers.data = _.filter(this.users, user => {
         return !user.team
       });
-      this.isPageLoading = false;
+      this.loading.page = false;
     }
   }
 
   assignTeam() {
+    this.loading.assign = true;
     this.teamService.assignTeam(this.freeUsers.selectedIds, this.foundTeam.id)
       .then(value => {
-        console.log('Success', value)
+        this.loading.assign = false;
       })
       .catch(reason => {
-        console.log('Fail', reason)
+        this.loading.assign = false;
       })
   }
 
   unAssignTeam() {
+    this.loading.unAssign = true;
     this.teamService.unAssignTeam(this.teamUsers.selectedIds)
       .then(value => {
-        console.log('Success', value)
+        this.loading.unAssign = false;
       })
       .catch(reason => {
-        console.log('Fail', reason)
+        this.loading.unAssign = false;
       })
   }
 
