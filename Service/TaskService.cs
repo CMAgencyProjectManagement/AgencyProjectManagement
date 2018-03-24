@@ -197,17 +197,17 @@ namespace Service
             User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
-                ["ID"] = task.ID,
-                ["Name"] = task.Name,
-                ["Description"] = task.Description,
-                ["CreatedBy"] = userService.ParseToJson(creator),
-                ["CreatedTime"] = task.CreatedTime,
-                ["ChangedTime"] = task.ChangedTime,
-                ["Status"] = task.Status,
-                ["Duration"] = task.Duration,
-                ["ListID"] = task.ListID,
-                ["Priority"] = task.Priority,
-                ["StartDate"] = task.StartDate
+                ["id"] = task.ID,
+                ["name"] = task.Name,
+                ["description"] = task.Description,
+                ["createdBy"] = userService.ParseToJson(creator),
+                ["ceatedTime"] = task.CreatedTime,
+                ["changedTime"] = task.ChangedTime,
+                ["status"] = task.Status,
+                ["duration"] = task.Duration,
+                ["listID"] = task.ListID,
+                ["priority"] = task.Priority,
+                ["startDate"] = task.StartDate
             };
             if (task.ChangedBy.HasValue)
             {
@@ -224,10 +224,10 @@ namespace Service
 
             JObject result = new JObject
             {
-                ["ID"] = userTask.TaskID,
-                ["Name"] = userTask.UserID,
-                ["IsFollow"] = userTask.IsFollow,
-                ["IsAssigned"] = userTask.IsAssigned,
+                ["id"] = userTask.TaskID,
+                ["name"] = userTask.UserID,
+                ["isFollow"] = userTask.IsFollow,
+                ["isAssigned"] = userTask.IsAssigned,
 
             };
 
