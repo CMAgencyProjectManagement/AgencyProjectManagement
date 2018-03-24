@@ -1,0 +1,27 @@
+<table datatable [dtOptions]="smallUsersTableOpt" class="table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Avatar</th>
+    <th>Name</th>
+    <th>Birthdate</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of freeUsers.data">
+    <td>{{user.id}}</td>
+    <td class=text-center>
+      <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
+      <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">
+    </td>
+    <td>
+      <span *ngIf="user.name">{{user.name}}</span>
+      <span *ngIf="!user.name">N/A</span>
+    </td>
+    <td>
+      <span *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</span>
+      <span *ngIf="!user.birthdate">N/A</span>
+    </td>
+  </tr>
+  </tbody>
+</table>
