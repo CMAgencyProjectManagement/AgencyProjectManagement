@@ -1,27 +1,69 @@
 <div class="card">
   <div class="card-header">
     <strong>Tasks</strong>
+    <a href="#/project/task?projectID={{project.id}}" *ngIf="showbutton">
+      <button type="button" class="btn btn-primary" style="margin-left: 77%">
+        View full
+      </button>
+    </a>
   </div>
-  <div class="card-body scroll" *ngIf="project">
-    <div class="row">
-      <div class="col-sm-6 col-md-6" *ngFor="let lists of project.lists;let i = index">
-        <ng-container>
-          <div class="card">
-            <div class="card-header cardheadertext">
-              {{lists.name}}
-            </div>
-            <div class="card-body cardbodytext" *ngIf="lists.tasks">
-              <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer"
-                   data-toggle="modal" id="task">
-                <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
-                  <div class="card-body">
-                    {{task.name}}
-                  </div>
-                </a>
+  <div *ngIf="showbutton">
+    <div class="card-body scroll" *ngIf="project">
+      <div class="row">
+        <div class="col-sm-6 col-md-6" *ngFor="let lists of project.lists;let i = index">
+          <ng-container>
+            <div class="card">
+              <div class="card-header cardheadertext">
+                {{lists.name}}
+              </div>
+              <div class="card-body cardbodytext" *ngIf="lists.tasks">
+                <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
+                  id="task">
+                  <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
+                    <div class="card-body">
+                      {{task.name}}
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!showbutton">
+    <div class="card-body" *ngIf="project">
+      <div class="row col-sm-12 col-md-12">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" (click)="search(searchField.value)">
+              <i class="fa fa-search"></i> Search
+            </button>
+          </span>
+          <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 col-md-4" *ngFor="let lists of project.lists;let i = index">
+          <ng-container>
+            <div class="card">
+              <div class="card-header cardheadertext">
+                {{lists.name}}
+              </div>
+              <div class="card-body cardbodytext" *ngIf="lists.tasks">
+                <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
+                  id="task">
+                  <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
+                    <div class="card-body">
+                      {{task.name}}
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>

@@ -5,4 +5,9 @@ export class Task {
   progress: number;
   duration: number;
   parent: number;
+  name: string;
+  description: string;
+  status: number;
+  priority: number;
+  
 }
