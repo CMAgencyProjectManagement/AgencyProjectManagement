@@ -138,5 +138,71 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+        [HttpPut]
+        [Route("assign/manager/{userId:int}")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult SetRole(int teamId, int userId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        TeamService teamService = new TeamService(db);
+                        teamService.setRole(
+                            teamId,
+                            userId,
+                            true
+                        );
+                        return Ok(ResponseHelper.GetResponse());
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        [HttpPut]
+        [Route("{teamId:int}assign/manager/{userId:int}")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult AssignManager(int teamId, int userId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        TeamService teamService = new TeamService(db);
+                        teamService.setRole(
+                            teamId,
+                            userId,
+                            true
+                        );
+                        return Ok(ResponseHelper.GetResponse());
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
     }
 }

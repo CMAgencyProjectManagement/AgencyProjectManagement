@@ -74,4 +74,20 @@ export class TeamService {
         .catch(reason => reject(reason.response.body));
     });
   }
+
+  public setManager(teamId: number, userId: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.setManager(teamId, userId))
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
 }

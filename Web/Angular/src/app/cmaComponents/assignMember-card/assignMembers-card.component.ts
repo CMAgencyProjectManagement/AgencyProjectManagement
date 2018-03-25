@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Team} from '../../interfaces/team';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {User} from '../../interfaces/user';
 
 @Component({
   selector: 'app-assign-members-card',
@@ -7,14 +7,34 @@ import {Team} from '../../interfaces/team';
   styleUrls: ['./assignMembers-card.component.scss']
 })
 export class AssignMembersCardComponent implements OnInit {
-  @Input() title: Team;
-  @Input() leftTableName: Team;
-  @Input() rightTableName: Team;
-
-  constructor() {
-
-  }
+  @Input() title: string;
+  @Input() leftTableName: string;
+  @Input() rightTableName: string;
+  @Input() leftUser: User;
+  @Input() rightUser: User;
+  @Input() assignLoading: boolean;
+  @Input() unAssignLoading: boolean;
+  @Output() onAssign = new EventEmitter<number[]>();
+  @Output() onUnAssign = new EventEmitter<number[]>();
+  leftTableSelectedIds: number[];
+  rightTableSelectedIds: number[];
 
   ngOnInit() {
+  }
+
+  handleLeftTableSelect(userIds: number[]) {
+    this.leftTableSelectedIds = userIds;
+  }
+
+  handleRightTableSelect(userIds: number[]) {
+    this.rightTableSelectedIds = userIds;
+  }
+
+  assign() {
+    this.onAssign.emit(this.leftTableSelectedIds)
+  }
+
+  unAssign() {
+    this.onUnAssign.emit(this.rightTableSelectedIds)
   }
 }

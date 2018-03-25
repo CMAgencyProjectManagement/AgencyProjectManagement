@@ -1,14 +1,15 @@
-<table datatable [dtOptions]="smallUsersTableOpt" class="table">
+<table datatable [dtOptions]="smallUsersTableOpt" class="display compact">
   <thead>
   <tr>
     <th>ID</th>
     <th>Avatar</th>
     <th>Name</th>
     <th>Birthdate</th>
+    <th *ngIf="showRole">Manager</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let user of freeUsers.data">
+  <tr *ngFor="let user of users">
     <td>{{user.id}}</td>
     <td class=text-center>
       <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
@@ -21,6 +22,13 @@
     <td>
       <span *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</span>
       <span *ngIf="!user.birthdate">N/A</span>
+    </td>
+    <td *ngIf="showRole">
+      <label class="switch switch-icon switch-info switch-sm">
+        <input class="switch-input" [checked]="user.isManager" [disabled]="!changeRoleable" type="checkbox">
+        <span class="switch-label" data-on="" data-off=""></span>
+        <span class="switch-handle"></span>
+      </label>
     </td>
   </tr>
   </tbody>

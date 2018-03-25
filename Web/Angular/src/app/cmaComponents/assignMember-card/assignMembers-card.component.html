@@ -1,91 +1,49 @@
 <div class="col-12 text-center margin-down">
-  <h1>{{team.name}}</h1>
+  <h1>{{title }}</h1>
 </div>
 <div class="col-12">
   <table class="table">
     <thead>
     <tr>
       <th class="text-center">
-        <h5>Free member</h5>
+        <h5>{{leftTableName}}</h5>
       </th>
+      <th></th>
       <th class="text-center">
-        <h5>Team member</h5>
+        <h5>{{rightTableName}}</h5>
       </th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td colspan="2">
+      <td colspan="3">
         <div class="row" style="margin-top: 1em">
           <div class="col-5">
-            <table datatable [dtOptions]="smallFreeUsersTableOpt" class="table">
-              <thead>
-              <tr>
-                <th>ID</th>
-                <th>Avatar</th>
-                <th>Name</th>
-                <th>Birthdate</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let user of freeUsers.data">
-                <td>{{user.id}}</td>
-                <td class=text-center>
-                  <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
-                  <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">
-                </td>
-                <td>
-                  <span *ngIf="user.name">{{user.name}}</span>
-                  <span *ngIf="!user.name">N/A</span>
-                </td>
-                <td>
-                  <span *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</span>
-                  <span *ngIf="!user.birthdate">N/A</span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+            <app-mini-users-table
+              [users]="leftUser"
+              (onSelectedChange)="handleLeftTableSelect($event)"
+              [showRole]="false"></app-mini-users-table>
           </div>
-          <div class="col-2 center-section">
+          <div class="col-1 center-section">
             <button class="btn btn-primary btn-block"
-                    (click)="unAssignTeam()"
-                    [ladda]="loading.unAssign">
+                    (click)="unAssign()"
+                    [ladda]="unAssignLoading">
               <i class="fa fa-angle-double-left"></i>
             </button>
             <button class="btn btn-primary btn-block"
-                    (click)="assignTeam()"
-                    [ladda]="loading.assign">
+                    (click)="assign()"
+                    [ladda]="assignLoading">
               <i class="fa fa-angle-double-right"></i>
             </button>
           </div>
-          <div class="col-5">
-            <table datatable [dtOptions]="smallTeamUsersTableOpt" class="table">
-              <thead>
-              <tr>
-                <th>ID</th>
-                <th>Avatar</th>
-                <th>Name</th>
-                <th>Birthdate</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let user of teamUsers.data">
-                <td>{{user.id}}</td>
-                <td class=text-center>
-                  <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-sm">
-                  <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar">
-                </td>
-                <td>
-                  <span *ngIf="user.name">{{user.name}}</span>
-                  <span *ngIf="!user.name">N/A</span>
-                </td>
-                <td>
-                  <span *ngIf="user.birthdate">{{user.birthdate | date:'dd/MM/yyyy'}}</span>
-                  <span *ngIf="!user.birthdate">N/A</span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+          <div class="col-6">
+            <app-mini-users-table
+              [users]="rightUser"
+              [showRole]="true"
+              [changeRoleable]="false"
+              (onSelectedChange)="handleRightTableSelect($event)">
+
+            </app-mini-users-table>
           </div>
         </div>
       </td>

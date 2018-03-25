@@ -10,8 +10,11 @@ import {User} from '../../interfaces/user';
 })
 export class MiniUsersTableComponent implements OnInit {
   @Input() users: User[];
+  @Input() showRole: boolean;
+  @Input() changeRoleable: boolean;
   @Output() onSelectedChange = new EventEmitter<number[]>();
-  selectedIds: number[];
+  @Output() onRoleChange = new EventEmitter<any>();
+  selectedIds: number[] = [];
   smallUsersTableOpt: DataTables.Settings = {
     searching: true,
     lengthChange: false,
@@ -56,8 +59,8 @@ export class MiniUsersTableComponent implements OnInit {
         this.selectedIds.push(selectedUserId);
         classes.push('selected');
       }
-      this.onSelectedChange.emit(this.selectedIds);
       classesAtr.value = _.join(classes, ' ');
+      this.onSelectedChange.emit(this.selectedIds);
     });
     return row;
   }

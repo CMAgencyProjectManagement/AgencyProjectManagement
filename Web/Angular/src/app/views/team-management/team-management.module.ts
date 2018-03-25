@@ -2,6 +2,8 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
+import {CmaModule} from '../../cmaComponents/cma.module';
+
 import {TeamManagePageComponent} from './team-management.component';
 import {CreateTeamComponent} from './create-team/create-team.component';
 import {UpdateTeamComponent} from './update-team/update-team.component';
@@ -13,7 +15,6 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {DataTablesModule} from 'angular-datatables';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
-import {LaddaModule} from 'angular2-ladda';
 
 @NgModule({
   imports: [
@@ -24,9 +25,7 @@ import {LaddaModule} from 'angular2-ladda';
     AngularMultiSelectModule,
     DataTablesModule,
     SpinnerModule,
-    LaddaModule.forRoot({
-      style: 'slide-down'
-    })
+    CmaModule
   ],
   declarations: [
     TeamManagePageComponent,

@@ -4,6 +4,7 @@ using System.Data.Entity.Core;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
+using System.Web.Configuration;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -31,13 +32,8 @@ namespace Service
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);
-            if (foundTeam != null)
-            {
-                User manager = foundTeam.Users.First(user => user.IsManager);
-                return manager;
-            }
-
-            return null;
+            User manager = foundTeam?.Users.Single(user => user.IsManager);
+            return manager;
         }
 
         public Team Updateteam(
@@ -98,6 +94,7 @@ namespace Service
                     if (user.TeamID != null)
                     {
                         user.TeamID = null;
+                        user.IsManager = false;
                     }
                     else
                     {
@@ -111,6 +108,37 @@ namespace Service
             }
 
             db.SaveChanges();
+        }
+
+        public void setRole(int teamId, int userId, bool isManager)
+        {
+            Team team = db.Teams.Find(teamId);
+            if (team != null)
+            {
+                User user = db.Users.Find(userId);
+                if (user != null)
+                {
+                    if (user.TeamID != team.ID)
+                    {
+                        throw new InvalidOperationException("User have to be in team before set to be manager");
+                    }
+
+                    if (GetManager(team.ID) != null)
+                    {
+                        throw new InvalidOperationException("Team can't have more than one manager");
+                    }
+
+                    user.IsManager = isManager;
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with ID{userId} not found");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Team with ID{teamId} not found");
+            }
         }
 
         public JObject ParseToJson(Team team, bool includeManager = true, bool includeUsers = false,

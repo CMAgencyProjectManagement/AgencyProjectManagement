@@ -4,17 +4,26 @@ import {ProjectCardComponent} from './project-card/project-card.component';
 import {MiniUsersTableComponent} from './miniUsers-table/mini-users-table.component';
 import {AssignMembersCardComponent} from './assignMember-card/assignMembers-card.component';
 import {DataTablesModule} from 'angular-datatables';
+import {LaddaModule} from 'angular2-ladda';
 
 @NgModule({
   imports: [
     CommonModule,
-    DataTablesModule
+    DataTablesModule,
+    LaddaModule.forRoot({
+      style: 'slide-down'
+    }),
   ],
   exports: [
     ProjectCardComponent,
-    AssignMembersCardComponent
+    AssignMembersCardComponent,
+    MiniUsersTableComponent
   ],
-  declarations: [ProjectCardComponent, MiniUsersTableComponent]
+  declarations: [
+    ProjectCardComponent,
+    MiniUsersTableComponent,
+    AssignMembersCardComponent
+  ]
 })
 export class CmaModule {
 }

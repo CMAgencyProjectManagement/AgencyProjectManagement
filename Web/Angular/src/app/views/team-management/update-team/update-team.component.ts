@@ -13,60 +13,14 @@ import * as _ from 'lodash';
 export class UpdateTeamComponent implements OnInit {
   teamID: number;
   users: User[];
-  freeUsers: {
-    data: User[],
-    selectedIds: number[]
-  };
-  teamUsers: {
-    data: User[],
-    selectedIds: number[]
-  };
+  freeUsers: User[];
+  teamUsers: User[];
   loading: {
     page: boolean,
-    assign: boolean
+    assign: boolean,
     unAssign: boolean
   };
   foundTeam: Team;
-  smallFreeUsersTableOpt: DataTables.Settings = {
-    searching: true,
-    lengthChange: false,
-    paging: false,
-    scrollY: '400',
-    columnDefs: [
-      {
-        searchable: false,
-        orderable: false,
-        targets: [1],
-      },
-      {
-        searchable: false,
-        orderable: false,
-        visible: false,
-        targets: [0],
-      }
-    ],
-    rowCallback: this.handleLeftTableRowCallback.bind(this)
-  };
-  smallTeamUsersTableOpt: DataTables.Settings = {
-    searching: true,
-    lengthChange: false,
-    paging: false,
-    scrollY: '400',
-    columnDefs: [
-      {
-        searchable: false,
-        orderable: false,
-        targets: [1],
-      },
-      {
-        searchable: false,
-        orderable: false,
-        visible: false,
-        targets: [0],
-      }
-    ],
-    rowCallback: this.handleRightTableRowCallback.bind(this)
-  };
 
   constructor(
     private teamService: TeamService,
@@ -76,12 +30,6 @@ export class UpdateTeamComponent implements OnInit {
       page: true,
       assign: false,
       unAssign: false
-    };
-    this.teamUsers = {
-      data: null, selectedIds: []
-    };
-    this.freeUsers = {
-      data: null, selectedIds: []
     };
   }
 
@@ -106,80 +54,50 @@ export class UpdateTeamComponent implements OnInit {
 
   updateLoadingState() {
     if (this.foundTeam && this.users) {
-      this.teamUsers.data = _.filter(this.users, user => {
+      this.teamUsers = _.filter(this.users, user => {
         if (user.team) {
           return user.team.id === this.foundTeam.id;
         }
       });
-      this.freeUsers.data = _.filter(this.users, user => {
+      this.freeUsers = _.filter(this.users, user => {
         return !user.team
       });
       this.loading.page = false;
     }
   }
 
-  assignTeam() {
+  assign(freeMEmberSelectedIds: number[]) {
     this.loading.assign = true;
-    this.teamService.assignTeam(this.freeUsers.selectedIds, this.foundTeam.id)
+    this.teamService.assignTeam(freeMEmberSelectedIds, this.foundTeam.id)
       .then(value => {
         this.loading.assign = false;
       })
       .catch(reason => {
+        console.debug('assign team fail', reason);
         this.loading.assign = false;
       })
   }
 
-  unAssignTeam() {
-    this.loading.unAssign = true;
-    this.teamService.unAssignTeam(this.teamUsers.selectedIds)
+  unAssign(teamMemberSelectedIds: number[]) {
+    this.teamService.unAssignTeam(teamMemberSelectedIds)
       .then(value => {
         this.loading.unAssign = false;
       })
       .catch(reason => {
+        console.debug('unAssign team fail', reason);
         this.loading.unAssign = false;
       })
   }
 
-  handleLeftTableRowCallback(row: Node, data: any[] | Object, index: number) {
-    $('td', row).unbind('click');
-    $('td', row).bind('click', () => {
-      let selectedUserId = data[0] as number;
-      let classesAtr = row.attributes.getNamedItem('class');
-      let classes = _.split(classesAtr.value, ' ') as string[];
-      let isSelected = _.indexOf(classes, 'selected') >= 0;
-      if (isSelected) {
-        this.freeUsers.selectedIds = _.filter(this.freeUsers.selectedIds, userId => {
-          return userId !== selectedUserId;
-        });
-        classes = _.filter(classes, 'selected');
-      } else {
-        this.freeUsers.selectedIds.push(selectedUserId);
-        classes.push('selected');
-      }
-      classesAtr.value = _.join(classes, ' ');
-    });
-    return row;
-  }
-
-  handleRightTableRowCallback(row: Node, data: any[] | Object, index: number) {
-    $('td', row).unbind('click');
-    $('td', row).bind('click', () => {
-      let selectedUserId = data[0] as number;
-      let classesAtr = row.attributes.getNamedItem('class');
-      let classes = _.split(classesAtr.value, ' ') as string[];
-      let isSelected = _.indexOf(classes, 'selected') >= 0;
-      if (isSelected) {
-        this.teamUsers.selectedIds = _.filter(this.teamUsers.selectedIds, userId => {
-          return userId !== selectedUserId;
-        });
-        classes = _.filter(classes, 'selected');
-      } else {
-        this.teamUsers.selectedIds.push(selectedUserId);
-        classes.push('selected');
-      }
-      classesAtr.value = _.join(classes, ' ');
-    });
-    return row;
+  setManager(teamMemberSelectedIds: number[]) {
+    this.teamService.unAssignTeam(teamMemberSelectedIds)
+      .then(value => {
+        this.loading.unAssign = false;
+      })
+      .catch(reason => {
+        console.debug('unAssign team fail', reason);
+        this.loading.unAssign = false;
+      })
   }
 
   GetURLParameter(sParam) {
