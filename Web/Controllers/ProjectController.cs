@@ -361,6 +361,44 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpPost]
+        [Route("assign")]
+        [Authorize(Roles = "Admin,Manager")]
+        public IHttpActionResult AssignProject(AssignProjectModel assignProjectModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        ProjectService projectService = new ProjectService(db);
+                        foreach (var userId in assignProjectModel.UserIds)
+                        {
+                            UserProject NewUserProject = projectService.AssignProject(
+                                userId,
+                                assignProjectModel.ProjectId
+                                );
+                            //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
+                        }
+                        return Ok(ResponseHelper.GetResponse());
+
+
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
         //[HttpPost]
         //[Route("assign")]
         //[Authorize(Roles = "Manager")]
