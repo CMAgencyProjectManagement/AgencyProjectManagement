@@ -13,6 +13,7 @@ import {
 
 // Import Guards
 import {AlwaysAuthGuard} from './services/auth.guard';
+import {TaskModule} from './views/task/task.module';
 
 export const routes: Routes = [
   {
@@ -49,17 +50,9 @@ export const routes: Routes = [
         loadChildren: './views/team-management/team-management.module#TeamManagementModule'
       },
       {
-        path: 'team-create',
-        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-      },
-      {
-        path: 'team-update',
-        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-      },
-      {
-        path: 'team-detail',
-        loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-      },
+        path: 'task',
+        loadChildren: './views/task/task.module#TaskModule'
+      }
     ]
   },
   {

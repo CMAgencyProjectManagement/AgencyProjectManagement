@@ -7,7 +7,7 @@ import { AddProjectComponent } from './add-project/add-project.component';
 import { ProjectUpdateComponent } from './project-update/project-update.component';
 import {ProjectTaskComponent} from './project-task/project-task.component';
 import { TaskDetailComponent } from 'app/views/project/task-detail/task-detail.component';
-let projectID: number;
+
 const routes: Routes = [
   {
     path: '',
