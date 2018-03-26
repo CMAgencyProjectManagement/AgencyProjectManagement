@@ -20,11 +20,11 @@ const admin_navigation = [
         url: '/project',
         icon: 'icon-calendar',
       },
-      {
-        name: 'Create',
-        url: '/project/add',
-        icon: 'icon-calendar',
-      }
+      // {
+      //   name: 'Create',
+      //   url: '/project/add',
+      //   icon: 'icon-calendar',
+      // }
     ]
   },
   {
@@ -68,11 +68,11 @@ const admin_navigation = [
         icon: 'icon-user',
 
       },
-      {
-        name: 'Create',
-        url: '/account/create',
-        icon: 'icon-user',
-      },
+      // {
+      //   name: 'Create',
+      //   url: '/account/create',
+      //   icon: 'icon-user',
+      // },
     ]
   }
 ];
