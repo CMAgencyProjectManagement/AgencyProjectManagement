@@ -20,24 +20,24 @@ const admin_navigation = [
         url: '/project',
         icon: 'icon-calendar',
       },
-      // {
-      //   name: 'Create',
-      //   url: '/project/add',
-      //   icon: 'icon-calendar',
-      // }
+      {
+        name: 'Create',
+        url: '/project/add',
+        icon: 'icon-calendar',
+      }
     ]
   },
   {
     name: 'Team',
-    url: '/team',
+    url: '/team/view',
     icon: 'icon-people',
-    children: [
-      {
-        name: 'View',
-        url: '/team/view',
-        icon: 'icon-people',
-      }
-    ]
+    // children: [
+    //   {
+    //     name: 'View',
+    //     url: '/team/view',
+    //     icon: 'icon-people',
+    //   }
+    // ]
   },
   /*
   {
@@ -68,11 +68,11 @@ const admin_navigation = [
         icon: 'icon-user',
 
       },
-      // {
-      //   name: 'Create',
-      //   url: '/account/create',
-      //   icon: 'icon-user',
-      // },
+      {
+        name: 'Create',
+        url: '/account/create',
+        icon: 'icon-user',
+      },
     ]
   }
 ];
