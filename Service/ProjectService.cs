@@ -136,14 +136,71 @@ namespace Service
         }
         public UserProject AssignProject(int userId, int projectId)
         {
-            UserProject newUserProject = new UserProject
+            User user = db.Users.Find(userId);
+            if (user!=null)
             {
-                UserID = userId,
-                ProjectID = projectId,
-            };
-            db.UserProjects.Add(newUserProject);
-            db.SaveChanges();
-            return newUserProject;
+                var userProjectId = db.UserProjects.Where(x => x.UserID == userId).ToList();
+                if (userProjectId==null)
+                {
+                    var project = db.Projects.Find(projectId);
+                    UserProject newUserProject;
+                    if (project!=null)
+                    {
+                        IEnumerable<TeamProject> teamProjects = db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
+                        foreach (var teamProject in teamProjects)
+                        {
+                            if (user.TeamID == teamProject.TeamID)
+                            {
+                                newUserProject = new UserProject
+                                {
+                                    UserID = userId,
+                                    ProjectID = projectId,
+                                };
+                                db.UserProjects.Add(newUserProject);
+                                db.SaveChanges();
+                                return newUserProject;
+                            }
+                            else
+                            {
+                                throw new ObjectNotFoundException($"Project and user not in one team");
+                            }
+                        }
+                        //var teamId2 = db.TeamProjects.Where(x => x.ProjectID == projectId);
+                        throw new ObjectNotFoundException($"Eo biet");
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"Project with ID{projectId} not found");
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"User with ID{userId} maybe already have in another project");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{userId} not found");
+            }
+
+
+
+            //UserProject newUserProject;
+            //if (true)
+            //{
+            //    newUserProject = new UserProject
+            //    {
+            //        UserID = id,
+            //        ProjectID = projectId,
+            //    };
+            //}
+            //else
+            //{
+
+            //}
+            //db.UserProjects.Add(newUserProject);
+            //db.SaveChanges();
+            //return newUserProject;
         }
 
         public JObject ParseToJson(Project project, bool isDetailed = true, Boolean IsIncludeChangeBy = true)
@@ -182,6 +239,15 @@ namespace Service
                 result["lists"] = listJArray;
             }
 
+            return result;
+        }
+        public JObject ParseToJsonUserProject(UserProject userProject)
+        {
+            var result = new JObject
+            {
+                ["userId"] = userProject.UserID,
+                ["projectId"] = userProject.ProjectID
+            };
             return result;
         }
     }
