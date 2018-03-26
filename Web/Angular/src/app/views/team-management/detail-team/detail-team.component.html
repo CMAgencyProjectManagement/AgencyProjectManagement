@@ -14,26 +14,56 @@
 
 
 
+          <table class="table table-bordered">
+            <thead>
+              <tr>
 
-          <!-- <div class="col-4 text-center card">
-            <strong>
-              <h3>
-                <a href="#/account/detail?id={{foundTeam.manager.id}}">{{foundTeam.manager.username}}</a>
-                
-              </h3>
-            </strong>
+                <th>User </th>
+                <th>Role</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="foundUser.length !== 0">
 
-            <p id="role">Manager
-              <span *ngIf="foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Active</span>
-              <span *ngIf="!foundTeam.manager.isActive" class="badge badge-success" style="font-size: 20px;">Banned</span>
-            </p>
-          </div> -->
+              <!-- <tr>          
+                <td >Larry the Bird</td>
+                <td>@twitter</td>
+                <td>@twitter</td>
+              </tr> -->
+
+              <tr *ngFor="let user of foundUser">
+                <td>
+                  <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+                </td>
+                <td>
+                  <div *ngIf="user.isAdmin">
+                    <strong>Admin </strong>
+                  </div>
+                  <div *ngIf="!user.isAdmin && user.isManager">
+                    <strong>Manager </strong>
+                  </div>
+                  <div *ngIf="!user.isAdmin && !user.isManager">
+                    Staff
+                  </div>
+
+                </td>
+                <td>
+                  <div *ngIf="user.status">Active</div>
+                  <div *ngIf="!user.status">Banned</div>
+
+                </td>
+              </tr>
 
 
 
+            </tbody>
+          </table>
+        </div>
 
 
 
+        <!-- Phan cu -->
+        <!--
           <div id="1" class="row" *ngIf="foundUser.length !== 0">
             <div class="col-3 text-center card" *ngFor="let user of foundUser">
               <div>
@@ -45,36 +75,36 @@
 
 
 
-                <div class="row" *ngIf="user" >
+                <div class="row" *ngIf="user">
                   <div *ngIf="user.isAdmin" class="col-4 text-right">
                     <strong>Admin </strong>
                   </div>
-                  <div *ngIf="!user.isAdmin && user.isManager"class="col-4 text-right">
+                  <div *ngIf="!user.isAdmin && user.isManager" class="col-4 text-right">
                     <strong>Manager </strong>
                   </div>
                   <div *ngIf="!user.isAdmin && !user.isManager" class="col-4 text-right">
                     Staff
                   </div>
-                  <div *ngIf="user.status" class="badge badge-primary" style="font-size: 20px;">Active</div>
-                  <div *ngIf="!user.status" class="badge badge-secondary" style="font-size: 20px;">Banned</div>
                 </div>
-                <!-- <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
+                <div *ngIf="user.status" class="badge badge-primary" style="font-size: 20px;">Active</div>
+                <div *ngIf="!user.status" class="badge badge-secondary" style="font-size: 20px;">Banned</div> -->
+
+        <!-- <a href="#/account/detail?id={{foundTeam.manager.id}}" id="viewInfo">
                     <button type="button" class="btn btn-primary" style="color: black;
                     background-color: white;
                     border-color: black;" id="viewprofilebutton">
                       View profile
                     </button>
-                  </a> -->
-              </div>
-            </div>
-
-
-
-
-          </div>
-
-
+                  </a> 
         </div>
+    </div>-->
+
+
+
+
+
+
+
       </form>
     </div>
   </div>
