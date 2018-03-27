@@ -18,6 +18,8 @@ const serverPath = {
   assignTeam: '/api/team/assign',
   unAssignTeam: '/api/team/unassign',
   setManager: (teamId, userId) => `/api/team/${teamId}assign/manager/${userId}`,
+  // Task
+  getTask: taskId => `/api/task/${taskId}`,
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`
 };

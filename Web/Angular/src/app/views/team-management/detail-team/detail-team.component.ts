@@ -97,21 +97,4 @@ export class DetailTeamComponent implements OnInit {
     var sTeam = sURLVariables[1].split('=');
     return sTeam[1];
   }
-
-  onItemSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedUser);
-  }
-  OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedUser);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-  onDeSelectAll(items: any) {
-    console.log(items);
-  }
-  submitChange() {
-  }
 }
