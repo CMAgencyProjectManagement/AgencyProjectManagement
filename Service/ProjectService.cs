@@ -158,9 +158,19 @@ namespace Service
                                     UserID = userId,
                                     ProjectID = projectId,
                                 };
+                            IEnumerable<UserProject> UserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
+                            if (UserProject.Count()==0)
+                            {
                                 db.UserProjects.Add(newUserProject);
                                 db.SaveChanges();
                                 return newUserProject;
+                            }
+                            else
+                            {
+                                throw new ObjectNotFoundException($"UserProject existed");
+                            }
+                            
+                            
                             }
                             else
                             {
