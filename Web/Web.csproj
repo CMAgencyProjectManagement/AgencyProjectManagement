@@ -483,7 +483,7 @@
     <Compile Include="Validators\AgencyArrayValidator.cs" />
     <Compile Include="Validators\AgencyDateValidation.cs" />
     <Compile Include="ViewModels\AssignProjectModel.cs" />
-    <Compile Include="ViewModels\AssignTaskViewModel.cs" />
+    <Compile Include="ViewModels\AssignTaskModel.cs" />
     <Compile Include="ViewModels\AssignTeamModel.cs" />
     <Compile Include="ViewModels\CreateCommentModel.cs" />
     <Compile Include="ViewModels\CreateListModel.cs" />

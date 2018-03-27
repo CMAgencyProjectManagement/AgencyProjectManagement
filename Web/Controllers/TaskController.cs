@@ -180,7 +180,7 @@ namespace Web.Controllers
         [HttpPut]
         [Route("assign")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult AssignTask(AssignTaskViewModel assignTaskViewModel)
+        public IHttpActionResult AssignTask(AssignTaskModel assignTaskModel)
         {
             try
             {
@@ -188,14 +188,17 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        TaskService taskService = new TaskService(db);
-                        var assignedUserTask = taskService.AssignTask(
-                            assignTaskViewModel.TaskId,
-                            assignTaskViewModel.UserId,
-                            assignTaskViewModel.IsAssigned = true
-                            );
 
-                        return Ok(ResponseHelper.GetResponse(taskService.ParseToJsonofUserTask(assignedUserTask)));
+                        TaskService taskService = new TaskService(db);
+
+                        foreach (int userID in assignTaskModel.UserIDs)
+                        {
+                            taskService.AssignTask(
+                                userID: userID,
+                                taskID: assignTaskModel.TaskID
+                            );
+                        }
+                        return Ok(ResponseHelper.GetResponse());
                     }
                 }
                 else

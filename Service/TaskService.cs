@@ -132,7 +132,7 @@ namespace Service
             DateTime? startDate)
         {
             var foundTask = db.Tasks.Find(id);
-            if (foundTask!=null)
+            if (foundTask != null)
             {
                 foundTask.Name = name;
                 foundTask.Description = description;
@@ -147,34 +147,34 @@ namespace Service
                 throw new ObjectNotFoundException($"Can't find project with ID {id}");
             }
         }
-        public UserTask CreAssignTask(int taskId, int UserId)
+        /* public UserTask CreAssignTask(int taskId, int userId)
+         {
+             UserTask newUserTask = new UserTask
+             {
+                 TaskID = taskId,
+                 UserID = userId,
+             };
+             db.UserTasks.Add(newUserTask);
+             db.SaveChanges();
+             return newUserTask;
+         } */
+
+        public UserTask AssignTask(int taskID, int userID)
         {
-            UserTask newUserTask = new UserTask
+
+            UserTask assignTask = new UserTask
             {
-                TaskID = taskId,
-                UserID = UserId,
+                TaskID = taskID,
+                UserID = userID,
+                IsFollow = false,
+                IsAssigned = true,
             };
-            db.UserTasks.Add(newUserTask);
+            db.UserTasks.Add(assignTask);
             db.SaveChanges();
-            return newUserTask;
-        }
-
-        public UserTask AssignTask(int taskId, int userId, Boolean isAssigned)
-        {
-            var foundUserTask = db.UserTasks.Find(taskId, userId);
-            if (foundUserTask != null)
-            {
-                foundUserTask.IsAssigned = true;
-                db.SaveChanges();
-                return foundUserTask;
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"UserTask with TaskId{taskId} and Userid{userId} not found");
-
-            }
+            return assignTask;
 
         }
+
         public int UnAssignTask(int TaskId, int UserId)
         {
             IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
@@ -190,7 +190,7 @@ namespace Service
             throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
         }
 
-        public JObject ParseToJson(Task task,  bool isIncludeProject = true)
+        public JObject ParseToJson(Task task, bool isIncludeProject = true)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);

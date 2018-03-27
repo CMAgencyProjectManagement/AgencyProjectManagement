@@ -6,12 +6,12 @@ using System.Web;
 
 namespace Web.ViewModels
 {
-    public class AssignTaskViewModel
+    public class AssignTaskModel
     {
         [Required(ErrorMessage = "TaskId must not be empty")]
-        public int TaskId { get; set; }
+        public int TaskID { get; set; }
+
         [Required(ErrorMessage = "UserId must not be empty")]
-        public int UserId { get; set; }
-        public Boolean IsAssigned { get; set; }
+        public int[] UserIDs { get; set; }
     }
 }
