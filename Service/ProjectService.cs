@@ -204,6 +204,27 @@ namespace Service
             //db.SaveChanges();
             //return newUserProject;
         }
+        public UserProject UnAssignProject(int userId, int projectId)
+        {
+            User user = db.Users.Find(userId);
+            if (user != null)
+            {
+                Project project = db.Projects.Find(projectId);
+                if (project != null)
+                {
+                    IEnumerable<UserProject> choosedUserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId).ToList();
+                    throw new ObjectNotFoundException($"Delete This collumm");
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Project with ID{projectId} not found");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{userId} not found");
+            }
+        }
 
         public JObject ParseToJson(Project project, bool isDetailed = true, Boolean IsIncludeChangeBy = true)
         {
