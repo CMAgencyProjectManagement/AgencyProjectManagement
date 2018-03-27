@@ -161,18 +161,49 @@ namespace Service
 
         public UserTask AssignTask(int taskID, int userID)
         {
-
-            UserTask assignTask = new UserTask
+            User user = db.Users.Find(userID);
+            if (user != null)
             {
-                TaskID = taskID,
-                UserID = userID,
-                IsFollow = false,
-                IsAssigned = true,
-            };
-            db.UserTasks.Add(assignTask);
-            db.SaveChanges();
-            return assignTask;
-
+                Task task = db.Tasks.Find(taskID);
+                if (task != null)
+                {
+                    UserTask assignTask;
+                    IEnumerable<UserTask> userTasks = db.UserTasks.Where(x => x.TaskID == taskID).ToList();
+                    foreach (var userTask in userTasks)
+                    {
+                        if (user.ID != userTask.UserID)
+                        {
+                            assignTask = new UserTask
+                            {
+                                TaskID = taskID,
+                                UserID = userID,
+                                IsFollow = false,
+                                IsAssigned = true,
+                            };
+                            IEnumerable<UserTask> UserTask = db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
+                            if (UserTask.Count() == 0)
+                            {
+                                db.UserTasks.Add(assignTask);
+                                db.SaveChanges();
+                                return assignTask;
+                            }
+                            else
+                            {
+                                throw new ObjectNotFoundException($"UserTask existed");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Task with ID{taskID} not found");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{userID} not found");
+            }
+            return null;
         }
 
         public int UnAssignTask(int TaskId, int UserId)
