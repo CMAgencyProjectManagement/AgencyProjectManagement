@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" style="width: 5200px;">
   <div class="card-header">
     <strong>Tasks</strong>
     <a href="#/project/task?projectID={{project.id}}" *ngIf="showbutton">
@@ -49,16 +49,15 @@
         <div class="col-12">
           <div class="card" style="width: 100%">
             <div class="card-header cardheadertext">
-              Place a portable A-frame
+              Place a portable A-frame (Search Example)
             </div>
           </div>
         </div>
       </div>
       <!-- -->
-      <div class="row">
-        <div class="col-sm-4 col-md-4" *ngFor="let lists of project.lists;let i = index">
-          <ng-container>
-            <div class="card">
+      <div class="row" style="overflow-x: scroll; width: 5000px">
+          <ng-container *ngFor="let lists of project.lists;let i = index">
+            <div class="card cardstyle" style="margin-left: 15px;">
               <div class="card-header cardheadertext">
                 {{lists.name}}
               </div>
@@ -74,7 +73,6 @@
               </div>
             </div>
           </ng-container>
-        </div>
       </div>
     </div>
   </div>

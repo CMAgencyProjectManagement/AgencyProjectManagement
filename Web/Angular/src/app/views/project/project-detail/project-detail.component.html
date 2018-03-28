@@ -7,7 +7,7 @@
         </div>
         <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
           <div class="row">
-            <div class="col-6">
+            <div class="col-7">
               <div class="form-horizontal">
                 <div style="font-size: 30px">
                   Project Name: {{foundProject.name}}
@@ -30,7 +30,7 @@
                 </div>
                 <br/>
                 <div class="row">
-                  <div class="col-6 text-right">
+                  <div class="col-6 text-center">
                     <a href="#/project/update?projectID={{foundProject.id}}">
                       <button type="button" class="btn btn-primary btn-lg blackwhitebutton">Update
                       </button>
@@ -49,8 +49,19 @@
                 <!--</div>-->
               </div>
             </div>
-            <div class="col-6">
-              <app-project-card [project]="foundProject" [showbutton]="true"></app-project-card>
+            <div class="col-5"><br/>
+              <div class="row" style="font-size: 28px;">
+                Members:&nbsp;
+                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/1.jpg">&nbsp;
+                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/2.jpg"> &nbsp;
+                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/3.jpg"> &nbsp;
+                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/4.jpg">..... &nbsp;
+              </div>
+              <div class="row">
+                <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue" >
+                  View all tasks...
+                </a>
+              </div>
             </div>
           </div>
           <!--<button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;-->
