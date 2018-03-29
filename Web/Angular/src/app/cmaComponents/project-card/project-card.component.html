@@ -1,4 +1,4 @@
-<div class="card" style="width: 5200px;">
+<div class="card">
   <div class="card-header">
     <strong>Tasks</strong>
     <a href="#/project/task?projectID={{project.id}}" *ngIf="showbutton">
@@ -55,7 +55,8 @@
         </div>
       </div>
       <!-- -->
-      <div class="row" style="overflow-x: scroll; width: 5000px">
+      <div class="row task-row">
+        <div>
           <ng-container *ngFor="let lists of project.lists;let i = index">
             <div class="card cardstyle" style="margin-left: 15px;">
               <div class="card-header cardheadertext">
@@ -63,7 +64,7 @@
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
-                  id="task">
+                     id="task">
                   <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
@@ -73,6 +74,7 @@
               </div>
             </div>
           </ng-container>
+        </div>
       </div>
     </div>
   </div>
