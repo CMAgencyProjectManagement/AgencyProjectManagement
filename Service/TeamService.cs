@@ -32,7 +32,7 @@ namespace Service
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);
-            User manager = foundTeam?.Users.Single(user => user.IsManager);
+            User manager = foundTeam?.Users.SingleOrDefault(user => user.IsManager);
             return manager;
         }
 
@@ -123,12 +123,17 @@ namespace Service
                         throw new InvalidOperationException("User have to be in team before set to be manager");
                     }
 
-                    if (GetManager(team.ID) != null)
+                    if (isManager)
                     {
-                        throw new InvalidOperationException("Team can't have more than one manager");
+                        if (GetManager(team.ID) != null)
+                        {
+                            throw new InvalidOperationException("Team can't have more than one manager");
+                        }
                     }
 
+
                     user.IsManager = isManager;
+                    db.SaveChanges();
                 }
                 else
                 {
@@ -159,7 +164,14 @@ namespace Service
             if (includeManager)
             {
                 var manager = GetManager(team.ID);
-                result["manager"] = userService.ParseToJson(manager);
+                if (manager != null)
+                {
+                    result["manager"] = userService.ParseToJson(manager);
+                }
+                else
+                {
+                    result["manager"] = null;
+                }
             }
 
             if (includeUsers)
@@ -201,7 +213,14 @@ namespace Service
             if (includeManager)
             {
                 var manager = GetManager(team.ID);
-                result["manager"] = userService.ParseToJson(manager, avatarPath);
+                if (manager != null)
+                {
+                    result["manager"] = userService.ParseToJson(manager);
+                }
+                else
+                {
+                    result["manager"] = null;
+                }
             }
 
             if (includeUsers)

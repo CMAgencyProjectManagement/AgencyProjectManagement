@@ -43,6 +43,11 @@ export class MiniUsersTableComponent implements OnInit {
   ngOnInit() {
   }
 
+  roleSwitch(userId, currentRole) {
+    let targetRole = !currentRole;
+    this.onRoleChange.emit({id: userId, isManager: targetRole});
+  }
+
   handleRowCallback(row: Node, data: any[] | Object, index: number) {
     $('td', row).unbind('click');
     $('td', row).bind('click', () => {

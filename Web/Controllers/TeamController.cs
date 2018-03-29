@@ -140,9 +140,9 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        [Route("assign/manager/{userId:int}")]
+        [Route("assign/role")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult SetRole(int teamId, int userId)
+        public IHttpActionResult SetRole(SetTeamRoleViewModel viewModel)
         {
             try
             {
@@ -152,9 +152,9 @@ namespace Web.Controllers
                     {
                         TeamService teamService = new TeamService(db);
                         teamService.setRole(
-                            teamId,
-                            userId,
-                            true
+                            viewModel.TeamId.Value,
+                            viewModel.UserId.Value,
+                            viewModel.IsManager.Value
                         );
                         return Ok(ResponseHelper.GetResponse());
                     }
