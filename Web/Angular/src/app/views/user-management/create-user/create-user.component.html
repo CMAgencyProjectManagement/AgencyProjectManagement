@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-4 col-form-label text-right" for="name-input">Full name</label>
+            <label class="col-4 col-form-label text-right" for="name-input">Full name <span style="color: #ee0d0d"><strong>*</strong></span></label>
             <div class="col-8">
               <input type="text" id="name-input" name="name-input" class="form-control" [ngClass]="{'form-control': true, 'is-invalid': errors.fullname}"
                 formControlName="fullname">
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-4 col-form-label text-right" for="phone-input">Phone</label>
+            <label class="col-4 col-form-label text-right" for="phone-input">Phone<span style="color: #ee0d0d"><strong>*</strong></span></label>
             <div class="col-8">
               <input type="text" id="phone-input" name="phone-input" class="form-control" [ngClass]="{'form-control': true, 'is-invalid': errors.phone}"
                 formControlName="phone">
@@ -47,7 +47,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-4 col-form-label text-right" for="email-input">Date of Birth</label>
+            <label class="col-4 col-form-label text-right" for="email-input">Date of Birth<span style="color: #ee0d0d"><strong>*</strong></span></label>
             <div class="col-8 datepicker-group">
               <my-date-picker #datepicker [options]="myDatePickerOptions" formControlName="birthDate" [ngClass]="{'form-control': false, 'is-invalid': errors.birthdate}"
                 required></my-date-picker>
