@@ -90,6 +90,24 @@ namespace Service
             return users.ToList();
         }
 
+        
+        //public IEnumerable<User> GetUsersOfProject(int projectId)
+        //{
+        //    Project project = db.Projects.Find(projectId);
+        //    if (project!=null)
+        //    {
+        //        var userList = new List<User>();
+        //        foreach (var user in project.UserProjects)
+        //        {
+                    
+        //            userList.Add();
+        //        }
+        //    }
+        //}
+
+    
+
+
         public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
         {
             Team team = db.Teams.Find(teamId);
@@ -102,6 +120,7 @@ namespace Service
                 throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
             }
         }
+        
 
         public void UpdateAvatar(string avatarFileName, int id)
         {

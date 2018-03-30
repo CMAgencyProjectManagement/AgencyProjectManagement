@@ -43,6 +43,7 @@ namespace Service
                                     .Any(userTeam => userTeam.TeamID == teamId)
                 ).ToList();
         }
+        
 
 
 
@@ -222,21 +223,32 @@ namespace Service
                 Project project = db.Projects.Find(projectId);
                 if (project != null)
                 {
-                    IEnumerable<UserProject> choosedUserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId).ToList();
-                    throw new ObjectNotFoundException($"Delete This collumm");
+
+                    var choosedUserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId).FirstOrDefault();
+                    if (choosedUserProject != null)
+                    {
+                        db.UserProjects.Remove(choosedUserProject);
+                        db.SaveChanges();
+                        return choosedUserProject;
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"User with ID {userId} not have in project with ID {projectId}");
+                    }
+
                 }
                 else
                 {
-                    throw new ObjectNotFoundException($"Project with ID{projectId} not found");
+                    throw new ObjectNotFoundException($"Project with ID {projectId} not found");
                 }
             }
             else
             {
-                throw new ObjectNotFoundException($"User with ID{userId} not found");
+                throw new ObjectNotFoundException($"User with ID {userId} not found");
             }
         }
 
-        public JObject ParseToJson(Project project, bool isDetailed = true, Boolean IsIncludeChangeBy = true)
+        public JObject ParseToJson(Project project, bool isDetailed = true, Boolean IsIncludeChangeBy = true, bool isDetailedUsers = false, string avatarPath =null)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
@@ -271,7 +283,18 @@ namespace Service
 
                 result["lists"] = listJArray;
             }
-
+            if (isDetailedUsers)
+            {
+                //var users = userService.GetUsersOfProject(
+                //    project.ID);
+                //var jArray = new JArray();
+                //foreach (User user in users)
+                //{
+                //    jArray.Add(userService.ParseToJson(user, avatarPath));
+                //}
+                //result["Project's Member"] = jArray; 
+            }
+              
             return result;
         }
         public JObject ParseToJsonUserProject(UserProject userProject)
