@@ -346,7 +346,8 @@ namespace Web.Controllers
                     if (project != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            projectService.ParseToJson(project)
+                            projectService.ParseToJson(project, isDetailedUsers: true, avatarPath: AgencyConfig.AvatarPath,
+                            isDetailed: false)
                         ));
                     }
                     else
@@ -399,36 +400,44 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        //[HttpPost]
-        //[Route("assign")]
-        //[Authorize(Roles = "Manager")]
-        //public  IHttpActionResult AssignProject(AssignProjectModel assignProjectModel)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            using (CmAgencyEntities db = new CmAgencyEntities())
-        //            {
-        //                ProjectService projectService = new ProjectService(db);
-        //                UserProject userProject = projectService.AssignProject(
-        //                    assignProjectModel.UserId,
-        //                    assignProjectModel.ProjectId
-        //                    );
-        //                JObject dataObject = projectService.ParseToJson(userProject); //
-        //                return Ok(ResponseHelper.GetResponse(dataObject)); //
-        //            }
-        //        }
-        //        else
-        //        {
 
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Content(HttpStatusCode.InternalServerError,
-        //            ResponseHelper.GetExceptionResponse(ex));
-        //    }
-        //}
+        [HttpDelete]
+        [Route("Unassign")]
+        [Authorize(Roles = "Admin,Manager")]
+        public IHttpActionResult UnAssignProject(AssignProjectModel assignProjectModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        ProjectService projectService = new ProjectService(db);
+                        foreach (var userId in assignProjectModel.UserIds)
+                        {
+                            UserProject NewUserProject = projectService.UnAssignProject(
+                                userId,
+                                assignProjectModel.ProjectId
+                                );
+                            //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
+                        }
+                        return Ok(ResponseHelper.GetResponse());
+
+
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
     }
 }
