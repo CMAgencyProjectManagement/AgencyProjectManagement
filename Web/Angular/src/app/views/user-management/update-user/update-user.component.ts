@@ -96,16 +96,18 @@ export class UpdateUserComponent implements OnInit {
   }
 
   resetPassword(id) {
-    this.isResetPasswordLoading = true;
-    this.userService.resetPassword(id)
-      .then(value => {
-        this.newpassword = value.password;
-        this.isResetPasswordLoading = false;
-      })
-      .catch(reason => {
-        this.isResetPasswordLoading = false;
-        console.debug('resetPassword', reason);
-      })
+    if (confirm('Confirm reset password ?')) {
+      this.isResetPasswordLoading = true;
+      this.userService.resetPassword(id)
+        .then(value => {
+          this.newpassword = value.password;
+          this.isResetPasswordLoading = false;
+        })
+        .catch(reason => {
+          this.isResetPasswordLoading = false;
+          console.debug('resetPassword', reason);
+        })
+    }
   }
 
 
@@ -141,7 +143,7 @@ export class UpdateUserComponent implements OnInit {
 
   handleUpdate() {
     this.setErrorsNull();
-    if (confirm('Save change?')) {
+    if (confirm('Save change ?')) {
       this.isSavingChange = true;
       const formValue = this.updateForm.value;
       this.userService.updateUser(
@@ -154,7 +156,7 @@ export class UpdateUserComponent implements OnInit {
         this.isSavingChange = false;
       }).catch(reason => {
         this.errorMessage = reason.message;
-        let errors = reason.response.body.Data;
+        let errors = reason.Data;
         for (let error of errors) {
           const fieldName = error.key;
           const errorMessage = error.message;

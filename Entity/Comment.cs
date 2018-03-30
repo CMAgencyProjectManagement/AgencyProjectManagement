@@ -20,7 +20,7 @@ namespace Entity
         public System.DateTime CreatedTime { get; set; }
         public Nullable<System.DateTime> ChangedTime { get; set; }
         public int TaskID { get; set; }
-        public Nullable<System.DateTime> ChangedBy { get; set; }
+        public Nullable<int> ChangedBy { get; set; }
     
         public virtual Task Task { get; set; }
     }

@@ -52,7 +52,7 @@
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="ChangedTime" Type="datetime" />
           <Property Name="TaskID" Type="int" Nullable="false" />
-          <Property Name="ChangedBy" Type="datetime" />
+          <Property Name="ChangedBy" Type="int" />
         </EntityType>
         <EntityType Name="List">
           <Key>
@@ -99,6 +99,7 @@
           <Property Name="LessionLearnt" Type="text" />
           <Property Name="CustomerFeedback" Type="text" />
           <Property Name="Status" Type="int" />
+          <Property Name="FinishedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -116,14 +117,11 @@
           <Property Name="ListID" Type="int" Nullable="false" />
           <Property Name="Priority" Type="int" />
           <Property Name="StartDate" Type="datetime" />
+          <Property Name="FinishedDate" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TaskDependency">
           <Key>
-            <PropertyRef Name="SourceTaskID" />
-            <PropertyRef Name="DestinationTaskID" />
-            <PropertyRef Name="DependencyType" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="SourceTaskID" Type="int" Nullable="false" />
           <Property Name="DestinationTaskID" Type="int" Nullable="false" />
@@ -132,6 +130,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="CreatedBy" Type="int" />
           <Property Name="ChangedTime" Type="datetime" />
           <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Team">
           <Key>
@@ -448,22 +447,12 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <EntitySet Name="NotificationUser" EntityType="Self.NotificationUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskDependency" EntityType="Self.TaskDependency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Team" EntityType="Self.Team" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeamProject" EntityType="Self.TeamProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProject" EntityType="Self.UserProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTask" EntityType="Self.UserTask" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TaskDependency" EntityType="Self.TaskDependency" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TaskDependency].[SourceTaskID] AS [SourceTaskID], 
-    [TaskDependency].[DestinationTaskID] AS [DestinationTaskID], 
-    [TaskDependency].[DependencyType] AS [DependencyType], 
-    [TaskDependency].[ChangedBy] AS [ChangedBy], 
-    [TaskDependency].[CreatedBy] AS [CreatedBy], 
-    [TaskDependency].[ChangedTime] AS [ChangedTime], 
-    [TaskDependency].[CreatedTime] AS [CreatedTime]
-    FROM [dbo].[TaskDependency] AS [TaskDependency]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Attachment_Task" Association="Self.FK_Attachment_Task">
             <End Role="Task" EntitySet="Task" />
             <End Role="Attachment" EntitySet="Attachment" />
@@ -563,12 +552,12 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <EntitySet Name="NotificationUsers" EntityType="CmAgencyModel.NotificationUser" />
           <EntitySet Name="Projects" EntityType="CmAgencyModel.Project" />
           <EntitySet Name="Tasks" EntityType="CmAgencyModel.Task" />
+          <EntitySet Name="TaskDependencies" EntityType="CmAgencyModel.TaskDependency" />
           <EntitySet Name="Teams" EntityType="CmAgencyModel.Team" />
           <EntitySet Name="TeamProjects" EntityType="CmAgencyModel.TeamProject" />
           <EntitySet Name="Users" EntityType="CmAgencyModel.User" />
           <EntitySet Name="UserProjects" EntityType="CmAgencyModel.UserProject" />
           <EntitySet Name="UserTasks" EntityType="CmAgencyModel.UserTask" />
-          <EntitySet Name="TaskDependencies" EntityType="CmAgencyModel.TaskDependency" />
           <AssociationSet Name="FK_Attachment_Task" Association="CmAgencyModel.FK_Attachment_Task">
             <End Role="Task" EntitySet="Tasks" />
             <End Role="Attachment" EntitySet="Attachments" />
@@ -705,7 +694,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedTime" Type="DateTime" Precision="3" />
           <Property Name="TaskID" Type="Int32" Nullable="false" />
-          <Property Name="ChangedBy" Type="DateTime" Precision="3" />
+          <Property Name="ChangedBy" Type="Int32" />
           <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_Comment_Task" FromRole="Comment" ToRole="Task" />
         </EntityType>
         <EntityType Name="List">
@@ -758,6 +747,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="LessionLearnt" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CustomerFeedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="Int32" />
+          <Property Name="FinishedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Lists" Relationship="CmAgencyModel.FK_Stage_Project" FromRole="Project" ToRole="List" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_Project_User" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CmAgencyModel.FK_Project_User1" FromRole="Project" ToRole="User" />
@@ -780,6 +770,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="ListID" Type="Int32" Nullable="false" />
           <Property Name="Priority" Type="Int32" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="FinishedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Attachments" Relationship="CmAgencyModel.FK_Attachment_Task" FromRole="Task" ToRole="Attachment" />
           <NavigationProperty Name="CheckLists" Relationship="CmAgencyModel.FK_CheckList_Task" FromRole="Task" ToRole="CheckList" />
           <NavigationProperty Name="Comments" Relationship="CmAgencyModel.FK_Comment_Task" FromRole="Task" ToRole="Comment" />
@@ -788,6 +779,21 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <NavigationProperty Name="TaskDependencies" Relationship="CmAgencyModel.FK_TaskDependency_Task" FromRole="Task" ToRole="TaskDependency" />
           <NavigationProperty Name="TaskDependencies1" Relationship="CmAgencyModel.FK_TaskDependency_Task1" FromRole="Task" ToRole="TaskDependency" />
           <NavigationProperty Name="UserTasks" Relationship="CmAgencyModel.FK_UserTask_Task" FromRole="Task" ToRole="UserTask" />
+        </EntityType>
+        <EntityType Name="TaskDependency">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="SourceTaskID" Type="Int32" Nullable="false" />
+          <Property Name="DestinationTaskID" Type="Int32" Nullable="false" />
+          <Property Name="DependencyType" Type="Int32" Nullable="false" />
+          <Property Name="ChangedBy" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ChangedTime" Type="DateTime" Precision="3" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_TaskDependency_Task" FromRole="TaskDependency" ToRole="Task" />
+          <NavigationProperty Name="Task1" Relationship="CmAgencyModel.FK_TaskDependency_Task1" FromRole="TaskDependency" ToRole="Task" />
         </EntityType>
         <EntityType Name="Team">
           <Key>
@@ -858,22 +864,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <Property Name="IsAssigned" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_UserTask_Task" FromRole="UserTask" ToRole="Task" />
           <NavigationProperty Name="User" Relationship="CmAgencyModel.FK_UserTask_User" FromRole="UserTask" ToRole="User" />
-        </EntityType>
-        <EntityType Name="TaskDependency">
-          <Key>
-            <PropertyRef Name="SourceTaskID" />
-            <PropertyRef Name="DestinationTaskID" />
-            <PropertyRef Name="DependencyType" />
-          </Key>
-          <Property Name="SourceTaskID" Type="Int32" Nullable="false" />
-          <Property Name="DestinationTaskID" Type="Int32" Nullable="false" />
-          <Property Name="DependencyType" Type="Int32" Nullable="false" />
-          <Property Name="ChangedBy" Type="Int32" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ChangedTime" Type="DateTime" Precision="3" />
-          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_TaskDependency_Task" FromRole="TaskDependency" ToRole="Task" />
-          <NavigationProperty Name="Task1" Relationship="CmAgencyModel.FK_TaskDependency_Task1" FromRole="TaskDependency" ToRole="Task" />
         </EntityType>
         <Association Name="FK_Attachment_Task">
           <End Type="CmAgencyModel.Task" Role="Task" Multiplicity="1" />
@@ -1221,6 +1211,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="CmAgencyModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="FinishedDate" ColumnName="FinishedDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CustomerFeedback" ColumnName="CustomerFeedback" />
                 <ScalarProperty Name="LessionLearnt" ColumnName="LessionLearnt" />
@@ -1239,6 +1230,7 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
           <EntitySetMapping Name="Tasks">
             <EntityTypeMapping TypeName="CmAgencyModel.Task">
               <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="FinishedDate" ColumnName="FinishedDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="ListID" ColumnName="ListID" />
@@ -1251,6 +1243,20 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskDependencies">
+            <EntityTypeMapping TypeName="CmAgencyModel.TaskDependency">
+              <MappingFragment StoreEntitySet="TaskDependency">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="ChangedTime" ColumnName="ChangedTime" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+                <ScalarProperty Name="DependencyType" ColumnName="DependencyType" />
+                <ScalarProperty Name="DestinationTaskID" ColumnName="DestinationTaskID" />
+                <ScalarProperty Name="SourceTaskID" ColumnName="SourceTaskID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1309,19 +1315,6 @@ warning 6002: The table/view 'marketingagency.dbo.TaskDependency' does not have 
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="TaskID" ColumnName="TaskID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TaskDependencies">
-            <EntityTypeMapping TypeName="CmAgencyModel.TaskDependency">
-              <MappingFragment StoreEntitySet="TaskDependency">
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
-                <ScalarProperty Name="ChangedTime" ColumnName="ChangedTime" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
-                <ScalarProperty Name="DependencyType" ColumnName="DependencyType" />
-                <ScalarProperty Name="DestinationTaskID" ColumnName="DestinationTaskID" />
-                <ScalarProperty Name="SourceTaskID" ColumnName="SourceTaskID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
