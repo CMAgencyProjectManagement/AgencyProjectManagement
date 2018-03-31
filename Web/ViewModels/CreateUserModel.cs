@@ -20,6 +20,7 @@ namespace Web.ViewModels
         [MinLength(3)]
         public string Name { get; set; }
         [Phone]
+        [Required(ErrorMessage = "Phone is required")]
         [MaxLength(255)]
         [MinLength(7)]
         public string Phone { get; set; }

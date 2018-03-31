@@ -285,14 +285,14 @@ namespace Service
             }
             if (isDetailedUsers)
             {
-                //var users = userService.GetUsersOfProject(
-                //    project.ID);
-                //var jArray = new JArray();
-                //foreach (User user in users)
-                //{
-                //    jArray.Add(userService.ParseToJson(user, avatarPath));
-                //}
-                //result["Project's Member"] = jArray; 
+                var users = userService.GetUsersOfProject(
+                    project.ID);
+                var jArray = new JArray();
+                foreach (User user in users)
+                {
+                    jArray.Add(userService.ParseToJson(user, avatarPath));
+                }
+                result["Project's Member"] = jArray; 
             }
               
             return result;

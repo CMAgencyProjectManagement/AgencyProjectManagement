@@ -90,22 +90,30 @@ namespace Service
             return users.ToList();
         }
 
-        
-        //public IEnumerable<User> GetUsersOfProject(int projectId)
-        //{
-        //    Project project = db.Projects.Find(projectId);
-        //    if (project!=null)
-        //    {
-        //        var userList = new List<User>();
-        //        foreach (var user in project.UserProjects)
-        //        {
-                    
-        //            userList.Add();
-        //        }
-        //    }
-        //}
 
-    
+        public IEnumerable<User> GetUsersOfProject(int projectId)
+        {
+            Project project = db.Projects.Find(projectId);
+            var result = new List<User>();
+            if (project != null)
+            {
+                var userIdList = db.UserProjects.Where(x => x.ProjectID == projectId)
+                    .Select(x => x.UserID).ToList();
+                
+                foreach (var item in userIdList)
+                {
+                    var user = db.Users.FirstOrDefault(x => x.ID == item);
+                    if(user!= null)
+                    {
+                        result.Add(user);
+                    }
+                }
+                return result;
+            }
+            throw new ObjectNotFoundException($"Can't find Project with ID {projectId} ");
+        }
+
+
 
 
         public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
