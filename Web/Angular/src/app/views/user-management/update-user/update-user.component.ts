@@ -94,18 +94,22 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
+  handleConfirmResetPassword() {
+    this.resetPassword();
+    this.resetPasswordModal.hide();
+  }
+
   resetPassword() {
-    console.debug('resetPassword', this.resetPasswordModal.content);
-    // this.isResetPasswordLoading = true;
-    // this.userService.resetPassword(id)
-    //   .then(value => {
-    //     this.newpassword = value.password;
-    //     this.isResetPasswordLoading = false;
-    //   })
-    //   .catch(reason => {
-    //     this.isResetPasswordLoading = false;
-    //     console.debug('resetPassword', reason);
-    //   })
+    this.isResetPasswordLoading = true;
+    this.userService.resetPassword(this.foundUser.id)
+      .then(value => {
+        this.newpassword = value.password;
+        this.isResetPasswordLoading = false;
+      })
+      .catch(reason => {
+        this.isResetPasswordLoading = false;
+        console.debug('resetPassword', reason);
+      })
 
   }
 
@@ -132,7 +136,7 @@ export class UpdateUserComponent implements OnInit {
   }
 
   // TODO study dialog
-  openModal(template: TemplateRef<any>, userId) {
+  confirmResetPassword(template: TemplateRef<any>, userId) {
     console.debug('openModal', this);
     this.resetPasswordModal = this.modalService.show(template, {
       animated: true,

@@ -28,7 +28,7 @@ export class ViewUserComponent implements OnInit {
       }
     ],
     order: [
-      [1, 'asc']
+      [6, 'desc']
     ]
   };
 
