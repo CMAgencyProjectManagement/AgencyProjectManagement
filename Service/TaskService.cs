@@ -107,14 +107,16 @@ namespace Service
         {
             return db.Tasks.Find(id);
         }
-        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate, User creator)
+
+        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate,
+            User creator)
         {
             Task newTask = new Task
             {
                 Name = name,
                 Description = description,
                 ListID = listID,
-                Priority = (int)priority,
+                Priority = (int) priority,
                 StartDate = startDate,
                 CreatedBy = creator.ID,
                 CreatedTime = DateTime.Now
@@ -123,6 +125,7 @@ namespace Service
             db.SaveChanges();
             return newTask;
         }
+
         public Task UpdateTask(
             int id,
             string name,
@@ -137,7 +140,7 @@ namespace Service
                 foundTask.Name = name;
                 foundTask.Description = description;
                 foundTask.ListID = listId;
-                foundTask.Priority = (int)priority;
+                foundTask.Priority = (int) priority;
                 foundTask.StartDate = startDate;
                 db.SaveChanges();
                 return foundTask;
@@ -161,7 +164,6 @@ namespace Service
 
         public UserTask AssignTask(int taskID, int userID)
         {
-
             UserTask assignTask = new UserTask
             {
                 TaskID = taskID,
@@ -172,12 +174,12 @@ namespace Service
             db.UserTasks.Add(assignTask);
             db.SaveChanges();
             return assignTask;
-
         }
 
         public int UnAssignTask(int TaskId, int UserId)
         {
-            IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
+            IEnumerable<UserTask> userTasks =
+                db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
             if (userTasks != null)
             {
                 foreach (var userTask in userTasks)
@@ -187,13 +189,13 @@ namespace Service
                     return userTask.UserID;
                 }
             }
+
             throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
         }
 
-        public JObject ParseToJson(Task task, bool isIncludeProject = true)
+        public JObject ParseToJson(Task task, bool isDetailed = false)
         {
             UserService userService = new UserService(db);
-            ListService listService = new ListService(db);
             User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
@@ -215,8 +217,20 @@ namespace Service
                 result["changedby"] = userService.ParseToJson(changer);
             }
 
+            if (isDetailed)
+            {
+                ProjectService projectService = new ProjectService(db);
+                var project = projectService.GetProjectOfTask(task.ID);
+                result["project"] = projectService.ParseToJson(project, false, false);
+
+                ListService listService = new ListService(db);
+                var list = listService.GetListOfTask(task.ID);
+                result["list"] = listService.ParseToJson(list, false, false);
+            }
+
             return result;
         }
+
         public JObject ParseToJsonofUserTask(UserTask userTask)
         {
             UserService userService = new UserService(db);
@@ -228,7 +242,6 @@ namespace Service
                 ["name"] = userTask.UserID,
                 ["isFollow"] = userTask.IsFollow,
                 ["isAssigned"] = userTask.IsAssigned,
-
             };
 
 
