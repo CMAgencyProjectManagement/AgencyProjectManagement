@@ -8,35 +8,35 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Team'
+      title: 'department'
     },
     children: [
       {
         path: 'view',
         component: TeamManagePageComponent,
         data: {
-          title: 'View team'
+          title: 'View department'
         }
       },
       {
         path: 'detail',
         component: DetailTeamComponent,
         data: {
-          title: 'Detail team'
+          title: 'Detail department'
         }
       },
       {
         path: 'create',
         component: CreateTeamComponent,
         data: {
-          title: 'Create team'
+          title: 'Create department'
         }
       },
       {
         path: 'update',
         component: UpdateTeamComponent,
         data: {
-          title: 'Update team'
+          title: 'Update department'
         }
       }
     ]
