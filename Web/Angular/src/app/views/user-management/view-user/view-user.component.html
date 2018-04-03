@@ -35,7 +35,7 @@
                 <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
               </td>
               <td>
-                <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+                <a href="#/user/detail?id={{user.id}}">{{user.username}}</a>
               </td>
               <td>
                 <p *ngIf="user.name">{{user.name}}</p>
@@ -67,7 +67,7 @@
                 </p>
               </td>
               <td class="text-center">
-                <a href="#/account/update?id={{user.id}}">
+                <a href="#/user/update?id={{user.id}}">
                   <button type="button" class="btn btn-primary">Update</button>
                 </a>
               </td>
