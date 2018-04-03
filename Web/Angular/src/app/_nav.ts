@@ -28,7 +28,7 @@ const admin_navigation = [
     ]
   },
   {
-    name: 'Team',
+    name: 'department',
     url: '/team/view',
     icon: 'icon-people',
     // children: [
