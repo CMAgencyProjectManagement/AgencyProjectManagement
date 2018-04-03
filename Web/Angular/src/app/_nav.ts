@@ -29,7 +29,7 @@ const admin_navigation = [
   },
   {
     name: 'department',
-    url: '/team/view',
+    url: '/department/view',
     icon: 'icon-people',
     // children: [
     //   {
