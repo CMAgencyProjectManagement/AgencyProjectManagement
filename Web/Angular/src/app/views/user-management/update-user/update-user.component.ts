@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
 import {
@@ -7,11 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import {Cursor, StoreService} from '../../../services/tree.service';
-import {Router} from '@angular/router';
-import {IMyDpOptions} from 'mydatepicker';
 import {TeamService} from '../../../services/team.service';
 import {Team} from '../../../interfaces/team';
-import {ModalDialogService, SimpleModalComponent} from 'ngx-modal-dialog';
+import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-update-user',
@@ -41,11 +39,12 @@ export class UpdateUserComponent implements OnInit {
     avatar: string,
     isActive: string
   };
+  resetPasswordModal: BsModalRef;
 
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
-              private modalService: ModalDialogService,
+              private modalService: BsModalService,
               private viewRef: ViewContainerRef) {
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
@@ -54,7 +53,7 @@ export class UpdateUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userID = Number(this.GetURLParameter('id'));
+    this.userID = Number(this.GetURLParameter());
     this.teamService.getAllTeam()
       .then(value => {
         this.teams = value;
@@ -95,26 +94,26 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
-  resetPassword(id) {
-    if (confirm('Confirm reset password ?')) {
-      this.isResetPasswordLoading = true;
-      this.userService.resetPassword(id)
-        .then(value => {
-          this.newpassword = value.password;
-          this.isResetPasswordLoading = false;
-        })
-        .catch(reason => {
-          this.isResetPasswordLoading = false;
-          console.debug('resetPassword', reason);
-        })
-    }
+  resetPassword() {
+    console.debug('resetPassword', this.resetPasswordModal.content);
+    // this.isResetPasswordLoading = true;
+    // this.userService.resetPassword(id)
+    //   .then(value => {
+    //     this.newpassword = value.password;
+    //     this.isResetPasswordLoading = false;
+    //   })
+    //   .catch(reason => {
+    //     this.isResetPasswordLoading = false;
+    //     console.debug('resetPassword', reason);
+    //   })
+
   }
 
 
-  GetURLParameter(sParam) {
-    var sPageURL = window.location.href;
-    var sURLVariables = sPageURL.split('?');
-    var sUsername = sURLVariables[1].split('=');
+  GetURLParameter() {
+    let sPageURL = window.location.href;
+    let sURLVariables = sPageURL.split('?');
+    let sUsername = sURLVariables[1].split('=');
     return sUsername[1];
   }
 
@@ -133,11 +132,11 @@ export class UpdateUserComponent implements OnInit {
   }
 
   // TODO study dialog
-  openNewDialog() {
-    this.modalService.openDialog(this.viewRef, {
-      title: 'Some modal title',
-      childComponent: SimpleModalComponent,
-      data: 'the message'
+  openModal(template: TemplateRef<any>, userId) {
+    console.debug('openModal', this);
+    this.resetPasswordModal = this.modalService.show(template, {
+      animated: true,
+      initialState: userId
     });
   }
 
