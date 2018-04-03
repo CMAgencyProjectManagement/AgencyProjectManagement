@@ -16,20 +16,20 @@ const admin_navigation = [
     icon: 'icon-calendar',
     children: [
       {
-        name: 'View',
+        name: 'View project',
         url: '/project',
         icon: 'icon-calendar',
       },
       {
-        name: 'Create',
+        name: 'Create project',
         url: '/project/add',
         icon: 'icon-calendar',
       }
     ]
   },
   {
-    name: 'Team',
-    url: '/team/view',
+    name: 'department',
+    url: '/department/view',
     icon: 'icon-people',
     // children: [
     //   {
@@ -58,19 +58,19 @@ const admin_navigation = [
   },
   */
   {
-    name: 'Account',
+    name: 'User',
     url: '/account/view',
     icon: 'icon-user',
     children: [
       {
-        name: 'View',
-        url: '/account/view',
+        name: 'View user',
+        url: '/user/view',
         icon: 'icon-user',
 
       },
       {
-        name: 'Create',
-        url: '/account/create',
+        name: 'Create user',
+        url: '/user/create',
         icon: 'icon-user',
       },
     ]
