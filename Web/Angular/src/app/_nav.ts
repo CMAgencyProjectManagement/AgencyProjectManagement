@@ -16,12 +16,12 @@ const admin_navigation = [
     icon: 'icon-calendar',
     children: [
       {
-        name: 'View',
+        name: 'View project',
         url: '/project',
         icon: 'icon-calendar',
       },
       {
-        name: 'Create',
+        name: 'Create project',
         url: '/project/add',
         icon: 'icon-calendar',
       }
@@ -63,13 +63,13 @@ const admin_navigation = [
     icon: 'icon-user',
     children: [
       {
-        name: 'View',
+        name: 'View user',
         url: '/user/view',
         icon: 'icon-user',
 
       },
       {
-        name: 'Create',
+        name: 'Create user',
         url: '/user/create',
         icon: 'icon-user',
       },
