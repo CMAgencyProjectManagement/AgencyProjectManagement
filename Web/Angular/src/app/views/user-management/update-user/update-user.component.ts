@@ -44,8 +44,7 @@ export class UpdateUserComponent implements OnInit {
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
-              private modalService: BsModalService,
-              private viewRef: ViewContainerRef) {
+              private modalService: BsModalService) {
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
     this.isSavingChange = false;
@@ -94,9 +93,18 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
-  handleConfirmResetPassword() {
-    this.resetPassword();
+  openConfirmResetPassword(template: TemplateRef<any>) {
+    this.resetPasswordModal = this.modalService.show(template, {
+      animated: true
+    });
+  }
+
+  handleConfirmResetPassword(confirm) {
+    if (confirm) {
+      this.resetPassword();
+    }
     this.resetPasswordModal.hide();
+
   }
 
   resetPassword() {
@@ -133,15 +141,6 @@ export class UpdateUserComponent implements OnInit {
       avatar: '',
       isActive: ''
     };
-  }
-
-  // TODO study dialog
-  confirmResetPassword(template: TemplateRef<any>, userId) {
-    console.debug('openModal', this);
-    this.resetPasswordModal = this.modalService.show(template, {
-      animated: true,
-      initialState: userId
-    });
   }
 
   handleUpdate() {

@@ -46,7 +46,7 @@
             <label class="col-4 col-form-label text-right">Password </label>
             <div class="col-8">
               <button type="button" class="btn btn-secondary"
-                      (click)="confirmResetPassword(template,id)"
+                      (click)="openConfirmResetPassword(template)"
                       [ladda]="isResetPasswordLoading">
                 Reset Password</button>
               <div *ngIf="newpassword" class="alert alert-success" role="alert">
@@ -69,8 +69,8 @@
             </div>
             <div class="modal-body text-center">
               <p>You are about to reset user {{foundUser.name}}'s password !</p>
-              <button type="button" class="btn btn-primary" (click)="handleConfirmResetPassword()">Confirm</button>
-              <button type="button" class="btn btn-secondary" (click)="resetPasswordModal.hide()">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="handleConfirmResetPassword(true)">Confirm</button>
+              <button type="button" class="btn btn-secondary" (click)="handleConfirmResetPassword(false)">Cancel</button>
             </div>
           </ng-template>
           <!--Modal-->
