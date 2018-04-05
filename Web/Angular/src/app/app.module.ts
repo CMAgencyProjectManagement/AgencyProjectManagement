@@ -97,6 +97,8 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {MyDatePickerModule} from 'mydatepicker';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {ModalModule} from 'ngx-bootstrap';
+import {ConfirmModalComponent} from './cmaComponents/modals/confirm-modal/confirm-modal.component';
+import {CmaModule} from './cmaComponents/cma.module';
 
 
 @NgModule({
@@ -109,7 +111,8 @@ import {ModalModule} from 'ngx-bootstrap';
     ChartsModule,
     MyDatePickerModule,
     AngularMultiSelectModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CmaModule
   ],
   declarations: [
     AppComponent,
@@ -122,6 +125,9 @@ import {ModalModule} from 'ngx-bootstrap';
     useClass: HashLocationStrategy
   },
     ...SERVICES
+  ],
+  entryComponents: [
+    ConfirmModalComponent
   ],
   bootstrap: [AppComponent]
 })

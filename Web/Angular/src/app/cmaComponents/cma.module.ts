@@ -5,6 +5,7 @@ import {MiniUsersTableComponent} from './miniUsers-table/mini-users-table.compon
 import {AssignMembersCardComponent} from './assignMember-card/assignMembers-card.component';
 import {DataTablesModule} from 'angular-datatables';
 import {LaddaModule} from 'angular2-ladda';
+import {ConfirmModalComponent} from './modals/confirm-modal/confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -17,12 +18,14 @@ import {LaddaModule} from 'angular2-ladda';
   exports: [
     ProjectCardComponent,
     AssignMembersCardComponent,
-    MiniUsersTableComponent
+    MiniUsersTableComponent,
+    ConfirmModalComponent
   ],
   declarations: [
     ProjectCardComponent,
     MiniUsersTableComponent,
-    AssignMembersCardComponent
+    AssignMembersCardComponent,
+    ConfirmModalComponent
   ]
 })
 export class CmaModule {

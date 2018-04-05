@@ -10,6 +10,7 @@ import {Cursor, StoreService} from '../../../services/tree.service';
 import {TeamService} from '../../../services/team.service';
 import {Team} from '../../../interfaces/team';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
+import {ConfirmModalComponent} from '../../../cmaComponents/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-update-user',
@@ -93,18 +94,16 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
-  openConfirmResetPassword(template: TemplateRef<any>) {
-    this.resetPasswordModal = this.modalService.show(template, {
-      animated: true
-    });
-  }
-
-  handleConfirmResetPassword(confirm) {
-    if (confirm) {
-      this.resetPassword();
-    }
-    this.resetPasswordModal.hide();
-
+  openConfirmResetPassword() {
+    const initialState = {
+      confirmCallback: () => {
+        this.resetPassword();
+      },
+      cancelCallback: () => {
+      },
+      message: `You are about to reset ${this.foundUser.name}'s password`
+    };
+    this.resetPasswordModal = this.modalService.show(ConfirmModalComponent, {initialState});
   }
 
   resetPassword() {
