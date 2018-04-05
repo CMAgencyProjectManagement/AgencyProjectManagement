@@ -10,12 +10,16 @@ var map = {
 	],
 	"./views/pages/pages.module": [
 		"../../../../../src/app/views/pages/pages.module.ts",
-		"pages.module",
-		"common"
+		"pages.module"
 	],
 	"./views/project/project-management.module": [
 		"../../../../../src/app/views/project/project-management.module.ts",
 		"project-management.module",
+		"common"
+	],
+	"./views/task/task.module": [
+		"../../../../../src/app/views/task/task.module.ts",
+		"task.module",
 		"common"
 	],
 	"./views/team-management/team-management.module": [
@@ -67,28 +71,21 @@ var admin_navigation = [
         icon: 'icon-calendar',
         children: [
             {
-                name: 'View',
+                name: 'View project',
                 url: '/project',
                 icon: 'icon-calendar',
             },
             {
-                name: 'Create',
+                name: 'Create project',
                 url: '/project/add',
                 icon: 'icon-calendar',
             }
         ]
     },
     {
-        name: 'Team',
-        url: '/team',
+        name: 'Department',
+        url: '/department/view',
         icon: 'icon-people',
-        children: [
-            {
-                name: 'View',
-                url: '/team/view',
-                icon: 'icon-people',
-            }
-        ]
     },
     /*
     {
@@ -109,18 +106,18 @@ var admin_navigation = [
     },
     */
     {
-        name: 'Account',
+        name: 'User',
         url: '/account/view',
         icon: 'icon-user',
         children: [
             {
-                name: 'View',
-                url: '/account/view',
+                name: 'View user',
+                url: '/user/view',
                 icon: 'icon-user',
             },
             {
-                name: 'Create',
-                url: '/account/create',
+                name: 'Create user',
+                url: '/user/create',
                 icon: 'icon-user',
             },
         ]
@@ -155,6 +152,9 @@ var serverPath = {
     deleteTeam: '/api/team',
     assignTeam: '/api/team/assign',
     unAssignTeam: '/api/team/unassign',
+    setTeamRole: 'api/team/assign/role',
+    // Task
+    getTask: function (taskId) { return "/api/task/" + taskId; },
     // File
     uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; }
 };
@@ -284,7 +284,9 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ngx_modal_dialog__ = __webpack_require__("../../../../ngx-modal-dialog/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__cmaComponents_modals_confirm_modal_confirm_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -358,6 +360,8 @@ var SERVICES = [
 
 
 
+
+
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -372,7 +376,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__["ChartsModule"],
                 __WEBPACK_IMPORTED_MODULE_23_mydatepicker__["MyDatePickerModule"],
                 __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_25_ngx_modal_dialog__["a" /* ModalDialogModule */].forRoot()
+                __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap__["b" /* ModalModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_27__cmaComponents_cma_module__["a" /* CmaModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]
@@ -381,6 +386,9 @@ var AppModule = /** @class */ (function () {
                     provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["g" /* LocationStrategy */],
                     useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["d" /* HashLocationStrategy */]
                 }].concat(SERVICES),
+            entryComponents: [
+                __WEBPACK_IMPORTED_MODULE_26__cmaComponents_modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */]
+            ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -436,29 +444,21 @@ var routes = [
                 loadChildren: './views/project/project-management.module#ProjectManagementModule'
             },
             {
-                path: 'account',
+                path: 'user',
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
-                path: 'account-detail',
+                path: 'user-detail',
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
-                path: 'team',
+                path: 'department',
                 loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
             {
-                path: 'team-create',
-                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-            },
-            {
-                path: 'team-update',
-                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-            },
-            {
-                path: 'team-detail',
-                loadChildren: './views/team-management/team-management.module#TeamManagementModule'
-            },
+                path: 'task',
+                loadChildren: './views/task/task.module#TaskModule'
+            }
         ]
     },
     {
@@ -489,6 +489,482 @@ var AppRoutingModule = /** @class */ (function () {
         })
     ], AppRoutingModule);
     return AppRoutingModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"col-12 text-center margin-down\">\n  <h1>{{title }}</h1>\n</div>\n<div class=\"col-12\">\n  <table class=\"table\">\n    <thead>\n    <tr>\n      <th class=\"text-center\">\n        <h5>{{leftTableName}}</h5>\n      </th>\n      <th></th>\n      <th class=\"text-center\">\n        <h5>{{rightTableName}}</h5>\n      </th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n      <td colspan=\"3\">\n        <div class=\"row\" style=\"margin-top: 1em\">\n          <div class=\"col-5\">\n            <app-mini-users-table\n              [users]=\"leftUser\"\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\n              [showRole]=\"false\"></app-mini-users-table>\n          </div>\n          <div class=\"col-1 center-section\">\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"unAssign()\"\n                    [ladda]=\"unAssignLoading\">\n              <i class=\"fa fa-angle-double-left\"></i>\n            </button>\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"assign()\"\n                    [ladda]=\"assignLoading\">\n              <i class=\"fa fa-angle-double-right\"></i>\n            </button>\n          </div>\n          <div class=\"col-6\">\n            <app-mini-users-table\n              [users]=\"rightUser\"\n              [showRole]=\"true\"\n              [changeRoleable]=\"false\"\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\n              (onRoleChange)=\"setRole($event)\">\n            </app-mini-users-table>\n          </div>\n        </div>\n      </td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".center-section {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-line-pack: center;\n      align-content: center;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AssignMembersCardComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AssignMembersCardComponent = /** @class */ (function () {
+    function AssignMembersCardComponent() {
+        this.onAssign = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onUnAssign = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onSetRole = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    AssignMembersCardComponent.prototype.ngOnInit = function () {
+    };
+    AssignMembersCardComponent.prototype.handleLeftTableSelect = function (userIds) {
+        this.leftTableSelectedIds = userIds;
+    };
+    AssignMembersCardComponent.prototype.handleRightTableSelect = function (userIds) {
+        this.rightTableSelectedIds = userIds;
+    };
+    AssignMembersCardComponent.prototype.assign = function () {
+        this.onAssign.emit(this.leftTableSelectedIds);
+    };
+    AssignMembersCardComponent.prototype.unAssign = function () {
+        this.onUnAssign.emit(this.rightTableSelectedIds);
+    };
+    AssignMembersCardComponent.prototype.setRole = function (event) {
+        this.onSetRole.emit(event);
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], AssignMembersCardComponent.prototype, "title", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], AssignMembersCardComponent.prototype, "leftTableName", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", String)
+    ], AssignMembersCardComponent.prototype, "rightTableName", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], AssignMembersCardComponent.prototype, "leftUser", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], AssignMembersCardComponent.prototype, "rightUser", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], AssignMembersCardComponent.prototype, "assignLoading", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], AssignMembersCardComponent.prototype, "unAssignLoading", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], AssignMembersCardComponent.prototype, "onAssign", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], AssignMembersCardComponent.prototype, "onUnAssign", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], AssignMembersCardComponent.prototype, "onSetRole", void 0);
+    AssignMembersCardComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-assign-members-card',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.scss")]
+        })
+    ], AssignMembersCardComponent);
+    return AssignMembersCardComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/cma.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CmaModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__ = __webpack_require__("../../../../../src/app/cmaComponents/project-card/project-card.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__ = __webpack_require__("../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__ = __webpack_require__("../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular2_ladda__ = __webpack_require__("../../../../angular2-ladda/module/module.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular2_ladda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_angular2_ladda__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+var CmaModule = /** @class */ (function () {
+    function CmaModule() {
+    }
+    CmaModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_5_angular_datatables__["b" /* DataTablesModule */],
+                __WEBPACK_IMPORTED_MODULE_6_angular2_ladda__["LaddaModule"].forRoot({
+                    style: 'slide-down'
+                }),
+            ],
+            exports: [
+                __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
+                __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
+                __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */]
+            ],
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
+                __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
+                __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */]
+            ]
+        })
+    ], CmaModule);
+    return CmaModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".table {\n  background-color: white; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MiniUsersTableComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MiniUsersTableComponent = /** @class */ (function () {
+    function MiniUsersTableComponent() {
+        this.onSelectedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onRoleChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.selectedIds = [];
+        this.smallUsersTableOpt = {
+            searching: true,
+            lengthChange: false,
+            paging: false,
+            scrollY: '400',
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [1],
+                },
+                {
+                    searchable: false,
+                    orderable: false,
+                    visible: false,
+                    targets: [0],
+                }
+            ],
+            rowCallback: this.handleRowCallback.bind(this)
+        };
+    }
+    MiniUsersTableComponent.prototype.ngOnInit = function () {
+    };
+    MiniUsersTableComponent.prototype.roleSwitch = function (userId, currentRole) {
+        var targetRole = !currentRole;
+        this.onRoleChange.emit({ id: userId, isManager: targetRole });
+    };
+    MiniUsersTableComponent.prototype.handleRowCallback = function (row, data, index) {
+        var _this = this;
+        $('td', row).unbind('click');
+        $('td', row).bind('click', function () {
+            var selectedUserId = data[0];
+            var classesAtr = row.attributes.getNamedItem('class');
+            var classes = __WEBPACK_IMPORTED_MODULE_1_lodash__["split"](classesAtr.value, ' ');
+            var isSelected = __WEBPACK_IMPORTED_MODULE_1_lodash__["indexOf"](classes, 'selected') >= 0;
+            if (isSelected) {
+                _this.selectedIds = __WEBPACK_IMPORTED_MODULE_1_lodash__["filter"](_this.selectedIds, function (userId) {
+                    return userId !== selectedUserId;
+                });
+                classes = __WEBPACK_IMPORTED_MODULE_1_lodash__["filter"](classes, 'selected');
+            }
+            else {
+                _this.selectedIds.push(selectedUserId);
+                classes.push('selected');
+            }
+            classesAtr.value = __WEBPACK_IMPORTED_MODULE_1_lodash__["join"](classes, ' ');
+            _this.onSelectedChange.emit(_this.selectedIds);
+        });
+        return row;
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Array)
+    ], MiniUsersTableComponent.prototype, "users", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], MiniUsersTableComponent.prototype, "showRole", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], MiniUsersTableComponent.prototype, "changeRoleable", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], MiniUsersTableComponent.prototype, "onSelectedChange", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], MiniUsersTableComponent.prototype, "onRoleChange", void 0);
+    MiniUsersTableComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-mini-users-table',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MiniUsersTableComponent);
+    return MiniUsersTableComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.html":
+/***/ (function(module, exports) {
+
+module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\n  <thead>\n  <tr>\n    <th>ID</th>\n    <th>Avatar</th>\n    <th>Name</th>\n    <th>Birthdate</th>\n    <th *ngIf=\"showRole\">Manager</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let user of users\">\n    <td>{{user.id}}</td>\n    <td class=text-center>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\n    </td>\n    <td>\n      <span *ngIf=\"user.name\">{{user.name}}</span>\n      <span *ngIf=\"!user.name\">N/A</span>\n    </td>\n    <td>\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\n      <span *ngIf=\"!user.birthdate\">N/A</span>\n    </td>\n    <td *ngIf=\"showRole\">\n      <label class=\"switch switch-icon switch-info switch-sm\"\n             (click)=\"roleSwitch(user.id,user.isManager)\">\n        <input class=\"switch-input\"\n               [checked]=\"user.isManager\"\n               [disabled]=\"!changeRoleable\"\n               type=\"checkbox\">\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">Confirm</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <p>{{message}}</p>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfirmModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ConfirmModalComponent = /** @class */ (function () {
+    function ConfirmModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    ConfirmModalComponent.prototype.ngOnInit = function () {
+    };
+    ConfirmModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            this.confirmCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    ConfirmModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    ConfirmModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    ConfirmModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-confirm-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], ConfirmModalComponent);
+    return ConfirmModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Tasks</strong>\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\n        View full\n      </button>\n    </a>\n  </div>\n  <div *ngIf=\"showbutton\">\n    <div class=\"card-body scroll\" *ngIf=\"project\">\n      <div class=\"row\">\n        <div class=\"col-sm-6 col-md-6\" *ngFor=\"let lists of project.lists;let i = index\">\n          <ng-container>\n            <div class=\"card\">\n              <div class=\"card-header cardheadertext\">\n                {{lists.name}}\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\n                  id=\"task\">\n                  <a href=\"#/task?id={{task.id}}\" style=\"text-decoration: none; color: black\">\n                    <div class=\"card-body\">\n                      {{task.name}}\n                    </div>\n                  </a>\n                </div>\n              </div>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div *ngIf=\"!showbutton\">\n    <div class=\"card-body\" *ngIf=\"project\">\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\n        <div class=\"input-group col-12\">\n          <span class=\"input-group-btn\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\n              <i class=\"fa fa-search\"></i> Search\n            </button>\n          </span>\n          <input class=\"form-control\" type=\"text\" (input)=\"search(searchField.value)\" #searchField>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"row\">\n        <div class=\"col-12\">\n          <div class=\"card\" style=\"width: 100%\">\n            <div class=\"card-header cardheadertext\">\n              Place a portable A-frame (Search Example)\n            </div>\n          </div>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"row task-row\">\n        <div>\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\n              <div class=\"card-header cardheadertext\">\n                {{lists.name}}\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\n                     id=\"task\">\n                  <a href=\"#/task?id={{task.id}}\" style=\"text-decoration: none; color: black\">\n                    <div class=\"card-body\">\n                      {{task.name}}\n                    </div>\n                  </a>\n                </div>\n              </div>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".scroll {\n  height: 600px;\n  overflow-y: scroll; }\n\n.cardbodytext {\n  font-size: 17px; }\n\n.cardheadertext {\n  font-size: 20px; }\n\n.blackwhitebutton {\n  color: black;\n  background-color: white;\n  border-color: black; }\n\n.cardstyle {\n  width: 300px; }\n\n.task-row {\n  overflow-x: scroll;\n  width: 100%; }\n\n.task-row > div {\n    width: 9999px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectCardComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ProjectCardComponent = /** @class */ (function () {
+    function ProjectCardComponent() {
+    }
+    ProjectCardComponent.prototype.ngOnInit = function () {
+    };
+    ProjectCardComponent.prototype.search = function (searchStr) {
+        for (var _i = 0, _a = this.project.lists; _i < _a.length; _i++) {
+            var list = _a[_i];
+            for (var _b = 0, _c = list.tasks; _b < _c.length; _b++) {
+                var task = _c[_b];
+                if (task.name.indexOf(searchStr) >= 0) {
+                    this.foundTask.push(task);
+                    continue;
+                }
+            }
+        }
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], ProjectCardComponent.prototype, "project", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], ProjectCardComponent.prototype, "showbutton", void 0);
+    ProjectCardComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-project-card',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/project-card/project-card.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/project-card/project-card.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ProjectCardComponent);
+    return ProjectCardComponent;
 }());
 
 
@@ -1188,8 +1664,6 @@ var AppSidebarComponent = /** @class */ (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_8__app_sidebar_minimizer__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__ = __webpack_require__("../../../../../src/app/components/app-sidebar-nav/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_component__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.component.ts");
-/* unused harmony reexport SpinnerComponent */
 
 
 
@@ -1199,68 +1673,6 @@ var AppSidebarComponent = /** @class */ (function () {
 
 
 
-
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/spinner/spinner.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"sk-folding-cube\">\n  <div class=\"sk-cube1 sk-cube\"></div>\n  <div class=\"sk-cube2 sk-cube\"></div>\n  <div class=\"sk-cube4 sk-cube\"></div>\n  <div class=\"sk-cube3 sk-cube\"></div>\n</div>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/spinner/spinner.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/spinner/spinner.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var SpinnerComponent = /** @class */ (function () {
-    function SpinnerComponent() {
-    }
-    SpinnerComponent.prototype.ngOnInit = function () {
-    };
-    SpinnerComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'app-spinner',
-            template: __webpack_require__("../../../../../src/app/components/spinner/spinner.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/spinner/spinner.component.scss")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], SpinnerComponent);
-    return SpinnerComponent;
-}());
 
 
 
@@ -2167,21 +2579,51 @@ var ProjectService = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TaskService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_superagent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
 
 var TaskService = /** @class */ (function () {
-    function TaskService() {
+    function TaskService(store) {
+        this.store = store;
+        this.tokenCursor = this.store.select(['token', 'access_token']);
     }
     TaskService.prototype.get = function () {
         return Promise.resolve([]);
     };
+    TaskService.prototype.getTaskDetail = function (id) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["get"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].getTask(id))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
     TaskService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__tree_service__["a" /* StoreService */]])
     ], TaskService);
     return TaskService;
 }());
@@ -2273,6 +2715,29 @@ var TeamService = /** @class */ (function () {
         };
         return new Promise(function (resolve, reject) {
             Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].unAssignTeam)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObj)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    TeamService.prototype.setRole = function (teamId, userId, isManager) {
+        var _this = this;
+        var dataObj = {
+            UserId: userId,
+            TeamId: teamId,
+            IsManager: isManager
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].setTeamRole)
                 .set('token', _this.tokenCursor.get())
                 .send(dataObj)
                 .then(function (res) {

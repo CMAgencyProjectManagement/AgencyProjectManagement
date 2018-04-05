@@ -120,8 +120,8 @@ var LoginComponent = /** @class */ (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.loginForm = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormGroup */]({
-            username: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required),
-            password: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* Validators */].required)
+            username: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["h" /* Validators */].required),
+            password: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["h" /* Validators */].required)
         });
     };
     LoginComponent.prototype.handleEnterPressed = function ($event) {
@@ -274,7 +274,7 @@ var PagesModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_8__angular_common__["b" /* CommonModule */],
                 __WEBPACK_IMPORTED_MODULE_6__pages_routing_module__["a" /* PagesRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["f" /* ReactiveFormsModule */],
+                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["g" /* ReactiveFormsModule */],
                 __WEBPACK_IMPORTED_MODULE_5_angular2_ladda__["LaddaModule"].forRoot({
                     style: 'expand-left'
                 })
