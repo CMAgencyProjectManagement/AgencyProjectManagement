@@ -1,17 +1,20 @@
 <div class="card">
   <div class="card-header">
-    <strong>Task detail</strong>
+    Task detail
   </div>
   <app-spinner *ngIf=loading.page></app-spinner>
-  <div *ngIf=!loading.page class="card-body">
-    <nav aria-label="breadcrumb" role="navigation">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">{{foundTask.project.name}}</a></li>
-        <li class="breadcrumb-item">{{foundTask.list.name}}</li>
-      </ol>
-    </nav>
+  <div *ngIf=!loading.page class="card-body row">
+    <!--<nav aria-label="breadcrumb" role="navigation">-->
+      <!--<ol class="breadcrumb mb-2">-->
+        <!--<li class="breadcrumb-item"><a href="#/project/task?projectID={{foundTask.project.id}}">{{foundTask.project.name}}</a></li>-->
+        <!--<li class="breadcrumb-item">{{foundTask.list.name}}</li>-->
+      <!--</ol>-->
+    <!--</nav>-->
+
     <div class="col-12">
-      <h2>{{foundTask.name}}</h2>
+      <h2 class="card-title">{{foundTask.name}}</h2>
+    </div>
+    <div class="col-12">
       <div class="action-row">
         <button class="btn btn-secondary">
           <i class="fa fa-edit"></i>&nbsp; Edit
@@ -22,10 +25,40 @@
         <button class="btn btn-secondary">
           <i class="fa fa-upload"></i>&nbsp; Upload
         </button>
-
         <button class="btn btn-secondary ml-5">
           <i class="fa fa-check"></i>&nbsp; Done
         </button>
+      </div>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="row">
+        <div class="col-6 section">
+          <h4 class="mb-3">Detail</h4>
+          <!--Content-->
+          <dl class="row ml-1">
+            <dt class="col-2">Project</dt>
+            <dd class="col-10"><a href="#/project/task?projectID={{foundTask.project.id}}">{{foundTask.project.name}}</a></dd>
+            <dt class="col-2">List</dt>
+            <dd class="col-10">{{foundTask.list.name}}</dd>
+            <dt class="col-2">Priority</dt>
+            <dd class="col-10" [ngSwitch]="foundTask.priority">
+              <span *ngSwitchCase="0">Low</span>
+              <span *ngSwitchCase="1">Medium</span>
+              <span *ngSwitchCase="2">High</span>
+            </dd>
+            <dt class="col-2">Status</dt>
+            <dd class="col-10" [ngSwitch]="foundTask.status">
+              <span *ngSwitchCase="0">Not started</span>
+              <span *ngSwitchCase="1">Executing</span>
+              <span *ngSwitchCase="2">Done</span>
+            </dd>
+            <dt class="col-2">Point</dt>
+            <dd class="col-10">2</dd>
+          </dl>
+        </div>
+        <div class="col-6">
+
+        </div>
       </div>
     </div>
   </div>
