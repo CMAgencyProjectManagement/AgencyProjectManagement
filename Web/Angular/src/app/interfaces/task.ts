@@ -3,7 +3,7 @@ import {List} from './list';
 
 export class Task {
   id: number;
-  start_date: string;
+  startDate: string;
   text: string;
   progress: number;
   duration: number;
@@ -12,6 +12,9 @@ export class Task {
   description: string;
   status: number;
   priority: number;
+  finishedDate: string;
+  createdDate: string;
+  changedDate: string;
   project: Project;
   list: List;
 }
