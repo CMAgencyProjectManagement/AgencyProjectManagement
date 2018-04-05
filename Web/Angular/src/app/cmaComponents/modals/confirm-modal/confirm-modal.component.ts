@@ -16,7 +16,6 @@ export class ConfirmModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    
   }
 
   handleOnConfirm() {

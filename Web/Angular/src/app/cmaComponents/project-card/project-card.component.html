@@ -19,7 +19,7 @@
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
                   id="task">
-                  <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
+                  <a href="#/task?id={{task.id}}" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
                     </div>
@@ -65,7 +65,7 @@
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
                      id="task">
-                  <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
+                  <a href="#/task?id={{task.id}}" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
                     </div>
