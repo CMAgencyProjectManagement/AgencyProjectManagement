@@ -26,49 +26,65 @@
     <div class="col-12 mt-5">
       <div class="row">
         <div class="col-6 section">
-          <h4 class="mb-3">Detail</h4>
+          <h5 class="mb-3">Detail</h5>
           <dl class="row ml-1">
-            <dt class="col-2">Project:</dt>
-            <dd class="col-10"><a
+            <dt class="col-3">Project:</dt>
+            <dd class="col-9"><a
               href="#/project/task?projectID={{foundTask.project.id}}">{{foundTask.project.name}}</a></dd>
-            <dt class="col-2">List:</dt>
-            <dd class="col-10">{{foundTask.list.name}}</dd>
-            <dt class="col-2">Priority:</dt>
-            <dd class="col-10" [ngSwitch]="foundTask.priority">
+            <dt class="col-3">List:</dt>
+            <dd class="col-9">{{foundTask.list.name}}</dd>
+            <dt class="col-3">Priority:</dt>
+            <dd class="col-9" [ngSwitch]="foundTask.priority">
               <span *ngSwitchCase="0">Low</span>
               <span *ngSwitchCase="1">Medium</span>
               <span *ngSwitchCase="2">High</span>
             </dd>
-            <dt class="col-2">Status:</dt>
-            <dd class="col-10" [ngSwitch]="foundTask.status">
+            <dt class="col-3">Status:</dt>
+            <dd class="col-9" [ngSwitch]="foundTask.status">
               <span *ngSwitchCase="0">Not started</span>
               <span *ngSwitchCase="1">Executing</span>
               <span *ngSwitchCase="2">Done</span>
             </dd>
-            <dt class="col-2">Point:</dt>
-            <dd class="col-10">2</dd>
+            <dt class="col-3">Point:</dt>
+            <dd class="col-9">2</dd>
           </dl>
         </div>
         <div class="col-6 section">
-          <h4 class="mb-3">Date</h4>
+          <h5 class="mb-3">Date</h5>
           <dl class="row ml-1">
-            <dt class="col-2">Start date:</dt>
-            <dd class="col-10">{{foundTask.startDate | date:'dd/MM/yyyy'}}</dd>
-            <dt class="col-2">Duration</dt>
-            <dd class="col-10">{{foundTask.duration}}</dd>
+            <dt class="col-3">Start date:</dt>
+            <dd class="col-9">{{foundTask.startDate | date:'dd/MM/yyyy'}}</dd>
+            <dt class="col-3">Duration:</dt>
+            <dd class="col-9">{{foundTask.duration}}</dd>
             <ng-template ngIf="{{foundTask.finishedDate}}">
-              <dt class="col-2">Finished date:</dt>
-              <dd class="col-10">{{foundTask.finishedDate | date:'dd/MM/yyyy'}}</dd>
+              <dt class="col-3">Finished date:</dt>
+              <dd class="col-9">{{foundTask.finishedDate | date:'dd/MM/yyyy'}}</dd>
             </ng-template>
-            <dt class="col-2">Created date:</dt>
-            <dd class="col-10">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
+            <dt class="col-3">Created date:</dt>
+            <dd class="col-9">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
             <ng-template ngIf="{{foundTask.changedDate}}">
-              <dt class="col-2">Changed date:</dt>
-              <dd class="col-10">{{foundTask.changedDate | date:'dd/MM/yyyy'}}</dd>
+              <dt class="col-3">Changed date:</dt>
+              <dd class="col-9">{{foundTask.changedDate | date:'dd/MM/yyyy'}}</dd>
             </ng-template>
           </dl>
         </div>
-
+        <div class="col-6 section">
+          <h5 class="mb-3">People</h5>
+          <dl class="row ml-1">
+            <dt class="col-3">Assignees:</dt>
+            <dd class="col-9">some name </dd>
+            <dt class="col-3">Creator:</dt>
+            <dd class="col-9">
+              <app-user-icon [user]="foundTask.createdBy"></app-user-icon>
+            </dd>
+            <ng-template ngIf="{{foundTask.changedby}}">
+              <dt class="col-3">Changed by:</dt>
+              <dd class="col-9">
+                <app-user-icon [user]="foundTask.changedby"></app-user-icon>
+              </dd>
+            </ng-template>
+          </dl>
+        </div>
       </div>
     </div>
   </div>

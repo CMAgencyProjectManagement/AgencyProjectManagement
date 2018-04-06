@@ -25,7 +25,9 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     Task task = taskService.GetTask(id);
-                    return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task,true)));
+                    return Ok(ResponseHelper.GetResponse(
+                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath)
+                    ));
                 }
             }
             catch (Exception ex)
@@ -34,6 +36,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("user/{id:int}")]
         [Authorize(Roles = "Admin,Manager")]
@@ -43,14 +46,12 @@ namespace Web.Controllers
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-
                     TaskService taskService = new TaskService(db);
                     IEnumerable<Task> tasks = taskService.GetActiveTasksOfUser(id);
                     JArray dataObject = new JArray();
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));
-
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -62,7 +63,6 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
 
 
         [HttpGet]
@@ -81,7 +81,6 @@ namespace Web.Controllers
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));
-
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -118,7 +117,7 @@ namespace Web.Controllers
                             priority,
                             startTime,
                             creator
-                            );
+                        );
                         JObject dataObject = taskService.ParseToJson(newTask);
                         return Ok(ResponseHelper.GetResponse(dataObject));
                     }
@@ -153,6 +152,7 @@ namespace Web.Controllers
                         {
                             startdate = tmp;
                         }
+
                         TaskService taskService = new TaskService(db);
                         var updateTask = taskService.UpdateTask(
                             updateTaskViewModel.Id,
@@ -161,7 +161,7 @@ namespace Web.Controllers
                             updateTaskViewModel.ListID,
                             updateTaskViewModel.Priority,
                             startdate
-                            );
+                        );
                         return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(updateTask)));
                     }
                 }
@@ -177,6 +177,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpPut]
         [Route("assign")]
         [Authorize(Roles = "Admin")]
@@ -188,7 +189,6 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-
                         TaskService taskService = new TaskService(db);
 
                         foreach (int userID in assignTaskModel.UserIDs)
@@ -198,6 +198,7 @@ namespace Web.Controllers
                                 taskID: assignTaskModel.TaskID
                             );
                         }
+
                         return Ok(ResponseHelper.GetResponse());
                     }
                 }
@@ -213,6 +214,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpDelete]
         [Route("unassign")]
         [Authorize(Roles = "Admin")]
@@ -224,7 +226,6 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     return Ok();
-
                 }
             }
             catch (Exception ex)

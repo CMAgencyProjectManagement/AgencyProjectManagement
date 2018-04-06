@@ -6,6 +6,7 @@ import {AssignMembersCardComponent} from './assignMember-card/assignMembers-card
 import {DataTablesModule} from 'angular-datatables';
 import {LaddaModule} from 'angular2-ladda';
 import {ConfirmModalComponent} from './modals/confirm-modal/confirm-modal.component';
+import { UserIconComponent } from './user-icon/user-icon.component';
 
 @NgModule({
   imports: [
@@ -19,13 +20,15 @@ import {ConfirmModalComponent} from './modals/confirm-modal/confirm-modal.compon
     ProjectCardComponent,
     AssignMembersCardComponent,
     MiniUsersTableComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    UserIconComponent
   ],
   declarations: [
     ProjectCardComponent,
     MiniUsersTableComponent,
     AssignMembersCardComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    UserIconComponent
   ]
 })
 export class CmaModule {

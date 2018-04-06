@@ -193,7 +193,24 @@ namespace Service
             throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
         }
 
-        public JObject ParseToJson(Task task, bool isDetailed = false)
+        public IEnumerable<User> getTaskAssignee(int taskId)
+        {
+            var task = db.Tasks.Find(taskId);
+            if (task != null)
+            {
+                var result = db.UserTasks
+                    .Where(userTask => userTask.TaskID == taskId)
+                    .Select(UserTask => UserTask.User);
+                return result.ToList();
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Task with id {taskId} not found");    
+            }
+            
+        }
+
+        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null)
         {
             UserService userService = new UserService(db);
             User creator = userService.GetUser(task.CreatedBy);
@@ -202,8 +219,8 @@ namespace Service
                 ["id"] = task.ID,
                 ["name"] = task.Name,
                 ["description"] = task.Description,
-                ["createdBy"] = userService.ParseToJson(creator),
-                ["ceatedTime"] = task.CreatedTime,
+                ["createdBy"] = userService.ParseToJson(creator,avatarPath),
+                ["createdDate"] = task.CreatedTime,
                 ["changedTime"] = task.ChangedTime,
                 ["status"] = task.Status,
                 ["duration"] = task.Duration,
@@ -211,6 +228,7 @@ namespace Service
                 ["priority"] = task.Priority,
                 ["startDate"] = task.StartDate
             };
+            
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
@@ -226,24 +244,12 @@ namespace Service
                 ListService listService = new ListService(db);
                 var list = listService.GetListOfTask(task.ID);
                 result["list"] = listService.ParseToJson(list, false, false);
+
+                var assignees = getTaskAssignee(task.ID);
+                var assigneesJson = assignees
+                    .Select(user =>  userService.ParseToJson(user,avatarPath));
+                result["assignees"] = new JArray(assigneesJson);
             }
-
-            return result;
-        }
-
-        public JObject ParseToJsonofUserTask(UserTask userTask)
-        {
-            UserService userService = new UserService(db);
-
-
-            JObject result = new JObject
-            {
-                ["id"] = userTask.TaskID,
-                ["name"] = userTask.UserID,
-                ["isFollow"] = userTask.IsFollow,
-                ["isAssigned"] = userTask.IsAssigned,
-            };
-
 
             return result;
         }
