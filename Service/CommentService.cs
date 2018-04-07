@@ -33,7 +33,7 @@ namespace Service
 
         public JObject ParseToJson(Comment comment)
         {
-            
+            return null;
         }
     }
 }
