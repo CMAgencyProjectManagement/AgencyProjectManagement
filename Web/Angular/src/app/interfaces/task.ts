@@ -1,6 +1,7 @@
 import {Project} from './project';
 import {List} from './list';
 import {User} from './user';
+import {Comment} from './comment';
 
 export class Task {
   id: number;
@@ -17,8 +18,9 @@ export class Task {
   createdDate: string;
   changedDate: string;
   createdBy: User;
-  changedby: User;
+  changedBy: User;
   project: Project;
   assignees: User[];
   list: List;
+  comments: Comment[];
 }

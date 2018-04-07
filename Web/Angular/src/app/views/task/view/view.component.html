@@ -92,35 +92,41 @@
                 <app-user-list [users]="foundTask.assignees"></app-user-list>
               </dd>
             </ng-template>
-          </dl>
-        </div>
-
-        <div class="col-12 section">
-          <h5 class="mb-3">Attachments</h5>
-          <dl class="row ml-1">
-            <ul class="list-group col-6">
-              <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                Initial design.png
-                <i class="fa fa-download"></i>
-              </li>
-              <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                document.docx
-               <i class="fa fa-download"></i>
-              </li>
-              <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                slide.ppt
-                <i class="fa fa-download"></i>
-              </li>
-            </ul>
+            <dt class="col-3">Creator:</dt>
+            <dd class="col-9">{{foundTask.createdBy.name}}</dd>
+            <ng-template ngIf="{{foundTask.changedBy}}">
+              <dt class="col-3">Modifier:</dt>
+              <dd class="col-9">{{foundTask.changedBy.name}}</dd>
+            </ng-template>
           </dl>
         </div>
 
         <div class="col-6 section">
           <h5 class="mb-3">Comments</h5>
           <dl class="row ml-1">
-            <app-comment class="col-12"></app-comment>
-            <app-comment class="col-12"></app-comment>
-            <app-comment class="col-12"></app-comment>
+            <app-comment class="col-12" *ngFor="let comment of foundTask.comments" [comment]="comment"></app-comment>
+          </dl>
+        </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Attachments</h5>
+          <dl class="row ml-1">
+            <div class="col-12">
+              <ul class="list-group">
+                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                  Initial design.png
+                  <i class="fa fa-download"></i>
+                </li>
+                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                  document.docx
+                  <i class="fa fa-download"></i>
+                </li>
+                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                  slide.ppt
+                  <i class="fa fa-download"></i>
+                </li>
+              </ul>
+            </div>
           </dl>
         </div>
       </div>

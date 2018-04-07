@@ -232,7 +232,7 @@ namespace Service
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
-                result["changedby"] = userService.ParseToJson(changer);
+                result["changedBy"] = userService.ParseToJson(changer);
             }
 
             if (isDetailed)
@@ -250,7 +250,10 @@ namespace Service
                 var assigneesJson = assignees
                     .Select(user =>  userService.ParseToJson(user,avatarPath));
                 result["assignees"] = new JArray(assigneesJson);
-                
+
+                IEnumerable<Comment> comments = commentService.GetCommentOfTask(task.ID);
+                IEnumerable<JObject> jsonComments = comments.Select(comment => commentService.ParseToJson(comment));
+                result["comments"] = new JArray(jsonComments);
             }
 
             return result;
