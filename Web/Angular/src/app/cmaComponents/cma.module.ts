@@ -6,7 +6,9 @@ import {AssignMembersCardComponent} from './assignMember-card/assignMembers-card
 import {DataTablesModule} from 'angular-datatables';
 import {LaddaModule} from 'angular2-ladda';
 import {ConfirmModalComponent} from './modals/confirm-modal/confirm-modal.component';
-import { UserIconComponent } from './user-icon/user-icon.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { CommentComponent } from './comment/comment.component';
+import {CollapseModule} from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -15,20 +17,23 @@ import { UserIconComponent } from './user-icon/user-icon.component';
     LaddaModule.forRoot({
       style: 'slide-down'
     }),
+    CollapseModule.forRoot()
   ],
   exports: [
     ProjectCardComponent,
     AssignMembersCardComponent,
     MiniUsersTableComponent,
     ConfirmModalComponent,
-    UserIconComponent
+    UserListComponent,
+    CommentComponent
   ],
   declarations: [
     ProjectCardComponent,
     MiniUsersTableComponent,
     AssignMembersCardComponent,
     ConfirmModalComponent,
-    UserIconComponent
+    UserListComponent,
+    CommentComponent
   ]
 })
 export class CmaModule {

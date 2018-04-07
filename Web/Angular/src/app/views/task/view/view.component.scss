@@ -5,10 +5,14 @@
     font-weight: 600;
   }
 
-  .icons-list{
-    img.avatar{
+  .icons-list {
+    img.avatar {
       width: 35px;
       height: 35px;
     }
   }
+}
+
+.list-group-item:hover {
+  cursor: pointer;
 }

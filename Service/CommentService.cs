@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Service
 {
@@ -28,6 +29,11 @@ namespace Service
             db.Comments.Add(newComment);
             db.SaveChanges();
             return newComment;
+        }
+
+        public JObject ParseToJson(Comment comment)
+        {
+            
         }
     }
 }

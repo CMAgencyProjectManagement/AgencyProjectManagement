@@ -238,6 +238,7 @@ namespace Service
             if (isDetailed)
             {
                 ProjectService projectService = new ProjectService(db);
+                CommentService commentService = new CommentService(db);
                 var project = projectService.GetProjectOfTask(task.ID);
                 result["project"] = projectService.ParseToJson(project, false, false);
 
@@ -249,6 +250,7 @@ namespace Service
                 var assigneesJson = assignees
                     .Select(user =>  userService.ParseToJson(user,avatarPath));
                 result["assignees"] = new JArray(assigneesJson);
+                
             }
 
             return result;

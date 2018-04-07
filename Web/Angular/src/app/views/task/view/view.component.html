@@ -89,52 +89,36 @@
             <ng-template ngIf="{{foundTask.assignees}}">
               <dt class="col-3">Assignees:</dt>
               <dd class="col-9">
-                <!--<app-user-icon [user]="foundTask.assignees[0]"></app-user-icon>-->
-                <ul class="icons-list">
-
-                  <li *ngFor="let assignee of foundTask.assignees">
-                    <i>
-                      <img src="{{assignee.avatar}}" class="icon-screen-desktop bg-primary avatar">
-                    </i>
-                    <div class="desc">
-                      <div class="title">{{assignee.name}}</div>
-                      <small>{{assignee.email}}</small>
-                    </div>
-                    <div class="value">
-                      <small>{{assignee.phone}}</small>
-                    </div>
-                    <div class="actions">
-                      <i class="fa fa-phone text-muted"></i>
-                    </div>
-                  </li>
-
-                </ul>
+                <app-user-list [users]="foundTask.assignees"></app-user-list>
               </dd>
             </ng-template>
-            <!--<dt class="col-3">Creator:</dt>-->
-            <!--<dd class="col-9">-->
-              <!--<app-user-icon [user]="foundTask.createdBy"></app-user-icon>-->
-            <!--</dd>-->
-            <!--<ng-template ngIf="{{foundTask.changedby}}">-->
-              <!--<dt class="col-3">Changed by:</dt>-->
-              <!--<dd class="col-9">-->
-                <!--<app-user-icon [user]="foundTask.changedby"></app-user-icon>-->
-              <!--</dd>-->
-            <!--</ng-template>-->
           </dl>
         </div>
 
         <div class="col-12 section">
           <h5 class="mb-3">Attachments</h5>
           <dl class="row ml-1">
-
+            <ul class="list-group col-6">
+              <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                Initial design.png
+                <i class="fa fa-download"></i>
+              </li>
+              <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                document.docx
+               <i class="fa fa-download"></i>
+              </li>
+              <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                slide.ppt
+                <i class="fa fa-download"></i>
+              </li>
+            </ul>
           </dl>
         </div>
 
         <div class="col-12 section">
           <h5 class="mb-3">Comments</h5>
           <dl class="row ml-1">
-
+            <app-comment class="col-6"></app-comment>
           </dl>
         </div>
       </div>
