@@ -22,6 +22,9 @@ export class ProjectManagementComponent implements OnInit {
         orderable: false,
         targets: [5]
       }
+    ],
+    order: [
+      [4, 'desc']
     ]
   };
 

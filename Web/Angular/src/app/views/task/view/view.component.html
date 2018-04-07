@@ -8,23 +8,27 @@
       <h2 class="card-title">{{foundTask.name}}</h2>
     </div>
     <div class="col-12">
-      <div class="action-row">
-        <button class="btn btn-secondary">
+      <div class="button-row">
+        <button class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
         </button>
-        <button class="btn btn-secondary">
+        <button class="btn btn-secondary bg-light">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
-        <button class="btn btn-secondary">
+        <button class="btn btn-secondary bg-light">
           <i class="fa fa-upload"></i>&nbsp; Upload
         </button>
-        <button class="btn btn-secondary ml-5">
+        <button class="btn btn-secondary ml-5 bg-light">
+          <i class="fa fa-play"></i>&nbsp; Start progress
+        </button>
+        <button class="btn btn-secondary bg-light">
           <i class="fa fa-check"></i>&nbsp; Done
         </button>
       </div>
     </div>
     <div class="col-12 mt-5">
       <div class="row">
+
         <div class="col-6 section">
           <h5 class="mb-3">Detail</h5>
           <dl class="row ml-1">
@@ -49,6 +53,7 @@
             <dd class="col-9">2</dd>
           </dl>
         </div>
+
         <div class="col-6 section">
           <h5 class="mb-3">Date</h5>
           <dl class="row ml-1">
@@ -68,21 +73,68 @@
             </ng-template>
           </dl>
         </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Description</h5>
+          <dl class="row ml-1">
+            <p class="col-12">
+              {{foundTask.description}}
+            </p>
+          </dl>
+        </div>
+
         <div class="col-6 section">
           <h5 class="mb-3">People</h5>
           <dl class="row ml-1">
-            <dt class="col-3">Assignees:</dt>
-            <dd class="col-9">some name </dd>
-            <dt class="col-3">Creator:</dt>
-            <dd class="col-9">
-              <app-user-icon [user]="foundTask.createdBy"></app-user-icon>
-            </dd>
-            <ng-template ngIf="{{foundTask.changedby}}">
-              <dt class="col-3">Changed by:</dt>
+            <ng-template ngIf="{{foundTask.assignees}}">
+              <dt class="col-3">Assignees:</dt>
               <dd class="col-9">
-                <app-user-icon [user]="foundTask.changedby"></app-user-icon>
+                <!--<app-user-icon [user]="foundTask.assignees[0]"></app-user-icon>-->
+                <ul class="icons-list">
+
+                  <li *ngFor="let assignee of foundTask.assignees">
+                    <i>
+                      <img src="{{assignee.avatar}}" class="icon-screen-desktop bg-primary avatar">
+                    </i>
+                    <div class="desc">
+                      <div class="title">{{assignee.name}}</div>
+                      <small>{{assignee.email}}</small>
+                    </div>
+                    <div class="value">
+                      <small>{{assignee.phone}}</small>
+                    </div>
+                    <div class="actions">
+                      <i class="fa fa-phone text-muted"></i>
+                    </div>
+                  </li>
+
+                </ul>
               </dd>
             </ng-template>
+            <!--<dt class="col-3">Creator:</dt>-->
+            <!--<dd class="col-9">-->
+              <!--<app-user-icon [user]="foundTask.createdBy"></app-user-icon>-->
+            <!--</dd>-->
+            <!--<ng-template ngIf="{{foundTask.changedby}}">-->
+              <!--<dt class="col-3">Changed by:</dt>-->
+              <!--<dd class="col-9">-->
+                <!--<app-user-icon [user]="foundTask.changedby"></app-user-icon>-->
+              <!--</dd>-->
+            <!--</ng-template>-->
+          </dl>
+        </div>
+
+        <div class="col-12 section">
+          <h5 class="mb-3">Attachments</h5>
+          <dl class="row ml-1">
+
+          </dl>
+        </div>
+
+        <div class="col-12 section">
+          <h5 class="mb-3">Comments</h5>
+          <dl class="row ml-1">
+
           </dl>
         </div>
       </div>

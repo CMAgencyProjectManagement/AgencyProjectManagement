@@ -1,5 +1,14 @@
-.section{
-  dt{
+@import '../../../../scss/bootstrap-variables';
+
+.section {
+  dt {
     font-weight: 600;
+  }
+
+  .icons-list{
+    img.avatar{
+      width: 35px;
+      height: 35px;
+    }
   }
 }
