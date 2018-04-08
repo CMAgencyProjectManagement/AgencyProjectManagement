@@ -7,20 +7,20 @@
       <Diagram DiagramId="e5a5eeab788b4fcaa55a378e929df623" Name="Diagram1" ZoomLevel="98">
         <AssociationConnector Association="CmAgencyModel.UserTeam" />
         <EntityTypeShape EntityType="CmAgencyModel.Attachment" Width="1.5" PointX="9.75" PointY="27.75" />
-        <EntityTypeShape EntityType="CmAgencyModel.CheckList" Width="1.5" PointX="9.75" PointY="11.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.CheckListItem" Width="1.5" PointX="12" PointY="11.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.Comment" Width="1.5" PointX="9.75" PointY="14.625" />
-        <EntityTypeShape EntityType="CmAgencyModel.List" Width="1.5" PointX="5.25" PointY="18.75" />
+        <EntityTypeShape EntityType="CmAgencyModel.CheckList" Width="1.5" PointX="9.75" PointY="14.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.CheckListItem" Width="1.5" PointX="12" PointY="14.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.Comment" Width="1.5" PointX="9.75" PointY="20.75" />
+        <EntityTypeShape EntityType="CmAgencyModel.List" Width="1.5" PointX="5.25" PointY="24.75" />
         <EntityTypeShape EntityType="CmAgencyModel.Notification" Width="1.5" PointX="0.75" PointY="10.25" />
         <EntityTypeShape EntityType="CmAgencyModel.NotificationUser" Width="1.5" PointX="3" PointY="12" />
-        <EntityTypeShape EntityType="CmAgencyModel.Project" Width="1.5" PointX="3" PointY="15.125" />
-        <EntityTypeShape EntityType="CmAgencyModel.Task" Width="1.5" PointX="7.5" PointY="15.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.Project" Width="1.5" PointX="3" PointY="18.5" />
+        <EntityTypeShape EntityType="CmAgencyModel.Task" Width="1.5" PointX="7.5" PointY="18" />
         <EntityTypeShape EntityType="CmAgencyModel.TaskDependency" Width="1.5" PointX="9.75" PointY="24" />
-        <EntityTypeShape EntityType="CmAgencyModel.Team" Width="1.5" PointX="3" PointY="20.375" />
-        <EntityTypeShape EntityType="CmAgencyModel.TeamProject" Width="1.5" PointX="8.25" PointY="21.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.Team" Width="1.5" PointX="3" PointY="15.125" />
+        <EntityTypeShape EntityType="CmAgencyModel.TeamProject" Width="1.5" PointX="5.25" PointY="18.125" />
         <EntityTypeShape EntityType="CmAgencyModel.User" Width="1.5" PointX="0.75" PointY="13.75" />
-        <EntityTypeShape EntityType="CmAgencyModel.UserProject" Width="1.5" PointX="5.25" PointY="15.75" />
-        <EntityTypeShape EntityType="CmAgencyModel.UserTask" Width="1.5" PointX="10.75" PointY="18.75" />
+        <EntityTypeShape EntityType="CmAgencyModel.UserProject" Width="1.5" PointX="5.25" PointY="15.375" />
+        <EntityTypeShape EntityType="CmAgencyModel.UserTask" Width="1.5" PointX="12.75" PointY="18.25" />
         <AssociationConnector Association="CmAgencyModel.FK_Attachment_Task" />
         <AssociationConnector Association="CmAgencyModel.FK_CheckList_Task" />
         <AssociationConnector Association="CmAgencyModel.FK_CheckListItem_CheckList" />

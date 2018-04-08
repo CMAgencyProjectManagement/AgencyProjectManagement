@@ -118,6 +118,7 @@
           <Property Name="Priority" Type="int" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="FinishedDate" Type="datetime" />
+          <Property Name="Effort" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TaskDependency">
           <Key>
@@ -771,6 +772,7 @@
           <Property Name="Priority" Type="Int32" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="FinishedDate" Type="DateTime" Precision="3" />
+          <Property Name="Effort" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Attachments" Relationship="CmAgencyModel.FK_Attachment_Task" FromRole="Task" ToRole="Attachment" />
           <NavigationProperty Name="CheckLists" Relationship="CmAgencyModel.FK_CheckList_Task" FromRole="Task" ToRole="CheckList" />
           <NavigationProperty Name="Comments" Relationship="CmAgencyModel.FK_Comment_Task" FromRole="Task" ToRole="Comment" />
@@ -1230,6 +1232,7 @@
           <EntitySetMapping Name="Tasks">
             <EntityTypeMapping TypeName="CmAgencyModel.Task">
               <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="Effort" ColumnName="Effort" />
                 <ScalarProperty Name="FinishedDate" ColumnName="FinishedDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
