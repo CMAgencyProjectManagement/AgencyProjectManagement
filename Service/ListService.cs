@@ -133,5 +133,22 @@ namespace Service
             }
             return foundList;
         }
+
+        public List UpdateList(int listID, int userID, string name)
+        {
+            List foundList = db.Lists.Find(listID);
+            if(foundList != null)
+            {
+                foundList.Name = name;
+                foundList.ChangedBy = userID;
+                foundList.ChangedTime = DateTime.Now;
+                db.SaveChanges();
+                return foundList;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find list with listID{listID} ");
+            }         
+        }
     }
 }

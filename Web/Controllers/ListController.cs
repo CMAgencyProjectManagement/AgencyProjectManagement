@@ -88,5 +88,45 @@ namespace Web.Controllers
 
         }
 
+
+        [HttpPut]
+        [Route("update")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult UpdateList(UpdateListModel updateListModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+
+                        ListService listService = new ListService(db);
+
+                        var updateList = listService.UpdateList(
+                            updateListModel.ID,
+                            updateListModel.UserID,
+                            updateListModel.Name
+                            );
+
+                        return Ok(ResponseHelper.GetResponse(listService.ParseToJson(updateList)));
+                    }
+
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+
+
+        }
+
     }
 }
