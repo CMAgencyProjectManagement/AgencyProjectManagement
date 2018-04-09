@@ -110,6 +110,28 @@ namespace Service
             return newList;
         }
         
-        
+        public List DeleteList(int listID)
+        {
+            List foundList = db.Lists.Find(listID);
+            if (foundList != null)
+            {
+                Task task = new Task();
+
+                if(foundList.ID != task.ListID)
+                {
+                    db.Lists.Remove(foundList);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"List has contain Task{listID} ");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find list with listID{listID} ");
+            }
+            return foundList;
+        }
     }
 }

@@ -53,7 +53,40 @@ namespace Web.Controllers
            
         }
 
-                
-        
+        [HttpDelete]
+        [Route("delete")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult DeleteList(DeleteListModel deleteListModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+
+                        ListService listService = new ListService(db);
+                        //TaskService taskService = new TaskService(db);
+                        listService.DeleteList(deleteListModel.ID);
+
+                        return Ok(ResponseHelper.GetResponse());
+                    }
+
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+
+
+        }
+
     }
 }
