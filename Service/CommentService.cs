@@ -67,7 +67,6 @@ namespace Service
                 ["ID"] = comment.ID,
                 ["body"] = comment.Body,
                 ["taskID"] = comment.TaskID,
-                ["changedByID"] = comment.ChangedBy,
                 ["changedTime"] = comment.ChangedTime,
                 ["createdByID"] = comment.CreatedBy,
                 ["createdTime"] = comment.CreatedTime
@@ -77,12 +76,6 @@ namespace Service
                 UserService userService = new UserService(db);
                 User creator = userService.GetUser(comment.CreatedBy);
                 result["createdBy"] = userService.ParseToJson(creator, avatarPath);
-
-                if (comment.ChangedBy.HasValue)
-                {
-                    User modifier = userService.GetUser(comment.ChangedBy.Value);
-                    result["changedBy"] = userService.ParseToJson(modifier, avatarPath);
-                }
             }
 
             if (isDetailed)

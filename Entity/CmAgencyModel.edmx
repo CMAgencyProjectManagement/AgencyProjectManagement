@@ -52,7 +52,6 @@
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="ChangedTime" Type="datetime" />
           <Property Name="TaskID" Type="int" Nullable="false" />
-          <Property Name="ChangedBy" Type="int" />
         </EntityType>
         <EntityType Name="List">
           <Key>
@@ -695,7 +694,6 @@
           <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedTime" Type="DateTime" Precision="3" />
           <Property Name="TaskID" Type="Int32" Nullable="false" />
-          <Property Name="ChangedBy" Type="Int32" />
           <NavigationProperty Name="Task" Relationship="CmAgencyModel.FK_Comment_Task" FromRole="Comment" ToRole="Task" />
         </EntityType>
         <EntityType Name="List">
@@ -1168,7 +1166,6 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="CmAgencyModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
                 <ScalarProperty Name="TaskID" ColumnName="TaskID" />
                 <ScalarProperty Name="ChangedTime" ColumnName="ChangedTime" />
                 <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
