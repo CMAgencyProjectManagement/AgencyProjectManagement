@@ -19,6 +19,19 @@ namespace Service
         {
             this.db = db;
         }
+        
+        public Comment UpdateComment(int id, string body, DateTime changedTime)
+        {
+            var findComment = db.Comments.Find(id);
+            if(findComment != null)
+            {
+                findComment.Body = body;
+                findComment.ChangedTime = changedTime;
+            }
+            db.Comments.Add(findComment);
+            db.SaveChanges();
+            return findComment;
+        }
 
         public IEnumerable<Comment> GetCommentOfTask(int taskId)
         {

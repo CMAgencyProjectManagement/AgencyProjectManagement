@@ -218,7 +218,7 @@ namespace Web.Controllers
         [HttpDelete]
         [Route("unassign")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult UnassignTask(UnassignTaskViewModel unassignTaskViewModel)
+        public IHttpActionResult UnassignTask(UnassignTaskModel unassignTaskViewModel)
         {
             try
             {

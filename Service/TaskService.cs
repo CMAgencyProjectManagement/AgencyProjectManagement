@@ -220,19 +220,35 @@ namespace Service
             }
             throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
         }
+        
+        public IEnumerable<User> getTaskAssignee(int taskId)
+        {
+            var task = db.Tasks.Find(taskId);
+            if (task != null)
+            {
+                var result = db.UserTasks
+                    .Where(userTask => userTask.TaskID == taskId)
+                    .Select(UserTask => UserTask.User);
+                return result.ToList();
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Task with id {taskId} not found");    
+            }
+            
+        }
 
-        public JObject ParseToJson(Task task, bool isIncludeProject = true)
+        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null)
         {
             UserService userService = new UserService(db);
-            ListService listService = new ListService(db);
             User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
                 ["id"] = task.ID,
                 ["name"] = task.Name,
                 ["description"] = task.Description,
-                ["createdBy"] = userService.ParseToJson(creator),
-                ["ceatedTime"] = task.CreatedTime,
+                ["createdBy"] = userService.ParseToJson(creator,avatarPath),
+                ["createdDate"] = task.CreatedTime,
                 ["changedTime"] = task.ChangedTime,
                 ["status"] = task.Status,
                 ["duration"] = task.Duration,
@@ -240,14 +256,37 @@ namespace Service
                 ["priority"] = task.Priority,
                 ["startDate"] = task.StartDate
             };
+            
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
-                result["changedby"] = userService.ParseToJson(changer);
+                result["changedBy"] = userService.ParseToJson(changer);
+            }
+
+            if (isDetailed)
+            {
+                ProjectService projectService = new ProjectService(db);
+                CommentService commentService = new CommentService(db);
+                var project = projectService.GetProjectOfTask(task.ID);
+                result["project"] = projectService.ParseToJson(project, false, false);
+
+                ListService listService = new ListService(db);
+                var list = listService.GetListOfTask(task.ID);
+                result["list"] = listService.ParseToJson(list, false, false);
+
+                var assignees = getTaskAssignee(task.ID);
+                var assigneesJson = assignees
+                    .Select(user =>  userService.ParseToJson(user,avatarPath));
+                result["assignees"] = new JArray(assigneesJson);
+
+                IEnumerable<Comment> comments = commentService.GetCommentOfTask(task.ID);
+                IEnumerable<JObject> jsonComments = comments.Select(comment => commentService.ParseToJson(comment,avatarPath:avatarPath));
+                result["comments"] = new JArray(jsonComments);
             }
 
             return result;
         }
+        
         public JObject ParseToJsonofUserTask(UserTask userTask)
         {
             UserService userService = new UserService(db);

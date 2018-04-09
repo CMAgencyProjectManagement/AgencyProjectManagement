@@ -494,8 +494,9 @@
     <Compile Include="ViewModels\EditUserModel.cs" />
     <Compile Include="ViewModels\CreateUserModel.cs" />
     <Compile Include="ViewModels\SetTeamRoleViewModel.cs" />
-    <Compile Include="ViewModels\UnassignTaskViewModel.cs" />
+    <Compile Include="ViewModels\UnassignTaskModel.cs" />
     <Compile Include="ViewModels\UnAssignTeamModel.cs" />
+    <Compile Include="ViewModels\UpdateCommentModel.cs" />
     <Compile Include="ViewModels\UpdateProjectViewModel.cs" />
     <Compile Include="ViewModels\UpdateTaskViewModel.cs" />
     <Compile Include="ViewModels\UpdateUserModel.cs" />

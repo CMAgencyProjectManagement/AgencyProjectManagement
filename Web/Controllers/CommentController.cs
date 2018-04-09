@@ -47,6 +47,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
 
 
         [HttpPost]
@@ -70,7 +71,7 @@ namespace Web.Controllers
                         var updateComment = commentService.UpdateComment(
                             updateCommentModel.id,
                             updateCommentModel.Body,
-                            changetime
+                            changetime.Value
                             );
                         return Ok(ResponseHelper.GetResponse());
                     }
