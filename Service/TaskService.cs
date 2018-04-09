@@ -107,16 +107,14 @@ namespace Service
         {
             return db.Tasks.Find(id);
         }
-
-        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate,
-            User creator)
+        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate, User creator)
         {
             Task newTask = new Task
             {
                 Name = name,
                 Description = description,
                 ListID = listID,
-                Priority = (int) priority,
+                Priority = (int)priority,
                 StartDate = startDate,
                 CreatedBy = creator.ID,
                 CreatedTime = DateTime.Now
@@ -125,7 +123,6 @@ namespace Service
             db.SaveChanges();
             return newTask;
         }
-
         public Task UpdateTask(
             int id,
             string name,
@@ -140,7 +137,7 @@ namespace Service
                 foundTask.Name = name;
                 foundTask.Description = description;
                 foundTask.ListID = listId;
-                foundTask.Priority = (int) priority;
+                foundTask.Priority = (int)priority;
                 foundTask.StartDate = startDate;
                 db.SaveChanges();
                 return foundTask;
@@ -164,22 +161,54 @@ namespace Service
 
         public UserTask AssignTask(int taskID, int userID)
         {
-            UserTask assignTask = new UserTask
+            User user = db.Users.Find(userID);
+            if (user != null)
             {
-                TaskID = taskID,
-                UserID = userID,
-                IsFollow = false,
-                IsAssigned = true,
-            };
-            db.UserTasks.Add(assignTask);
-            db.SaveChanges();
-            return assignTask;
+                Task task = db.Tasks.Find(taskID);
+                if (task != null)
+                {
+                    UserTask assignTask;
+                    IEnumerable<UserTask> userTasks = db.UserTasks.Where(x => x.TaskID == taskID).ToList();
+                    foreach (var userTask in userTasks)
+                    {
+                        if (user.ID != userTask.UserID)
+                        {
+                            assignTask = new UserTask
+                            {
+                                TaskID = taskID,
+                                UserID = userID,
+                                IsFollow = false,
+                                IsAssigned = true,
+                            };
+                            IEnumerable<UserTask> UserTask = db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
+                            if (UserTask.Count() == 0)
+                            {
+                                db.UserTasks.Add(assignTask);
+                                db.SaveChanges();
+                                return assignTask;
+                            }
+                            else
+                            {
+                                throw new ObjectNotFoundException($"UserTask existed");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Task with ID{taskID} not found");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{userID} not found");
+            }
+            return null;
         }
 
         public int UnAssignTask(int TaskId, int UserId)
         {
-            IEnumerable<UserTask> userTasks =
-                db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
+            IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
             if (userTasks != null)
             {
                 foreach (var userTask in userTasks)
@@ -189,38 +218,21 @@ namespace Service
                     return userTask.UserID;
                 }
             }
-
             throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
         }
 
-        public IEnumerable<User> getTaskAssignee(int taskId)
-        {
-            var task = db.Tasks.Find(taskId);
-            if (task != null)
-            {
-                var result = db.UserTasks
-                    .Where(userTask => userTask.TaskID == taskId)
-                    .Select(UserTask => UserTask.User);
-                return result.ToList();
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"Task with id {taskId} not found");    
-            }
-            
-        }
-
-        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null)
+        public JObject ParseToJson(Task task, bool isIncludeProject = true)
         {
             UserService userService = new UserService(db);
+            ListService listService = new ListService(db);
             User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
                 ["id"] = task.ID,
                 ["name"] = task.Name,
                 ["description"] = task.Description,
-                ["createdBy"] = userService.ParseToJson(creator,avatarPath),
-                ["createdDate"] = task.CreatedTime,
+                ["createdBy"] = userService.ParseToJson(creator),
+                ["ceatedTime"] = task.CreatedTime,
                 ["changedTime"] = task.ChangedTime,
                 ["status"] = task.Status,
                 ["duration"] = task.Duration,
@@ -228,33 +240,28 @@ namespace Service
                 ["priority"] = task.Priority,
                 ["startDate"] = task.StartDate
             };
-            
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
-                result["changedBy"] = userService.ParseToJson(changer);
+                result["changedby"] = userService.ParseToJson(changer);
             }
 
-            if (isDetailed)
+            return result;
+        }
+        public JObject ParseToJsonofUserTask(UserTask userTask)
+        {
+            UserService userService = new UserService(db);
+
+
+            JObject result = new JObject
             {
-                ProjectService projectService = new ProjectService(db);
-                CommentService commentService = new CommentService(db);
-                var project = projectService.GetProjectOfTask(task.ID);
-                result["project"] = projectService.ParseToJson(project, false, false);
+                ["id"] = userTask.TaskID,
+                ["name"] = userTask.UserID,
+                ["isFollow"] = userTask.IsFollow,
+                ["isAssigned"] = userTask.IsAssigned,
 
-                ListService listService = new ListService(db);
-                var list = listService.GetListOfTask(task.ID);
-                result["list"] = listService.ParseToJson(list, false, false);
+            };
 
-                var assignees = getTaskAssignee(task.ID);
-                var assigneesJson = assignees
-                    .Select(user =>  userService.ParseToJson(user,avatarPath));
-                result["assignees"] = new JArray(assigneesJson);
-
-                IEnumerable<Comment> comments = commentService.GetCommentOfTask(task.ID);
-                IEnumerable<JObject> jsonComments = comments.Select(comment => commentService.ParseToJson(comment,avatarPath:avatarPath));
-                result["comments"] = new JArray(jsonComments);
-            }
 
             return result;
         }
