@@ -20,17 +20,20 @@ namespace Service
             this.db = db;
         }
         
-        public Comment UpdateComment(int id, string body, DateTime changedTime)
+        public Comment UpdateComment(int id, string body)
         {
             var findComment = db.Comments.Find(id);
             if(findComment != null)
             {
                 findComment.Body = body;
-                findComment.ChangedTime = changedTime;
+                findComment.ChangedTime = DateTime.Now;
+                db.SaveChanges();
+                return findComment;
             }
-            db.Comments.Add(findComment);
-            db.SaveChanges();
-            return findComment;
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find Comment with ID {id}");
+            }
         }
 
         public IEnumerable<Comment> GetCommentOfTask(int taskId)

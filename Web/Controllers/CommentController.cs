@@ -50,9 +50,9 @@ namespace Web.Controllers
         
 
 
-        [HttpPost]
+        [HttpPut]
         [Route("update")]
-        [Authorize(Roles = "Manager, Staff")]
+        [Authorize(Roles = "Admin, Manager, Staff")]
         public IHttpActionResult UpdateComment(UpdateCommentModel updateCommentModel)
         {
             try
@@ -60,18 +60,11 @@ namespace Web.Controllers
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        DateTime? changetime = null;
-                        DateTime tmp;
-                        if (DateTime.TryParse(updateCommentModel.ChangedTime, out tmp))
-                        {
-                            changetime = tmp;
-                        }
+                    {       
                         CommentService commentService = new CommentService(db);
                         var updateComment = commentService.UpdateComment(
                             updateCommentModel.id,
-                            updateCommentModel.Body,
-                            changetime.Value
+                            updateCommentModel.Body
                             );
                         return Ok(ResponseHelper.GetResponse());
                     }
