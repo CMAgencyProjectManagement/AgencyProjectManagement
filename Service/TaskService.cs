@@ -189,8 +189,17 @@ namespace Service
                             }
                             else
                             {
-                                throw new ObjectNotFoundException($"UserTask existed");
+                                //throw new ObjectNotFoundException($"UserTask existed");
+                                
                             }
+                        }
+                        else
+                        {
+                            userTask.TaskID = taskID;
+                            userTask.UserID = userID;
+                            userTask.IsAssigned = true;
+                            db.SaveChanges();
+                           
                         }
                     }
                 }
