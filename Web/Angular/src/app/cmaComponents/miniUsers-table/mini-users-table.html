@@ -24,8 +24,12 @@
       <span *ngIf="!user.birthdate">N/A</span>
     </td>
     <td *ngIf="showRole">
-      <label class="switch switch-icon switch-info switch-sm">
-        <input class="switch-input" [checked]="user.isManager" [disabled]="!changeRoleable" type="checkbox">
+      <label class="switch switch-icon switch-info switch-sm"
+             (click)="roleSwitch(user.id,user.isManager)">
+        <input class="switch-input"
+               [checked]="user.isManager"
+               [disabled]="!changeRoleable"
+               type="checkbox">
         <span class="switch-label" data-on="" data-off=""></span>
         <span class="switch-handle"></span>
       </label>

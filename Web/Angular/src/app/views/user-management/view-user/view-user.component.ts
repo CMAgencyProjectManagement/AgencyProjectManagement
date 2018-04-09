@@ -1,8 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
-import * as _ from 'lodash';
-import * as moment from 'moment';
 import {DataTableDirective} from 'angular-datatables';
 
 @Component({
@@ -28,7 +26,7 @@ export class ViewUserComponent implements OnInit {
       }
     ],
     order: [
-      [1, 'asc']
+      [6, 'desc']
     ]
   };
 

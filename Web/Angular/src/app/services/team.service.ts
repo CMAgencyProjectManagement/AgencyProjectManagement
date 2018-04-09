@@ -75,10 +75,16 @@ export class TeamService {
     });
   }
 
-  public setManager(teamId: number, userId: number): Promise<any> {
+  public setRole(teamId: number, userId: number, isManager): Promise<any> {
+    const dataObj = {
+      UserId: userId,
+      TeamId: teamId,
+      IsManager: isManager
+    };
     return new Promise<any>((resolve, reject) => {
-      put(serverPath.setManager(teamId, userId))
+      put(serverPath.setTeamRole)
         .set('token', this.tokenCursor.get())
+        .send(dataObj)
         .then(res => {
           const content = res.body;
           if (content.IsSuccess) {

@@ -8,7 +8,6 @@ namespace Web.ViewModels
         [Required]
         public int ID { get; set; }
         [MaxLength(255)]
-        [Required(ErrorMessage = "Name must not be empty")]
         public string Name { get; set; }
         [Phone]
         [MaxLength(255)]

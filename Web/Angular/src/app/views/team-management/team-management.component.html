@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <strong>All teams</strong>
+        <strong>All departments</strong>
 
       </div>
       <app-spinner *ngIf="isPageLoading"></app-spinner>
@@ -11,7 +11,7 @@
           <thead>
           <tr>
             <th>Name</th>
-            <th>Team Leader</th>
+            <th>Department Leader</th>
             <th>Created date</th>
             <th>Update</th>
           </tr>
@@ -19,7 +19,7 @@
           <tbody>
             <tr *ngFor="let team of teams;let i = index">
               <td>
-                <a href="#/team/detail?id={{team.id}}">{{team.name}}</a>
+                <a href="#/department/detail?id={{team.id}}">{{team.name}}</a>
               </td>
               <td>
                 <p>{{team.manager.username}}</p>
@@ -28,7 +28,7 @@
                 <p>{{team.createdDate}}</p>
               </td>
               <td class="text-center">
-                <a href="#/team/update?id={{team.id}}">
+                <a href="#/department/update?id={{team.id}}">
                   <button type="button" class="btn btn-primary">Update</button>
                 </a>
               </td>

@@ -21,6 +21,7 @@ namespace Entity
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> ChangedTime { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
+        public int ID { get; set; }
     
         public virtual Task Task { get; set; }
         public virtual Task Task1 { get; set; }

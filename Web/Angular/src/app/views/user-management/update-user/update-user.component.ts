@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
 import {
@@ -7,11 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import {Cursor, StoreService} from '../../../services/tree.service';
-import {Router} from '@angular/router';
-import {IMyDpOptions} from 'mydatepicker';
 import {TeamService} from '../../../services/team.service';
 import {Team} from '../../../interfaces/team';
-import {ModalDialogService, SimpleModalComponent} from 'ngx-modal-dialog';
+import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
+import {ConfirmModalComponent} from '../../../cmaComponents/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-update-user',
@@ -41,12 +40,12 @@ export class UpdateUserComponent implements OnInit {
     avatar: string,
     isActive: string
   };
+  resetPasswordModal: BsModalRef;
 
   constructor(private userService: UserService,
               private storeService: StoreService,
               private teamService: TeamService,
-              private modalService: ModalDialogService,
-              private viewRef: ViewContainerRef) {
+              private modalService: BsModalService) {
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
     this.isSavingChange = false;
@@ -54,7 +53,7 @@ export class UpdateUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userID = Number(this.GetURLParameter('id'));
+    this.userID = Number(this.GetURLParameter());
     this.teamService.getAllTeam()
       .then(value => {
         this.teams = value;
@@ -95,9 +94,21 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }
 
-  resetPassword(id) {
+  openConfirmResetPassword() {
+    const initialState = {
+      confirmCallback: () => {
+        this.resetPassword();
+      },
+      cancelCallback: () => {
+      },
+      message: `You are about to reset ${this.foundUser.name}'s password`
+    };
+    this.resetPasswordModal = this.modalService.show(ConfirmModalComponent, {initialState});
+  }
+
+  resetPassword() {
     this.isResetPasswordLoading = true;
-    this.userService.resetPassword(id)
+    this.userService.resetPassword(this.foundUser.id)
       .then(value => {
         this.newpassword = value.password;
         this.isResetPasswordLoading = false;
@@ -106,13 +117,14 @@ export class UpdateUserComponent implements OnInit {
         this.isResetPasswordLoading = false;
         console.debug('resetPassword', reason);
       })
+
   }
 
 
-  GetURLParameter(sParam) {
-    var sPageURL = window.location.href;
-    var sURLVariables = sPageURL.split('?');
-    var sUsername = sURLVariables[1].split('=');
+  GetURLParameter() {
+    let sPageURL = window.location.href;
+    let sURLVariables = sPageURL.split('?');
+    let sUsername = sURLVariables[1].split('=');
     return sUsername[1];
   }
 
@@ -130,18 +142,9 @@ export class UpdateUserComponent implements OnInit {
     };
   }
 
-  // TODO study dialog
-  openNewDialog() {
-    this.modalService.openDialog(this.viewRef, {
-      title: 'Some modal title',
-      childComponent: SimpleModalComponent,
-      data: 'the message'
-    });
-  }
-
   handleUpdate() {
     this.setErrorsNull();
-    if (confirm('Save change?')) {
+    if (confirm('Save change ?')) {
       this.isSavingChange = true;
       const formValue = this.updateForm.value;
       this.userService.updateUser(
@@ -154,7 +157,7 @@ export class UpdateUserComponent implements OnInit {
         this.isSavingChange = false;
       }).catch(reason => {
         this.errorMessage = reason.message;
-        let errors = reason.response.body.Data;
+        let errors = reason.Data;
         for (let error of errors) {
           const fieldName = error.key;
           const errorMessage = error.message;

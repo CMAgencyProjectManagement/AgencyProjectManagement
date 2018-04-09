@@ -1,9 +1,135 @@
 <div class="card">
   <div class="card-header">
-    <strong>Task detail</strong>
+    Task detail
   </div>
   <app-spinner *ngIf=loading.page></app-spinner>
-  <div *ngIf=!loading.page  class="card-body">
-    {{foundTask.name}}
+  <div *ngIf=!loading.page class="card-body row">
+    <div class="col-12">
+      <h2 class="card-title">{{foundTask.name}}</h2>
+    </div>
+    <div class="col-12">
+      <div class="button-row">
+        <button class="btn btn-secondary bg-light">
+          <i class="fa fa-edit"></i>&nbsp; Edit
+        </button>
+        <button class="btn btn-secondary bg-light">
+          <i class="fa fa-comment-o"></i>&nbsp; Comment
+        </button>
+        <button class="btn btn-secondary bg-light">
+          <i class="fa fa-upload"></i>&nbsp; Upload
+        </button>
+        <button class="btn btn-secondary ml-5 bg-light">
+          <i class="fa fa-play"></i>&nbsp; Start progress
+        </button>
+        <button class="btn btn-secondary bg-light">
+          <i class="fa fa-check"></i>&nbsp; Done
+        </button>
+      </div>
+    </div>
+    <div class="col-12 mt-5">
+      <div class="row">
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Detail</h5>
+          <dl class="row ml-1">
+            <dt class="col-3">Project:</dt>
+            <dd class="col-9"><a
+              href="#/project/task?projectID={{foundTask.project.id}}">{{foundTask.project.name}}</a></dd>
+            <dt class="col-3">List:</dt>
+            <dd class="col-9">{{foundTask.list.name}}</dd>
+            <dt class="col-3">Priority:</dt>
+            <dd class="col-9" [ngSwitch]="foundTask.priority">
+              <span *ngSwitchCase="0">Low</span>
+              <span *ngSwitchCase="1">Medium</span>
+              <span *ngSwitchCase="2">High</span>
+            </dd>
+            <dt class="col-3">Status:</dt>
+            <dd class="col-9" [ngSwitch]="foundTask.status">
+              <span *ngSwitchCase="0">Not started</span>
+              <span *ngSwitchCase="1">Executing</span>
+              <span *ngSwitchCase="2">Done</span>
+            </dd>
+            <dt class="col-3">Point:</dt>
+            <dd class="col-9">2</dd>
+          </dl>
+        </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Date</h5>
+          <dl class="row ml-1">
+            <dt class="col-3">Start date:</dt>
+            <dd class="col-9">{{foundTask.startDate | date:'dd/MM/yyyy'}}</dd>
+            <dt class="col-3">Duration:</dt>
+            <dd class="col-9">{{foundTask.duration}}</dd>
+            <ng-template ngIf="{{foundTask.finishedDate}}">
+              <dt class="col-3">Finished date:</dt>
+              <dd class="col-9">{{foundTask.finishedDate | date:'dd/MM/yyyy'}}</dd>
+            </ng-template>
+            <dt class="col-3">Created date:</dt>
+            <dd class="col-9">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
+            <ng-template ngIf="{{foundTask.changedDate}}">
+              <dt class="col-3">Changed date:</dt>
+              <dd class="col-9">{{foundTask.changedDate | date:'dd/MM/yyyy'}}</dd>
+            </ng-template>
+          </dl>
+        </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Description</h5>
+          <dl class="row ml-1">
+            <p class="col-12">
+              {{foundTask.description}}
+            </p>
+          </dl>
+        </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">People</h5>
+          <dl class="row ml-1">
+            <ng-template ngIf="{{foundTask.assignees}}">
+              <dt class="col-3">Assignees:</dt>
+              <dd class="col-9">
+                <app-user-list [users]="foundTask.assignees"></app-user-list>
+              </dd>
+            </ng-template>
+            <dt class="col-3">Creator:</dt>
+            <dd class="col-9">{{foundTask.createdBy.name}}</dd>
+            <ng-template ngIf="{{foundTask.changedBy}}">
+              <dt class="col-3">Modifier:</dt>
+              <dd class="col-9">{{foundTask.changedBy.name}}</dd>
+            </ng-template>
+          </dl>
+        </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Comments</h5>
+          <dl class="row ml-1">
+            <app-comment class="col-12" *ngFor="let comment of foundTask.comments" [comment]="comment"></app-comment>
+          </dl>
+        </div>
+
+        <div class="col-6 section">
+          <h5 class="mb-3">Attachments</h5>
+          <dl class="row ml-1">
+            <div class="col-12">
+              <ul class="list-group">
+                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                  Initial design.png
+                  <i class="fa fa-download"></i>
+                </li>
+                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                  document.docx
+                  <i class="fa fa-download"></i>
+                </li>
+                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                  slide.ppt
+                  <i class="fa fa-download"></i>
+                </li>
+              </ul>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

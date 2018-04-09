@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Web.ViewModels
 {
-    public class UnassignTaskViewModel
+    public class UnassignTaskModel
     {
         [Required(ErrorMessage = "TaskId must not be empty")]
         public int TaskId { get; set; }

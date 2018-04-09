@@ -16,6 +16,7 @@ export class AssignMembersCardComponent implements OnInit {
   @Input() unAssignLoading: boolean;
   @Output() onAssign = new EventEmitter<number[]>();
   @Output() onUnAssign = new EventEmitter<number[]>();
+  @Output() onSetRole = new EventEmitter<any>();
   leftTableSelectedIds: number[];
   rightTableSelectedIds: number[];
 
@@ -36,5 +37,9 @@ export class AssignMembersCardComponent implements OnInit {
 
   unAssign() {
     this.onUnAssign.emit(this.rightTableSelectedIds)
+  }
+
+  setRole(event) {
+    this.onSetRole.emit(event);
   }
 }

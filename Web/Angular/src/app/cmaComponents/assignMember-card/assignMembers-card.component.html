@@ -41,8 +41,8 @@
               [users]="rightUser"
               [showRole]="true"
               [changeRoleable]="false"
-              (onSelectedChange)="handleRightTableSelect($event)">
-
+              (onSelectedChange)="handleRightTableSelect($event)"
+              (onRoleChange)="setRole($event)">
             </app-mini-users-table>
           </div>
         </div>

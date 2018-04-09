@@ -19,7 +19,7 @@
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
                   id="task">
-                  <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
+                  <a href="#/task?id={{task.id}}" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
                     </div>
@@ -49,23 +49,23 @@
         <div class="col-12">
           <div class="card" style="width: 100%">
             <div class="card-header cardheadertext">
-              Place a portable A-frame
+              Place a portable A-frame (Search Example)
             </div>
           </div>
         </div>
       </div>
       <!-- -->
-      <div class="row">
-        <div class="col-sm-4 col-md-4" *ngFor="let lists of project.lists;let i = index">
-          <ng-container>
-            <div class="card">
+      <div class="row task-row">
+        <div>
+          <ng-container *ngFor="let lists of project.lists;let i = index">
+            <div class="card cardstyle" style="margin-left: 15px;">
               <div class="card-header cardheadertext">
                 {{lists.name}}
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
-                  id="task">
-                  <a href="#/project/task-detail?projectID={{project.id}}&listID={{lists.id}}&taskID={{task.id}}" style="text-decoration: none; color: black">
+                     id="task">
+                  <a href="#/task?id={{task.id}}" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
                     </div>

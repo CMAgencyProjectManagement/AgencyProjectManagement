@@ -17,7 +17,7 @@ const serverPath = {
   deleteTeam: '/api/team',
   assignTeam: '/api/team/assign',
   unAssignTeam: '/api/team/unassign',
-  setManager: (teamId, userId) => `/api/team/${teamId}assign/manager/${userId}`,
+  setTeamRole: 'api/team/assign/role',
   // Task
   getTask: taskId => `/api/task/${taskId}`,
   // File

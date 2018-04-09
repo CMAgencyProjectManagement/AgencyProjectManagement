@@ -1,0 +1,22 @@
+@import '../../../scss/bootstrap-variables';
+#comment {
+  &:hover {
+    background-color: #F4F5F7;
+    cursor: pointer;
+  }
+  .left-section {
+    padding-left: 1.6rem;
+    padding-right: 0;
+  }
+  .right-section {
+    border-left: 1px solid $gray-200;
+  }
+
+  i {
+    width: 10px;
+    height: 15px;
+  }
+}
+
+
+

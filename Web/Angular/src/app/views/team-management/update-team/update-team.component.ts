@@ -18,7 +18,8 @@ export class UpdateTeamComponent implements OnInit {
   loading: {
     page: boolean,
     assign: boolean,
-    unAssign: boolean
+    unAssign: boolean,
+    setRole: boolean
   };
   foundTeam: Team;
 
@@ -29,7 +30,8 @@ export class UpdateTeamComponent implements OnInit {
     this.loading = {
       page: true,
       assign: false,
-      unAssign: false
+      unAssign: false,
+      setRole: false
     };
   }
 
@@ -66,6 +68,13 @@ export class UpdateTeamComponent implements OnInit {
     }
   }
 
+  setRole(event) {
+    let userId = event.id;
+    let teamId = this.foundTeam.id;
+    let isManager = event.isManager;
+    this.teamService.setRole(teamId, userId, isManager);
+  }
+
   assign(freeMEmberSelectedIds: number[]) {
     this.loading.assign = true;
     this.teamService.assignTeam(freeMEmberSelectedIds, this.foundTeam.id)
@@ -79,6 +88,7 @@ export class UpdateTeamComponent implements OnInit {
   }
 
   unAssign(teamMemberSelectedIds: number[]) {
+    this.loading.unAssign = true;
     this.teamService.unAssignTeam(teamMemberSelectedIds)
       .then(value => {
         this.loading.unAssign = false;
@@ -89,16 +99,6 @@ export class UpdateTeamComponent implements OnInit {
       })
   }
 
-  setManager(teamMemberSelectedIds: number[]) {
-    this.teamService.unAssignTeam(teamMemberSelectedIds)
-      .then(value => {
-        this.loading.unAssign = false;
-      })
-      .catch(reason => {
-        console.debug('unAssign team fail', reason);
-        this.loading.unAssign = false;
-      })
-  }
 
   GetURLParameter(sParam) {
     var sPageURL = window.location.href;

@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <strong>Update team</strong>
+        <strong>Update department</strong>
       </div>
       <app-spinner *ngIf="loading.page"></app-spinner>
       <div *ngIf="!loading.page" class="card-body">
@@ -15,7 +15,8 @@
           [assignLoading]="loading.assign"
           [unAssignLoading]="loading.unAssign"
           (onAssign)="assign($event)"
-          (onUnAssign)="unAssign($event)">
+          (onUnAssign)="unAssign($event)"
+          (onSetRole)="setRole($event)">
 
         </app-assign-members-card>
       </div>

@@ -38,15 +38,15 @@ export const routes: Routes = [
         loadChildren: './views/project/project-management.module#ProjectManagementModule'
       },
       {
-        path: 'account',
+        path: 'user',
         loadChildren: './views/user-management/user-management.module#UserManagementModule'
       },
       {
-        path: 'account-detail',
+        path: 'user-detail',
         loadChildren: './views/user-management/user-management.module#UserManagementModule'
       },
       {
-        path: 'team',
+        path: 'department',
         loadChildren: './views/team-management/team-management.module#TeamManagementModule'
       },
       {

@@ -1,15 +1,31 @@
-.scroll{
-    height: 600px;
-overflow-y: scroll;
+.scroll {
+  height: 600px;
+  overflow-y: scroll;
 }
-.cardbodytext{
-    font-size: 17px;
+
+.cardbodytext {
+  font-size: 17px;
 }
-.cardheadertext{
-font-size: 20px;
+
+.cardheadertext {
+  font-size: 20px;
 }
-.blackwhitebutton{
-    color: black;
-                background-color: white;
-                border-color: black;
+
+.blackwhitebutton {
+  color: black;
+  background-color: white;
+  border-color: black;
+}
+
+.cardstyle {
+  width: 300px;
+}
+
+.task-row {
+  overflow-x: scroll;
+  width: 100%;
+  > div {
+    width: 9999px;
+    display: flex;
+  }
 }

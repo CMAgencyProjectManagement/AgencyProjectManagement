@@ -1,0 +1,17 @@
+<ul class="icons-list">
+  <li *ngFor="let user of users">
+    <i>
+      <img src="{{user.avatar}}" class="avatar img-avatar">
+    </i>
+    <div class="desc">
+      <div class="title">{{user.name}}</div>
+      <small>{{user.email}}</small>
+    </div>
+    <div class="value">
+      <small>{{user.phone}}</small>
+    </div>
+    <div class="actions">
+      <i class="fa fa-phone text-muted"></i>
+    </div>
+  </li>
+</ul>
