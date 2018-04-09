@@ -215,9 +215,9 @@ namespace Service
             return null;
         }
 
-        public int UnAssignTask(int TaskId, int UserId)
+        public int UnAssignTask(int taskID, int userID)
         {
-            IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == TaskId && p.UserID == UserId).ToList();
+            IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == taskID && p.UserID == userID).ToList();
             if (userTasks != null)
             {
                 foreach (var userTask in userTasks)
@@ -227,7 +227,7 @@ namespace Service
                     return userTask.UserID;
                 }
             }
-            throw new ObjectNotFoundException($"UserTask with TaskId{TaskId} and Userid{UserId} not found");
+            throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
         
         public IEnumerable<User> getTaskAssignee(int taskId)

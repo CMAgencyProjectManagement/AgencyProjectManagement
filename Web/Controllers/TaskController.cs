@@ -215,17 +215,34 @@ namespace Web.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPut]
         [Route("unassign")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult UnassignTask(UnassignTaskModel unassignTaskViewModel)
+        public IHttpActionResult UnassignTask(UnassignTaskModel unassignTaskModel)
         {
             try
             {
-                using (CmAgencyEntities db = new CmAgencyEntities())
+                if (ModelState.IsValid)
                 {
-                    TaskService taskService = new TaskService(db);
-                    return Ok();
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        TaskService taskService = new TaskService(db);
+
+                        foreach (int userID in unassignTaskModel.UserIDs)
+                        {
+                            taskService.UnAssignTask(
+                                userID: userID,
+                                taskID: unassignTaskModel.TaskID
+                            );
+                        }
+
+                        return Ok(ResponseHelper.GetResponse());
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
                 }
             }
             catch (Exception ex)
