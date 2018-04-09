@@ -1,9 +1,9 @@
 <div id="comment" class="p-2 row" (click)="isCollapsed = !isCollapsed">
-  <div class="col-2 left-section">
+  <div class="col-1 left-section text-center">
     <i class="fa fa-angle-down" *ngIf="!isCollapsed"></i>
     <i class="fa fa-angle-right" *ngIf="isCollapsed"></i>
   </div>
-  <div class="col-10 right-section">
+  <div class="col-11 right-section">
     <img class="avatar img-avatar" src="{{comment.createdBy.avatar}}"/>
     <a href="#/user?id={{comment.createdBy.id}}" class="">
       {{comment.createdBy.name}}
