@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
+using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using System.Web.WebSockets;
 using Entity;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
@@ -118,7 +113,7 @@ namespace Web.Controllers
                             flag = false;
                         }
 
-                        if (userService.CheckDuplicatePhone(createUserModel.Phone)&&createUserModel.Phone!=null)
+                        if (userService.CheckDuplicatePhone(createUserModel.Phone) && createUserModel.Phone != null)
                         {
                             ModelState.AddModelError("Phone", "Phone is taken");
                             flag = false;
@@ -139,9 +134,10 @@ namespace Web.Controllers
                                 // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                                 flag = false;
                             }
+
                             string UpdatedTime = createUserModel.Birthdate.ToString();
                             DateTime DoB = DateTime.Parse(UpdatedTime);
-                            if ((DateTime.Today.Year- DoB.Year) < 18)
+                            if ((DateTime.Today.Year - DoB.Year) < 18)
                             {
                                 ModelState.AddModelError("Birthdate",
                                     "Age must be greater than 18 ");
@@ -230,6 +226,7 @@ namespace Web.Controllers
                                     "Birthdate must be smaller than the current time ");
                                 flag = false;
                             }
+
                             string UpdatedTime = updateUserModel.Birthdate.ToString();
                             DateTime DoB = DateTime.Parse(UpdatedTime);
                             if ((DateTime.Today.Year - DoB.Year) < 18)
@@ -238,8 +235,10 @@ namespace Web.Controllers
                                     "Age must be greater than 18 ");
                                 flag = false;
                             }
+
                             if (flag == false)
-                                return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                                return Content(HttpStatusCode.BadRequest,
+                                    ResponseHelper.GetExceptionResponse(ModelState));
                         }
 
                         User updatedUser = userService.Updateuser(
@@ -289,6 +288,53 @@ namespace Web.Controllers
                 return Content(HttpStatusCode.InternalServerError,
                     ResponseHelper.GetExceptionResponse(ex));
             }
+        }
+
+        [HttpGet]
+        [Route("leaderboard")]
+        [Authorize]
+        public IHttpActionResult GetLeaderBoard()
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    TaskService taskService = new TaskService(db);
+                    var allUsers = userService.GetAll();
+                    var activeUsers = allUsers.Where(user => user.IsActive);
+                    List<JObject> result = new List<JObject>();
+                    foreach (var user in activeUsers)
+                    {
+                        double userScore = 0;
+                        foreach (Task task in taskService.GetTasksOfUser(user.ID))
+                        {
+                            if (taskService.IsTaskFinishedThisMonth(task))
+                            {
+                                userScore += taskService.calculateTaskScore(task);
+                            }
+                        }
+
+                        JObject userJson = userService.ParseToJson(user, AgencyConfig.AvatarPath);
+                        userJson["score"] = Math.Round(userScore, 3);
+                        result.Add(userJson);
+                    }
+                    result.Sort(compareUsersWithScore);
+                    return Ok(ResponseHelper.GetResponse(new JArray(result)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        private int compareUsersWithScore(JObject user1, JObject user2)
+        {
+            double score1 = user1.Value<double>("score");
+            double score2 = user2.Value<double>("score");
+            return score2.CompareTo(score1);
         }
     }
 }

@@ -489,6 +489,7 @@
     <Compile Include="ViewModels\CreateListModel.cs" />
     <Compile Include="ViewModels\CreateProjectModel.cs" />
     <Compile Include="ViewModels\CreateTaskModel.cs" />
+    <Compile Include="ViewModels\DeleteListModel.cs" />
     <Compile Include="ViewModels\DeleteProjectViewModel.cs" />
     <Compile Include="ViewModels\DeleteUserModel.cs" />
     <Compile Include="ViewModels\EditUserModel.cs" />
@@ -497,6 +498,7 @@
     <Compile Include="ViewModels\UnassignTaskModel.cs" />
     <Compile Include="ViewModels\UnAssignTeamModel.cs" />
     <Compile Include="ViewModels\UpdateCommentModel.cs" />
+    <Compile Include="ViewModels\UpdateListModel.cs" />
     <Compile Include="ViewModels\UpdateProjectViewModel.cs" />
     <Compile Include="ViewModels\UpdateTaskViewModel.cs" />
     <Compile Include="ViewModels\UpdateUserModel.cs" />

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Text;
 using Entity;
@@ -107,14 +110,16 @@ namespace Service
         {
             return db.Tasks.Find(id);
         }
-        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate, User creator)
+
+        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate,
+            User creator)
         {
             Task newTask = new Task
             {
                 Name = name,
                 Description = description,
                 ListID = listID,
-                Priority = (int)priority,
+                Priority = (int) priority,
                 StartDate = startDate,
                 CreatedBy = creator.ID,
                 CreatedTime = DateTime.Now
@@ -123,6 +128,7 @@ namespace Service
             db.SaveChanges();
             return newTask;
         }
+
         public Task UpdateTask(
             int id,
             string name,
@@ -137,7 +143,7 @@ namespace Service
                 foundTask.Name = name;
                 foundTask.Description = description;
                 foundTask.ListID = listId;
-                foundTask.Priority = (int)priority;
+                foundTask.Priority = (int) priority;
                 foundTask.StartDate = startDate;
                 db.SaveChanges();
                 return foundTask;
@@ -180,7 +186,8 @@ namespace Service
                                 IsFollow = false,
                                 IsAssigned = true,
                             };
-                            IEnumerable<UserTask> UserTask = db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
+                            IEnumerable<UserTask> UserTask =
+                                db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
                             if (UserTask.Count() == 0)
                             {
                                 db.UserTasks.Add(assignTask);
@@ -212,6 +219,7 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"User with ID{userID} not found");
             }
+
             return null;
         }
 
@@ -229,7 +237,78 @@ namespace Service
             }
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
-        
+
+        public double calculateTaskScore(Task task)
+        {
+            const int lowPriorityScore = 1;
+            const int mediumPriorityScore = 3;
+            const int highPriorityScore = 9;
+
+            const double remainingTimeBonusMultiplier = 1.2f;
+            const double lateFinishMultiplier = 0.4f;
+
+            double score = 0f;
+            switch ((TaskPriority) task.Priority)
+            {
+                case TaskPriority.Low:
+                {
+                    score = lowPriorityScore;
+                    break;
+                }
+                case TaskPriority.Normal:
+                {
+                    score = mediumPriorityScore;
+                    break;
+                }
+                case TaskPriority.High:
+                {
+                    score = highPriorityScore;
+                    break;
+                }
+            }
+
+            score *= task.Effort;
+
+            double remainingTime = GetTaskRemainingTime(task);
+            if (remainingTime >= 0)
+            {
+                score += remainingTimeBonusMultiplier * remainingTime;
+            }
+            else
+            {
+                score *= lateFinishMultiplier;
+            }
+
+
+            return score;
+        }
+
+        public bool IsTaskFinishedThisMonth(Task task)
+        {
+            if (!task.FinishedDate.HasValue) return false;
+
+            DateTime finishedTime = task.FinishedDate.Value;
+            DateTime currentSystemTime = DateTime.Now;
+
+            return finishedTime.Year == currentSystemTime.Year &&
+                   finishedTime.Month == currentSystemTime.Month;
+        }
+
+        public double GetTaskRemainingTime(Task task)
+        {
+            if (!task.FinishedDate.HasValue || !task.StartDate.HasValue)
+            {
+                throw new InvalidOperationException($"Finish date and start date must have value");
+            }
+
+            DateTime finishedDate = task.FinishedDate.Value;
+            DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
+
+            TimeSpan remainingTime = deadline - finishedDate;
+
+            return remainingTime.TotalDays;
+        }
+
         public IEnumerable<User> getTaskAssignee(int taskId)
         {
             var task = db.Tasks.Find(taskId);
@@ -285,11 +364,12 @@ namespace Service
 
                 var assignees = getTaskAssignee(task.ID);
                 var assigneesJson = assignees
-                    .Select(user =>  userService.ParseToJson(user,avatarPath));
+                    .Select(user => userService.ParseToJson(user, avatarPath));
                 result["assignees"] = new JArray(assigneesJson);
 
                 IEnumerable<Comment> comments = commentService.GetCommentOfTask(task.ID);
-                IEnumerable<JObject> jsonComments = comments.Select(comment => commentService.ParseToJson(comment,avatarPath:avatarPath));
+                IEnumerable<JObject> jsonComments =
+                    comments.Select(comment => commentService.ParseToJson(comment, avatarPath: avatarPath));
                 result["comments"] = new JArray(jsonComments);
             }
 
