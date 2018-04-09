@@ -47,7 +47,7 @@ namespace Service
             return newComment;
         }
 
-        public JObject ParseToJson(Comment comment, bool isDetailed = false)
+        public JObject ParseToJson(Comment comment, bool isDetailed = false,string avatarPath = null)
         {
             JObject result = new JObject
             {
@@ -63,12 +63,12 @@ namespace Service
             {
                 UserService userService = new UserService(db);
                 User creator = userService.GetUser(comment.CreatedBy);
-                result["createdBy"] = userService.ParseToJson(creator);
+                result["createdBy"] = userService.ParseToJson(creator, avatarPath);
 
                 if (comment.ChangedBy.HasValue)
                 {
                     User modifier = userService.GetUser(comment.ChangedBy.Value);
-                    result["changedBy"] = userService.ParseToJson(modifier);
+                    result["changedBy"] = userService.ParseToJson(modifier, avatarPath);
                 }
             }
 

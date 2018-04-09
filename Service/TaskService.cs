@@ -252,7 +252,7 @@ namespace Service
                 result["assignees"] = new JArray(assigneesJson);
 
                 IEnumerable<Comment> comments = commentService.GetCommentOfTask(task.ID);
-                IEnumerable<JObject> jsonComments = comments.Select(comment => commentService.ParseToJson(comment));
+                IEnumerable<JObject> jsonComments = comments.Select(comment => commentService.ParseToJson(comment,avatarPath:avatarPath));
                 result["comments"] = new JArray(jsonComments);
             }
 

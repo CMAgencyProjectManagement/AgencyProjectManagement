@@ -15,13 +15,4 @@ export class CommentComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  collapsed(event: any): void {
-    console.log(event);
-  }
-
-  expanded(event: any): void {
-    console.log(event);
-  }
-
 }

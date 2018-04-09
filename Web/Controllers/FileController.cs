@@ -17,7 +17,7 @@ namespace Web.Controllers
     {
         [HttpPut]
         [Route("user/{id:int}/avatar")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Staff")]
         public IHttpActionResult UploadAvatar(int id)
         {
             try
@@ -44,7 +44,7 @@ namespace Web.Controllers
                     }
 
                     //lưu tên file avatar vào db
-                    var renameFile = "avatar_" + id + System.IO.Path.GetExtension(avatarFile.FileName);
+                    var renameFile = "avatar_" + id + Path.GetExtension(avatarFile.FileName);
 
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
@@ -74,6 +74,43 @@ namespace Web.Controllers
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse("No avatar file found"));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        
+        [HttpPut]
+        [Route("task/{id:int}")]
+        [Authorize(Roles = "Staff")]
+        public IHttpActionResult UploadAttachment(int taskId)
+        {
+            try
+            {
+                if (!Request.Content.IsMimeMultipartContent())
+                {
+                    return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Not supported media type"));
+                }
+
+                HttpPostedFile attachment = HttpContext.Current.Request.Files.Count > 0
+                    ? HttpContext.Current.Request.Files["attachment"]
+                    : null;
+
+
+                if (attachment != null)
+                {
+
+                    return null;
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse("No attachment file found"));
                 }
             }
             catch (Exception ex)
