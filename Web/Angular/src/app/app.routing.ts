@@ -38,11 +38,11 @@ export const routes: Routes = [
         loadChildren: './views/project/project-management.module#ProjectManagementModule'
       },
       {
-        path: 'user',
+        path: 'account',
         loadChildren: './views/user-management/user-management.module#UserManagementModule'
       },
       {
-        path: 'user-detail',
+        path: 'account-detail',
         loadChildren: './views/user-management/user-management.module#UserManagementModule'
       },
       {
