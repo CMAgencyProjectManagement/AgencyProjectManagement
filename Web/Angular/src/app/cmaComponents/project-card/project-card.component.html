@@ -40,19 +40,22 @@
             <button class="btn btn-primary" type="button" (click)="search(searchField.value)">
               <i class="fa fa-search"></i> Search
             </button>
+            <button class="btn btn-danger" type="button" (click)="clear()">
+              <i class="fa fa-times"></i>
+            </button>
           </span>
-          <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
+          <input class="form-control" type="text" (change)="search(searchField.value)" #searchField>
         </div>
       </div>
       <!-- -->
-      <div class="row">
-        <div class="col-12">
-          <div class="card" style="width: 100%">
-            <div class="card-header cardheadertext">
-              Place a portable A-frame (Search Example)
-            </div>
-          </div>
-        </div>
+      <div class="well mb-4" *ngIf="foundTasks">
+        <ul class="list-group" *ngFor="let task of foundTasks;let i=index">
+          <li class="list-group-item">
+            <a href="#/task?id={{task.id}}" style="font-size: 17px">
+              {{task.name}}
+            </a>
+          </li>
+        </ul>
       </div>
       <!-- -->
       <div class="row task-row">
@@ -64,7 +67,7 @@
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
-                     id="task">
+                  id="task">
                   <a href="#/task?id={{task.id}}" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}

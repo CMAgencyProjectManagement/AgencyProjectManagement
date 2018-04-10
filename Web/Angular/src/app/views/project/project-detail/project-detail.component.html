@@ -5,93 +5,97 @@
         <div class="card-header">
           <strong>Project Detail</strong>
         </div>
-        <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
-          <div class="row">
-            <div class="col-7">
-              <div class="form-horizontal">
-                <div style="font-size: 30px">
-                  Project Name: {{foundProject.name}}
-                </div>
-                <div>
-                  Description:
-                  <div class="div-text">
-                    {{foundProject.description}}
+        <app-spinner *ngIf="isPageLoading"></app-spinner>
+        <div *ngIf="!isPageLoading" class="card-body">
+          <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
+            <div class="row">
+              <div class="col-7">
+                <div class="form-horizontal">
+                  <div style="font-size: 30px">
+                    Project Name: {{foundProject.name}}
                   </div>
-                  <!-- <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea> -->
-                </div>
-                <div>
-                  Created Time: {{foundProject.createdTime | date:'d/M/y'}}
-                </div>
-                <div>
-                  Start Date: {{foundProject.startDate | date:'d/M/y'}}
-                </div>
-                <div>
-                  Deadline: {{foundProject.deadline | date:'d/M/y'}}
-                </div>
-                <br/>
-                <div class="row">
-                  <div class="col-6 text-center">
-                    <a href="#/project/update?projectID={{foundProject.id}}">
-                      <button type="button" class="btn btn-primary btn-lg blackwhitebutton">Update
+                  <div>
+                    Description:
+                    <div class="div-text">
+                      {{foundProject.description}}
+                    </div>
+                    <!-- <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea> -->
+                  </div>
+                  <div>
+                    Created Time: {{foundProject.createdTime | date:'d/M/y'}}
+                  </div>
+                  <div>
+                    Start Date: {{foundProject.startDate | date:'d/M/y'}}
+                  </div>
+                  <div>
+                    Deadline: {{foundProject.deadline | date:'d/M/y'}}
+                  </div>
+                  <br/>
+                  <div class="row">
+                    <div class="col-6 text-center">
+                      <a href="#/project/update?projectID={{foundProject.id}}">
+                        <button type="button" class="btn btn-primary btn-lg blackwhitebutton">Update
+                        </button>
+                      </a>
+                    </div>
+                    <div class="col-6 text-left">
+                      <button type="button" class="btn btn-danger btn-lg blackwhitebutton" data-toggle="modal" (click)="dangerModal.show()">Close
                       </button>
-                    </a>
+                    </div>
                   </div>
-                  <div class="col-6 text-left">
-                    <button type="button" class="btn btn-danger btn-lg blackwhitebutton" data-toggle="modal" (click)="dangerModal.show()">Close
+                  <!--<div class="form-group row" >-->
+                  <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
+                  <!--</div>-->
+                  <!--<div class="form-group row">-->
+                  <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
+                  <!--</div>-->
+                </div>
+              </div>
+              <div class="col-5">
+                <br/>
+                <div class="row" style="font-size: 28px;">
+                  Members:&nbsp;
+                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/1.jpg">&nbsp;
+                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/2.jpg"> &nbsp;
+                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/3.jpg"> &nbsp;
+                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/4.jpg">..... &nbsp;
+                </div>
+                <div class="row">
+                  <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue">
+                    View all tasks...
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!--<button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;-->
+            <!--background-color: white;-->
+            <!--border-color: black;">Update</button>-->
+            <!--<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;-->
+            <!--background-color: white;-->
+            <!--border-color: black;">Close</button>-->
+            <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-danger" role="document">
+                <div class="modal-content" style="border-color: black;">
+                  <div class="modal-header" style="color: black;
+                      background-color: white;">
+                    <h4 class="modal-title">Confirmation message!</h4>
+                    <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                </div>
-                <!--<div class="form-group row" >-->
-                <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
-                <!--</div>-->
-                <!--<div class="form-group row">-->
-                <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
-                <!--</div>-->
-              </div>
-            </div>
-            <div class="col-5"><br/>
-              <div class="row" style="font-size: 28px;">
-                Members:&nbsp;
-                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/1.jpg">&nbsp;
-                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/2.jpg"> &nbsp;
-                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/3.jpg"> &nbsp;
-                <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/4.jpg">..... &nbsp;
-              </div>
-              <div class="row">
-                <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue" >
-                  View all tasks...
-                </a>
-              </div>
-            </div>
-          </div>
-          <!--<button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;-->
-          <!--background-color: white;-->
-          <!--border-color: black;">Update</button>-->
-          <!--<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;-->
-          <!--background-color: white;-->
-          <!--border-color: black;">Close</button>-->
-          <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-danger" role="document">
-              <div class="modal-content" style="border-color: black;">
-                <div class="modal-header" style="color: black;
-                            background-color: white;">
-                  <h4 class="modal-title">Confirmation message!</h4>
-                  <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure to close this project?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
-                                background-color: white;
-                                border-color: black;">No
-                  </button>
-                  <button type="button" class="btn btn-danger" (click)="handleClose(foundProject.id)" style="color: black;
-                                background-color: white;
-                                border-color: black;">Yes
-                  </button>
+                  <div class="modal-body">
+                    <p>Are you sure to close this project?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()" style="color: black;
+                          background-color: white;
+                          border-color: black;">No
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="handleClose(foundProject.id)" style="color: black;
+                          background-color: white;
+                          border-color: black;">Yes
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

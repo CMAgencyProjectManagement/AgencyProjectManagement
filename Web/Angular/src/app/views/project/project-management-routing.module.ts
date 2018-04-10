@@ -13,7 +13,7 @@ const routes: Routes = [
     path: '',
     component: ProjectManagementComponent,
     data: {
-      title: 'View project'
+      title: 'Project'
     }
   },
   {
@@ -27,28 +27,28 @@ const routes: Routes = [
     path: 'detail',
     component: ProjectDetailComponent,
     data: {
-      title: 'Detail project'
+      title: 'Detail'
     }
   },
   {
     path: 'add',
     component: AddProjectComponent,
     data: {
-      title: 'Create project'
+      title: 'Create'
     }
   },
   {
     path: 'update',
     component: ProjectUpdateComponent,
     data: {
-      title: 'Update project'
+      title: 'Update'
     }
   },
   {
     path: 'task',
     component: ProjectTaskComponent,
     data: {
-      title: 'Task project'
+      title: 'Task'
     }
   },
   {
