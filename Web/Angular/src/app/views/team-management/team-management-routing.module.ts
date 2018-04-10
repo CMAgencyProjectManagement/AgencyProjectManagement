@@ -15,28 +15,28 @@ const routes: Routes = [
         path: 'view',
         component: TeamManagePageComponent,
         data: {
-          title: 'View'
+          title: 'View Department'
         }
       },
       {
         path: 'detail',
         component: DetailTeamComponent,
         data: {
-          title: 'Detail'
+          title: 'Department Detail'
         }
       },
       {
         path: 'create',
         component: CreateTeamComponent,
         data: {
-          title: 'Create'
+          title: 'Create Department'
         }
       },
       {
         path: 'update',
         component: UpdateTeamComponent,
         data: {
-          title: 'Update'
+          title: 'Update Department'
         }
       }
     ]
