@@ -65,7 +65,7 @@ export class ProjectService {
       startdate: startdate
     };
     return new Promise<any>((resolve, reject) => {
-      post(serverPath.updateProject)
+      post(serverPath.createProject)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .type('form')
