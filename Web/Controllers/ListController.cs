@@ -17,7 +17,7 @@ namespace Web.Controllers
     {
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult CreateList(CreateListModel createListModel)
         {
             try

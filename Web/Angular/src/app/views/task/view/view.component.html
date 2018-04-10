@@ -120,10 +120,12 @@
           <dl class="row ml-1">
             <div class="col-12">
               <ul class="list-group" *ngFor="let attachment of foundTask.attachments">
-                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                  <span>{{attachment.name}}</span>
-                  <i class="fa fa-download"></i>
-                </li>
+                <a href="{{attachment.source}}">
+                  <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
+                    <span>{{attachment.name}}</span>
+                    <i class="fa fa-download"></i>
+                  </li>
+                </a>
               </ul>
             </div>
           </dl>

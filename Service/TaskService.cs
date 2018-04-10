@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Core;
@@ -197,7 +198,6 @@ namespace Service
                             else
                             {
                                 //throw new ObjectNotFoundException($"UserTask existed");
-                                
                             }
                         }
                         else
@@ -206,7 +206,6 @@ namespace Service
                             userTask.UserID = userID;
                             userTask.IsAssigned = true;
                             db.SaveChanges();
-                           
                         }
                     }
                 }
@@ -225,7 +224,8 @@ namespace Service
 
         public int UnAssignTask(int taskID, int userID)
         {
-            IEnumerable<UserTask> userTasks = db.UserTasks.Where(p => p.TaskID == taskID && p.UserID == userID).ToList();
+            IEnumerable<UserTask> userTasks =
+                db.UserTasks.Where(p => p.TaskID == taskID && p.UserID == userID).ToList();
             if (userTasks != null)
             {
                 foreach (var userTask in userTasks)
@@ -235,6 +235,7 @@ namespace Service
                     return userTask.UserID;
                 }
             }
+
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
 
@@ -321,12 +322,11 @@ namespace Service
             }
             else
             {
-                throw new ObjectNotFoundException($"Task with id {taskId} not found");    
+                throw new ObjectNotFoundException($"Task with id {taskId} not found");
             }
-            
         }
 
-        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null)
+        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null, string attachmentPath = null)
         {
             UserService userService = new UserService(db);
             User creator = userService.GetUser(task.CreatedBy);
@@ -335,7 +335,7 @@ namespace Service
                 ["id"] = task.ID,
                 ["name"] = task.Name,
                 ["description"] = task.Description,
-                ["createdBy"] = userService.ParseToJson(creator,avatarPath),
+                ["createdBy"] = userService.ParseToJson(creator, avatarPath),
                 ["createdDate"] = task.CreatedTime,
                 ["changedTime"] = task.ChangedTime,
                 ["startDate"] = task.StartDate,
@@ -346,7 +346,7 @@ namespace Service
                 ["effort"] = task.Effort,
                 ["isArchived"] = task.IsArchived
             };
-            
+
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
@@ -362,6 +362,7 @@ namespace Service
             {
                 ProjectService projectService = new ProjectService(db);
                 CommentService commentService = new CommentService(db);
+                AttachmentService attachmentService = new AttachmentService(db);
                 var project = projectService.GetProjectOfTask(task.ID);
                 result["project"] = projectService.ParseToJson(project, false, false);
 
@@ -378,11 +379,15 @@ namespace Service
                 IEnumerable<JObject> jsonComments =
                     comments.Select(comment => commentService.ParseToJson(comment, avatarPath: avatarPath));
                 result["comments"] = new JArray(jsonComments);
+
+                IEnumerable<JObject> attachmentsJson = task.Attachments
+                    .Select(attachment => attachmentService.ParseToJson(attachment,attachmentPath));
+                result["attachments"] = new JArray(attachmentsJson);
             }
 
             return result;
         }
-        
+
         public JObject ParseToJsonofUserTask(UserTask userTask)
         {
             UserService userService = new UserService(db);
@@ -394,7 +399,6 @@ namespace Service
                 ["name"] = userTask.UserID,
                 ["isFollow"] = userTask.IsFollow,
                 ["isAssigned"] = userTask.IsAssigned,
-
             };
 
 

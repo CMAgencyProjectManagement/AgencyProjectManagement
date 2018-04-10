@@ -105,6 +105,14 @@ namespace Web.Controllers
                 if (attachment != null)
                 {
 
+                    string renamedFile = "";
+                    string path = Path.Combine(
+                        HttpContext.Current.Server.MapPath("~"),
+                        AgencyConfig.AttachmentPath.Substring(1),
+                        renamedFile
+                    );
+                    
+                    
                     return null;
                 }
                 else

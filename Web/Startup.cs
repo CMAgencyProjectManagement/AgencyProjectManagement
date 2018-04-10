@@ -120,6 +120,7 @@ namespace Web
         public void SetupConstant()
         {
             AgencyConfig.AvatarPath = WebConfigurationManager.AppSettings["AvatarPath"];
+            AgencyConfig.AttachmentPath = WebConfigurationManager.AppSettings["AttachmentPath"];
         }
     }
 }

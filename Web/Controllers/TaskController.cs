@@ -26,7 +26,7 @@ namespace Web.Controllers
                     TaskService taskService = new TaskService(db);
                     Task task = taskService.GetTask(id);
                     return Ok(ResponseHelper.GetResponse(
-                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath)
+                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                     ));
                 }
             }

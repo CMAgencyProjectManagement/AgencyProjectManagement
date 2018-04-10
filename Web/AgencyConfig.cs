@@ -8,6 +8,7 @@ namespace Web
     public static class AgencyConfig
     {
         public static string AvatarPath;
-        public static string[] supportedImageTypes = new[] {"jpeg", "gif", "bmp", "tiff", "png"};
+        public static string AttachmentPath;
+        public static string[] supportedImageTypes = {"jpeg", "gif", "bmp", "tiff", "png"};
     }
 }
