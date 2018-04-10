@@ -338,17 +338,24 @@ namespace Service
                 ["createdBy"] = userService.ParseToJson(creator,avatarPath),
                 ["createdDate"] = task.CreatedTime,
                 ["changedTime"] = task.ChangedTime,
-                ["status"] = task.Status,
+                ["startDate"] = task.StartDate,
                 ["duration"] = task.Duration,
+                ["status"] = task.Status,
                 ["listID"] = task.ListID,
                 ["priority"] = task.Priority,
-                ["startDate"] = task.StartDate
+                ["effort"] = task.Effort,
+                ["isArchived"] = task.IsArchived
             };
             
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
                 result["changedBy"] = userService.ParseToJson(changer);
+            }
+
+            if (task.StartDate.HasValue)
+            {
+                result["deadline"] = task.StartDate.Value.AddDays(task.Duration);
             }
 
             if (isDetailed)
