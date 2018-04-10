@@ -239,6 +239,18 @@ namespace Service
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
 
+        public int ArchiveTask(int taskID)
+        {
+            var archiveTask = db.Tasks.Find(taskID);
+            if(archiveTask.ID == taskID)
+            {
+                archiveTask.IsArchived = true;
+                db.SaveChanges();
+                return archiveTask.ID;
+            }
+            throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");
+        }
+
         public double calculateTaskScore(Task task)
         {
             const int lowPriorityScore = 1;
@@ -404,5 +416,6 @@ namespace Service
 
             return result;
         }
+
     }
 }
