@@ -12,7 +12,7 @@
       <small>{{user.phone}}</small>
     </div>
     <div class="actions">
-      <i class="fa fa-phone text-muted"></i>
+      <i *ngIf="user.phone" class="fa fa-phone text-muted"></i>
     </div>
   </li>
 </ul>

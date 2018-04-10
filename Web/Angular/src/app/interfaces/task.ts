@@ -2,6 +2,7 @@ import {Project} from './project';
 import {List} from './list';
 import {User} from './user';
 import {Comment} from './comment';
+import {Attachment} from './attachment';
 
 export class Task {
   id: number;
@@ -26,4 +27,5 @@ export class Task {
   comments: Comment[];
   effort: number;
   isArchived: boolean;
+  attachments: Attachment[];
 }

@@ -89,17 +89,17 @@
           <dl class="row ml-1">
             <ng-template ngIf="{{foundTask.assignees}}">
               <dt class="col-12">Assignees:</dt>
-              <dd class="col-10 offset-1">
+              <dd class="col-12 pl-4">
                 <app-user-list [users]="foundTask.assignees"></app-user-list>
               </dd>
             </ng-template>
-            <dt class="col-3">Creator:</dt>
-            <dd class="col-9">
+            <dt class="col-12">Creator:</dt>
+            <dd class="col-12 pl-4">
               <app-user-list [user]="foundTask.createdBy"></app-user-list>
             </dd>
             <ng-template ngIf="{{foundTask.changedBy}}">
-              <dt class="col-3">Modifier:</dt>
-              <dd class="col-9">
+              <dt class="col-12">Modifier:</dt>
+              <dd class="col-12">
                 <app-user-list [user]="foundTask.changedBy"></app-user-list>
               </dd>
             </ng-template>
@@ -119,17 +119,9 @@
           <h5 class="mb-3">Attachments</h5>
           <dl class="row ml-1">
             <div class="col-12">
-              <ul class="list-group">
+              <ul class="list-group" *ngFor="let attachment of foundTask.attachments">
                 <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                  Initial design.png
-                  <i class="fa fa-download"></i>
-                </li>
-                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                  document.docx
-                  <i class="fa fa-download"></i>
-                </li>
-                <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                  slide.ppt
+                  <span>{{attachment.name}}</span>
                   <i class="fa fa-download"></i>
                 </li>
               </ul>
