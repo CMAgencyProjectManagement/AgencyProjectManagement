@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <strong>All users</strong>
+        <strong>All accounts</strong>
       </div>
       <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div *ngIf=!isPageLoading class="card-body animated fadeIn" >
@@ -35,7 +35,7 @@
                 <img *ngIf="!user.avatar" src="/assets/img/100x100_avatar.png" class="avatar avatar-lg">
               </td>
               <td>
-                <a href="#/user/detail?id={{user.id}}">{{user.username}}</a>
+                <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
               </td>
               <td>
                 <p *ngIf="user.name">{{user.name}}</p>
@@ -67,7 +67,7 @@
                 </p>
               </td>
               <td class="text-center">
-                <a href="#/user/update?id={{user.id}}">
+                <a href="#/account/update?id={{user.id}}">
                   <button type="button" class="btn btn-primary">Update</button>
                 </a>
               </td>

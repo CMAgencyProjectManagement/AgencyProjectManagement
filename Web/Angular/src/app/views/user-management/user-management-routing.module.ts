@@ -8,12 +8,12 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'User'
+      title: 'Account'
     },
     children: [
       {
         data: {
-          title: 'View user'
+          title: 'View account'
         },
         path: 'view',
         component: ViewUserComponent,
@@ -22,19 +22,19 @@ const routes: Routes = [
         path: 'detail',
         component: DetailUserComponent,
         data: {
-          title: 'Detail user'
+          title: 'Detail account'
         }
       },
       {
         data: {
-          title: 'Create user'
+          title: 'Create account'
         },
         path: 'create',
         component: CreateUserComponent
       },
       {
         data: {
-          title: 'Update user'
+          title: 'Update account'
         },
         path: 'update',
         component: UpdateUserComponent

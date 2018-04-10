@@ -58,19 +58,19 @@ const admin_navigation = [
   },
   */
   {
-    name: 'User',
+    name: 'Account',
     url: '/account/view',
     icon: 'icon-user',
     children: [
       {
-        name: 'View user',
-        url: '/user/view',
+        name: 'View account',
+        url: '/account/view',
         icon: 'icon-user',
 
       },
       {
-        name: 'Create user',
-        url: '/user/create',
+        name: 'Create account',
+        url: '/account/create',
         icon: 'icon-user',
       },
     ]

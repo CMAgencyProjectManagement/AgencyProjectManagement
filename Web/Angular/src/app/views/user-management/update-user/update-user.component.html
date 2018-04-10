@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <strong>Update user</strong>
+        <strong>Update account</strong>
       </div>
       <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div class="card-body animated fadeIn" *ngIf="!isPageLoading">
@@ -68,7 +68,7 @@
               <h2>Confirm</h2>
             </div>
             <div class="modal-body text-center">
-              <p>You are about to reset user {{foundUser.name}}'s password !</p>
+              <p>You are about to reset account {{foundUser.name}}'s password !</p>
               <button type="button" class="btn btn-primary" (click)="handleConfirmResetPassword(true)">Confirm</button>
               <button type="button" class="btn btn-secondary" (click)="handleConfirmResetPassword(false)">Cancel</button>
             </div>
