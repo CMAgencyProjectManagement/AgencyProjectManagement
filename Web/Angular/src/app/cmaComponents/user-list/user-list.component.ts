@@ -8,11 +8,17 @@ import {User} from '../../interfaces/user';
 })
 export class UserListComponent implements OnInit {
   @Input() users: User[];
+  @Input() user: User;
 
   constructor() {
   }
 
   ngOnInit() {
+    if (!this.users) {
+      if (this.user) {
+        this.users = [this.user];
+      }
+    }
   }
 
 }

@@ -18,9 +18,6 @@
         <button class="btn btn-secondary bg-light">
           <i class="fa fa-upload"></i>&nbsp; Upload
         </button>
-        <button class="btn btn-secondary ml-5 bg-light">
-          <i class="fa fa-play"></i>&nbsp; Start progress
-        </button>
         <button class="btn btn-secondary bg-light">
           <i class="fa fa-check"></i>&nbsp; Done
         </button>
@@ -49,8 +46,8 @@
               <span *ngSwitchCase="1">Executing</span>
               <span *ngSwitchCase="2">Done</span>
             </dd>
-            <dt class="col-3">Point:</dt>
-            <dd class="col-9">2</dd>
+            <dt class="col-3">Effort:</dt>
+            <dd class="col-9">{{foundTask.effort}}</dd>
           </dl>
         </div>
 
@@ -61,6 +58,10 @@
             <dd class="col-9">{{foundTask.startDate | date:'dd/MM/yyyy'}}</dd>
             <dt class="col-3">Duration:</dt>
             <dd class="col-9">{{foundTask.duration}}</dd>
+            <ng-template ngIf="{{foundTask.deadline}}">
+              <dt class="col-3">Deadline:</dt>
+              <dd class="col-9">{{foundTask.deadline | date:'dd/MM/yyyy'}}</dd>
+            </ng-template>
             <ng-template ngIf="{{foundTask.finishedDate}}">
               <dt class="col-3">Finished date:</dt>
               <dd class="col-9">{{foundTask.finishedDate | date:'dd/MM/yyyy'}}</dd>
@@ -87,16 +88,20 @@
           <h5 class="mb-3">People</h5>
           <dl class="row ml-1">
             <ng-template ngIf="{{foundTask.assignees}}">
-              <dt class="col-3">Assignees:</dt>
-              <dd class="col-9">
+              <dt class="col-12">Assignees:</dt>
+              <dd class="col-10 offset-1">
                 <app-user-list [users]="foundTask.assignees"></app-user-list>
               </dd>
             </ng-template>
             <dt class="col-3">Creator:</dt>
-            <dd class="col-9">{{foundTask.createdBy.name}}</dd>
+            <dd class="col-9">
+              <app-user-list [user]="foundTask.createdBy"></app-user-list>
+            </dd>
             <ng-template ngIf="{{foundTask.changedBy}}">
               <dt class="col-3">Modifier:</dt>
-              <dd class="col-9">{{foundTask.changedBy.name}}</dd>
+              <dd class="col-9">
+                <app-user-list [user]="foundTask.changedBy"></app-user-list>
+              </dd>
             </ng-template>
           </dl>
         </div>
@@ -104,7 +109,9 @@
         <div class="col-6 section">
           <h5 class="mb-3">Comments</h5>
           <dl class="row ml-1">
-            <app-comment class="col-12" *ngFor="let comment of foundTask.comments" [comment]="comment"></app-comment>
+            <app-comment class="col-12"
+                         *ngFor="let comment of foundTask.comments"
+                         [comment]="comment"></app-comment>
           </dl>
         </div>
 

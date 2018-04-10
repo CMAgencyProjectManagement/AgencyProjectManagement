@@ -9,6 +9,7 @@ export class Task {
   text: string;
   progress: number;
   duration: number;
+  deadline: string;
   parent: number;
   name: string;
   description: string;
@@ -23,4 +24,6 @@ export class Task {
   assignees: User[];
   list: List;
   comments: Comment[];
+  effort: number;
+  isArchived: boolean;
 }

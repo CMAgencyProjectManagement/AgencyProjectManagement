@@ -32,7 +32,7 @@
             <tr *ngFor="let user of users;let i = index">
               <td class="text-center">
                 <img *ngIf="user.avatar" src="{{user.avatar}}" class="avatar avatar-lg">
-                <img *ngIf="!user.avatar" src="https://www.placehold.it/100x100?text=avatar" class="avatar avatar-lg">
+                <img *ngIf="!user.avatar" src="/assets/img/100x100_avatar.png" class="avatar avatar-lg">
               </td>
               <td>
                 <a href="#/user/detail?id={{user.id}}">{{user.username}}</a>
