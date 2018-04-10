@@ -1,3 +1,4 @@
+@import '../../../scss/bootstrap-variables';
 .scroll {
   height: 600px;
   overflow-y: scroll;
@@ -28,4 +29,16 @@
     width: 9999px;
     display: flex;
   }
+}
+.left-section {
+  padding-left: 0;
+  padding-right: 0;
+}
+.right-section {
+  border-left: 1px solid $gray-200;
+}
+
+i {
+  width: 10px;
+  height: 15px;
 }

@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ProjectService} from '../../../services/project.service';
-import {Project} from '../../../interfaces/project';
+import { Component, OnInit } from '@angular/core';
+import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../interfaces/project';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './project-detail.component.html',
@@ -28,9 +28,10 @@ export class ProjectDetailComponent implements OnInit {
   projectID: number;
   project: Project;
   isLoading: boolean;
-
+  isPageLoading: boolean;
   constructor(private projectService: ProjectService, private router: Router
   ) {
+    this.isPageLoading = true;
   }
 
   ngOnInit() {
@@ -39,6 +40,7 @@ export class ProjectDetailComponent implements OnInit {
     this.projectService.getAllProjects()
       .then(data => {
         this.projects = data;
+        this.isPageLoading = false;
         for (let i = 0; i < this.projects.length; i++) {
           if (this.projects[i].id == this.projectID) {
             this.foundProject = this.projects[i];
