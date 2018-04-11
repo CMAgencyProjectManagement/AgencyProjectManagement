@@ -17,9 +17,12 @@ namespace Web.ViewModels
         [Required(ErrorMessage = "ListId must not be empty")]
 
         public int ListID { get; set; }
-        public TaskPriority Priority { get; set; }
-        [AgencyDateValidation(ErrorMessage = "Invalid time format")]
-
-        public string StartDate { get; set; }
+        public int Priority { get; set; }
+        [Required(ErrorMessage = "StartDate must not be empty")]
+        public DateTime StartDate { get; set; }
+        [Required(ErrorMessage = "Duration must not be empty")]
+        public int Duration { get; set; }
+        [Required(ErrorMessage = "Effort must not be empty")]
+        public int Effort { get; set; }
     }
 }

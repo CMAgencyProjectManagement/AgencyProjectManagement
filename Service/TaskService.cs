@@ -112,7 +112,19 @@ namespace Service
             return db.Tasks.Find(id);
         }
 
-        public Task CreateTask(string name, string description, int listID, TaskPriority priority, DateTime startDate,
+        public bool CheckDuplicatedTaskname(string taskName)
+        {
+            var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
+            return tasks.Count > 0;
+        }
+        public bool CheckForListId(int listId)
+        {
+            var lists = db.Lists.Where(list => list.ID == listId).ToList();
+            return lists.Count == 0;
+        }
+
+        public Task CreateTask(string name, string description, int listID, int priority,
+            DateTime startDate, int duration, int effort,
             User creator)
         {
             Task newTask = new Task
@@ -120,8 +132,10 @@ namespace Service
                 Name = name,
                 Description = description,
                 ListID = listID,
-                Priority = (int) priority,
+                Priority = priority,
                 StartDate = startDate,
+                Duration = duration,
+                Effort = effort,
                 CreatedBy = creator.ID,
                 CreatedTime = DateTime.Now
             };
