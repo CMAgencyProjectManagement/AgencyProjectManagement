@@ -122,12 +122,7 @@ namespace Web.Controllers
                             ModelState.AddModelError("Priority", "Invalid Priority ");
                             flag = false;
                         }
-                        if (createTaskModel.StartDate > DateTime.Now)
-                        {
-                            ModelState.AddModelError("StartDate",
-                                   "StartDate must be smaller than the current time ");
-                            flag = false;
-                        }
+                       
                         if (createTaskModel.Duration<0)
                         {
                             ModelState.AddModelError("Duration",

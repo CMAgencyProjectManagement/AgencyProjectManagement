@@ -143,24 +143,8 @@ namespace Web.Controllers
                                 //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
                         }
-                        if (createProjectModel.StartDate != null)
-                        {
-                            if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Now)
-                            {
-                                ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
-                                flag = false;
-                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-                            }
-                        }
-                        if (createProjectModel.Deadline != null)
-                        {
-                            if (DateTime.Parse(createProjectModel.Deadline) > DateTime.Now)
-                            {
-                                ModelState.AddModelError("Deadline", "Deadline must be smaller than the current time ");
-                                flag = false;
-                            }
-                        }
-                        
+                       
+                       
 
                         if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         UserService userService = new UserService(db);
@@ -264,24 +248,16 @@ namespace Web.Controllers
                                 //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
                         }
-                        if (updateProjectViewModel.startdate != null)
-                        {
-                            if (DateTime.Parse(updateProjectViewModel.startdate) > DateTime.Now)
-                            {
-                                ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
-                                flag = false;
-                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-                            }
-                        }
-                        if (updateProjectViewModel.deadline != null)
-                        {
-                            if (DateTime.Parse(updateProjectViewModel.deadline) > DateTime.Now)
-                            {
-                                ModelState.AddModelError("Deadline", "Deadline must be smaller than the current time ");
-                                flag = false;
-                            }
-                        }
-
+                        //if (updateProjectViewModel.startdate != null)
+                        //{
+                        //    if (DateTime.Parse(updateProjectViewModel.startdate) > DateTime.Now)
+                        //    {
+                        //        ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
+                        //        flag = false;
+                        //        //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        //    }
+                        //}
+                        
 
 
 
