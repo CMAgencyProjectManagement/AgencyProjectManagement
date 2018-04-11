@@ -299,14 +299,22 @@ namespace Web.Controllers
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
+                    //Init service
                     UserService userService = new UserService(db);
                     TaskService taskService = new TaskService(db);
+                    
+                    //Lấy hết user
                     var allUsers = userService.GetAll();
+                    
+                    //Lọc ra ai còn active
                     var activeUsers = allUsers.Where(user => user.IsActive);
-                    List<JObject> result = new List<JObject>();
+                    
+                    List<JObject> result = new List<JObject>();                    
+                    //Phân tích từng user 
                     foreach (var user in activeUsers)
                     {
                         double userScore = 0;
+                        //phân tích từng task của user
                         foreach (Task task in taskService.GetTasksOfUser(user.ID))
                         {
                             if (taskService.IsTaskFinishedThisMonth(task))
@@ -315,10 +323,12 @@ namespace Web.Controllers
                             }
                         }
 
+                        // Parse ra dạng json để trả về
                         JObject userJson = userService.ParseToJson(user, AgencyConfig.AvatarPath);
                         userJson["score"] = Math.Round(userScore, 3);
                         result.Add(userJson);
                     }
+                    
                     result.Sort(compareUsersWithScore);
                     return Ok(ResponseHelper.GetResponse(new JArray(result)));
                 }

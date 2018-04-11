@@ -60,6 +60,22 @@ export class UserService {
     })
   }
 
+  public getLeaderBoard(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.leaderBoard)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            this.usersCursor.set(content.Data);
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        }).catch(reject)
+    });
+  }
+
   public getAllUser(): Promise<any> {
     const users = this.usersCursor.get() as User[];
     if (users !== undefined) {

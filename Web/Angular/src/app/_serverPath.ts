@@ -5,6 +5,7 @@ const serverPath = {
   allUser: '/api/user/all',
   createUser: '/api/user',
   updateUser: '/api/user/update',
+  leaderBoard: '/api/user/leaderboard',
   resetPassword: userId => `/api/user/${userId}/resetpassword`,
   // Project
   allProject: '/api/project/all',

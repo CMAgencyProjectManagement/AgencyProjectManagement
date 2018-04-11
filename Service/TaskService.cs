@@ -329,6 +329,7 @@ namespace Service
             {
                 var result = db.UserTasks
                     .Where(userTask => userTask.TaskID == taskId)
+                    .Where(userTask => userTask.IsAssigned)
                     .Select(UserTask => UserTask.User);
                 return result.ToList();
             }

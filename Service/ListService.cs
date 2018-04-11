@@ -115,9 +115,7 @@ namespace Service
             List foundList = db.Lists.Find(listID);
             if (foundList != null)
             {
-                Task task = new Task();
-
-                if(foundList.ID != task.ListID)
+                if(!foundList.Tasks.Any())
                 {
                     db.Lists.Remove(foundList);
                     db.SaveChanges();

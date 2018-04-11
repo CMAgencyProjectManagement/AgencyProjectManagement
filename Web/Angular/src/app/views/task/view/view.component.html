@@ -55,23 +55,27 @@
           <h5 class="mb-3">Date</h5>
           <dl class="row ml-1">
             <dt class="col-3">Start date:</dt>
-            <dd class="col-9">{{foundTask.startDate | date:'dd/MM/yyyy'}}</dd>
+            <dd class="col-9">
+              <span *ngIf="foundTask.startDate">{{foundTask.startDate | date:'dd/MM/yyyy'}}</span>
+            </dd>
             <dt class="col-3">Duration:</dt>
             <dd class="col-9">{{foundTask.duration}}</dd>
-            <ng-template ngIf="{{foundTask.deadline}}">
-              <dt class="col-3">Deadline:</dt>
-              <dd class="col-9">{{foundTask.deadline | date:'dd/MM/yyyy'}}</dd>
-            </ng-template>
-            <ng-template ngIf="{{foundTask.finishedDate}}">
-              <dt class="col-3">Finished date:</dt>
-              <dd class="col-9">{{foundTask.finishedDate | date:'dd/MM/yyyy'}}</dd>
-            </ng-template>
+            <dt class="col-3">Deadline:</dt>
+            <dd class="col-9">{{foundTask.deadline | date:'dd/MM/yyyy'}}</dd>
+            <dt class="col-3">Finished date:</dt>
+            <dd class="col-9">
+              <span *ngIf="foundTask.finishedDate">
+                {{foundTask.finishedDate | date:'dd/MM/yyyy'}}
+              </span>
+            </dd>
             <dt class="col-3">Created date:</dt>
             <dd class="col-9">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
-            <ng-template ngIf="{{foundTask.changedDate}}">
-              <dt class="col-3">Changed date:</dt>
-              <dd class="col-9">{{foundTask.changedDate | date:'dd/MM/yyyy'}}</dd>
-            </ng-template>
+            <dt class="col-3">Changed date:</dt>
+            <dd class="col-9">
+              <span *ngIf="foundTask.changedDate">
+                {{foundTask.changedDate | date:'dd/MM/yyyy'}}
+              </span>
+            </dd>
           </dl>
         </div>
 
@@ -85,24 +89,20 @@
         </div>
 
         <div class="col-6 section">
-          <h5 class="mb-3">People</h5>
+          <h5 class="mb-3">Members</h5>
           <dl class="row ml-1">
-            <ng-template ngIf="{{foundTask.assignees}}">
-              <dt class="col-12">Assignees:</dt>
-              <dd class="col-12 pl-4">
-                <app-user-list [users]="foundTask.assignees"></app-user-list>
-              </dd>
-            </ng-template>
+            <dt class="col-12">Assignees:</dt>
+            <dd class="col-12 pl-4">
+              <app-user-list *ngIf="foundTask.assignees" [users]="foundTask.assignees"></app-user-list>
+            </dd>
             <dt class="col-12">Creator:</dt>
             <dd class="col-12 pl-4">
               <app-user-list [user]="foundTask.createdBy"></app-user-list>
             </dd>
-            <ng-template ngIf="{{foundTask.changedBy}}">
               <dt class="col-12">Modifier:</dt>
               <dd class="col-12">
-                <app-user-list [user]="foundTask.changedBy"></app-user-list>
+                <app-user-list *ngIf="foundTask.changedBy" [user]="foundTask.changedBy"></app-user-list>
               </dd>
-            </ng-template>
           </dl>
         </div>
 
