@@ -251,5 +251,37 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+
+        [HttpPut]
+        [Route("archive")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult Archive(ArchiveTaskModel archiveTaskModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        TaskService taskService = new TaskService(db);
+
+                        var archiveTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
+
+                        return Ok(ResponseHelper.GetResponse());
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
     }
 }
