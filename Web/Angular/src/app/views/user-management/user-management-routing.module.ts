@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         data: {
-          title: 'View Account'
+          title: 'View'
         },
         path: 'view',
         component: ViewUserComponent,
@@ -27,14 +27,14 @@ const routes: Routes = [
       },
       {
         data: {
-          title: 'Create Account'
+          title: 'Create'
         },
         path: 'create',
         component: CreateUserComponent
       },
       {
         data: {
-          title: 'Update Account'
+          title: 'Update'
         },
         path: 'update',
         component: UpdateUserComponent

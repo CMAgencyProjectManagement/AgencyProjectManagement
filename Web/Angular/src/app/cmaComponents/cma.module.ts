@@ -10,6 +10,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { CommentComponent } from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
 import { ErrorModalComponent } from './modals/error-modal/error-modal.component';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { ErrorModalComponent } from './modals/error-modal/error-modal.component'
     LaddaModule.forRoot({
       style: 'slide-down'
     }),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    RouterModule
   ],
   exports: [
     ProjectCardComponent,

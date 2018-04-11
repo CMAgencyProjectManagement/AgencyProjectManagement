@@ -8,7 +8,16 @@ const routes: Routes = [
     component: ViewTask,
     data: {
       title: 'Task'
-    }
+    },
+    children: [
+      {
+        data: {
+          title: 'View'
+        },
+        path: 'view/:id',
+        component: ViewTask,
+      }
+    ]
   }
 ];
 
