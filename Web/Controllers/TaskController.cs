@@ -106,16 +106,57 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         UserService userService = new UserService(db);
+                        bool flag = true;
+                        if (taskService.CheckDuplicatedTaskname(createTaskModel.Name))
+                        {
+                            ModelState.AddModelError("Name", "Task name is taken");
+                            flag = false;
+                        }
+                        if (taskService.CheckForListId(createTaskModel.ListID))
+                        {
+                            ModelState.AddModelError("ListID", "The System don't have this list");
+                            flag = false;
+                        }
+                        if (createTaskModel.Priority<0||createTaskModel.Priority>3)
+                        {
+                            ModelState.AddModelError("Priority", "Invalid Priority ");
+                            flag = false;
+                        }
+                        if (createTaskModel.StartDate > DateTime.Now)
+                        {
+                            ModelState.AddModelError("StartDate",
+                                   "StartDate must be smaller than the current time ");
+                            flag = false;
+                        }
+                        if (createTaskModel.Duration<0)
+                        {
+                            ModelState.AddModelError("Duration",
+                                  "Duration must be greater than 0 ");
+                            flag = false;
+                        }
+                        if (createTaskModel.Effort<0||createTaskModel.Effort>(createTaskModel.Duration*24))
+                        {
+                            ModelState.AddModelError("Effort",
+                                  "Effort is out of range");
+                            flag = false;
+                        }
+                        if (flag == false)
+                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
-                        DateTime startTime = DateTime.Parse(createTaskModel.StartDate);
-                        TaskPriority priority = TaskPriority.Normal;
+                        DateTime startTime = createTaskModel.StartDate;
+                        int duration = createTaskModel.Duration;
+                        int effort = createTaskModel.Effort;
+                        int priority = createTaskModel.Priority;
                         Task newTask = taskService.CreateTask(
                             createTaskModel.Name,
                             createTaskModel.Description,
                             createTaskModel.ListID,
                             priority,
                             startTime,
+                            duration,
+                            effort,
                             creator
                         );
                         JObject dataObject = taskService.ParseToJson(newTask);
