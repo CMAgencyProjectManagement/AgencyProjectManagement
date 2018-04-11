@@ -9,6 +9,7 @@ import {ConfirmModalComponent} from './modals/confirm-modal/confirm-modal.compon
 import { UserListComponent } from './user-list/user-list.component';
 import { CommentComponent } from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
+import { ErrorModalComponent } from './modals/error-modal/error-modal.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {CollapseModule} from 'ngx-bootstrap';
     MiniUsersTableComponent,
     ConfirmModalComponent,
     UserListComponent,
-    CommentComponent
+    CommentComponent,
+    ErrorModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -33,7 +35,8 @@ import {CollapseModule} from 'ngx-bootstrap';
     AssignMembersCardComponent,
     ConfirmModalComponent,
     UserListComponent,
-    CommentComponent
+    CommentComponent,
+    ErrorModalComponent
   ]
 })
 export class CmaModule {

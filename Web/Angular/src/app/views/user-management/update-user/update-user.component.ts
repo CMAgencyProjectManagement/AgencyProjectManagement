@@ -40,7 +40,6 @@ export class UpdateUserComponent implements OnInit {
     avatar: string,
     isActive: string
   };
-  resetPasswordModal: BsModalRef;
 
   constructor(private userService: UserService,
               private storeService: StoreService,
@@ -103,7 +102,7 @@ export class UpdateUserComponent implements OnInit {
       },
       message: `You are about to reset ${this.foundUser.name}'s password`
     };
-    this.resetPasswordModal = this.modalService.show(ConfirmModalComponent, {initialState});
+    this.modalService.show(ConfirmModalComponent, {initialState});
   }
 
   resetPassword() {

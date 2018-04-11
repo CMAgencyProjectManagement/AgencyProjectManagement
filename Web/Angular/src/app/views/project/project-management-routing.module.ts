@@ -38,7 +38,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'update',
+    path: 'update/:id',
     component: ProjectUpdateComponent,
     data: {
       title: 'Update'
