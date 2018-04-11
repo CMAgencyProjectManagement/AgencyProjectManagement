@@ -59,7 +59,11 @@
               <span *ngIf="foundTask.startDate">{{foundTask.startDate | date:'dd/MM/yyyy'}}</span>
             </dd>
             <dt class="col-3">Duration:</dt>
-            <dd class="col-9">{{foundTask.duration}}</dd>
+            <dd class="col-9">
+              {{foundTask.duration}}
+              <span *ngIf="foundTask.duration <= 1">Day</span>
+              <span *ngIf="foundTask.duration > 1">Days</span>
+            </dd>
             <dt class="col-3">Deadline:</dt>
             <dd class="col-9">{{foundTask.deadline | date:'dd/MM/yyyy'}}</dd>
             <dt class="col-3">Finished date:</dt>

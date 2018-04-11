@@ -89,6 +89,6 @@ export class ProjectUpdateComponent implements OnInit {
       },
       message: message
     };
-    let modal = this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
 }
