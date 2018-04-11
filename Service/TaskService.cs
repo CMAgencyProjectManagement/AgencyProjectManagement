@@ -149,8 +149,10 @@ namespace Service
             string name,
             string description,
             int listId,
-            TaskPriority priority,
-            DateTime? startDate)
+            int priority,
+            DateTime startDate,
+            int duration,
+            int effort)
         {
             var foundTask = db.Tasks.Find(id);
             if (foundTask != null)
@@ -160,6 +162,8 @@ namespace Service
                 foundTask.ListID = listId;
                 foundTask.Priority = (int) priority;
                 foundTask.StartDate = startDate;
+                foundTask.Duration = duration;
+                foundTask.Effort = effort;
                 db.SaveChanges();
                 return foundTask;
             }
