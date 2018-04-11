@@ -107,7 +107,7 @@ var AddProjectComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/project-detail/project-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n          <strong>Project Detail</strong>\r\n        </div>\r\n        <div class=\"card-body\" style=\"font-size:23px\" [formGroup]=\"viewForm\" *ngIf=\"foundProject\">\r\n          <div class=\"row\">\r\n            <div class=\"col-7\">\r\n              <div class=\"form-horizontal\">\r\n                <div style=\"font-size: 30px\">\r\n                  Project Name: {{foundProject.name}}\r\n                </div>\r\n                <div>\r\n                  Description:\r\n                  <div class=\"div-text\">\r\n                    {{foundProject.description}}\r\n                  </div>\r\n                  <!-- <textarea id=\"textarea-input\" name=\"textarea-input\" rows=\"5\" class=\"form-control\" style=\"font-size:20px\" disabled=\"true\">{{foundProject.description}}</textarea> -->\r\n                </div>\r\n                <div>\r\n                  Created Time: {{foundProject.createdTime | date:'d/M/y'}}\r\n                </div>\r\n                <div>\r\n                  Start Date: {{foundProject.startDate | date:'d/M/y'}}\r\n                </div>\r\n                <div>\r\n                  Deadline: {{foundProject.deadline | date:'d/M/y'}}\r\n                </div>\r\n                <br/>\r\n                <div class=\"row\">\r\n                  <div class=\"col-6 text-center\">\r\n                    <a href=\"#/project/update?projectID={{foundProject.id}}\">\r\n                      <button type=\"button\" class=\"btn btn-primary btn-lg blackwhitebutton\">Update\r\n                      </button>\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"col-6 text-left\">\r\n                    <button type=\"button\" class=\"btn btn-danger btn-lg blackwhitebutton\" data-toggle=\"modal\" (click)=\"dangerModal.show()\">Close\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n                <!--<div class=\"form-group row\" >-->\r\n                <!--Changed By: <input *ngIf=\"foundProject.changedBy\" value=\"{{foundProject.changedBy.fullname}}\"/>-->\r\n                <!--</div>-->\r\n                <!--<div class=\"form-group row\">-->\r\n                <!--Changed Time: <input *ngIf=\"foundProject.changedTime\" value=\"{{foundProject.changedTime | date:'d/M/y'}}\"/>-->\r\n                <!--</div>-->\r\n              </div>\r\n            </div>\r\n            <div class=\"col-5\"><br/>\r\n              <div class=\"row\" style=\"font-size: 28px;\">\r\n                Members:&nbsp;\r\n                <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/1.jpg\">&nbsp;\r\n                <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/2.jpg\"> &nbsp;\r\n                <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/3.jpg\"> &nbsp;\r\n                <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/4.jpg\">..... &nbsp;\r\n              </div>\r\n              <div class=\"row\">\r\n                <a href=\"#/project/task?projectID={{foundProject.id}}\" style=\"text-decoration-color: blue\" >\r\n                  View all tasks...\r\n                </a>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <!--<button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"margin-left: 600px;color: black;-->\r\n          <!--background-color: white;-->\r\n          <!--border-color: black;\">Update</button>-->\r\n          <!--<button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"margin-left: 50px;color: black;-->\r\n          <!--background-color: white;-->\r\n          <!--border-color: black;\">Close</button>-->\r\n          <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n              <div class=\"modal-content\" style=\"border-color: black;\">\r\n                <div class=\"modal-header\" style=\"color: black;\r\n                            background-color: white;\">\r\n                  <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                  <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                    <span aria-hidden=\"true\">&times;</span>\r\n                  </button>\r\n                </div>\r\n                <div class=\"modal-body\">\r\n                  <p>Are you sure to close this project?</p>\r\n                </div>\r\n                <div class=\"modal-footer\">\r\n                  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\" style=\"color: black;\r\n                                background-color: white;\r\n                                border-color: black;\">No\r\n                  </button>\r\n                  <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(foundProject.id)\" style=\"color: black;\r\n                                background-color: white;\r\n                                border-color: black;\">Yes\r\n                  </button>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"card\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n          <strong>Project Detail</strong>\r\n        </div>\r\n        <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n        <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n          <div class=\"card-body\" style=\"font-size:23px\" [formGroup]=\"viewForm\" *ngIf=\"foundProject\">\r\n            <div class=\"row\">\r\n              <div class=\"col-7\">\r\n                <div class=\"form-horizontal\">\r\n                  <div style=\"font-size: 30px\">\r\n                    Project Name: {{foundProject.name}}\r\n                  </div>\r\n                  <div>\r\n                    Description:\r\n                    <div class=\"div-text\">\r\n                      {{foundProject.description}}\r\n                    </div>\r\n                    <!-- <textarea id=\"textarea-input\" name=\"textarea-input\" rows=\"5\" class=\"form-control\" style=\"font-size:20px\" disabled=\"true\">{{foundProject.description}}</textarea> -->\r\n                  </div>\r\n                  <div>\r\n                    Created Time: {{foundProject.createdTime | date:'d/M/y'}}\r\n                  </div>\r\n                  <div>\r\n                    Start Date: {{foundProject.startDate | date:'d/M/y'}}\r\n                  </div>\r\n                  <div>\r\n                    Deadline: {{foundProject.deadline | date:'d/M/y'}}\r\n                  </div>\r\n                  <br/>\r\n                  <div class=\"row\">\r\n                    <div class=\"col-6 text-center\">\r\n                      <a href=\"#/project/update?projectID={{foundProject.id}}\">\r\n                        <button type=\"button\" class=\"btn btn-primary btn-lg blackwhitebutton\">Update\r\n                        </button>\r\n                      </a>\r\n                    </div>\r\n                    <div class=\"col-6 text-left\">\r\n                      <button type=\"button\" class=\"btn btn-danger btn-lg blackwhitebutton\" data-toggle=\"modal\" (click)=\"dangerModal.show()\">Close\r\n                      </button>\r\n                    </div>\r\n                  </div>\r\n                  <!--<div class=\"form-group row\" >-->\r\n                  <!--Changed By: <input *ngIf=\"foundProject.changedBy\" value=\"{{foundProject.changedBy.fullname}}\"/>-->\r\n                  <!--</div>-->\r\n                  <!--<div class=\"form-group row\">-->\r\n                  <!--Changed Time: <input *ngIf=\"foundProject.changedTime\" value=\"{{foundProject.changedTime | date:'d/M/y'}}\"/>-->\r\n                  <!--</div>-->\r\n                </div>\r\n              </div>\r\n              <div class=\"col-5\">\r\n                <br/>\r\n                <div class=\"row\" style=\"font-size: 28px;\">\r\n                  Members:&nbsp;\r\n                  <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/1.jpg\">&nbsp;\r\n                  <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/2.jpg\"> &nbsp;\r\n                  <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/3.jpg\"> &nbsp;\r\n                  <img alt=\"admin@bootstrapmaster.com\" class=\"img-avatar\" src=\"assets/img/avatars/4.jpg\">..... &nbsp;\r\n                </div>\r\n                <div class=\"row\">\r\n                  <a href=\"#/project/task?projectID={{foundProject.id}}\" style=\"text-decoration-color: blue\">\r\n                    View all tasks...\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!--<button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"margin-left: 600px;color: black;-->\r\n            <!--background-color: white;-->\r\n            <!--border-color: black;\">Update</button>-->\r\n            <!--<button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"margin-left: 50px;color: black;-->\r\n            <!--background-color: white;-->\r\n            <!--border-color: black;\">Close</button>-->\r\n            <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n              <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n                <div class=\"modal-content\" style=\"border-color: black;\">\r\n                  <div class=\"modal-header\" style=\"color: black;\r\n                      background-color: white;\">\r\n                    <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                    <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                      <span aria-hidden=\"true\">&times;</span>\r\n                    </button>\r\n                  </div>\r\n                  <div class=\"modal-body\">\r\n                    <p>Are you sure to close this project?</p>\r\n                  </div>\r\n                  <div class=\"modal-footer\">\r\n                    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">No\r\n                    </button>\r\n                    <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(foundProject.id)\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">Yes\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -155,6 +155,7 @@ var ProjectDetailComponent = /** @class */ (function () {
     function ProjectDetailComponent(projectService, router) {
         this.projectService = projectService;
         this.router = router;
+        this.isPageLoading = true;
     }
     ProjectDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -162,6 +163,7 @@ var ProjectDetailComponent = /** @class */ (function () {
         this.projectService.getAllProjects()
             .then(function (data) {
             _this.projects = data;
+            _this.isPageLoading = false;
             for (var i = 0; i < _this.projects.length; i++) {
                 if (_this.projects[i].id == _this.projectID) {
                     _this.foundProject = _this.projects[i];
@@ -259,7 +261,7 @@ var routes = [
         path: '',
         component: __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__["a" /* ProjectManagementComponent */],
         data: {
-            title: 'View project'
+            title: 'Project'
         }
     },
     {
@@ -273,28 +275,28 @@ var routes = [
         path: 'detail',
         component: __WEBPACK_IMPORTED_MODULE_4__project_detail_project_detail_component__["a" /* ProjectDetailComponent */],
         data: {
-            title: 'Detail project'
+            title: 'Detail'
         }
     },
     {
         path: 'add',
         component: __WEBPACK_IMPORTED_MODULE_5__add_project_add_project_component__["a" /* AddProjectComponent */],
         data: {
-            title: 'Create project'
+            title: 'Create'
         }
     },
     {
         path: 'update',
         component: __WEBPACK_IMPORTED_MODULE_6__project_update_project_update_component__["a" /* ProjectUpdateComponent */],
         data: {
-            title: 'Update project'
+            title: 'Update'
         }
     },
     {
         path: 'task',
         component: __WEBPACK_IMPORTED_MODULE_7__project_task_project_task_component__["a" /* ProjectTaskComponent */],
         data: {
-            title: 'Task project'
+            title: 'Task'
         }
     },
     {
@@ -490,7 +492,7 @@ var ProjectSchedulingComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/project-task/project-task.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-project-card [project]=\"foundProject\" ></app-project-card>\n"
+module.exports = "<app-project-card [project]=\"foundProject\" ></app-project-card>\r\n"
 
 /***/ }),
 
@@ -831,6 +833,9 @@ var ProjectManagementComponent = /** @class */ (function () {
                     orderable: false,
                     targets: [5]
                 }
+            ],
+            order: [
+                [4, 'desc']
             ]
         };
         this.isPageLoading = true;

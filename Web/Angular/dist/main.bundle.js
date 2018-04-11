@@ -106,18 +106,18 @@ var admin_navigation = [
     },
     */
     {
-        name: 'User',
+        name: 'Account',
         url: '/account/view',
         icon: 'icon-user',
         children: [
             {
-                name: 'View user',
-                url: '/user/view',
+                name: 'View account',
+                url: '/account/view',
                 icon: 'icon-user',
             },
             {
-                name: 'Create user',
-                url: '/user/create',
+                name: 'Create account',
+                url: '/account/create',
                 icon: 'icon-user',
             },
         ]
@@ -140,6 +140,7 @@ var serverPath = {
     allUser: '/api/user/all',
     createUser: '/api/user',
     updateUser: '/api/user/update',
+    leaderBoard: '/api/user/leaderboard',
     resetPassword: function (userId) { return "/api/user/" + userId + "/resetpassword"; },
     // Project
     allProject: '/api/project/all',
@@ -147,6 +148,9 @@ var serverPath = {
     updateProject: '/api/project',
     createProject: '/api/project',
     closeProject: '/api/project/close',
+    // List
+    createList: '/api/list',
+    updateList: '/api/list/update',
     // Team
     allTeam: '/api/team/all',
     deleteTeam: '/api/team',
@@ -376,7 +380,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_22_ng2_charts_ng2_charts__["ChartsModule"],
                 __WEBPACK_IMPORTED_MODULE_23_mydatepicker__["MyDatePickerModule"],
                 __WEBPACK_IMPORTED_MODULE_24_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap__["b" /* ModalModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap__["c" /* ModalModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_27__cmaComponents_cma_module__["a" /* CmaModule */]
             ],
             declarations: [
@@ -444,11 +448,11 @@ var routes = [
                 loadChildren: './views/project/project-management.module#ProjectManagementModule'
             },
             {
-                path: 'user',
+                path: 'account',
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
-                path: 'user-detail',
+                path: 'account-detail',
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
@@ -498,7 +502,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-12 text-center margin-down\">\n  <h1>{{title }}</h1>\n</div>\n<div class=\"col-12\">\n  <table class=\"table\">\n    <thead>\n    <tr>\n      <th class=\"text-center\">\n        <h5>{{leftTableName}}</h5>\n      </th>\n      <th></th>\n      <th class=\"text-center\">\n        <h5>{{rightTableName}}</h5>\n      </th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n      <td colspan=\"3\">\n        <div class=\"row\" style=\"margin-top: 1em\">\n          <div class=\"col-5\">\n            <app-mini-users-table\n              [users]=\"leftUser\"\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\n              [showRole]=\"false\"></app-mini-users-table>\n          </div>\n          <div class=\"col-1 center-section\">\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"unAssign()\"\n                    [ladda]=\"unAssignLoading\">\n              <i class=\"fa fa-angle-double-left\"></i>\n            </button>\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"assign()\"\n                    [ladda]=\"assignLoading\">\n              <i class=\"fa fa-angle-double-right\"></i>\n            </button>\n          </div>\n          <div class=\"col-6\">\n            <app-mini-users-table\n              [users]=\"rightUser\"\n              [showRole]=\"true\"\n              [changeRoleable]=\"false\"\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\n              (onRoleChange)=\"setRole($event)\">\n            </app-mini-users-table>\n          </div>\n        </div>\n      </td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div class=\"col-12 text-center margin-down\">\r\n  <h1>{{title }}</h1>\r\n</div>\r\n<div class=\"col-12\">\r\n  <table class=\"table\">\r\n    <thead>\r\n    <tr>\r\n      <th class=\"text-center\">\r\n        <h5>{{leftTableName}}</h5>\r\n      </th>\r\n      <th></th>\r\n      <th class=\"text-center\">\r\n        <h5>{{rightTableName}}</h5>\r\n      </th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr>\r\n      <td colspan=\"3\">\r\n        <div class=\"row\" style=\"margin-top: 1em\">\r\n          <div class=\"col-5\">\r\n            <app-mini-users-table\r\n              [users]=\"leftUser\"\r\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\r\n              [showRole]=\"false\"></app-mini-users-table>\r\n          </div>\r\n          <div class=\"col-1 center-section\">\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"unAssign()\"\r\n                    [ladda]=\"unAssignLoading\">\r\n              <i class=\"fa fa-angle-double-left\"></i>\r\n            </button>\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"assign()\"\r\n                    [ladda]=\"assignLoading\">\r\n              <i class=\"fa fa-angle-double-right\"></i>\r\n            </button>\r\n          </div>\r\n          <div class=\"col-6\">\r\n            <app-mini-users-table\r\n              [users]=\"rightUser\"\r\n              [showRole]=\"true\"\r\n              [changeRoleable]=\"false\"\r\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\r\n              (onRoleChange)=\"setRole($event)\">\r\n            </app-mini-users-table>\r\n          </div>\r\n        </div>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -627,12 +631,18 @@ var AssignMembersCardComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular2_ladda__ = __webpack_require__("../../../../angular2-ladda/module/module.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular2_ladda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_angular2_ladda__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__user_list_user_list_component__ = __webpack_require__("../../../../../src/app/cmaComponents/user-list/user-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__comment_comment_component__ = __webpack_require__("../../../../../src/app/cmaComponents/comment/comment.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -652,22 +662,95 @@ var CmaModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6_angular2_ladda__["LaddaModule"].forRoot({
                     style: 'slide-down'
                 }),
+                __WEBPACK_IMPORTED_MODULE_10_ngx_bootstrap__["b" /* CollapseModule */].forRoot()
             ],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
-                __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__user_list_user_list_component__["a" /* UserListComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__comment_comment_component__["a" /* CommentComponent */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
-                __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_7__modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__user_list_user_list_component__["a" /* UserListComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__comment_comment_component__["a" /* CommentComponent */]
             ]
         })
     ], CmaModule);
     return CmaModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/comment/comment.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"isCollapsed = !isCollapsed\">\n  <div class=\"col-1 left-section text-center\">\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\n  </div>\n  <div class=\"col-11 right-section\">\n    <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\n    <a href=\"#/user?id={{comment.createdBy.id}}\" class=\"\">\n      {{comment.createdBy.name}}\n    </a>\n    <div class=\"mt-3\" *ngIf=\"!isCollapsed\">\n      <p>{{comment.body}}</p>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/comment/comment.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "#comment:hover {\n  background-color: #F4F5F7;\n  cursor: pointer; }\n\n#comment .left-section {\n  padding-left: 0;\n  padding-right: 0; }\n\n#comment .right-section {\n  border-left: 1px solid #c2cfd6; }\n\n#comment i {\n  width: 10px;\n  height: 15px; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/comment/comment.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommentComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_comment__ = __webpack_require__("../../../../../src/app/interfaces/comment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CommentComponent = /** @class */ (function () {
+    function CommentComponent() {
+        this.isCollapsed = true;
+    }
+    CommentComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1__interfaces_comment__["a" /* Comment */])
+    ], CommentComponent.prototype, "comment", void 0);
+    CommentComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-comment',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/comment/comment.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/comment/comment.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], CommentComponent);
+    return CommentComponent;
 }());
 
 
@@ -804,14 +887,14 @@ var MiniUsersTableComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\n  <thead>\n  <tr>\n    <th>ID</th>\n    <th>Avatar</th>\n    <th>Name</th>\n    <th>Birthdate</th>\n    <th *ngIf=\"showRole\">Manager</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let user of users\">\n    <td>{{user.id}}</td>\n    <td class=text-center>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\n    </td>\n    <td>\n      <span *ngIf=\"user.name\">{{user.name}}</span>\n      <span *ngIf=\"!user.name\">N/A</span>\n    </td>\n    <td>\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\n      <span *ngIf=\"!user.birthdate\">N/A</span>\n    </td>\n    <td *ngIf=\"showRole\">\n      <label class=\"switch switch-icon switch-info switch-sm\"\n             (click)=\"roleSwitch(user.id,user.isManager)\">\n        <input class=\"switch-input\"\n               [checked]=\"user.isManager\"\n               [disabled]=\"!changeRoleable\"\n               type=\"checkbox\">\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\r\n  <thead>\r\n  <tr>\r\n    <th>ID</th>\r\n    <th>Avatar</th>\r\n    <th>Name</th>\r\n    <th>Birthdate</th>\r\n    <th *ngIf=\"showRole\">Manager</th>\r\n  </tr>\r\n  </thead>\r\n  <tbody>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.id}}</td>\r\n    <td class=text-center>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\r\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.name\">{{user.name}}</span>\r\n      <span *ngIf=\"!user.name\">N/A</span>\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\r\n      <span *ngIf=\"!user.birthdate\">N/A</span>\r\n    </td>\r\n    <td *ngIf=\"showRole\">\r\n      <label class=\"switch switch-icon switch-info switch-sm\"\r\n             (click)=\"roleSwitch(user.id,user.isManager)\">\r\n        <input class=\"switch-input\"\r\n               [checked]=\"user.isManager\"\r\n               [disabled]=\"!changeRoleable\"\r\n               type=\"checkbox\">\r\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\r\n        <span class=\"switch-handle\"></span>\r\n      </label>\r\n    </td>\r\n  </tr>\r\n  </tbody>\r\n</table>\r\n"
 
 /***/ }),
 
 /***/ "../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">Confirm</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <p>{{message}}</p>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Confirm</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\">\r\n  <p>{{message}}</p>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -893,7 +976,7 @@ var ConfirmModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Tasks</strong>\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\n        View full\n      </button>\n    </a>\n  </div>\n  <div *ngIf=\"showbutton\">\n    <div class=\"card-body scroll\" *ngIf=\"project\">\n      <div class=\"row\">\n        <div class=\"col-sm-6 col-md-6\" *ngFor=\"let lists of project.lists;let i = index\">\n          <ng-container>\n            <div class=\"card\">\n              <div class=\"card-header cardheadertext\">\n                {{lists.name}}\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\n                  id=\"task\">\n                  <a href=\"#/task?id={{task.id}}\" style=\"text-decoration: none; color: black\">\n                    <div class=\"card-body\">\n                      {{task.name}}\n                    </div>\n                  </a>\n                </div>\n              </div>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div *ngIf=\"!showbutton\">\n    <div class=\"card-body\" *ngIf=\"project\">\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\n        <div class=\"input-group col-12\">\n          <span class=\"input-group-btn\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\n              <i class=\"fa fa-search\"></i> Search\n            </button>\n          </span>\n          <input class=\"form-control\" type=\"text\" (input)=\"search(searchField.value)\" #searchField>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"row\">\n        <div class=\"col-12\">\n          <div class=\"card\" style=\"width: 100%\">\n            <div class=\"card-header cardheadertext\">\n              Place a portable A-frame (Search Example)\n            </div>\n          </div>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"row task-row\">\n        <div>\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\n              <div class=\"card-header cardheadertext\">\n                {{lists.name}}\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\n                     id=\"task\">\n                  <a href=\"#/task?id={{task.id}}\" style=\"text-decoration: none; color: black\">\n                    <div class=\"card-body\">\n                      {{task.name}}\n                    </div>\n                  </a>\n                </div>\n              </div>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <div *ngIf=\"showbutton\">\r\n    <div class=\"card-body scroll\" *ngIf=\"project\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\" *ngFor=\"let lists of project.lists;let i = index\">\r\n          <ng-container>\r\n            <div class=\"card\">\r\n              <div class=\"card-header cardheadertext\">\r\n                {{lists.name}}\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a href=\"#/task?id={{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"!showbutton\">\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-danger\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks\">\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\">\r\n            <a href=\"#/task?id={{task.id}}\" style=\"font-size: 17px\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\">\r\n                {{lists.name}}\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a href=\"#/task?id={{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -905,7 +988,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".scroll {\n  height: 600px;\n  overflow-y: scroll; }\n\n.cardbodytext {\n  font-size: 17px; }\n\n.cardheadertext {\n  font-size: 20px; }\n\n.blackwhitebutton {\n  color: black;\n  background-color: white;\n  border-color: black; }\n\n.cardstyle {\n  width: 300px; }\n\n.task-row {\n  overflow-x: scroll;\n  width: 100%; }\n\n.task-row > div {\n    width: 9999px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n", ""]);
+exports.push([module.i, ".scroll {\n  height: 600px;\n  overflow-y: scroll; }\n\n.cardbodytext {\n  font-size: 17px; }\n\n.cardheadertext {\n  font-size: 20px; }\n\n.blackwhitebutton {\n  color: black;\n  background-color: white;\n  border-color: black; }\n\n.cardstyle {\n  width: 300px; }\n\n.task-row {\n  overflow-x: scroll;\n  width: 100%; }\n\n.task-row > div {\n    width: 9999px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.left-section {\n  padding-left: 0;\n  padding-right: 0; }\n\n.right-section {\n  border-left: 1px solid #c2cfd6; }\n\ni {\n  width: 10px;\n  height: 15px; }\n", ""]);
 
 // exports
 
@@ -933,20 +1016,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ProjectCardComponent = /** @class */ (function () {
     function ProjectCardComponent() {
+        this.foundTasks = [];
+        this.isCollapsed = true;
     }
     ProjectCardComponent.prototype.ngOnInit = function () {
     };
     ProjectCardComponent.prototype.search = function (searchStr) {
+        this.foundTasks = [];
+        if (searchStr == "") {
+            return;
+        }
         for (var _i = 0, _a = this.project.lists; _i < _a.length; _i++) {
             var list = _a[_i];
             for (var _b = 0, _c = list.tasks; _b < _c.length; _b++) {
                 var task = _c[_b];
                 if (task.name.indexOf(searchStr) >= 0) {
-                    this.foundTask.push(task);
+                    this.foundTasks.push(task);
                     continue;
+                }
+                if (task.description.indexOf(searchStr) >= 0) {
+                    this.foundTasks.push(task);
                 }
             }
         }
+    };
+    ProjectCardComponent.prototype.clear = function () {
+        this.foundTasks = [];
+        return;
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -965,6 +1061,80 @@ var ProjectCardComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [])
     ], ProjectCardComponent);
     return ProjectCardComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">{{user.name}}</div>\n      <small>{{user.email}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var UserListComponent = /** @class */ (function () {
+    function UserListComponent() {
+    }
+    UserListComponent.prototype.ngOnInit = function () {
+        if (!this.users) {
+            if (this.user) {
+                this.users = [this.user];
+            }
+        }
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Array)
+    ], UserListComponent.prototype, "users", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], UserListComponent.prototype, "user", void 0);
+    UserListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-user-list',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/user-list/user-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/user-list/user-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], UserListComponent);
+    return UserListComponent;
 }());
 
 
@@ -1144,7 +1314,7 @@ var AppFooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\r\n    <form class=\"form-inline my-lg-0 my-lg-5\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\r\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\r\n    </form>\r\n  </a> -->\r\n  <ul class=\"nav navbar-nav ml-auto\">\r\n    <li class=\"nav-item dropdown\" dropdown>\r\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\r\n        <span class=\"d-md-down-none\">{{user.username}}</span>\r\n\r\n      </a>\r\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Account</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Settings</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-user\"></i> Profile</a>\r\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\r\n          <i class=\"fa fa-lock\"></i> Logout</a>\r\n      </div>\r\n    </li>\r\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n      <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n  </ul>\r\n</header>\r\n"
+module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\r\n    <form class=\"form-inline my-lg-0 my-lg-5\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\r\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\r\n    </form>\r\n  </a> -->\r\n  <ul class=\"nav navbar-nav ml-auto\">\r\n    <li class=\"nav-item dropdown\" dropdown>\r\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\r\n        <span class=\"d-md-down-none\">{{user.name}}</span>\r\n\r\n      </a>\r\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Account</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Settings</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-user\"></i> Profile</a>\r\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\r\n          <i class=\"fa fa-lock\"></i> Logout</a>\r\n      </div>\r\n    </li>\r\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n      <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n  </ul>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -2224,6 +2394,21 @@ var SIDEBAR_TOGGLE_DIRECTIVES = [
 
 /***/ }),
 
+/***/ "../../../../../src/app/interfaces/comment.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Comment; });
+var Comment = /** @class */ (function () {
+    function Comment() {
+    }
+    return Comment;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/auth.guard.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2498,7 +2683,7 @@ var ProjectService = /** @class */ (function () {
             startdate: startdate
         };
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].updateProject)
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].createProject)
                 .set('token', _this.tokenCursor.get())
                 .send(objData)
                 .type('form')
@@ -2946,6 +3131,23 @@ var UserService = /** @class */ (function () {
                     message: reason.response.body.error_description
                 });
             });
+        });
+    };
+    UserService.prototype.getLeaderBoard = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].leaderBoard)
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    _this.usersCursor.set(content.Data);
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            }).catch(reject);
         });
     };
     UserService.prototype.getAllUser = function () {

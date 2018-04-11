@@ -227,35 +227,35 @@ var routes = [
     {
         path: '',
         data: {
-            title: 'department'
+            title: 'Department'
         },
         children: [
             {
                 path: 'view',
                 component: __WEBPACK_IMPORTED_MODULE_2__team_management_component__["a" /* TeamManagePageComponent */],
                 data: {
-                    title: 'View department'
+                    title: 'View Department'
                 }
             },
             {
                 path: 'detail',
                 component: __WEBPACK_IMPORTED_MODULE_5__detail_team_detail_team_component__["a" /* DetailTeamComponent */],
                 data: {
-                    title: 'Detail department'
+                    title: 'Department Detail'
                 }
             },
             {
                 path: 'create',
                 component: __WEBPACK_IMPORTED_MODULE_3__create_team_create_team_component__["a" /* CreateTeamComponent */],
                 data: {
-                    title: 'Create department'
+                    title: 'Create Department'
                 }
             },
             {
                 path: 'update',
                 component: __WEBPACK_IMPORTED_MODULE_4__update_team_update_team_component__["a" /* UpdateTeamComponent */],
                 data: {
-                    title: 'Update department'
+                    title: 'Update Department'
                 }
             }
         ]

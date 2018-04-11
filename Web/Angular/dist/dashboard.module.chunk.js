@@ -45,7 +45,7 @@ var DashboardRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div *ngFor=\"let project of projects\"\r\n    class=\"col-md-3\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        {{project.name}}\r\n      </div>\r\n      <div class=\"card-body\">\r\n          {{project.description}}\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n\r\n<!--<button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"modal\" (click)=\"smallModal.show()\">-->\r\n  <!--Add a new project-->\r\n<!--</button>-->\r\n\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"card col-12\">\r\n    <div class=\"card-body\">\r\n      <h4 class=\"card-title\">Summary</h4>\r\n      <div class=\"row\">\r\n        <div class=\"col-7\"></div>\r\n        <div class=\"col-5\">\r\n          <div class=\"container-fluid row card\">\r\n            <div class=\"card-body\">\r\n              <h4 class=\"card-title col-12\">Leader board</h4>\r\n\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n\r\n<!--<button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"modal\" (click)=\"smallModal.show()\">-->\r\n<!--Add a new project-->\r\n<!--</button>-->\r\n\r\n"
 
 /***/ }),
 
