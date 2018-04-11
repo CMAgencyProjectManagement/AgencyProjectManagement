@@ -56,7 +56,7 @@
                 <span *ngIf=!project.status>N/A</span>
               </td>
               <td>
-                <a href="#/project/update?projectID={{project.id}}">
+                <a routerLink="/project/update/{{project.id}}">
                   <button type="button" class="btn btn-primary">
                     Update
                   </button>

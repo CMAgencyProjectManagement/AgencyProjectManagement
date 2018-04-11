@@ -99,6 +99,7 @@ import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-m
 import {ModalModule} from 'ngx-bootstrap';
 import {ConfirmModalComponent} from './cmaComponents/modals/confirm-modal/confirm-modal.component';
 import {CmaModule} from './cmaComponents/cma.module';
+import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-modal.component';
 
 
 @NgModule({
@@ -127,7 +128,8 @@ import {CmaModule} from './cmaComponents/cma.module';
     ...SERVICES
   ],
   entryComponents: [
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    ErrorModalComponent
   ],
   bootstrap: [AppComponent]
 })
