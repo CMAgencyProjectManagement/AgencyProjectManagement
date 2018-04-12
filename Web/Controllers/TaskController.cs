@@ -95,7 +95,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult CreateTask(CreateTaskModel createTaskModel)
         {
             try
@@ -173,7 +173,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult UpdateTask(UpdateTaskViewModel updateTaskViewModel)
         {
             try
