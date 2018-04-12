@@ -36,16 +36,12 @@
               <dt class="col-3">List:</dt>
               <dd class="col-9">{{foundTask.list.name}}</dd>
               <dt class="col-3">Priority:</dt>
-              <dd class="col-9" [ngSwitch]="foundTask.priority">
-                <span *ngSwitchCase="0">Low</span>
-                <span *ngSwitchCase="1">Medium</span>
-                <span *ngSwitchCase="2">High</span>
+              <dd class="col-9">
+                <span>{{foundTask.priorityText}}</span>
               </dd>
               <dt class="col-3">Status:</dt>
-              <dd class="col-9" [ngSwitch]="foundTask.status">
-                <span *ngSwitchCase="0">Not started</span>
-                <span *ngSwitchCase="1">Executing</span>
-                <span *ngSwitchCase="2">Done</span>
+              <dd class="col-9">
+                <span>{{foundTask.statusText}}</span>
               </dd>
               <dt class="col-3">Effort:</dt>
               <dd class="col-9">
@@ -91,7 +87,7 @@
             </dl>
           </div>
         </div>
-        <div class="col-5 offset-1 right-pane">
+        <div class="col-5 right-pane ml-4">
           <div class="section">
             <!--MEMBER-->
             <h5 class="mb-3">Members</h5>
@@ -105,7 +101,7 @@
                 <app-user-list [user]="foundTask.createdBy"></app-user-list>
               </dd>
               <dt class="col-12">Modifier:</dt>
-              <dd class="col-12">
+              <dd class="col-12 pl-4">
                 <app-user-list *ngIf="foundTask.changedBy" [user]="foundTask.changedBy"></app-user-list>
                 <span *ngIf="!foundTask.changedBy">N/A</span>
               </dd>

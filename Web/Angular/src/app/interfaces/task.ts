@@ -15,7 +15,9 @@ export class Task {
   name: string;
   description: string;
   status: number;
+  statusText: string;
   priority: number;
+  priorityText: string;
   finishedDate: string;
   createdDate: string;
   changedDate: string;

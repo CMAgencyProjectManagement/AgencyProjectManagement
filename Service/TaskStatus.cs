@@ -10,6 +10,7 @@ namespace Service
     {
         NotStarted,
         Executing,
-        Closed
+        NeedReview,
+        Done
     }
 }
