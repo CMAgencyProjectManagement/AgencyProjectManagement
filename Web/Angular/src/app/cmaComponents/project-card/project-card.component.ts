@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Project } from '../../interfaces/project';
-import { Task } from 'app/interfaces/task';
+import {Component, Input, OnInit} from '@angular/core';
+import {Project} from '../../interfaces/project';
+import {Task} from 'app/interfaces/task';
+import {BsModalService} from 'ngx-bootstrap';
+import {CreateListModalComponent} from '../modals/create-list-modal/create-list-modal.component';
 
 @Component({
   selector: 'app-project-card',
@@ -12,17 +14,28 @@ export class ProjectCardComponent implements OnInit {
   @Input() showbutton: boolean;
   foundTasks: Task[];
   isCollapsed: boolean;
-  constructor() {
-    this.foundTasks=[];
-    this.isCollapsed=true;
+
+  constructor(private modalService: BsModalService) {
+    this.foundTasks = [];
+    this.isCollapsed = true;
   }
 
   ngOnInit() {
   }
 
+  handleOnAddListClick() {
+    const initialState = {
+      confirmCallback: (listName) => {
+        // Code here
+        console.log(listName);
+      }
+    };
+    this.modalService.show(CreateListModalComponent, {initialState, class: 'modal-dialog'});
+  }
+
   search(searchStr: string) {
-    this.foundTasks=[];
-    if(searchStr==""){
+    this.foundTasks = [];
+    if (searchStr == '') {
       return;
     }
     for (let list of this.project.lists) {
@@ -31,14 +44,15 @@ export class ProjectCardComponent implements OnInit {
           this.foundTasks.push(task);
           continue;
         }
-        if(task.description.indexOf(searchStr)>=0){
+        if (task.description.indexOf(searchStr) >= 0) {
           this.foundTasks.push(task);
         }
       }
     }
   }
-  clear(){
-    this.foundTasks=[];
+
+  clear() {
+    this.foundTasks = [];
     return;
   }
 }

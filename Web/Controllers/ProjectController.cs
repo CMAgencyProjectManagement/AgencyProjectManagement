@@ -45,7 +45,6 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        //sửa cái này coi chừng chết front end
         [Route("")]
         [Authorize]
         public IHttpActionResult GetMyProject()
@@ -76,7 +75,6 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        //sửa cái này coi chừng chết front end- thu roi xoa
         [Route("dd/{id:int}")]
         [Authorize]
         public IHttpActionResult GetMyProjectinTeam(int id)
@@ -95,6 +93,28 @@ namespace Web.Controllers
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("{id:int}/list")]
+        [Authorize]
+        public IHttpActionResult GetListOfProject(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ListService listService = new ListService(db);
+                    IEnumerable<List> lists = listService.GetListOfProject(id);
+                    IEnumerable<JObject> listsJson = lists.Select(list => listService.ParseToJson(list));
+                    return Ok(ResponseHelper.GetResponse(new JArray(listsJson)));
                 }
             }
             catch (Exception ex)
@@ -127,8 +147,8 @@ namespace Web.Controllers
 
                         if (createProjectModel.StartDate != null && createProjectModel.Deadline != null)
                         {
-
-                            if (DateTime.Parse(createProjectModel.StartDate) > DateTime.Parse(createProjectModel.Deadline))
+                            if (DateTime.Parse(createProjectModel.StartDate) >
+                                DateTime.Parse(createProjectModel.Deadline))
                             {
                                 ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
                                 flag = false;
@@ -136,21 +156,22 @@ namespace Web.Controllers
                             }
 
 
-                            if (DateTime.Parse(createProjectModel.Deadline) < DateTime.Parse(createProjectModel.StartDate))
+                            if (DateTime.Parse(createProjectModel.Deadline) <
+                                DateTime.Parse(createProjectModel.StartDate))
                             {
                                 ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
                                 flag = false;
                                 //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
                         }
-                       
-                       
 
-                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+                        if (flag == false)
+                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         UserService userService = new UserService(db);
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
-                        
+
                         DateTime? startTime = null;
                         if (createProjectModel.StartDate != null)
                         {
@@ -160,6 +181,7 @@ namespace Web.Controllers
                                 startTime = dt;
                             }
                         }
+
                         DateTime? deadline = null;
                         if (createProjectModel.Deadline != null)
                         {
@@ -169,6 +191,7 @@ namespace Web.Controllers
                                 deadline = dt;
                             }
                         }
+
                         Project newProject = projectService.CreateProject(
                             createProjectModel.Name,
                             createProjectModel.Description,
@@ -232,8 +255,8 @@ namespace Web.Controllers
 
                         if (updateProjectViewModel.startdate != null && updateProjectViewModel.deadline != null)
                         {
-
-                            if (DateTime.Parse(updateProjectViewModel.startdate) > DateTime.Parse(updateProjectViewModel.deadline))
+                            if (DateTime.Parse(updateProjectViewModel.startdate) >
+                                DateTime.Parse(updateProjectViewModel.deadline))
                             {
                                 ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
                                 flag = false;
@@ -241,7 +264,8 @@ namespace Web.Controllers
                             }
 
 
-                            if (DateTime.Parse(updateProjectViewModel.deadline) < DateTime.Parse(updateProjectViewModel.startdate))
+                            if (DateTime.Parse(updateProjectViewModel.deadline) <
+                                DateTime.Parse(updateProjectViewModel.startdate))
                             {
                                 ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
                                 flag = false;
@@ -257,11 +281,10 @@ namespace Web.Controllers
                         //        //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         //    }
                         //}
-                        
 
 
-
-                        if (flag == false) return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        if (flag == false)
+                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         var updatedProject = projectService.UpdateProject(
                             updateProjectViewModel.id,
                             updateProjectViewModel.name,
@@ -322,8 +345,9 @@ namespace Web.Controllers
                     if (project != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            projectService.ParseToJson(project, isDetailedUsers: true, avatarPath: AgencyConfig.AvatarPath,
-                            isDetailed: false)
+                            projectService.ParseToJson(project, isDetailedUsers: true,
+                                avatarPath: AgencyConfig.AvatarPath,
+                                isDetailed: false)
                         ));
                     }
                     else
@@ -338,6 +362,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpPost]
         [Route("assign")]
         [Authorize(Roles = "Admin,Manager")]
@@ -355,12 +380,11 @@ namespace Web.Controllers
                             UserProject NewUserProject = projectService.AssignProject(
                                 userId,
                                 assignProjectModel.ProjectId
-                                );
+                            );
                             //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
                         }
+
                         return Ok(ResponseHelper.GetResponse());
-
-
                     }
                 }
                 else
@@ -371,7 +395,6 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-
                 return Content(HttpStatusCode.InternalServerError,
                     ResponseHelper.GetExceptionResponse(ex));
             }
@@ -394,12 +417,11 @@ namespace Web.Controllers
                             UserProject NewUserProject = projectService.UnAssignProject(
                                 userId,
                                 assignProjectModel.ProjectId
-                                );
+                            );
                             //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
                         }
+
                         return Ok(ResponseHelper.GetResponse());
-
-
                     }
                 }
                 else
@@ -410,7 +432,6 @@ namespace Web.Controllers
             }
             catch (Exception ex)
             {
-
                 return Content(HttpStatusCode.InternalServerError,
                     ResponseHelper.GetExceptionResponse(ex));
             }

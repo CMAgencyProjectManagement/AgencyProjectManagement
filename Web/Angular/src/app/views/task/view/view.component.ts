@@ -47,12 +47,7 @@ export class ViewComponent implements OnInit {
   }
 
   handleOnCommentBtnClick() {
-    const initialState = {
-      confirmCallback: (listName) => {
-        console.log(listName);
-      }
-    };
-    this.modalService.show(CreateListModalComponent, {initialState, class: 'modal-dialog'});
+
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {

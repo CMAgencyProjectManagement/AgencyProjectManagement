@@ -51,7 +51,7 @@
       <div class="well mb-4" *ngIf="foundTasks">
         <ul class="list-group" *ngFor="let task of foundTasks;let i=index">
           <li class="list-group-item">
-            <a href="#/task?id={{task.id}}" style="font-size: 17px">
+            <a routerLink="/task/view/{{task.id}}" style="font-size: 17px">
               {{task.name}}
             </a>
           </li>
@@ -86,7 +86,7 @@
           </ng-container>
           <ng-container>
             <div style="margin-left: 15px;">
-                <button type="button" class="btn btn-primary" style="width: 300px">
+                <button type="button" class="btn btn-primary" style="width: 300px" (click)="handleOnAddListClick()">
                     <b>Add List</b>
                   </button>
             </div>

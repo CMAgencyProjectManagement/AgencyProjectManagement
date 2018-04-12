@@ -1,3 +1,89 @@
-<p>
-  edit works!
-</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>Update task</strong>
+      </div>
+      <app-spinner *ngIf="isLoading.page"></app-spinner>
+      <div *ngIf="!isLoading.page" class="card-body row">
+        <div [formGroup]="updateForm" class="form-horizontal col-lg-8 col-md-10 col-sm-12">
+          <div class="form-group row">
+            <!--NAME-->
+            <label class="col-4 col-form-label text-right" for="name-input">
+              Name <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8">
+              <input type="text" id="name-input"
+                     [ngClass]="{'form-control': true, 'is-invalid': errors.name}"
+                     formControlName="name">
+              <div class="invalid-feedback" *ngIf="errors.name">{{errors.name}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--Description-->
+            <label class="col-4 col-form-label text-right" for="description-input">
+              Description
+            </label>
+            <div class="col-8">
+              <textarea id="description-input"
+                        rows="9"
+                        [ngClass]="{'form-control': true, 'is-invalid': errors.description}"
+                        placeholder="Description.."
+                        formControlName="description"></textarea>
+              <div class="invalid-feedback" *ngIf="errors.description">{{errors.description}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--LIST-->
+            <label class="col-4 col-form-label text-right" for="list-input">
+              List
+            </label>
+            <div class="col-8">
+              <select formControlName="list" id="list-input"
+                      [ngClass]="{'form-control': true, 'is-invalid': errors.list}">
+                <option *ngFor="let list of lists" value="{{list.id}}">{{list.name}}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="errors.list">{{errors.list}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--priority-->
+            <label class="col-4 col-form-label text-right" for="priority-input">
+              Priority
+            </label>
+            <div class="col-8">
+              <select formControlName="priority" id="priority-input"
+                      [ngClass]="{'form-control': true, 'is-invalid': errors.list}">
+                <option *ngFor="let priority of priorities" value="{{priority.key}}">{{priority.value}}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="errors.priority">{{errors.priority}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--status-->
+            <label class="col-4 col-form-label text-right" for="startDate-input">
+              Start date
+            </label>
+            <div class="col-8 datepicker-group">
+              <my-date-picker id="startDate-input" #datepicker
+                              [options]="myDatePickerOptions"
+                              formControlName="startDate"
+                              [ngClass]="{'form-control': false, 'is-invalid': errors.startDate}"
+                              required></my-date-picker>
+              <div class="invalid-feedback" [ngStyle]="{'display':'block'}" *ngIf="errors.startDate">{{errors.startDate}}</div>
+            </div>
+          </div>
+          <div class="form-actions text-center">
+            <!--BUTTON-->
+            <div class="col-12">
+              <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isSavingChange">
+                Save changes
+              </button>
+              <button class="btn btn-secondary" type="button" (click)="setDefaultValue()">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

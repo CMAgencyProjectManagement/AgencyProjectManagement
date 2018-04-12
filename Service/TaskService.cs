@@ -393,7 +393,7 @@ namespace Service
                 throw new ObjectNotFoundException($"Task with id {taskId} not found");
             }
         }
-
+        
         public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null, string attachmentPath = null)
         {
             UserService userService = new UserService(db);
@@ -461,23 +461,5 @@ namespace Service
 
             return result;
         }
-
-        public JObject ParseToJsonofUserTask(UserTask userTask)
-        {
-            UserService userService = new UserService(db);
-
-
-            JObject result = new JObject
-            {
-                ["id"] = userTask.TaskID,
-                ["name"] = userTask.UserID,
-                ["isFollow"] = userTask.IsFollow,
-                ["isAssigned"] = userTask.IsAssigned,
-            };
-
-
-            return result;
-        }
-
     }
 }

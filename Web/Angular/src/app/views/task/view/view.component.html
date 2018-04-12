@@ -9,9 +9,9 @@
     </div>
     <div class="col-12">
       <div class="button-row">
-        <button class="btn btn-secondary bg-light">
+        <a routerLink="/task/edit/{{foundTask.id}}" class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
-        </button>
+        </a>
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>

@@ -10,6 +10,7 @@ const serverPath = {
   // Project
   allProject: '/api/project/all',
   myProject: '/api/project',
+  getProjectList: (projecId: number) => `/api/project/${projecId}/list`,
   updateProject: '/api/project',
   createProject: '/api/project',
   closeProject: '/api/project/close',
@@ -26,6 +27,8 @@ const serverPath = {
   getTask: taskId => `/api/task/${taskId}`,
   createTask: 'api/task',
   editTask: 'api/task',
+  getPriority: 'api/task/priority',
+  getStatus: 'api/task/status',
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`
 };

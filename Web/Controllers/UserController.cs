@@ -78,7 +78,7 @@ namespace Web.Controllers
                     foreach (User user in allUser)
                     {
                         //Dont expose password
-                        data.Add(userService.ParseToJson(user, avatarPath, includeTeam: false));
+                        data.Add(userService.ParseToJson(user, avatarPath, includeTeam: true));
                     }
 
                     return Ok(ResponseHelper.GetResponse(data));
