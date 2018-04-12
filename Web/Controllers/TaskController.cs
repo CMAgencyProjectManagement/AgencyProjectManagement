@@ -123,16 +123,16 @@ namespace Web.Controllers
                             flag = false;
                         }
                        
-                        if (createTaskModel.Duration<0)
+                        if (createTaskModel.Duration<1)
                         {
                             ModelState.AddModelError("Duration",
-                                  "Duration must be greater than 0 ");
+                                  "Duration must be greater than 1 ");
                             flag = false;
                         }
-                        if (createTaskModel.Effort<0||createTaskModel.Effort>(createTaskModel.Duration*24))
+                        if (createTaskModel.Effort<1||createTaskModel.Effort>(createTaskModel.Duration*24))
                         {
                             ModelState.AddModelError("Effort",
-                                  "Effort is out of range");
+                                  "Effort(hours) must be smaller than the Duration(days)");
                             flag = false;
                         }
                         if (flag == false)
@@ -182,21 +182,50 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        DateTime? startdate = null;
-                        DateTime tmp;
-                        if (DateTime.TryParse(updateTaskViewModel.StartDate, out tmp))
+                        
+                        TaskService taskService = new TaskService(db);
+                        bool flag = true;
+                        if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
                         {
-                            startdate = tmp;
+                            ModelState.AddModelError("Name", "Task name is taken");
+                            flag = false;
+                        }
+                        if (taskService.CheckForListId(updateTaskViewModel.ListID))
+                        {
+                            ModelState.AddModelError("ListID", "The System don't have this list");
+                            flag = false;
+                        }
+                        if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
+                        {
+                            ModelState.AddModelError("Priority", "Invalid Priority ");
+                            flag = false;
                         }
 
-                        TaskService taskService = new TaskService(db);
+                        if (updateTaskViewModel.Duration < 1)
+                        {
+                            ModelState.AddModelError("Duration",
+                                  "Duration must be greater than 0 ");
+                            flag = false;
+                        }
+                        if (updateTaskViewModel.Effort < 1 || updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
+                        {
+                            ModelState.AddModelError("Effort",
+                                  "Effort(hours) must be smaller than the Duration(days)");
+                            flag = false;
+                        }
+                        if (flag == false)
+                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+
                         var updateTask = taskService.UpdateTask(
                             updateTaskViewModel.Id,
                             updateTaskViewModel.Name,
                             updateTaskViewModel.Description,
                             updateTaskViewModel.ListID,
                             updateTaskViewModel.Priority,
-                            startdate
+                            updateTaskViewModel.StartDate,
+                            updateTaskViewModel.Duration,
+                            updateTaskViewModel.Effort
                         );
                         return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(updateTask)));
                     }

@@ -74,7 +74,21 @@
                     </div>
                   </a>
                 </div>
+                <div class="card task-card" data-toggle="modal" style="cursor: pointer" id="task">
+                  <a href="#/project/addtask?projectID={{project.id}}&listID={{lists.id}}">
+                    <div class="card-body" style="text-align: center">
+                      <b>Add Task</b>
+                    </div>
+                  </a>
+                </div>
               </div>
+            </div>
+          </ng-container>
+          <ng-container>
+            <div style="margin-left: 15px;">
+                <button type="button" class="btn btn-primary" style="width: 300px">
+                    Add List
+                  </button>
             </div>
           </ng-container>
         </div>
