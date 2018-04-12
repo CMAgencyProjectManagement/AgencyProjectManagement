@@ -26,7 +26,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     ProjectService projectService = new ProjectService(db);
-                    var projects = projectService.GetAll();
+                    var projects = projectService.GetAll().OrderBy(x => x.Status);
 
                     JArray dataObject = new JArray();
                     foreach (var project in projects)
