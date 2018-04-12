@@ -12,8 +12,33 @@ export class TaskService {
     this.tokenCursor = this.store.select(['token', 'access_token']);
   }
 
-  get(): Promise<Task[]> {
-    return Promise.resolve([]);
+  createTask(
+    name: string,
+    description: string,
+    listId: number,
+    priority: number,
+    startDate: string,
+    duration: number,
+    effort: number
+  ): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+
+    });
+  }
+
+  editTask(
+    taskId: number,
+    name: string,
+    description: string,
+    listId: number,
+    priority: number,
+    startDate: string,
+    duration: number,
+    effort: number
+  ): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+
+    });
   }
 
   getTaskDetail(id: number): Promise<Task> {
