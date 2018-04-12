@@ -1,3 +1,58 @@
 <div class="row">
-  <div class="col-12 "></div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>Add Task</strong>
+      </div>
+      <app-spinner *ngIf="isLoading"></app-spinner>
+      <div *ngIf="!isLoading" class="card-body">
+        <div class="form-horizontal col-6" style="margin-top: 30px;" id="update">
+          <div class="form-group row">
+            <b style="font-size: 22px">
+                <label class="col-12 col-form-label text-right" for="name-input" style="font-size:22px">Project: <a href="#/project/detail?projectID={{foundProject.id}}"> {{foundProject.name}}</a></label>
+            </b>
+          </div>
+          <div class="form-group row">
+              <b style="font-size: 22px">
+                  <label class="col-12 col-form-label text-right" for="name-input" style="font-size:22px">List: {{foundList.name}}</label>
+              </b>
+            </div>
+          <div class="form-group row">
+            <label class="col-5 col-form-label text-right" for="name-input">Task Name<span
+              style="color: #ee0d0d"><strong>*</strong></span></label>
+            <div class="col-7">
+              <input type="text" id="name-input" name="name-input" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-5 col-form-label text-right" for="name-input">Task Description</label>
+            <div class="col-7">
+              <textarea rows="3"></textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-5 col-form-label text-right" for="name-input">Status</label>
+            <div class="col-7">
+              <select>
+                <option value="todo">To do</option>
+                <option value="executing">Executing</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions text-center">
+            <div class="col-12">
+              <button type="button" class="btn btn-primary btn-lg" style="color: black;
+                                background-color: white;
+                                border-color: black;margin-left: 40px;">Save changes
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" style="color: black;
+                background-color: white;
+                border-color: black; margin-left: 70px;">Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

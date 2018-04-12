@@ -102,7 +102,6 @@ import {CmaModule} from './cmaComponents/cma.module';
 import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-modal.component';
 import {CreateListModalComponent} from './cmaComponents/modals/create-list-modal/create-list-modal.component';
 
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -120,7 +119,7 @@ import {CreateListModalComponent} from './cmaComponents/modals/create-list-modal
     AppComponent,
     ...APP_CONTAINERS,
     ...APP_COMPONENTS,
-    ...APP_DIRECTIVES
+    ...APP_DIRECTIVES,
   ],
   providers: [{
     provide: LocationStrategy,
