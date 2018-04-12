@@ -11,9 +11,6 @@ namespace Web.ViewModels
         [Required]
         public int ID { get; set; }
 
-        [Required]
-        public int UserID { get; set; }
-
         [MaxLength(255)]
         public string Name { get; set; }
     }

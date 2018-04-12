@@ -40,7 +40,7 @@
             <button class="btn btn-primary" type="button" (click)="search(searchField.value)">
               <i class="fa fa-search"></i> Search
             </button>
-            <button class="btn btn-danger" type="button" (click)="clear()">
+            <button class="btn btn-secondary" type="button" (click)="clear()">
               <i class="fa fa-times"></i>
             </button>
           </span>
@@ -74,20 +74,20 @@
                     </div>
                   </a>
                 </div>
-                <div class="card task-card" data-toggle="modal" style="cursor: pointer" id="task">
-                  <a href="#/project/addtask?projectID={{project.id}}&listID={{lists.id}}">
-                    <div class="card-body" style="text-align: center">
-                      <b>Add Task</b>
-                    </div>
-                  </a>
-                </div>
+              </div>
+              <div class="card-footer">
+                <a href="#/project/addtask?projectID={{project.id}}&listID={{lists.id}}">
+                  <div style="text-align: center; font-size: 22px;">
+                    <b>Add Task</b>
+                  </div>
+                </a>
               </div>
             </div>
           </ng-container>
           <ng-container>
             <div style="margin-left: 15px;">
                 <button type="button" class="btn btn-primary" style="width: 300px">
-                    Add List
+                    <b>Add List</b>>
                   </button>
             </div>
           </ng-container>
