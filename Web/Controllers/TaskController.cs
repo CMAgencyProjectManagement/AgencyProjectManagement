@@ -184,12 +184,17 @@ namespace Web.Controllers
                     {
                         
                         TaskService taskService = new TaskService(db);
+                        
                         bool flag = true;
-                        if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                        if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                         {
-                            ModelState.AddModelError("Name", "Task name is taken");
-                            flag = false;
+                            if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                            {
+                                ModelState.AddModelError("Name", "Task name is taken");
+                                flag = false;
+                            }
                         }
+                       
                         if (taskService.CheckForListId(updateTaskViewModel.ListID))
                         {
                             ModelState.AddModelError("ListID", "The System don't have this list");
@@ -204,13 +209,13 @@ namespace Web.Controllers
                         if (updateTaskViewModel.Duration < 1)
                         {
                             ModelState.AddModelError("Duration",
-                                  "Duration must be greater than 0 ");
+                                  "Duration must be greater than 1 ");
                             flag = false;
                         }
                         if (updateTaskViewModel.Effort < 1 || updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
                         {
                             ModelState.AddModelError("Effort",
-                                  "Effort(hours) must be smaller than the Duration(days)");
+                                  "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
                             flag = false;
                         }
                         if (flag == false)

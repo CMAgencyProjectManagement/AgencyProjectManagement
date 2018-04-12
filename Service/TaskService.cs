@@ -112,6 +112,43 @@ namespace Service
             return db.Tasks.Find(id);
         }
 
+        public bool CheckDuplicatedTaskname1(string taskName)
+        {
+            var result = new List<List>();
+            var taskWithName = db.Tasks.Where(task => task.Name == taskName).Select(x=> x.ListID).ToList();
+            foreach (var item in taskWithName)
+            {
+                var list = db.Lists.FirstOrDefault(x => x.ID == item);
+                if(list!= null)
+                {
+                    result.Add(list);
+                }
+
+            }
+            return false;
+            //var result = new List<Task>();
+            //var taskIdList = db.Lists.Where(x => x.ProjectID == projectId).ToList();
+            //foreach (var item in taskIdList)
+            //{
+            //    var taskIdList1 = item.Tasks.Select(x => x.ID).ToList();
+            //    foreach (var item2 in taskIdList1)
+            //    {
+            //        var task = db.Tasks.FirstOrDefault(x => x.ID == item2);
+            //        if (task!= null)
+            //        {
+            //            result.Add(task);
+            //        }
+            //    }
+            //    var tasks = result.Where(task => task.Name == taskName).ToList();
+            //    return tasks.Count > 0;
+            //}
+            //return false;
+            
+
+
+            //var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
+            //return tasks.Count > 0;
+        }
         public bool CheckDuplicatedTaskname(string taskName)
         {
             var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
