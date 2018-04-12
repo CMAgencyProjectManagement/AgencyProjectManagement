@@ -137,6 +137,7 @@ namespace Service
             List foundList = db.Lists.Find(listID);
             if(foundList != null)
             {
+                
                 foundList.Name = name;
                 foundList.ChangedBy = userID;
                 foundList.ChangedTime = DateTime.Now;

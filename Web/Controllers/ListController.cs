@@ -103,9 +103,12 @@ namespace Web.Controllers
 
                         ListService listService = new ListService(db);
 
+                        UserService userService = new UserService(db);
+                        string userIDString = User.Identity.GetUserId();
+
                         var updateList = listService.UpdateList(
                             updateListModel.ID,
-                            updateListModel.UserID,
+                            Int32.Parse(userIDString),
                             updateListModel.Name
                             );
 
