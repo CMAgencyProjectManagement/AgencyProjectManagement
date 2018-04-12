@@ -12,8 +12,76 @@ export class TaskService {
     this.tokenCursor = this.store.select(['token', 'access_token']);
   }
 
-  get(): Promise<Task[]> {
-    return Promise.resolve([]);
+  createTask(
+    name: string,
+    description: string,
+    listId: number,
+    priority: number,
+    startDate: string,
+    duration: number,
+    effort: number
+  ): Promise<any> {
+    const objData = {
+      Name: name,
+      Description: description,
+      ListID: listId,
+      Priority: priority,
+      StartDate: startDate,
+      Duration: duration,
+      Effort: effort
+    };
+    return new Promise<any>((resolve, reject) => {
+      request.post(serverPath.createTask)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .type('form')
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
+  editTask(
+    taskId: number,
+    name: string,
+    description: string,
+    listId: number,
+    priority: number,
+    startDate: string,
+    duration: number,
+    effort: number
+  ): Promise<any> {
+    const objData = {
+      Id: taskId,
+      Name: name,
+      Description: description,
+      ListID: listId,
+      Priority: priority,
+      StartDate: startDate,
+      Duration: duration,
+      Effort: effort
+    };
+    return new Promise<any>((resolve, reject) => {
+      request.put(serverPath.createTask)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .type('form')
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
   }
 
   getTaskDetail(id: number): Promise<Task> {
