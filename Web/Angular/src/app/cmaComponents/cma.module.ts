@@ -11,6 +11,7 @@ import { CommentComponent } from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
 import { ErrorModalComponent } from './modals/error-modal/error-modal.component';
 import {RouterModule} from '@angular/router';
+import { CreateListModalComponent } from './modals/create-list-modal/create-list-modal.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,9 @@ import {RouterModule} from '@angular/router';
     ConfirmModalComponent,
     UserListComponent,
     CommentComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    CreateListModalComponent
+
   ],
   declarations: [
     ProjectCardComponent,
@@ -38,7 +41,8 @@ import {RouterModule} from '@angular/router';
     ConfirmModalComponent,
     UserListComponent,
     CommentComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    CreateListModalComponent
   ]
 })
 export class CmaModule {

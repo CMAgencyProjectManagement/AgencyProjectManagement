@@ -100,6 +100,7 @@ import {ModalModule} from 'ngx-bootstrap';
 import {ConfirmModalComponent} from './cmaComponents/modals/confirm-modal/confirm-modal.component';
 import {CmaModule} from './cmaComponents/cma.module';
 import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-modal.component';
+import {CreateListModalComponent} from './cmaComponents/modals/create-list-modal/create-list-modal.component';
 
 
 @NgModule({
@@ -129,7 +130,8 @@ import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-moda
   ],
   entryComponents: [
     ConfirmModalComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    CreateListModalComponent
   ],
   bootstrap: [AppComponent]
 })
