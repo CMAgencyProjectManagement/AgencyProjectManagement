@@ -24,6 +24,8 @@ const serverPath = {
   setTeamRole: 'api/team/assign/role',
   // Task
   getTask: taskId => `/api/task/${taskId}`,
+  createTask: 'api/task',
+  editTask: 'api/task',
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`
 };
