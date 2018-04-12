@@ -9,6 +9,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {ProjectService} from '../../../services/project.service';
 import {List} from '../../../interfaces/list';
 import {IMyDpOptions} from 'mydatepicker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit',
@@ -38,7 +39,7 @@ export class EditComponent implements OnInit {
     // other options...
     dateFormat: 'dd/mm/yyyy',
     showInputField: true,
-    openSelectorTopOfInput: true,
+    // openSelectorTopOfInput: true,
     showTodayBtn: false
   };
 
@@ -121,18 +122,34 @@ export class EditComponent implements OnInit {
   }
 
   setDefaultValue() {
-    this.updateForm.controls['name'].setValue(this.foundTask.name);
-    this.updateForm.controls['description'].setValue(this.foundTask.description);
-    this.updateForm.controls['list'].setValue(this.foundTask.list.id);
-    this.updateForm.controls['priority'].setValue(this.foundTask.priority);
-    this.updateForm.controls['startDate'].setValue(this.foundTask.startDate);
-    this.updateForm.controls['duration'].setValue(this.foundTask.duration);
-    this.updateForm.controls['effort'].setValue(this.foundTask.effort);
+    let startDate = moment(this.foundTask.startDate);
+    this.updateForm.patchValue({
+      name: this.foundTask.name,
+      description: this.foundTask.description,
+      list: this.foundTask.list.id,
+      priority: this.foundTask.priority,
+      startDate: {
+        date: {
+          year: startDate.year(),
+          month: startDate.month() + 1,
+          day: startDate.day()}
+      },
+      duration: this.foundTask.duration,
+      effort: this.foundTask.effort,
+    });
+    // this.updateForm.controls['name'].setValue(this.foundTask.name);
+    // this.updateForm.controls['description'].setValue(this.foundTask.description);
+    // this.updateForm.controls['list'].setValue(this.foundTask.list.id);
+    // this.updateForm.controls['priority'].setValue(this.foundTask.priority);
+    // this.updateForm.controls['startDate'].setValue(startDate.format('DD/MM/YYYY'));
+    // this.updateForm.controls['duration'].setValue(this.foundTask.duration);
+    // this.updateForm.controls['effort'].setValue(this.foundTask.effort);
   }
 
   handleUpdateTask() {
 
     // let birthdate = formValue.birthDate ? formValue.birthDate.formatted : this.datepicker.selectionDayTxt;
+
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {

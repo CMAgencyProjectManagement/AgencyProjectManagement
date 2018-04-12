@@ -8,6 +8,7 @@ import { EditComponent } from './edit/edit.component';
 import { AddComponent } from './add/add.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
+import {MyDatePickerModule} from 'mydatepicker';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import {LaddaModule} from 'angular2-ladda';
       style: 'expand-left'
     }),
     FormsModule,
+    MyDatePickerModule,
   ],
   declarations: [
     ViewComponent,
