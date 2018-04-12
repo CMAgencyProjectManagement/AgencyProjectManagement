@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 
 @Component({
@@ -10,7 +10,7 @@ export class CreateListModalComponent implements OnInit {
   confirmCallback: any;
   cancelCallback: any;
   closeCallback: any;
-  listName: string;
+  @ViewChild('listNameInput') listNameInput;
 
   constructor(public bsModalRef: BsModalRef) {
   }
@@ -20,7 +20,7 @@ export class CreateListModalComponent implements OnInit {
 
   handleOnConfirm() {
     if (this.confirmCallback) {
-      this.confirmCallback(this.listName);
+      this.confirmCallback(this.listNameInput.nativeElement.value);
     }
     this.bsModalRef.hide()
   }
