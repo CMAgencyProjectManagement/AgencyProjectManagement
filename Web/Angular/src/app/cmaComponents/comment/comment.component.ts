@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Comment} from '../../interfaces/comment';
+
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
@@ -14,5 +15,9 @@ export class CommentComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  containerClick() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }

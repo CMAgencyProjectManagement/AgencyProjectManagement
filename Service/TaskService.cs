@@ -386,8 +386,14 @@ namespace Service
 
             if (task.StartDate.HasValue)
             {
-                result["deadline"] = task.StartDate.Value.AddDays(task.Duration);
+                result["deadline"] = task.StartDate.Value.AddDays(task.Duration - 1);
             }
+
+            TaskStatus taskStatus = (TaskStatus) task.Status;
+            result["statusText"] = taskStatus.ToString();
+            
+            TaskPriority taskPriority = (TaskPriority) task.Priority;
+            result["priorityText"] = taskPriority.ToString();
 
             if (isDetailed)
             {

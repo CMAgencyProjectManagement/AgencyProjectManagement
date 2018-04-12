@@ -5,7 +5,11 @@
       <img *ngIf="!user.avatar" src="/assets/img/100x100_avatar.png" class="avatar img-avatar">
     </i>
     <div class="desc">
-      <div class="title">{{user.name}}</div>
+      <div class="title">
+        <a href="#/account/detail?id={{user.id}}">
+          {{user.name}}
+        </a>
+      </div>
       <small>{{user.email}}</small>
     </div>
     <div class="value">
