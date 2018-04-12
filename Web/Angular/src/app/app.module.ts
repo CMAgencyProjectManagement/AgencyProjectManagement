@@ -101,7 +101,6 @@ import {ConfirmModalComponent} from './cmaComponents/modals/confirm-modal/confir
 import {CmaModule} from './cmaComponents/cma.module';
 import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-modal.component';
 
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -119,7 +118,7 @@ import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-moda
     AppComponent,
     ...APP_CONTAINERS,
     ...APP_COMPONENTS,
-    ...APP_DIRECTIVES
+    ...APP_DIRECTIVES,
   ],
   providers: [{
     provide: LocationStrategy,

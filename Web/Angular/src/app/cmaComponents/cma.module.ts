@@ -11,7 +11,6 @@ import { CommentComponent } from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
 import { ErrorModalComponent } from './modals/error-modal/error-modal.component';
 import {RouterModule} from '@angular/router';
-
 @NgModule({
   imports: [
     CommonModule,
