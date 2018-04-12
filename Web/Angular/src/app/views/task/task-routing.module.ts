@@ -7,7 +7,6 @@ import {AddComponent as CreateTask} from './add/add.component';
 const routes: Routes = [
   {
     path: '',
-    component: ViewTask,
     data: {
       title: 'Task'
     },
