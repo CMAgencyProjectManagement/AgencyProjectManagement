@@ -71,6 +71,11 @@ namespace Web.Security
                     {
                         claims.Add(new Claim(ClaimTypes.Role, "Manager"));
                     }
+                    
+                    if (!user.IsManager && !user.IsAdmin)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, "Staff"));
+                    }
                 }
                 context.Validated(new ClaimsIdentity(claims, context.Options.AuthenticationType));
             }
