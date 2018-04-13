@@ -62,8 +62,31 @@
         <div>
           <ng-container *ngFor="let lists of project.lists;let i = index">
             <div class="card cardstyle" style="margin-left: 15px;">
-              <div class="card-header cardheadertext">
-                {{lists.name}}
+              <div class="card-header cardheadertext" style="font-size: 18px">
+                <div class="form-group row">
+                    <div class="col-9">
+                        {{lists.name}}
+                    </div>
+                    <div class="col-3">
+                        <div class="btn-group" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+                              <span class="caret"></span>
+                            </button>
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                              <li role="menuitem">
+                                <a class="dropdown-item" href="#">Rename</a>
+                              </li>
+                              <li role="menuitem">
+                                <a class="dropdown-item" href="#">Clear all tasks</a>
+                              </li>
+                              <li class="divider dropdown-divider"></li>
+                              <li role="menuitem">
+                                <a class="dropdown-item" href="#">Remove list</a>
+                              </li>
+                            </ul>
+                          </div>
+                    </div>
+                </div>
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
@@ -73,11 +96,18 @@
                       {{task.name}}
                     </div>
                   </a>
+                  <div class="card-footer" style="height: 30px;padding-top: 5px;
+
+                  padding-right: 5px;">
+                    <span class="badge badge-success float-right" *ngIf="task.status==0">To do</span>
+                    <span class="badge badge-primary float-right" *ngIf="task.status==1">Executing</span>
+                    <span class="badge badge-danger float-right" *ngIf="task.status==2">Late</span>
+                  </div>
                 </div>
               </div>
               <div class="card-footer">
                 <a href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">
-                  <div style="text-align: center; font-size: 22px;">
+                  <div style="text-align: center; font-size: 20px;">
                     <b>Add Task</b>
                   </div>
                 </a>
@@ -86,9 +116,11 @@
           </ng-container>
           <ng-container>
             <div style="margin-left: 15px;">
-                <button type="button" class="btn btn-primary" style="width: 300px" (click)="handleOnAddListClick()">
-                    <b>Add List</b>
-                  </button>
+              <button type="button" class="btn btn-primary" style="width: 300px;height: 56px;
+
+              font-size: 17px;" (click)="handleOnAddListClick()">
+                <b>Add List</b>
+              </button>
             </div>
           </ng-container>
         </div>
