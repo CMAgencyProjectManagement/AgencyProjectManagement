@@ -34,7 +34,6 @@ export class EditComponent implements OnInit {
   updateForm: FormGroup;
   lists: List[];
   priorities: any[];
-  statuses: any[];
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -142,7 +141,6 @@ export class EditComponent implements OnInit {
   handleUpdateTask() {
 
     // let birthdate = formValue.birthDate ? formValue.birthDate.formatted : this.datepicker.selectionDayTxt;
-
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {

@@ -70,7 +70,40 @@
                               formControlName="startDate"
                               [ngClass]="{'form-control': false, 'is-invalid': errors.startDate}"
                               required></my-date-picker>
-              <div class="invalid-feedback" [ngStyle]="{'display':'block'}" *ngIf="errors.startDate">{{errors.startDate}}</div>
+              <div class="invalid-feedback" [ngStyle]="{'display':'block'}" *ngIf="errors.startDate">
+                {{errors.startDate}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--DURATION-->
+            <label class="col-4 col-form-label text-right" for="duration-input">
+              Duration
+            </label>
+            <div class="col-8">
+              <div class="input-group">
+                <input type="text" id="duration-input"
+                       [ngClass]="{'form-control': true, 'is-invalid': errors.duration}"
+                       formControlName="duration">
+                <span class="input-group-addon">day</span>
+              </div>
+
+              <div class="invalid-feedback" *ngIf="errors.duration">{{errors.duration}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--EFFORT-->
+            <label class="col-4 col-form-label text-right" for="effort-input">
+              Effort
+            </label>
+            <div class="col-8">
+              <div class="input-group">
+                <input type="text" id="effort-input"
+                       [ngClass]="{'form-control': true, 'is-invalid': errors.effort}"
+                       formControlName="effort">
+                <span class="input-group-addon">hour</span>
+              </div>
+              <div class="invalid-feedback" *ngIf="errors.effort">{{errors.effort}}</div>
             </div>
           </div>
           <div class="form-actions text-center">
