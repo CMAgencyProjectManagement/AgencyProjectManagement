@@ -31,7 +31,7 @@ namespace Web.Controllers
                     JArray dataObject = new JArray();
                     foreach (var project in projects)
                     {
-                        dataObject.Add(projectService.ParseToJson(project));
+                        dataObject.Add(projectService.ParseToJson(project,true));
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
