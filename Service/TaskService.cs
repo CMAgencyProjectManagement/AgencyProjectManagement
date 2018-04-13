@@ -115,16 +115,16 @@ namespace Service
         public bool CheckDuplicatedTaskname1(string taskName)
         {
             var result = new List<List>();
-            var taskWithName = db.Tasks.Where(task => task.Name == taskName).Select(x=> x.ListID).ToList();
+            var taskWithName = db.Tasks.Where(task => task.Name == taskName).Select(x => x.ListID).ToList();
             foreach (var item in taskWithName)
             {
                 var list = db.Lists.FirstOrDefault(x => x.ID == item);
-                if(list!= null)
+                if (list != null)
                 {
                     result.Add(list);
                 }
-
             }
+
             return false;
             //var result = new List<Task>();
             //var taskIdList = db.Lists.Where(x => x.ProjectID == projectId).ToList();
@@ -143,17 +143,18 @@ namespace Service
             //    return tasks.Count > 0;
             //}
             //return false;
-            
 
 
             //var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
             //return tasks.Count > 0;
         }
+
         public bool CheckDuplicatedTaskname(string taskName)
         {
             var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
             return tasks.Count > 0;
         }
+
         public bool CheckForListId(int listId)
         {
             var lists = db.Lists.Where(list => list.ID == listId).ToList();
@@ -189,7 +190,9 @@ namespace Service
             int priority,
             DateTime startDate,
             int duration,
-            int effort)
+            int effort,
+            int modifierId,
+            DateTime modifyTime)
         {
             var foundTask = db.Tasks.Find(id);
             if (foundTask != null)
@@ -197,10 +200,13 @@ namespace Service
                 foundTask.Name = name;
                 foundTask.Description = description;
                 foundTask.ListID = listId;
-                foundTask.Priority = (int) priority;
+                foundTask.Priority = priority;
                 foundTask.StartDate = startDate;
                 foundTask.Duration = duration;
                 foundTask.Effort = effort;
+                foundTask.ChangedBy = modifierId;
+                foundTask.ChangedTime = modifyTime;
+                
                 db.SaveChanges();
                 return foundTask;
             }
@@ -297,12 +303,13 @@ namespace Service
         public int ArchiveTask(int taskID)
         {
             var archiveTask = db.Tasks.Find(taskID);
-            if(archiveTask.ID == taskID)
+            if (archiveTask.ID == taskID)
             {
                 archiveTask.IsArchived = true;
                 db.SaveChanges();
                 return archiveTask.ID;
             }
+
             throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");
         }
 
@@ -366,7 +373,7 @@ namespace Service
         {
             if (!task.FinishedDate.HasValue || !task.StartDate.HasValue)
             {
-                throw new InvalidOperationException($"Finish date and start date must have value");
+                throw new InvalidOperationException("Finish date and start date must have value");
             }
 
             DateTime finishedDate = task.FinishedDate.Value;
@@ -393,8 +400,9 @@ namespace Service
                 throw new ObjectNotFoundException($"Task with id {taskId} not found");
             }
         }
-        
-        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null, string attachmentPath = null)
+
+        public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null,
+            string attachmentPath = null)
         {
             UserService userService = new UserService(db);
             User creator = userService.GetUser(task.CreatedBy);
@@ -405,7 +413,7 @@ namespace Service
                 ["description"] = task.Description,
                 ["createdBy"] = userService.ParseToJson(creator, avatarPath),
                 ["createdDate"] = task.CreatedTime,
-                ["changedTime"] = task.ChangedTime,
+                ["changedDate"] = task.ChangedTime,
                 ["startDate"] = task.StartDate,
                 ["duration"] = task.Duration,
                 ["status"] = task.Status,
@@ -418,7 +426,7 @@ namespace Service
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
-                result["changedBy"] = userService.ParseToJson(changer);
+                result["changedBy"] = userService.ParseToJson(changer,avatarPath);
             }
 
             if (task.StartDate.HasValue)
@@ -428,7 +436,7 @@ namespace Service
 
             TaskStatus taskStatus = (TaskStatus) task.Status;
             result["statusText"] = taskStatus.ToString();
-            
+
             TaskPriority taskPriority = (TaskPriority) task.Priority;
             result["priorityText"] = taskPriority.ToString();
 
@@ -455,7 +463,7 @@ namespace Service
                 result["comments"] = new JArray(jsonComments);
 
                 IEnumerable<JObject> attachmentsJson = task.Attachments
-                    .Select(attachment => attachmentService.ParseToJson(attachment,attachmentPath));
+                    .Select(attachment => attachmentService.ParseToJson(attachment, attachmentPath));
                 result["attachments"] = new JArray(attachmentsJson);
             }
 

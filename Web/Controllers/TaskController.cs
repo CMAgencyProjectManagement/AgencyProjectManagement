@@ -279,6 +279,11 @@ namespace Web.Controllers
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
+                        UserService userService = new UserService(db);
+                        string userIdString = User.Identity.GetUserId();
+                        User currentUser = userService.GetUser(userIdString);
+                        
+                        
 
                         var updateTask = taskService.UpdateTask(
                             updateTaskViewModel.Id,
@@ -288,7 +293,9 @@ namespace Web.Controllers
                             updateTaskViewModel.Priority,
                             updateTaskViewModel.StartDate,
                             updateTaskViewModel.Duration,
-                            updateTaskViewModel.Effort
+                            updateTaskViewModel.Effort,
+                            currentUser.ID,
+                            DateTime.Now.Date
                         );
                         return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(updateTask)));
                     }
