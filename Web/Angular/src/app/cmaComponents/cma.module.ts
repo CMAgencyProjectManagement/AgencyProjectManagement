@@ -9,6 +9,8 @@ import {UserListComponent} from './user-list/user-list.component';
 import {CommentComponent} from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
 import {RouterModule} from '@angular/router';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { FormsModule } from '@angular/forms';
 import {
   ConfirmModalComponent,
   CreateListModalComponent,
@@ -24,7 +26,9 @@ import {
       style: 'slide-down'
     }),
     CollapseModule.forRoot(),
-    RouterModule
+    RouterModule,
+    BsDropdownModule.forRoot(),
+    FormsModule
   ],
   exports: [
     ProjectCardComponent,

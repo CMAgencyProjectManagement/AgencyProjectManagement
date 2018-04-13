@@ -2,11 +2,15 @@ import {Injectable} from '@angular/core';
 import * as request from 'superagent';
 import {post} from 'superagent';
 import {serverPath} from '../_serverPath';
-
+import {Cursor, StoreService} from './tree.service';
 @Injectable()
 export class ListService {
   private tokenCursor;
 
+  constructor(private storeService: StoreService) {
+    this.tokenCursor = storeService.select(['token', 'access_token']);
+  }
+  
   public createList(
     projectId: number,
     name: string
