@@ -158,13 +158,13 @@ var serverPath = {
     deleteTeam: '/api/team',
     assignTeam: '/api/team/assign',
     unAssignTeam: '/api/team/unassign',
-    setTeamRole: 'api/team/assign/role',
+    setTeamRole: '/api/team/assign/role',
     // Task
     getTask: function (taskId) { return "/api/task/" + taskId; },
-    createTask: 'api/task',
-    editTask: 'api/task',
-    getPriority: 'api/task/priority',
-    getStatus: 'api/task/status',
+    createTask: '/api/task',
+    editTask: '/api/task',
+    getPriority: '/api/task/priority',
+    getStatus: '/api/task/status',
     // File
     uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; }
 };

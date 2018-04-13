@@ -7,8 +7,6 @@ import {
   FormGroup,
 } from '@angular/forms';
 import {IMyDpOptions} from 'mydatepicker';
-import {List} from 'app/interfaces/list';
-import {Task} from '../../../interfaces/task';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {TaskService} from '../../../services/task.service';
@@ -36,6 +34,7 @@ export class AddComponent implements OnInit {
   };
   @ViewChild('datepicker') datepicker;
   foundProject: Project;
+  listId: number;
   createForm: FormGroup;
   priorities: any[];
   public myDatePickerOptions: IMyDpOptions = {
@@ -63,6 +62,7 @@ export class AddComponent implements OnInit {
     let listId = this.route.snapshot.queryParamMap.get('listID');
 
     if (Number(projectId) && Number(listId)) {
+      this.listId = Number(listId);
       this.projectService.getProject(Number(projectId))
         .then(project => {
           this.foundProject = project;
@@ -96,6 +96,7 @@ export class AddComponent implements OnInit {
   updatePageLoadingState() {
     if (this.foundProject &&
       this.priorities) {
+      this.setDefaultValue();
       this.isLoading.page = false;
     }
   }
@@ -147,7 +148,7 @@ export class AddComponent implements OnInit {
     this.createForm.patchValue({
       name: '',
       description: '',
-      list: '',
+      list: this.listId,
       priority: '',
       startDate: {
         date: {
