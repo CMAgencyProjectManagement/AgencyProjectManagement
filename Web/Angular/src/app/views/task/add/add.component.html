@@ -6,7 +6,7 @@
       </div>
       <app-spinner *ngIf="isLoading"></app-spinner>
       <div *ngIf="!isLoading" class="card-body">
-        <div class="form-horizontal col-6" style="margin-top: 30px;" id="update">
+        <div  [formGroup]="taskForm" class="form-horizontal col-6" style="margin-top: 30px;" id="update">
           <div class="form-group row">
             <b style="font-size: 22px">
                 <label class="col-12 col-form-label text-right" for="name-input" style="font-size:22px">Project: <a href="#/project/detail?projectID={{foundProject.id}}"> {{foundProject.name}}</a></label>
@@ -21,29 +21,46 @@
             <label class="col-5 col-form-label text-right" for="name-input">Task Name<span
               style="color: #ee0d0d"><strong>*</strong></span></label>
             <div class="col-7">
-              <input type="text" id="name-input" name="name-input" class="form-control">
+              <input type="text" id="name-input" name="name-input" class="form-control" formControlName="name">
             </div>
           </div>
           <div class="form-group row">
             <label class="col-5 col-form-label text-right" for="name-input">Task Description</label>
             <div class="col-7">
-              <textarea rows="3"></textarea>
+              <textarea rows="3" formControlName="description"></textarea>
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-5 col-form-label text-right" for="name-input">Status</label>
+            <label class="col-5 col-form-label text-right" for="name-input">Priority</label>
             <div class="col-7">
-              <select>
-                <option value="todo">To do</option>
-                <option value="executing">Executing</option>
+              <select formControlName="status">
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--Start date-->
+            <label class="col-5 col-form-label text-right" for="startDate-input">
+              Start date <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-7 datepicker-group">
+              <my-date-picker id="startDate-input" #datepicker
+                              [options]="myDatePickerOptions"
+                              formControlName="startDate"
+                              [ngClass]="{'form-control': false, 'is-invalid': errors.startDate}"
+                              required></my-date-picker>
+              <div class="invalid-feedback" [ngStyle]="{'display':'block'}" *ngIf="errors.startDate">
+                {{errors.startDate}}
+              </div>
             </div>
           </div>
           <div class="form-actions text-center">
             <div class="col-12">
               <button type="button" class="btn btn-primary btn-lg" style="color: black;
                                 background-color: white;
-                                border-color: black;margin-left: 40px;">Save changes
+                                border-color: black;margin-left: 40px;" (click)="handleCreate()">Save changes
               </button>
               <button type="button" class="btn btn-secondary btn-lg" style="color: black;
                 background-color: white;

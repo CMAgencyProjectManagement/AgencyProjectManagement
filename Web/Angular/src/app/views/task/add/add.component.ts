@@ -6,8 +6,20 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { List } from 'app/interfaces/list';
+import {
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
+import { UserService } from '../../../services/user.service';
+import { Cursor, StoreService } from '../../../services/tree.service';
+import { UploadService } from '../../../services/upload.service';
+import { Router } from '@angular/router';
+// import * as moment from 'moment';
+import { IMyDpOptions } from 'mydatepicker';
+import { Team } from '../../../interfaces/team';
+import { TaskService } from '../../../services/task.service';
+import { User } from '../../../interfaces/user';
 
 @Component({
   selector: 'app-add',
@@ -22,8 +34,28 @@ export class AddComponent implements OnInit {
   listID: number;
   isLoading: boolean;
   isPageLoading: boolean;
+  taskForm: FormGroup;
   foundList: List;
-  constructor(private projectService: ProjectService) {
+  errors: {
+    name: string,
+    description: string,
+    list: string,
+    priority: string,
+    startDate: string,
+    duration: string,
+    effort: string
+  };
+  @ViewChild('datepicker') datepicker;
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd/mm/yyyy',
+    showInputField: true,
+    showTodayBtn: true
+  };
+  constructor(private projectService: ProjectService,
+    private taskService: TaskService,
+    private uploadService: UploadService, ) {
+    this.resetError();
     this.isPageLoading = true;
   }
 
@@ -49,7 +81,54 @@ export class AddComponent implements OnInit {
         console.debug('ProjectDetailComponent', reason);
       }
       );
-    console.debug(this.foundList.name);
+    this.taskForm = new FormGroup({
+      name: new FormControl(undefined),
+      description: new FormControl(undefined),
+      status: new FormControl(undefined),
+    })
+  }
+
+  resetError() {
+    this.errors = {
+      name: '',
+      description: '',
+      list: '',
+      priority: '',
+      startDate: '',
+      duration: '',
+      effort: ''
+    };
+  }
+
+
+  setErrors(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      switch (fieldName) {
+        case 'Name':
+          this.errors.name = errorMessage;
+          break;
+        case 'Description':
+          this.errors.description = errorMessage;
+          break;
+        case 'ListID':
+          this.errors.effort = errorMessage;
+          break;
+        case 'Priority':
+          this.errors.priority = errorMessage;
+          break;
+        case 'StartDate':
+          this.errors.startDate = errorMessage;
+          break;
+        case 'Duration':
+          this.errors.duration = errorMessage;
+          break;
+        case 'Effort':
+          this.errors.effort = errorMessage;
+          break;
+      }
+    }
   }
 
   GetProjectID(sParam) {
@@ -69,4 +148,25 @@ export class AddComponent implements OnInit {
     var sListID = sValue[1].split('=');
     return sListID[1];
   }
+
+  handleCreate() {
+    const formValue = this.taskForm.value;
+    // this.taskService.createTask(
+    //   formValue.taskname,
+    //   formValue.description,
+    //   formValue.
+    // ).then((value: any) => {
+    //   if (formValue.avatar) {
+    //     this.uploadAvatar(formValue.avatar, value.id)
+    //   } else {
+    //     this.isLoading = false;
+    //     this.setErrorsNull();
+    //     // show some form of success message here
+    //   }
+    // }).catch(reason => {
+    //   this.isLoading = false;
+    //   this.handleCreateError(reason.Data);
+    // })
+  }
+
 }
