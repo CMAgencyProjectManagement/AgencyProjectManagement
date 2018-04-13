@@ -446,7 +446,7 @@ namespace Service
                 CommentService commentService = new CommentService(db);
                 AttachmentService attachmentService = new AttachmentService(db);
                 var project = projectService.GetProjectOfTask(task.ID);
-                result["project"] = projectService.ParseToJson(project, false, false);
+                result["project"] = projectService.ParseToJson(project);
 
                 ListService listService = new ListService(db);
                 var list = listService.GetListOfTask(task.ID);

@@ -88,7 +88,7 @@ export class ProjectService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
           } else {
             reject(content);
           }
@@ -119,13 +119,33 @@ export class ProjectService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
           } else {
             reject(content);
           }
         })
         .catch(reason => reject(reason.response.body));
     })
+  }
+
+  public getProject(projectId: number): Promise<any> {
+    const objData = {
+      id: projectId
+    };
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getProject(projectId))
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
   }
 
   public closeProject(
@@ -142,7 +162,7 @@ export class ProjectService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
           } else {
             reject(content);
           }

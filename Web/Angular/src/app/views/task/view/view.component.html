@@ -137,10 +137,10 @@
               <dd class="col-9">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
               <dt class="col-3">Changed:</dt>
               <dd class="col-9">
-                <span *ngIf="foundTask.changedTime">
+                <span *ngIf="foundTask.changedDate">
                   {{foundTask.changedDate | date:'dd/MM/yyyy'}}
                 </span>
-                <span *ngIf="!foundTask.changedTime">
+                <span *ngIf="!foundTask.changedDate">
                   N/A
                 </span>
               </dd>

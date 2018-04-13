@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {TaskService} from '../../../services/task.service';
-import {ErrorModalComponent} from '../../../cmaComponents/modals/error-modal/error-modal.component';
+import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {Task} from '../../../interfaces/task';
 import {FormControl, FormGroup} from '@angular/forms';

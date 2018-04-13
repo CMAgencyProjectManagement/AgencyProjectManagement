@@ -254,7 +254,7 @@ namespace Service
                 JArray listArray = new JArray();
                 foreach (var project in projects)
                 {
-                    listArray.Add(projectService.ParseToJson(project, isDetailed: false));
+                    listArray.Add(projectService.ParseToJson(project));
                 }
 
                 result["projects"] = listArray;

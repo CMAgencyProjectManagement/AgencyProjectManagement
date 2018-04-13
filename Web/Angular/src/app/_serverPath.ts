@@ -9,8 +9,9 @@ const serverPath = {
   resetPassword: userId => `/api/user/${userId}/resetpassword`,
   // Project
   allProject: '/api/project/all',
+  getProject: (projectId) => `/api/project/${projectId}`,
   myProject: '/api/project',
-  getProjectList: (projecId: number) => `/api/project/${projecId}/list`,
+  getProjectList: (projectId: number) => `/api/project/${projectId}/list`,
   updateProject: '/api/project',
   createProject: '/api/project',
   closeProject: '/api/project/close',

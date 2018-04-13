@@ -248,7 +248,7 @@ namespace Service
             }
         }
 
-        public JObject ParseToJson(Project project, bool isDetailed = true, Boolean IsIncludeChangeBy = true, bool isDetailedUsers = false, string avatarPath =null)
+        public JObject ParseToJson(Project project, bool isDetailed = false, bool isDetailedUsers = false, string avatarPath =null)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
@@ -266,10 +266,10 @@ namespace Service
                 ["changedTime"] = project.ChangedTime,
                 ["status"] = project.Status
             };
-            if (project.ChangedBy.HasValue && IsIncludeChangeBy == true)
+            if (project.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(project.ChangedBy.Value);
-                result["changedBy"] = userService.ParseToJson(changer);
+                result["changedBy"] = userService.ParseToJson(changer,avatarPath);
             }
 
             if (isDetailed)
@@ -295,15 +295,6 @@ namespace Service
                 result["Project's Member"] = jArray; 
             }
               
-            return result;
-        }
-        public JObject ParseToJsonUserProject(UserProject userProject)
-        {
-            var result = new JObject
-            {
-                ["userId"] = userProject.UserID,
-                ["projectId"] = userProject.ProjectID
-            };
             return result;
         }
     }

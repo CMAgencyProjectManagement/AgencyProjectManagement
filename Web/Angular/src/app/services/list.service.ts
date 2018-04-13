@@ -23,7 +23,7 @@ export class ListService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
           } else {
             reject(content);
           }
@@ -48,7 +48,7 @@ export class ListService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            resolve(content.data);
+            resolve(content.Data);
           } else {
             reject(content);
           }

@@ -2,53 +2,117 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <strong>Add Task</strong>
+        <strong>Create task</strong>
       </div>
-      <app-spinner *ngIf="isLoading"></app-spinner>
-      <div *ngIf="!isLoading" class="card-body">
-        <div class="form-horizontal col-6" style="margin-top: 30px;" id="update">
+      <app-spinner *ngIf="isLoading.page"></app-spinner>
+      <div *ngIf="!isLoading.page" class="card-body row">
+        <div [formGroup]="createForm" class="form-horizontal col-lg-8 col-md-10 col-sm-12">
           <div class="form-group row">
-            <b style="font-size: 22px">
-                <label class="col-12 col-form-label text-right" for="name-input" style="font-size:22px">Project: <a href="#/project/detail?projectID={{foundProject.id}}"> {{foundProject.name}}</a></label>
-            </b>
-          </div>
-          <div class="form-group row">
-              <b style="font-size: 22px">
-                  <label class="col-12 col-form-label text-right" for="name-input" style="font-size:22px">List: {{foundList.name}}</label>
-              </b>
-            </div>
-          <div class="form-group row">
-            <label class="col-5 col-form-label text-right" for="name-input">Task Name<span
-              style="color: #ee0d0d"><strong>*</strong></span></label>
-            <div class="col-7">
-              <input type="text" id="name-input" name="name-input" class="form-control">
+            <!--NAME-->
+            <label class="col-4 col-form-label text-right" for="name-input">
+              Name <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8">
+              <input type="text" id="name-input"
+                     [ngClass]="{'form-control': true, 'is-invalid': errors.name}"
+                     formControlName="name">
+              <div class="invalid-feedback" *ngIf="errors.name">{{errors.name}}</div>
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-5 col-form-label text-right" for="name-input">Task Description</label>
-            <div class="col-7">
-              <textarea rows="3"></textarea>
+            <!--Description-->
+            <label class="col-4 col-form-label text-right" for="description-input">
+              Description
+            </label>
+            <div class="col-8">
+              <textarea id="description-input"
+                        rows="9"
+                        [ngClass]="{'form-control': true, 'is-invalid': errors.description}"
+                        placeholder="Description.."
+                        formControlName="description"></textarea>
+              <div class="invalid-feedback" *ngIf="errors.description">{{errors.description}}</div>
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-5 col-form-label text-right" for="name-input">Status</label>
-            <div class="col-7">
-              <select>
-                <option value="todo">To do</option>
-                <option value="executing">Executing</option>
+            <!--LIST-->
+            <label class="col-4 col-form-label text-right" for="list-input">
+              List <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8">
+              <select formControlName="list" id="list-input"
+                      [ngClass]="{'form-control': true, 'is-invalid': errors.list}">
+                <option *ngFor="let list of foundProject.lists" value="{{list.id}}">{{list.name}}</option>
               </select>
+              <div class="invalid-feedback" *ngIf="errors.list">{{errors.list}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--priority-->
+            <label class="col-4 col-form-label text-right" for="priority-input">
+              Priority <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8">
+              <select formControlName="priority" id="priority-input"
+                      [ngClass]="{'form-control': true, 'is-invalid': errors.list}">
+                <option *ngFor="let priority of priorities" value="{{priority.key}}">{{priority.value}}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="errors.priority">{{errors.priority}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--Start date-->
+            <label class="col-4 col-form-label text-right" for="startDate-input">
+              Start date <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8 datepicker-group">
+              <my-date-picker id="startDate-input" #datepicker
+                              [options]="myDatePickerOptions"
+                              formControlName="startDate"
+                              [ngClass]="{'form-control': false, 'is-invalid': errors.startDate}"
+                              required></my-date-picker>
+              <div class="invalid-feedback" [ngStyle]="{'display':'block'}" *ngIf="errors.startDate">
+                {{errors.startDate}}
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--DURATION-->
+            <label class="col-4 col-form-label text-right" for="duration-input">
+              Duration <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8">
+              <div class="input-group">
+                <input type="text" id="duration-input"
+                       [ngClass]="{'form-control': true, 'is-invalid': errors.duration}"
+                       formControlName="duration">
+                <span class="input-group-addon">day</span>
+              </div>
+
+              <div class="invalid-feedback" *ngIf="errors.duration">{{errors.duration}}</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--EFFORT-->
+            <label class="col-4 col-form-label text-right" for="effort-input">
+              Effort <span style="color: red"><strong>*</strong></span>
+            </label>
+            <div class="col-8">
+              <div class="input-group">
+                <input type="text" id="effort-input"
+                       [ngClass]="{'form-control': true, 'is-invalid': errors.effort}"
+                       formControlName="effort">
+                <span class="input-group-addon">hour</span>
+              </div>
+              <div class="invalid-feedback" *ngIf="errors.effort">{{errors.effort}}</div>
             </div>
           </div>
           <div class="form-actions text-center">
+            <!--BUTTON-->
             <div class="col-12">
-              <button type="button" class="btn btn-primary btn-lg" style="color: black;
-                                background-color: white;
-                                border-color: black;margin-left: 40px;">Save changes
+              <button class="btn btn-primary" (click)="handleCreateTask()" [ladda]="isLoading.create">
+                Create
               </button>
-              <button type="button" class="btn btn-secondary btn-lg" style="color: black;
-                background-color: white;
-                border-color: black; margin-left: 70px;">Reset
-              </button>
+              <button class="btn btn-secondary" type="button" (click)="setDefaultValue()">Reset</button>
             </div>
           </div>
         </div>

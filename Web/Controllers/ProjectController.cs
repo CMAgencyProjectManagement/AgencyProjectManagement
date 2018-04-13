@@ -347,7 +347,7 @@ namespace Web.Controllers
                         return Ok(ResponseHelper.GetResponse(
                             projectService.ParseToJson(project, isDetailedUsers: true,
                                 avatarPath: AgencyConfig.AvatarPath,
-                                isDetailed: false)
+                                isDetailed: true)
                         ));
                     }
                     else

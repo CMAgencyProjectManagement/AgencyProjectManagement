@@ -83,7 +83,7 @@ namespace Service
             if (isShowtask)
             {
                Project project = projectService.GetProjectByID(list.ProjectID);
-                result["project"] = projectService.ParseToJson(project,false);
+                result["project"] = projectService.ParseToJson(project);
             }
 
             return result;
