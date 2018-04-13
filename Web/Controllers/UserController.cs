@@ -100,6 +100,25 @@ namespace Web.Controllers
         {
             try
             {
+
+                if (createUserModel.Birthdate != null && (createUserModel.Username == null || createUserModel.Password == null || createUserModel.Name == null || createUserModel.Email == null))
+                {
+                    if (createUserModel.Birthdate > DateTime.Now)
+                    {
+                        ModelState.AddModelError("Birthdate",
+                            "Birthdate must be smaller than the current time ");
+
+                    }
+
+                    string UpdatedTime = createUserModel.Birthdate.ToString();
+                    DateTime DoB = DateTime.Parse(UpdatedTime);
+                    if ((DateTime.Today.Year - DoB.Year) < 18)
+                    {
+                        ModelState.AddModelError("Birthdate",
+                            "Age must be greater than 18 ");
+                    }
+                }
+
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
@@ -124,7 +143,6 @@ namespace Web.Controllers
                             ModelState.AddModelError("Email", "Email is taken");
                             flag = false;
                         }
-
                         if (createUserModel.Birthdate != null)
                         {
                             if (createUserModel.Birthdate > DateTime.Now)
@@ -144,9 +162,9 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
-
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
                         //DateTime? birthdate = null;
                         //if (createUserModel.Birthdate != null)
                         //{
@@ -168,12 +186,15 @@ namespace Web.Controllers
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(newUser)));
                     }
+
                 }
+
                 else
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
                 }
+
             }
             catch (Exception ex)
             {
@@ -181,6 +202,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
 
 
         [HttpDelete]
