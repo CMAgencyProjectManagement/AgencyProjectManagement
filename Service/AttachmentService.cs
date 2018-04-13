@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -16,14 +15,6 @@ namespace Service
         {
             this.db = db;
         }
-
-//        public void CreateAttachment(string name, string path, int taskId, int creatorId, DateTime createdTime)
-//        {
-//            Attachment attachment = new Attachment(
-//            {
-//                Name = 
-//            };
-//        }
 
         public JObject ParseToJson(Attachment attachment, string attachmentPath = null)
         {
