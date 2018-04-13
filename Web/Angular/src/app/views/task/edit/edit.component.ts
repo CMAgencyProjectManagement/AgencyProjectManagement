@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {TaskService} from '../../../services/task.service';
@@ -18,7 +18,8 @@ import * as moment from 'moment';
 })
 export class EditComponent implements OnInit {
   isLoading: {
-    page: boolean
+    page: boolean,
+    update: boolean
   };
   errors: {
     name: string,
@@ -29,6 +30,7 @@ export class EditComponent implements OnInit {
     duration: string,
     effort: string
   };
+  @ViewChild('datepicker') datepicker;
   taskId: number;
   foundTask: Task;
   updateForm: FormGroup;
@@ -38,8 +40,7 @@ export class EditComponent implements OnInit {
     // other options...
     dateFormat: 'dd/mm/yyyy',
     showInputField: true,
-    // openSelectorTopOfInput: true,
-    showTodayBtn: false
+    showTodayBtn: true
   };
 
   constructor(private taskService: TaskService,
@@ -49,7 +50,8 @@ export class EditComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location) {
     this.isLoading = {
-      page: true
+      page: true,
+      update: false
     };
     this.resetError();
   }
@@ -58,7 +60,6 @@ export class EditComponent implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
     if (Number(id)) {
       this.taskId = Number(id);
-
       this.taskService.getTaskDetail(this.taskId)
         .then(value => {
           this.foundTask = value;
@@ -120,6 +121,36 @@ export class EditComponent implements OnInit {
     };
   }
 
+  setErrors(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      switch (fieldName) {
+        case 'Name':
+          this.errors.name = errorMessage;
+          break;
+        case 'Description':
+          this.errors.description = errorMessage;
+          break;
+        case 'ListID':
+          this.errors.effort = errorMessage;
+          break;
+        case 'Priority':
+          this.errors.priority = errorMessage;
+          break;
+        case 'StartDate':
+          this.errors.startDate = errorMessage;
+          break;
+        case 'Duration':
+          this.errors.duration = errorMessage;
+          break;
+        case 'Effort':
+          this.errors.effort = errorMessage;
+          break;
+      }
+    }
+  }
+
   setDefaultValue() {
     let startDate = moment(this.foundTask.startDate);
     this.updateForm.patchValue({
@@ -131,7 +162,8 @@ export class EditComponent implements OnInit {
         date: {
           year: startDate.year(),
           month: startDate.month() + 1,
-          day: startDate.day()}
+          day: startDate.day()
+        }
       },
       duration: this.foundTask.duration,
       effort: this.foundTask.effort,
@@ -139,11 +171,28 @@ export class EditComponent implements OnInit {
   }
 
   handleUpdateTask() {
-
-    // let birthdate = formValue.birthDate ? formValue.birthDate.formatted : this.datepicker.selectionDayTxt;
+    this.isLoading.update = true;
+    this.resetError();
+    const values = this.updateForm.value;
+    let startDate = moment(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
+    this.taskService.editTask(
+      this.foundTask.id,
+      values.name,
+      values.description,
+      values.list,
+      values.priority,
+      startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt,
+      values.duration,
+      values.effort
+    ).then(value => {
+      this.isLoading.update = false;
+    }).catch(reason => {
+      this.setErrors(reason.Data);
+      this.isLoading.update = false;
+    })
   }
 
-  private showErrorModal(message: string, isNavigateBack: boolean = false) {
+  showErrorModal(message: string, isNavigateBack: boolean = false) {
     const initialState = {
       closeCallback: () => {
         if (isNavigateBack) {

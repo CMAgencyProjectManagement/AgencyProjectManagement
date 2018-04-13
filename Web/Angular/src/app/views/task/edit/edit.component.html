@@ -36,7 +36,7 @@
           <div class="form-group row">
             <!--LIST-->
             <label class="col-4 col-form-label text-right" for="list-input">
-              List
+              List <span style="color: red"><strong>*</strong></span>
             </label>
             <div class="col-8">
               <select formControlName="list" id="list-input"
@@ -49,7 +49,7 @@
           <div class="form-group row">
             <!--priority-->
             <label class="col-4 col-form-label text-right" for="priority-input">
-              Priority
+              Priority <span style="color: red"><strong>*</strong></span>
             </label>
             <div class="col-8">
               <select formControlName="priority" id="priority-input"
@@ -60,9 +60,9 @@
             </div>
           </div>
           <div class="form-group row">
-            <!--status-->
+            <!--Start date-->
             <label class="col-4 col-form-label text-right" for="startDate-input">
-              Start date
+              Start date <span style="color: red"><strong>*</strong></span>
             </label>
             <div class="col-8 datepicker-group">
               <my-date-picker id="startDate-input" #datepicker
@@ -78,7 +78,7 @@
           <div class="form-group row">
             <!--DURATION-->
             <label class="col-4 col-form-label text-right" for="duration-input">
-              Duration
+              Duration <span style="color: red"><strong>*</strong></span>
             </label>
             <div class="col-8">
               <div class="input-group">
@@ -94,7 +94,7 @@
           <div class="form-group row">
             <!--EFFORT-->
             <label class="col-4 col-form-label text-right" for="effort-input">
-              Effort
+              Effort <span style="color: red"><strong>*</strong></span>
             </label>
             <div class="col-8">
               <div class="input-group">
@@ -109,7 +109,7 @@
           <div class="form-actions text-center">
             <!--BUTTON-->
             <div class="col-12">
-              <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isSavingChange">
+              <button class="btn btn-primary" (click)="handleUpdateTask()" [ladda]="isLoading.update">
                 Save changes
               </button>
               <button class="btn btn-secondary" type="button" (click)="setDefaultValue()">Reset</button>

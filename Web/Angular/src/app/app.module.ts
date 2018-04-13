@@ -90,6 +90,21 @@ const SERVICES = [
   UploadService
 ];
 
+// Import modal
+import {
+  SuccessModalComponent,
+  ErrorModalComponent,
+  CreateListModalComponent,
+  ConfirmModalComponent
+} from './cmaComponents/modals';
+
+const MODALS = [
+  SuccessModalComponent,
+  ErrorModalComponent,
+  CreateListModalComponent,
+  ConfirmModalComponent
+];
+
 // Import 3rd party components
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
@@ -97,10 +112,8 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {MyDatePickerModule} from 'mydatepicker';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {ModalModule} from 'ngx-bootstrap';
-import {ConfirmModalComponent} from './cmaComponents/modals/confirm-modal/confirm-modal.component';
 import {CmaModule} from './cmaComponents/cma.module';
-import {ErrorModalComponent} from './cmaComponents/modals/error-modal/error-modal.component';
-import {CreateListModalComponent} from './cmaComponents/modals/create-list-modal/create-list-modal.component';
+
 
 @NgModule({
   imports: [
@@ -128,9 +141,7 @@ import {CreateListModalComponent} from './cmaComponents/modals/create-list-modal
     ...SERVICES
   ],
   entryComponents: [
-    ConfirmModalComponent,
-    ErrorModalComponent,
-    CreateListModalComponent
+    ...MODALS
   ],
   bootstrap: [AppComponent]
 })
