@@ -71,11 +71,10 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     UserService userService = new UserService(db);
-                    IEnumerable<User> allUser = userService.GetAll();
+                    IEnumerable<User> allUser = userService.GetAll().OrderByDescending(x => x.IsActive);
                     string avatarPath = AgencyConfig.AvatarPath;
 
                     JArray data = new JArray();
-
                     foreach (User user in allUser)
                     {
                         //Dont expose password
@@ -91,6 +90,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+       
 
 
         [HttpPost]
@@ -346,5 +346,13 @@ namespace Web.Controllers
             double score2 = user2.Value<double>("score");
             return score2.CompareTo(score1);
         }
+        public class UserNameComparer : IComparer<User>
+        {
+            public int Compare(User x, User y)
+            {
+                return x.Username.CompareTo(y.Username);
+            }
+        }
+        
     }
 }

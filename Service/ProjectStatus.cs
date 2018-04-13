@@ -4,6 +4,7 @@
     {
         NotStarted,
         Executing,
-        Closed
+        Canceled,
+        Finished
     }
 }

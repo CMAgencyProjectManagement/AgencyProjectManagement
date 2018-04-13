@@ -5,12 +5,16 @@ import {MiniUsersTableComponent} from './miniUsers-table/mini-users-table.compon
 import {AssignMembersCardComponent} from './assignMember-card/assignMembers-card.component';
 import {DataTablesModule} from 'angular-datatables';
 import {LaddaModule} from 'angular2-ladda';
-import {ConfirmModalComponent} from './modals/confirm-modal/confirm-modal.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { CommentComponent } from './comment/comment.component';
+import {UserListComponent} from './user-list/user-list.component';
+import {CommentComponent} from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
-import { ErrorModalComponent } from './modals/error-modal/error-modal.component';
 import {RouterModule} from '@angular/router';
+import {
+  ConfirmModalComponent,
+  CreateListModalComponent,
+  ErrorModalComponent,
+  SuccessModalComponent
+} from './modals';
 
 @NgModule({
   imports: [
@@ -29,7 +33,9 @@ import {RouterModule} from '@angular/router';
     ConfirmModalComponent,
     UserListComponent,
     CommentComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    CreateListModalComponent,
+    SuccessModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -38,7 +44,9 @@ import {RouterModule} from '@angular/router';
     ConfirmModalComponent,
     UserListComponent,
     CommentComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    CreateListModalComponent,
+    SuccessModalComponent
   ]
 })
 export class CmaModule {

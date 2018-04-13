@@ -70,7 +70,7 @@ export class ProjectUpdateComponent implements OnInit {
         }
       })
       .catch(reason => {
-        this.showErrorModal(reason.message);
+        this.showErrorModal(reason.Message);
         console.debug('ProjectUpdateComponent', reason);
       })
   }

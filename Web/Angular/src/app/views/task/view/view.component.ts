@@ -5,6 +5,7 @@ import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorModalComponent} from '../../../cmaComponents/modals/error-modal/error-modal.component';
 import {BsModalService} from 'ngx-bootstrap';
+import {CreateListModalComponent} from '../../../cmaComponents/modals/create-list-modal/create-list-modal.component';
 
 @Component({
   selector: 'app-view',
@@ -28,7 +29,7 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id = this.route.firstChild.snapshot.paramMap.get('id');
+    let id = this.route.snapshot.paramMap.get('id');
     if (Number(id)) {
       this.taskService.getTaskDetail(Number(id))
         .then(value => {
@@ -43,6 +44,9 @@ export class ViewComponent implements OnInit {
     } else {
       this.showErrorModal(`${id} is not a valid ID`);
     }
+  }
+
+  handleOnCommentBtnClick() {
 
   }
 

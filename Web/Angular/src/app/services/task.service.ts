@@ -7,9 +7,32 @@ import {Cursor, StoreService} from './tree.service';
 @Injectable()
 export class TaskService {
   private tokenCursor: Cursor;
+  private prioritiesCursor: Cursor;
 
-  constructor(private store: StoreService) {
-    this.tokenCursor = this.store.select(['token', 'access_token']);
+  constructor(private treeService: StoreService) {
+    this.tokenCursor = this.treeService.select(['token', 'access_token']);
+    this.prioritiesCursor = this.treeService.select(['priorities']);
+  }
+
+  getPriorities(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      let priorities = this.prioritiesCursor.get();
+      if (priorities) {
+        resolve(priorities);
+      } else {
+        request.get(serverPath.getPriority)
+          .set('token', this.tokenCursor.get())
+          .then(res => {
+            const content = res.body;
+            if (content.IsSuccess) {
+              resolve(content.Data);
+            } else {
+              reject(content.Message);
+            }
+          })
+          .catch(reason => reject(reason.response.body));
+      }
+    });
   }
 
   createTask(

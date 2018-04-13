@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using Entity;
@@ -8,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using Service;
 using Web.ViewModels;
+using Task = Entity.Task;
 
 namespace Web.Controllers
 {
@@ -64,6 +64,58 @@ namespace Web.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("priority")]
+        [Authorize]
+        public IHttpActionResult GetPriority()
+        {
+            try
+            {
+                JArray dataObject = new JArray();
+                foreach (TaskPriority priority in Enum.GetValues(typeof(TaskPriority)))
+                {
+                   dataObject.Add(new JObject
+                   {
+                       ["key"] = (int)priority,
+                       ["value"] = priority.ToString()
+                   });
+                }
+
+                return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("status")]
+        [Authorize]
+        public IHttpActionResult GetStatus()
+        {
+            try
+            {
+                JArray dataObject = new JArray();
+                foreach (TaskStatus priority in Enum.GetValues(typeof(TaskStatus)))
+                {
+                    dataObject.Add(new JObject
+                    {
+                        ["key"] = (int)priority,
+                        ["value"] = priority.ToString()
+                    });
+                }
+
+                return Ok(ResponseHelper.GetResponse(dataObject));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
 
         [HttpGet]
         [Route("myTask")]
@@ -112,29 +164,33 @@ namespace Web.Controllers
                             ModelState.AddModelError("Name", "Task name is taken");
                             flag = false;
                         }
+
                         if (taskService.CheckForListId(createTaskModel.ListID))
                         {
                             ModelState.AddModelError("ListID", "The System don't have this list");
                             flag = false;
                         }
-                        if (createTaskModel.Priority<0||createTaskModel.Priority>3)
+
+                        if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                         {
                             ModelState.AddModelError("Priority", "Invalid Priority ");
                             flag = false;
                         }
-                       
-                        if (createTaskModel.Duration<1)
+
+                        if (createTaskModel.Duration < 1)
                         {
                             ModelState.AddModelError("Duration",
-                                  "Duration must be greater than 1 ");
+                                "Duration must be greater than 1 ");
                             flag = false;
                         }
-                        if (createTaskModel.Effort<1||createTaskModel.Effort>(createTaskModel.Duration*24))
+
+                        if (createTaskModel.Effort < 1 || createTaskModel.Effort > (createTaskModel.Duration * 24))
                         {
                             ModelState.AddModelError("Effort",
-                                  "Effort(hours) must be smaller than the Duration(days)");
+                                "Effort(hours) must be smaller than the Duration(days)");
                             flag = false;
                         }
+
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
@@ -184,12 +240,17 @@ namespace Web.Controllers
                     {
                         
                         TaskService taskService = new TaskService(db);
+                        
                         bool flag = true;
-                        if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                        if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                         {
-                            ModelState.AddModelError("Name", "Task name is taken");
-                            flag = false;
+                            if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                            {
+                                ModelState.AddModelError("Name", "Task name is taken");
+                                flag = false;
+                            }
                         }
+                       
                         if (taskService.CheckForListId(updateTaskViewModel.ListID))
                         {
                             ModelState.AddModelError("ListID", "The System don't have this list");
@@ -204,18 +265,25 @@ namespace Web.Controllers
                         if (updateTaskViewModel.Duration < 1)
                         {
                             ModelState.AddModelError("Duration",
-                                  "Duration must be greater than 0 ");
+                                  "Duration must be greater than 1 ");
                             flag = false;
                         }
-                        if (updateTaskViewModel.Effort < 1 || updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
+
+                        if (updateTaskViewModel.Effort < 1 ||
+                            updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
                         {
                             ModelState.AddModelError("Effort",
-                                  "Effort(hours) must be smaller than the Duration(days)");
+                                  "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
                             flag = false;
                         }
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
+                        UserService userService = new UserService(db);
+                        string userIdString = User.Identity.GetUserId();
+                        User currentUser = userService.GetUser(userIdString);
+                        
+                        
 
                         var updateTask = taskService.UpdateTask(
                             updateTaskViewModel.Id,
@@ -225,7 +293,9 @@ namespace Web.Controllers
                             updateTaskViewModel.Priority,
                             updateTaskViewModel.StartDate,
                             updateTaskViewModel.Duration,
-                            updateTaskViewModel.Effort
+                            updateTaskViewModel.Effort,
+                            currentUser.ID,
+                            DateTime.Now.Date
                         );
                         return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(updateTask)));
                     }

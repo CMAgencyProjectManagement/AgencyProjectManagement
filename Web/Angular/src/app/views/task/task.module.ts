@@ -6,13 +6,22 @@ import {ViewComponent} from './view/view.component';
 import {CmaModule} from '../../cmaComponents/cma.module';
 import { EditComponent } from './edit/edit.component';
 import { AddComponent } from './add/add.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {LaddaModule} from 'angular2-ladda';
+import {MyDatePickerModule} from 'mydatepicker';
 
 @NgModule({
   imports: [
     CommonModule,
     TaskRoutingModule,
     SpinnerModule,
-    CmaModule
+    CmaModule,
+    ReactiveFormsModule,
+    LaddaModule.forRoot({
+      style: 'expand-left'
+    }),
+    FormsModule,
+    MyDatePickerModule,
   ],
   declarations: [
     ViewComponent,

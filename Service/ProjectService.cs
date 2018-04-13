@@ -121,7 +121,7 @@ namespace Service
             var project = db.Projects.Find(id);
             if (project != null)
             {
-                project.Status = (int)ProjectStatus.Closed;
+                project.Status = (int)ProjectStatus.Finished;
                 db.SaveChanges();
                 return id;
             }

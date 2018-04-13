@@ -63,8 +63,8 @@ namespace Service
             JObject result = new JObject
             {
                 ["id"] = list.ID,
-                ["projectId"] = list.ProjectID, //
-                ["name"] = list.Name,
+                ["projectId"] = list.ProjectID, 
+                ["name"] = list.Name
                 
             };
 

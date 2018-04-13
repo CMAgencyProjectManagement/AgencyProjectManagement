@@ -13,6 +13,22 @@ export class ProjectService {
     this.projectsCursor = this.store.select(['projects'])
   }
 
+  public getListOfProject(projectId: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getProjectList(projectId))
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
   public getMyProjects(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       get(serverPath.myProject)

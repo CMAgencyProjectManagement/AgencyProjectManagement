@@ -9,10 +9,10 @@
     </div>
     <div class="col-12">
       <div class="button-row">
-        <button class="btn btn-secondary bg-light">
+        <a routerLink="/task/edit/{{foundTask.id}}" class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
-        </button>
-        <button class="btn btn-secondary bg-light">
+        </a>
+        <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
         <button class="btn btn-secondary bg-light">
@@ -137,10 +137,10 @@
               <dd class="col-9">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
               <dt class="col-3">Changed:</dt>
               <dd class="col-9">
-                <span *ngIf="foundTask.changedDate">
+                <span *ngIf="foundTask.changedTime">
                   {{foundTask.changedDate | date:'dd/MM/yyyy'}}
                 </span>
-                <span *ngIf="!foundTask.changedDate">
+                <span *ngIf="!foundTask.changedTime">
                   N/A
                 </span>
               </dd>

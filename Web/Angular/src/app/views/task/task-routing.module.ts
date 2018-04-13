@@ -20,7 +20,7 @@ const routes: Routes = [
       },
       {
         data: {
-          title: 'Edit'
+          title: 'Update'
         },
         path: 'edit/:id',
         component: EditTask,
