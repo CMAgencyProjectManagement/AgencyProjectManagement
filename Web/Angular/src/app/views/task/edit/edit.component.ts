@@ -137,13 +137,6 @@ export class EditComponent implements OnInit {
       duration: this.foundTask.duration,
       effort: this.foundTask.effort,
     });
-    // this.updateForm.controls['name'].setValue(this.foundTask.name);
-    // this.updateForm.controls['description'].setValue(this.foundTask.description);
-    // this.updateForm.controls['list'].setValue(this.foundTask.list.id);
-    // this.updateForm.controls['priority'].setValue(this.foundTask.priority);
-    // this.updateForm.controls['startDate'].setValue(startDate.format('DD/MM/YYYY'));
-    // this.updateForm.controls['duration'].setValue(this.foundTask.duration);
-    // this.updateForm.controls['effort'].setValue(this.foundTask.effort);
   }
 
   handleUpdateTask() {
