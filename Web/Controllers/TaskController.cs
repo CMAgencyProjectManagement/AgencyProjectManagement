@@ -315,7 +315,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("assign")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult AssignTask(AssignTaskModel assignTaskModel)
         {
             try
@@ -352,7 +352,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("unassign")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult UnassignTask(UnassignTaskModel unassignTaskModel)
         {
             try
