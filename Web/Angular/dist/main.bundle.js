@@ -144,8 +144,9 @@ var serverPath = {
     resetPassword: function (userId) { return "/api/user/" + userId + "/resetpassword"; },
     // Project
     allProject: '/api/project/all',
+    getProject: function (projectId) { return "/api/project/" + projectId; },
     myProject: '/api/project',
-    getProjectList: function (projecId) { return "/api/project/" + projecId + "/list"; },
+    getProjectList: function (projectId) { return "/api/project/" + projectId + "/list"; },
     updateProject: '/api/project',
     createProject: '/api/project',
     closeProject: '/api/project/close',
@@ -287,15 +288,16 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__services_upload_service__ = __webpack_require__("../../../../../src/app/services/upload.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23_ng2_charts_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_app_services_list_service__ = __webpack_require__("../../../../../src/app/services/list.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -349,6 +351,7 @@ var APP_DIRECTIVES = [
 
 
 
+
 var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_9__services_auth_guard__["a" /* AlwaysAuthGuard */],
     __WEBPACK_IMPORTED_MODULE_10__services_tree_service__["a" /* StoreService */],
@@ -360,15 +363,16 @@ var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_16__services_task_service__["a" /* TaskService */],
     __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__["a" /* DependencyService */],
     __WEBPACK_IMPORTED_MODULE_18__services_pager_service__["a" /* PagerService */],
-    __WEBPACK_IMPORTED_MODULE_19__services_upload_service__["a" /* UploadService */]
+    __WEBPACK_IMPORTED_MODULE_19__services_upload_service__["a" /* UploadService */],
+    __WEBPACK_IMPORTED_MODULE_20_app_services_list_service__["a" /* ListService */]
 ];
 // Import modal
 
 var MODALS = [
-    __WEBPACK_IMPORTED_MODULE_20__cmaComponents_modals__["d" /* SuccessModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_20__cmaComponents_modals__["c" /* ErrorModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_20__cmaComponents_modals__["b" /* CreateListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_20__cmaComponents_modals__["a" /* ConfirmModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["c" /* ErrorModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["b" /* CreateListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* ConfirmModalComponent */]
 ];
 // Import 3rd party components
 
@@ -387,13 +391,13 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8__app_routing__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_21_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_22_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_23_ng2_charts_ng2_charts__["ChartsModule"],
-                __WEBPACK_IMPORTED_MODULE_24_mydatepicker__["MyDatePickerModule"],
-                __WEBPACK_IMPORTED_MODULE_25_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_26_ngx_bootstrap__["d" /* ModalModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_27__cmaComponents_cma_module__["a" /* CmaModule */]
+                __WEBPACK_IMPORTED_MODULE_22_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_23_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts__["ChartsModule"],
+                __WEBPACK_IMPORTED_MODULE_25_mydatepicker__["MyDatePickerModule"],
+                __WEBPACK_IMPORTED_MODULE_26_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
+                __WEBPACK_IMPORTED_MODULE_27_ngx_bootstrap__["d" /* ModalModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_28__cmaComponents_cma_module__["a" /* CmaModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]
@@ -644,13 +648,17 @@ var AssignMembersCardComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__ = __webpack_require__("../../../../../src/app/cmaComponents/comment/comment.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -675,29 +683,31 @@ var CmaModule = /** @class */ (function () {
                     style: 'slide-down'
                 }),
                 __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap__["c" /* CollapseModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */]
+                __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */],
+                __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */]
             ],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["a" /* ConfirmModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["a" /* ConfirmModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__user_list_user_list_component__["a" /* UserListComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["c" /* ErrorModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["b" /* CreateListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["d" /* SuccessModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* ErrorModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* CreateListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* SuccessModalComponent */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["a" /* ConfirmModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["a" /* ConfirmModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__user_list_user_list_component__["a" /* UserListComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["c" /* ErrorModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["b" /* CreateListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_11__modals__["d" /* SuccessModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* ErrorModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* CreateListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* SuccessModalComponent */]
             ]
         })
     ], CmaModule);
@@ -998,7 +1008,7 @@ var ConfirmModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/create-list-modal/create-list-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">Create list</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <input #listNameInput type=\"text\" placeholder=\"List name\">\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Add list</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\" id=\"listname\">\r\n  <div class=\"col-sm-9\">\r\n      <input #listNameInput type=\"text\" id=\"input-large\" name=\"input-large\" class=\"form-control form-control-lg\" placeholder=\"List name\" style=\"width: 400px; align-content: center\">\r\n    </div>\r\n  \r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1010,7 +1020,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".listname {\n  width: 200px; }\n", ""]);
 
 // exports
 
@@ -1235,7 +1245,7 @@ var SuccessModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <div *ngIf=\"showbutton\">\r\n    <div class=\"card-body scroll\" *ngIf=\"project\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\" *ngFor=\"let lists of project.lists;let i = index\">\r\n          <ng-container>\r\n            <div class=\"card\">\r\n              <div class=\"card-header cardheadertext\">\r\n                {{lists.name}}\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"!showbutton\">\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks\">\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\">\r\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\">\r\n                {{lists.name}}\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-footer\">\r\n                <a href=\"#/task/create?projectID={{project.id}}&listID={{lists.id}}\">\r\n                  <div style=\"text-align: center; font-size: 22px;\">\r\n                    <b>Add Task</b>\r\n                  </div>\r\n                </a>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container>\r\n            <div style=\"margin-left: 15px;\">\r\n                <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px\" (click)=\"handleOnAddListClick()\">\r\n                    <b>Add List</b>\r\n                  </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <div *ngIf=\"showbutton\">\r\n    <div class=\"card-body scroll\" *ngIf=\"project\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\" *ngFor=\"let lists of project.lists;let i = index\">\r\n          <ng-container>\r\n            <div class=\"card\">\r\n              <div class=\"card-header cardheadertext\">\r\n                {{lists.name}}\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"!showbutton\">\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks\">\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\">\r\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\r\n                <div class=\"form-group row\">\r\n                    <div class=\"col-9\">\r\n                        {{lists.name}}\r\n                    </div>\r\n                    <div class=\"col-3\">\r\n                        <div class=\"btn-group\" dropdown>\r\n                            <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\r\n                              <span class=\"caret\"></span>\r\n                            </button>\r\n                            <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" href=\"#\">Rename</a>\r\n                              </li>\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" href=\"#\">Clear all tasks</a>\r\n                              </li>\r\n                              <li class=\"divider dropdown-divider\"></li>\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" href=\"#\">Remove list</a>\r\n                              </li>\r\n                            </ul>\r\n                          </div>\r\n                    </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\r\n\r\n                  padding-right: 5px;\">\r\n                    <span class=\"badge badge-success float-right\" *ngIf=\"task.status==0\">To do</span>\r\n                    <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Executing</span>\r\n                    <span class=\"badge badge-danger float-right\" *ngIf=\"task.status==2\">Late</span>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-footer\">\r\n                <a href=\"#/task/create?projectID={{project.id}}&listID={{lists.id}}\">\r\n                  <div style=\"text-align: center; font-size: 20px;\">\r\n                    <b>Add Task</b>\r\n                  </div>\r\n                </a>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container>\r\n            <div style=\"margin-left: 15px;\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\r\n\r\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\r\n                <b>Add List</b>\r\n              </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -1265,6 +1275,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modals_create_list_modal_create_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/create-list-modal/create-list-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_list_service__ = __webpack_require__("../../../../../src/app/services/list.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1277,19 +1288,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectCardComponent = /** @class */ (function () {
-    function ProjectCardComponent(modalService) {
+    function ProjectCardComponent(modalService, listService) {
         this.modalService = modalService;
+        this.listService = listService;
+        this.max = 200;
+        this.status = { isOpen: false };
+        this.disabled = false;
+        this.isDropup = true;
+        this.autoClose = false;
         this.foundTasks = [];
         this.isCollapsed = true;
     }
     ProjectCardComponent.prototype.ngOnInit = function () {
     };
     ProjectCardComponent.prototype.handleOnAddListClick = function () {
+        var _this = this;
         var initialState = {
             confirmCallback: function (listName) {
-                // Code here
-                console.log(listName);
+                _this.listService.createList(_this.project.id, listName);
             }
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_2__modals_create_list_modal_create_list_modal_component__["a" /* CreateListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
@@ -1317,6 +1335,17 @@ var ProjectCardComponent = /** @class */ (function () {
         this.foundTasks = [];
         return;
     };
+    ProjectCardComponent.prototype.isOpenChange = function () {
+        console.log('Dropdown state is changed');
+    };
+    ProjectCardComponent.prototype.toggleDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.status.isOpen = !this.status.isOpen;
+    };
+    ProjectCardComponent.prototype.change = function (value) {
+        this.status.isOpen = value;
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", Object)
@@ -1331,7 +1360,7 @@ var ProjectCardComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/cmaComponents/project-card/project-card.component.html"),
             styles: [__webpack_require__("../../../../../src/app/cmaComponents/project-card/project-card.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["b" /* BsModalService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["b" /* BsModalService */], __WEBPACK_IMPORTED_MODULE_3__services_list_service__["a" /* ListService */]])
     ], ProjectCardComponent);
     return ProjectCardComponent;
 }());
@@ -2764,6 +2793,91 @@ var DependencyService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/list.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_superagent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ListService = /** @class */ (function () {
+    function ListService(storeService) {
+        this.storeService = storeService;
+        this.tokenCursor = storeService.select(['token', 'access_token']);
+    }
+    ListService.prototype.createList = function (projectId, name) {
+        var _this = this;
+        var objData = {
+            Name: name,
+            ProjectID: projectId,
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_1_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createList)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ListService.prototype.updateList = function (listId, name) {
+        var _this = this;
+        var objData = {
+            Name: name,
+            ID: listId,
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_1_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateList)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ListService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__tree_service__["a" /* StoreService */]])
+    ], ListService);
+    return ListService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/nav.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2980,7 +3094,7 @@ var ProjectService = /** @class */ (function () {
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
-                    resolve(content.data);
+                    resolve(content.Data);
                 }
                 else {
                     reject(content);
@@ -3006,7 +3120,28 @@ var ProjectService = /** @class */ (function () {
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
-                    resolve(content.data);
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ProjectService.prototype.getProject = function (projectId) {
+        var _this = this;
+        var objData = {
+            id: projectId
+        };
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getProject(projectId))
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
                 }
                 else {
                     reject(content);
@@ -3028,7 +3163,7 @@ var ProjectService = /** @class */ (function () {
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
-                    resolve(content.data);
+                    resolve(content.Data);
                 }
                 else {
                     reject(content);
@@ -3413,7 +3548,7 @@ var UploadService = /** @class */ (function () {
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
-                    resolve(content.data);
+                    resolve(content.Data);
                 }
                 else {
                     reject(content);
