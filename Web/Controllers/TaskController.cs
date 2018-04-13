@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Entity;
 using Microsoft.AspNet.Identity;
@@ -71,17 +73,19 @@ namespace Web.Controllers
         {
             try
             {
-                JArray dataObject = new JArray();
-                foreach (TaskPriority priority in Enum.GetValues(typeof(TaskPriority)))
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                   dataObject.Add(new JObject
-                   {
-                       ["key"] = (int)priority,
-                       ["value"] = priority.ToString()
-                   });
+                    TaskService taskService = new TaskService(db);
+                    IEnumerable<KeyValuePair<string,string>> priorities = taskService.getPriorities();
+                    IEnumerable<JObject> prioritiesJson = priorities.Select(pair => new JObject
+                    {
+                        ["key"] = pair.Key,
+                        ["value"] = pair.Value,
+                    });
+                    return Ok(ResponseHelper.GetResponse(new JArray(prioritiesJson)));
                 }
 
-                return Ok(ResponseHelper.GetResponse(dataObject));
+                
             }
             catch (Exception ex)
             {
@@ -97,17 +101,17 @@ namespace Web.Controllers
         {
             try
             {
-                JArray dataObject = new JArray();
-                foreach (TaskStatus priority in Enum.GetValues(typeof(TaskStatus)))
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    dataObject.Add(new JObject
+                    TaskService taskService = new TaskService(db);
+                    IEnumerable<KeyValuePair<string,string>> statuses = taskService.getStatuses();
+                    IEnumerable<JObject> statusesJson = statuses.Select(pair => new JObject
                     {
-                        ["key"] = (int)priority,
-                        ["value"] = priority.ToString()
+                        ["key"] = pair.Key,
+                        ["value"] = pair.Value,
                     });
+                    return Ok(ResponseHelper.GetResponse(new JArray(statusesJson)));
                 }
-
-                return Ok(ResponseHelper.GetResponse(dataObject));
             }
             catch (Exception ex)
             {
@@ -115,7 +119,6 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
 
         [HttpGet]
         [Route("myTask")]

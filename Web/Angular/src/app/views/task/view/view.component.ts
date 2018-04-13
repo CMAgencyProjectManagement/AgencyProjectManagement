@@ -3,9 +3,8 @@ import {Task} from '../../../interfaces/task'
 import {TaskService} from '../../../services/task.service';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ErrorModalComponent} from '../../../cmaComponents/modals/error-modal/error-modal.component';
 import {BsModalService} from 'ngx-bootstrap';
-import {CreateListModalComponent} from '../../../cmaComponents/modals/create-list-modal/create-list-modal.component';
+import {ErrorModalComponent} from '../../../cmaComponents/modals';
 
 @Component({
   selector: 'app-view',
@@ -17,6 +16,8 @@ export class ViewComponent implements OnInit {
   loading: {
     page: boolean
   };
+  statuses: any[];
+  priorities: any[];
 
   constructor(private taskService: TaskService,
               private router: Router,

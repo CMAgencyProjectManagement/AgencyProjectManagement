@@ -206,7 +206,7 @@ namespace Service
                 foundTask.Effort = effort;
                 foundTask.ChangedBy = modifierId;
                 foundTask.ChangedTime = modifyTime;
-                
+
                 db.SaveChanges();
                 return foundTask;
             }
@@ -401,6 +401,49 @@ namespace Service
             }
         }
 
+        public IEnumerable<KeyValuePair<string, string>> getPriorities()
+        {
+            List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
+            foreach (TaskStatus priority in Enum.GetValues(typeof(TaskStatus)))
+            {
+                result.Add(new KeyValuePair<string, string>(
+                    ((int) priority).ToString(),
+                    DisplayCamelCaseString(priority.ToString())));
+            }
+
+            return result;
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> getStatuses()
+        {
+            List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
+            foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+            {
+                result.Add(new KeyValuePair<string, string>(
+                    ((int) status).ToString(),
+                    DisplayCamelCaseString(status.ToString())));
+            }
+
+            return result;
+        }
+
+        public string DisplayCamelCaseString(string camelCase)
+        {
+            List<char> chars = new List<char> {camelCase[0]};
+            foreach (char c in camelCase.Skip(1))
+            {
+                if (char.IsUpper(c))
+                {
+                    chars.Add(' ');
+                    chars.Add(char.ToLower(c));
+                }
+                else
+                    chars.Add(c);
+            }
+
+            return new string(chars.ToArray());
+        }
+
         public JObject ParseToJson(Task task, bool isDetailed = false, string avatarPath = null,
             string attachmentPath = null)
         {
@@ -426,7 +469,7 @@ namespace Service
             if (task.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(task.ChangedBy.Value);
-                result["changedBy"] = userService.ParseToJson(changer,avatarPath);
+                result["changedBy"] = userService.ParseToJson(changer, avatarPath);
             }
 
             if (task.StartDate.HasValue)
@@ -435,10 +478,10 @@ namespace Service
             }
 
             TaskStatus taskStatus = (TaskStatus) task.Status;
-            result["statusText"] = taskStatus.ToString();
+            result["statusText"] = DisplayCamelCaseString(taskStatus.ToString());
 
             TaskPriority taskPriority = (TaskPriority) task.Priority;
-            result["priorityText"] = taskPriority.ToString();
+            result["priorityText"] = DisplayCamelCaseString(taskPriority.ToString());
 
             if (isDetailed)
             {
