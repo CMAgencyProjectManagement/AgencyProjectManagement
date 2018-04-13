@@ -15,7 +15,7 @@ export class ProjectCardComponent implements OnInit {
 
   foundTasks: Task[];
   isCollapsed: boolean;
-  max: number = 200;
+  max = 200;
   showWarning: boolean;
   dynamic: number;
   type: string;
@@ -63,7 +63,6 @@ export class ProjectCardComponent implements OnInit {
     return;
   }
 
-  
   isOpenChange(): void {
     console.log('Dropdown state is changed');
   }
@@ -80,11 +79,9 @@ export class ProjectCardComponent implements OnInit {
     this.status.isOpen = value;
   }
 
-  disabled: boolean = false;
+  disabled = false;
 
-  isDropup: boolean = true;
+  isDropup = true;
 
-  autoClose: boolean = false;
-}
-
+  autoClose = false;
 }
