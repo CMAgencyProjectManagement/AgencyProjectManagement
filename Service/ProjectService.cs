@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -247,6 +246,48 @@ namespace Service
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
             }
         }
+        public JObject ParseToJsonStatusReport(Project project)
+        {
+            List<Task> tasks = new List<Task>();
+            var lists = db.Lists.Where(x => x.ProjectID == project.ID);
+            var listIds = db.Lists.Where(x => x.ProjectID == project.ID).Select(x => x.ID).ToList();
+            foreach (var listId in listIds)
+            {
+                var tasksInList = db.Tasks.Where(x => x.ListID == listId);
+                foreach (var taskInList in tasksInList)
+                {
+                    tasks.Add(taskInList);
+                }
+            }
+            int taskNotStarted = tasks.Where(x => x.Status== (int)TaskStatus.NotStarted).Count();
+            int taskExcuting = tasks.Where(x => x.Status == (int)TaskStatus.Executing).Count();
+            int taskNeedReview = tasks.Where(x => x.Status == (int)TaskStatus.NeedReview).Count();
+            int taskDone = tasks.Where(x => x.Status == (int)TaskStatus.Done).Count();
+            int taskNumber = tasks.Count();
+
+            List<JObject> calculatedResult = new List<JObject>();
+            foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+            {
+                int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                calculatedResult.Add(new JObject
+                {
+                    ["key"] = status.ToString(),
+                    ["value"] = (decimal)(taskStatusCount * 100) / taskNumber
+                });               
+            }
+
+            var result = new JObject
+            {
+                ["id"] = project.ID,
+                ["name"] = project.Name,
+                ["taskCount"] = tasks.Count(),
+                ["result"] = new JArray(calculatedResult),
+            };
+            
+
+            return result;
+        }
+
 
         public JObject ParseToJson(Project project, bool isDetailed = false, bool isDetailedUsers = false, string avatarPath =null)
         {
