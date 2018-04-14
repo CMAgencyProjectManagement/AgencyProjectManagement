@@ -66,16 +66,6 @@
             <h5 class="mb-3">Attachments</h5>
             <dl class="row ml-1">
               <div class="col-12">
-                <!--<div class="form-inline">-->
-                  <!--<div class="form-group">-->
-                    <!--<label for="exampleInputName2">Name</label>-->
-                    <!--<input class="form-control" id="exampleInputName2" placeholder="Jane Doe" type="text">-->
-                  <!--</div>-->
-                  <!--<div class="form-group">-->
-                    <!--<label for="exampleInputEmail2">Email</label>-->
-                    <!--<input class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com" type="email">-->
-                  <!--</div>-->
-                <!--</div>-->
                 <div class="form-group row" [formGroup]="attachmentForm">
                   <label class="col-3 col-form-label" for="file-input">Attachment</label>
                   <div class="col-6">
@@ -92,7 +82,7 @@
                 </div>
               </div>
               <div class="col-12">
-                <ul class="list-group" *ngFor="let attachment of foundTask.attachments">
+                <ul class="list-group" *ngFor="let attachment of attachments">
                   <a href="{{attachment.source}}">
                     <li
                       class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">

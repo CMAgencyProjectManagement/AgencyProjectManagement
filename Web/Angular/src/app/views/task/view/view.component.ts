@@ -7,6 +7,7 @@ import {BsModalService} from 'ngx-bootstrap';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
+import {Attachment} from '../../../interfaces/attachment';
 
 @Component({
   selector: 'app-view',
@@ -16,6 +17,7 @@ import {UploadService} from '../../../services/upload.service';
 export class ViewComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput: ElementRef;
   foundTask: Task;
+  attachments: Attachment[];
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -46,6 +48,7 @@ export class ViewComponent implements OnInit {
       this.taskService.getTaskDetail(Number(id))
         .then(value => {
           this.foundTask = value as Task;
+          this.attachments = this.foundTask.attachments;
           this.isLoading.page = false;
         })
         .catch(reason => {
@@ -73,6 +76,8 @@ export class ViewComponent implements OnInit {
       this.isLoading.attachmentUpload = true;
       this.uploadService.uploadAttachment(formValue.attachment, this.foundTask.id)
         .then(value => {
+          let attachment = value as Attachment;
+          this.attachments.push(attachment);
           this.isLoading.attachmentUpload = false;
         })
         .catch(reason => {

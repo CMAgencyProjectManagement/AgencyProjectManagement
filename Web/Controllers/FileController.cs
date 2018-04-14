@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using Entity;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using Service;
 
@@ -59,6 +61,7 @@ namespace Web.Controllers
                         renameFile
                     );
 
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
                     using (FileStream fileStream = File.Create(path))
                     {
                         avatarFile.InputStream.CopyTo(fileStream);
@@ -82,12 +85,12 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
-        
+
+
         [HttpPut]
-        [Route("task/{id:int}/attachment")]
+        [Route("task/{taskId:int}/attachment")]
         [Authorize(Roles = "Admin, Staff")]
-        public IHttpActionResult UploadAttachment(int id)
+        public IHttpActionResult UploadAttachment(int taskId)
         {
             try
             {
@@ -104,16 +107,41 @@ namespace Web.Controllers
 
                 if (attachment != null)
                 {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        AttachmentService attachmentService = new AttachmentService(db);
+                        UserService userService = new UserService(db);
+                        ProjectService projectService = new ProjectService(db);
+                        Project project = projectService.GetProjectOfTask(taskId);
+                        string attachmentPath =  Path.Combine(
+                            $"project_{project.ID}",
+                            $"task_{taskId}"
+                        );
+                        string filename = attachment.FileName;
+                        string path = Path.Combine(
+                            HttpContext.Current.Server.MapPath("~"),
+                            AgencyConfig.AttachmentPath.Substring(1),
+                            attachmentPath,
+                            filename
+                        );
 
-                    string renamedFile = "";
-                    string path = Path.Combine(
-                        HttpContext.Current.Server.MapPath("~"),
-                        AgencyConfig.AttachmentPath.Substring(1),
-                        renamedFile
-                    );
-                    
-                    
-                    return null;
+                        path = getDeDeupFile(path);
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(path));
+                        using (FileStream newfileStream = File.Create(path))
+                        {
+                            attachment.InputStream.CopyTo(newfileStream);
+                        }
+                        
+                        string userIdString = User.Identity.GetUserId();
+                        User user = userService.GetUser(userIdString);
+                        Attachment attachmentResult = attachmentService.AddAttachment(
+                            Path.GetFileName(path), attachmentPath, taskId, user.ID, DateTime.Today
+                            );
+                        return Ok(ResponseHelper.GetResponse(
+                            attachmentService.ParseToJson(attachmentResult,AgencyConfig.AttachmentPath))
+                        );
+                    }
                 }
                 else
                 {
@@ -126,6 +154,34 @@ namespace Web.Controllers
                 return Content(HttpStatusCode.InternalServerError,
                     ResponseHelper.GetExceptionResponse(ex));
             }
+        }
+
+        //https://stackoverflow.com/questions/13049732/automatically-rename-a-file-if-it-already-exists-in-windows-way
+        private string getDeDeupFile(string filepath)
+        {
+            if (File.Exists(filepath))
+            {
+                string folder = Path.GetDirectoryName(filepath);
+                string filename = Path.GetFileNameWithoutExtension(filepath);
+                string extension = Path.GetExtension(filepath);
+                int number = 1;
+
+                Match regex = Regex.Match(filepath, @"(.+) \((\d+)\)\.\w+");
+
+                if (regex.Success)
+                {
+                    filename = regex.Groups[1].Value;
+                    number = int.Parse(regex.Groups[2].Value);
+                }
+
+                do
+                {
+                    number++;
+                    filepath = Path.Combine(folder, $"{filename} ({number}){extension}");
+                } while (File.Exists(filepath));
+            }
+
+            return filepath;
         }
     }
 }

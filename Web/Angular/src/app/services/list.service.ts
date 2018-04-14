@@ -4,7 +4,7 @@ import {serverPath} from '../_serverPath';
 import {Cursor, StoreService} from './tree.service';
 @Injectable()
 export class ListService {
-  private tokenCursor;
+  private tokenCursor: Cursor;
 
   constructor(private storeService: StoreService) {
     this.tokenCursor = storeService.select(['token', 'access_token']);
