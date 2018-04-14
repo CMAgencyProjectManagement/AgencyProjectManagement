@@ -10,6 +10,7 @@ import {UploadService} from '../../../services/upload.service';
 import {Attachment} from '../../../interfaces/attachment';
 import * as _ from 'lodash' ;
 import {UserService} from '../../../services/user.service';
+import {User} from '../../../interfaces/user';
 
 @Component({
   selector: 'app-view',
@@ -76,27 +77,43 @@ export class ViewComponent implements OnInit {
 
   }
 
-  // TODO preselected assgined
-
   handleOnAssignBtnClick() {
-    const onConfirm = (selectedUsers) => {
-      console.debug('handleOnAssignBtnClick', selectedUsers);
+    const onConfirm = (selectedUsers: User[]) => {
+      let selectedIds = _.map(selectedUsers, 'id');
+      this.taskService.assignTask(this.foundTask.id, selectedIds)
+        .then(value => {
+          this.foundTask.assignees = _.concat(this.foundTask.assignees, selectedUsers);
+        })
+        .catch(reason => {
+          this.showErrorModal('Assign fail');
+        })
     };
     this.isLoading.openAssignModal = true;
     this.userServcice.getUserOfProject(this.foundTask.project.id)
       .then(value => {
+        const pool = [];
+        for (let user of value as User[]) {
+          let removeFlag = false;
+          for (let assignee of this.foundTask.assignees) {
+            if (assignee.id == user.id) {
+              removeFlag = true;
+            }
+          }
+          if (!removeFlag) {
+            pool.push(user);
+          }
+        }
+
         const initialState = {
           confirmCallback: onConfirm,
-          selectedUsers: this.foundTask.assignees,
-          allProjectUsers: value,
-          title: 'Assignment',
-          // message: 'Please select project members to assign them to this task or de-select members to remove them from assignees list'
+          userPool: pool,
+          title: `Assignment`,
         };
         this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
         this.isLoading.openAssignModal = false
       })
       .catch(reason => {
-        this.showErrorModal('An error has occured while trying to open assign pop-up ');
+        this.showErrorModal('An error has occurred while trying to open assign pop-up ');
         this.isLoading.openAssignModal = false
       });
   }

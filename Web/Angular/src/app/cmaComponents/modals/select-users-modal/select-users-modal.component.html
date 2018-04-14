@@ -11,13 +11,22 @@
     {{message}}
   </div>
   <div class="col-12">
-    <app-mini-users-table [users]="allProjectUsers" (onSelectedChange)="selectedUsersChanged($event)">
-
-    </app-mini-users-table>
+    <div class="form-group row">
+      <div class="col-md-9">
+        <select id="user-select" name="user-select" class="form-control" (change)="handleOnSelect($event.target.value)">
+          <option value="{{undefined}}">Please select members</option>
+          <option value="{{user.id}}" *ngFor="let user of userPool">{{user.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <h3>Selected</h3>
+    <app-user-list [users]="selectedUsers"></app-user-list>
   </div>
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="handleOnConfirm()">Confirm</button>
+  <button type="button" class="btn btn-primary" (click)="handleOnConfirm()">Assign</button>
   <button type="button" class="btn btn-secondary" (click)="handleOnCancel()">Cancel</button>
 </div>

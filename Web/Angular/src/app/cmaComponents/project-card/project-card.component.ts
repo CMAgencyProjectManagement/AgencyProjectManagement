@@ -2,7 +2,7 @@ import { Component, Input,Output, OnInit, EventEmitter } from '@angular/core';
 import { Project } from '../../interfaces/project';
 import { Task } from 'app/interfaces/task';
 import { BsModalService } from 'ngx-bootstrap';
-import { CreateListModalComponent } from '../modals/create-list-modal/create-list-modal.component';
+import { CreateListModalComponent } from '../modals';
 import { ListService } from '../../services/list.service';
 import { RemoveListModalComponent, RenameListModalComponent } from 'app/cmaComponents/modals';
 @Component({

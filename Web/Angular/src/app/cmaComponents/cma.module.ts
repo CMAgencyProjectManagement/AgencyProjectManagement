@@ -20,6 +20,7 @@ import {
   RenameListModalComponent,
   SelectUsersModalComponent
 } from './modals';
+import { TypeaheadModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import {
     CollapseModule.forRoot(),
     RouterModule,
     BsDropdownModule.forRoot(),
-    FormsModule
+    FormsModule,
+    TypeaheadModule.forRoot(),
   ],
   exports: [
     ProjectCardComponent,

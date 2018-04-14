@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data.Entity.Core;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Spatial;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using Entity;
@@ -127,10 +128,9 @@ namespace Service
 
             return false;
         }
- 
+
         public Task TaskDoneAPIwithStaff(int taskId, User user)
         {
-           
             var task = db.Tasks.Find(taskId);
             if (task != null)
             {
@@ -142,16 +142,17 @@ namespace Service
                     {
                         if (user.IsManager == false)
                         {
-                            task.Status = (int)TaskStatus.NeedReview;
+                            task.Status = (int) TaskStatus.NeedReview;
                             return task;
-                        } 
-                        
+                        }
                     }
                     else
                     {
-                        throw new ObjectNotFoundException($"User:  {user.Username} not member in task with id {task.ID}");
+                        throw new ObjectNotFoundException(
+                            $"User:  {user.Username} not member in task with id {task.ID}");
                     }
                 }
+
                 throw new ObjectNotFoundException($"User:  {user.Username} not join in task with id {task.ID}");
             }
             else
@@ -159,27 +160,24 @@ namespace Service
                 throw new ObjectNotFoundException($"Task with ID {taskId} not found");
             }
         }
-    
+
         public Task TaskDoneAPIwithManager(int taskId, User user)
         {
-
             var task = db.Tasks.Find(taskId);
             if (task != null)
             {
                 int listId = task.ListID;
                 int projectId = db.Lists.Find(listId).ProjectID;
-                var teamId = db.TeamProjects.Where(x => x.ProjectID == projectId).Select(x => x.TeamID).FirstOrDefault();
+                var teamId = db.TeamProjects.Where(x => x.ProjectID == projectId).Select(x => x.TeamID)
+                    .FirstOrDefault();
                 Team team = db.Teams.Find(teamId);
                 if (team != null)
                 {
-
                     User manager = db.Users.Where(x => x.TeamID == teamId && x.IsManager == true).FirstOrDefault();
                     if (user.ID == manager.ID)
                     {
-
-                        task.Status = (int)TaskStatus.Done;
+                        task.Status = (int) TaskStatus.Done;
                         return task;
-
                     }
                     else
                     {
@@ -195,8 +193,6 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"Task with ID {taskId} not found");
             }
-
-
         }
 
         public bool CheckDuplicatedTaskname(string taskName)
@@ -265,60 +261,95 @@ namespace Service
                 throw new ObjectNotFoundException($"Can't find project with ID {id}");
             }
         }
+
         public UserTask AssignTask(int taskID, int userID)
         {
             User user = db.Users.Find(userID);
-            if (user != null)
-            {
-                Task task = db.Tasks.Find(taskID);
-                if (task != null)
-                {
-                    UserTask assignTask;
-                    IEnumerable<UserTask> userTasks = db.UserTasks.Where(x => x.TaskID == taskID).ToList();
-                    foreach (var userTask in userTasks)
-                    {
-                        if (user.ID != userTask.UserID)
-                        {
-                            assignTask = new UserTask
-                            {
-                                TaskID = taskID,
-                                UserID = userID,
-                                IsFollow = false,
-                                IsAssigned = true,
-                            };
-                            IEnumerable<UserTask> UserTask =
-                                db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
-                            if (UserTask.Count() == 0)
-                            {
-                                db.UserTasks.Add(assignTask);
-                                db.SaveChanges();
-                                return assignTask;
-                            }
-                            else
-                            {
-                                //throw new ObjectNotFoundException($"UserTask existed");
-                            }
-                        }
-                        else
-                        {
-                            userTask.TaskID = taskID;
-                            userTask.UserID = userID;
-                            userTask.IsAssigned = true;
-                            db.SaveChanges();
-                        }
-                    }
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Task with ID{taskID} not found");
-                }
-            }
-            else
+            if (user == null)
             {
                 throw new ObjectNotFoundException($"User with ID{userID} not found");
             }
 
-            return null;
+            Task task = db.Tasks.Find(taskID);
+            if (task == null)
+            {
+                throw new ObjectNotFoundException($"Task with ID{taskID} not found");
+            }
+
+            UserTask foundUserTask = db.UserTasks
+                .SingleOrDefault(userTask => userTask.TaskID == task.ID && userTask.UserID == userID);
+            
+            if (foundUserTask != null)
+            {
+                foundUserTask.IsAssigned = true;
+            }
+            else
+            {
+                foundUserTask = new UserTask
+                {
+                    UserID = userID,
+                    TaskID = taskID,
+                    IsFollow = false,
+                    IsAssigned = true
+                };
+                db.UserTasks.Add(foundUserTask);
+            }
+
+            db.SaveChanges();
+            return foundUserTask;
+
+//            User user = db.Users.Find(userID);
+//            if (user != null)
+//            {
+//                Task task = db.Tasks.Find(taskID);
+//                if (task != null)
+//                {
+//                    UserTask assignTask;
+//                    IEnumerable<UserTask> userTasks = db.UserTasks.Where(x => x.TaskID == taskID).ToList();
+//                    foreach (var userTask in userTasks)
+//                    {
+//                        if (user.ID != userTask.UserID)
+//                        {
+//                            assignTask = new UserTask
+//                            {
+//                                TaskID = taskID,
+//                                UserID = userID,
+//                                IsFollow = false,
+//                                IsAssigned = true,
+//                            };
+//                            IEnumerable<UserTask> UserTask =
+//                                db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
+//                            if (UserTask.Count() == 0)
+//                            {
+//                                db.UserTasks.Add(assignTask);
+//                                db.SaveChanges();
+//                                return assignTask;
+//                            }
+//                            else
+//                            {
+//                                //throw new ObjectNotFoundException($"UserTask existed");
+//                            }
+//                        }
+//                        else
+//                        {
+//                            userTask.TaskID = taskID;
+//                            userTask.UserID = userID;
+//                            userTask.IsAssigned = true;
+//                            db.SaveChanges();
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    throw new ObjectNotFoundException($"Task with ID{taskID} not found");
+//                }
+//            }
+//            else
+//            {
+//                throw new ObjectNotFoundException($"User with ID{userID} not found");
+//            }
+//
+//            return null;
         }
 
         public int UnAssignTask(int taskID, int userID)

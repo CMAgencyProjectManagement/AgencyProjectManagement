@@ -15,19 +15,24 @@ export class SelectUsersModalComponent implements OnInit {
   title: string;
   message: string;
   selectedUsers: User[];
-  allProjectUsers: User[];
+  userPool: User[];
 
   constructor(private bsModalRef: BsModalRef) {
   }
 
   ngOnInit() {
+    this.selectedUsers = [];
   }
 
-  selectedUsersChanged(userIds: number[]) {
-    this.selectedUsers = _.filter(this.allProjectUsers, (user: User) => {
-      return userIds.includes(user.id);
+
+  handleOnSelect(userId) {
+    this.selectedUsers = _.concat(this.selectedUsers, _.find(this.userPool, (user: User) => {
+      return user.id == userId;
+    }));
+
+    this.userPool = _.filter(this.userPool, (user: User) => {
+      return user.id != userId;
     });
-    console.debug('selectedUsersChanged', this.selectedUsers);
   }
 
   handleOnConfirm() {
