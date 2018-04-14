@@ -127,14 +127,32 @@ namespace Service
 
             return false;
         }
-
-        public Task TaskDoneAPIwithStaff(int taskId)
+ 
+        public Task TaskDoneAPIwithStaff(int taskId, User user)
         {
+           
             var task = db.Tasks.Find(taskId);
             if (task != null)
             {
-                task.Status = (int)TaskStatus.NeedReview;
-                return task;
+                var memberIds = db.UserTasks.Where(x => x.TaskID == taskId).Select(x => x.UserID);
+                foreach (var memberId in memberIds)
+                {
+                    User member = db.Users.Find(memberId);
+                    if (user.ID == member.ID)
+                    {
+                        if (user.IsManager == false)
+                        {
+                            task.Status = (int)TaskStatus.NeedReview;
+                            return task;
+                        } 
+                        
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"User:  {user.Username} not member in task with id {task.ID}");
+                    }
+                }
+                throw new ObjectNotFoundException($"User:  {user.Username} not join in task with id {task.ID}");
             }
             else
             {

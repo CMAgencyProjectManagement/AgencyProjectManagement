@@ -148,17 +148,18 @@ namespace Web.Controllers
             }
         }
         [HttpGet]
-        [Route("{id:int}/staff/status/")]
-        [Authorize(Roles = "Staff")]
+        [Route("{id:int}/staff/needreview")]
+        [Authorize]
         public IHttpActionResult TaskDoneAPIwithStaff(int id)
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-
+                    int userId = Int32.Parse(User.Identity.GetUserId());
+                    User user = db.Users.Find(userId);
                     TaskService taskService = new TaskService(db);
-                    Task task = taskService.TaskDoneAPIwithStaff(id);
+                    Task task = taskService.TaskDoneAPIwithStaff(id, user);
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                     ));
