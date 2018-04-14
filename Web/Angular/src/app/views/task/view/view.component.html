@@ -25,7 +25,10 @@
                 [ladda]="isLoading.openUnAssignModal">
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>
-        <button class="btn btn-secondary bg-light">
+        <button class="btn btn-secondary bg-light"
+                [disabled]="foundTask.statusText == 'Done'"
+                (click)="handleOnDoneBtnClick()"
+                [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Done
         </button>
       </div>
@@ -120,7 +123,7 @@
         <div class="col-5 right-pane ml-4">
           <div class="section">
             <!--MEMBER-->
-            <h5 class="mb-3">Members</h5>
+            <!--<h5 class="mb-3">Members</h5>-->
             <dl class="row ml-1">
               <dt class="col-12">Assignees:</dt>
               <dd class="col-12 pl-4">
@@ -141,7 +144,7 @@
           </div>
           <div class="section">
             <!--DATE SECTION-->
-            <h5 class="mb-3">Date</h5>
+            <!--<h5 class="mb-3">Date</h5>-->
             <dl class="row ml-1">
               <dt class="col-3">Start date:</dt>
               <dd class="col-9">

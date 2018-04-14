@@ -146,10 +146,10 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{id:int}/staff/needreview")]
-        [Authorize]
-        public IHttpActionResult TaskDoneAPIwithStaff(int id)
+        [HttpPut]
+        [Route("{id:int}/finishTask")]
+        [Authorize(Roles = "Manager, Staff")]
+        public IHttpActionResult TaskDone(int id)
         {
             try
             {
@@ -157,33 +157,12 @@ namespace Web.Controllers
                 {
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     User user = db.Users.Find(userId);
-                    TaskService taskService = new TaskService(db);
-                    Task task = taskService.TaskDoneAPIwithStaff(id, user);
-                    return Ok(ResponseHelper.GetResponse(
-                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
-                    ));
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
 
-        [HttpGet]
-        [Route("{id:int}/manager/done")]
-        [Authorize(Roles = "Manager")]
-        public IHttpActionResult TaskDoneAPIwithManager(int id)
-        {
-            try
-            {
-                using (CmAgencyEntities db = new CmAgencyEntities())
-                {
-                    int userId = Int32.Parse(User.Identity.GetUserId());
-                    User user = db.Users.Find(userId);
                     TaskService taskService = new TaskService(db);
-                    Task task = taskService.TaskDoneAPIwithManager(id, user);
+                    var task = user.IsManager
+                        ? taskService.TaskDoneAPIwithManager(id, user)
+                        : taskService.TaskDoneAPIwithStaff(id, user);
+
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                     ));
@@ -195,6 +174,56 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+//
+//        [HttpGet]
+//        [Route("{id:int}/staff/needreview")]
+//        [Authorize]
+//        public IHttpActionResult TaskDoneAPIwithStaff(int id)
+//        {
+//            try
+//            {
+//                using (CmAgencyEntities db = new CmAgencyEntities())
+//                {
+//                    int userId = Int32.Parse(User.Identity.GetUserId());
+//                    User user = db.Users.Find(userId);
+//                    TaskService taskService = new TaskService(db);
+//                    Task task = taskService.TaskDoneAPIwithStaff(id, user);
+//                    return Ok(ResponseHelper.GetResponse(
+//                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+//                    ));
+//                }
+//            }
+//            catch (Exception ex)
+//            {
+//                return Content(HttpStatusCode.InternalServerError,
+//                    ResponseHelper.GetExceptionResponse(ex));
+//            }
+//        }
+//
+//        [HttpGet]
+//        [Route("{id:int}/manager/done")]
+//        [Authorize(Roles = "Manager")]
+//        public IHttpActionResult TaskDoneAPIwithManager(int id)
+//        {
+//            try
+//            {
+//                using (CmAgencyEntities db = new CmAgencyEntities())
+//                {
+//                    int userId = Int32.Parse(User.Identity.GetUserId());
+//                    User user = db.Users.Find(userId);
+//                    TaskService taskService = new TaskService(db);
+//                    Task task = taskService.TaskDoneAPIwithManager(id, user);
+//                    return Ok(ResponseHelper.GetResponse(
+//                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+//                    ));
+//                }
+//            }
+//            catch (Exception ex)
+//            {
+//                return Content(HttpStatusCode.InternalServerError,
+//                    ResponseHelper.GetExceptionResponse(ex));
+//            }
+//        }
 
 
         [HttpPost]

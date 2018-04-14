@@ -33,7 +33,8 @@ const serverPath = {
   getPriority: '/api/task/priority',
   getStatus: '/api/task/status',
   assignTask: '/api/task/assign',
-  unassignTask: '/api/task/unassign',
+  unassignTask:  `/api/task/unassign`,
+  finishTask: taskID => `/api/task/${taskID}/finishTask`,
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
   uploadAttachment: taskID => `api/file/task/${taskID}/attachment`,

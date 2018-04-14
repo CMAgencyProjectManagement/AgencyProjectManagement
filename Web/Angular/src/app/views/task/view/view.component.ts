@@ -27,6 +27,7 @@ export class ViewComponent implements OnInit {
     attachmentRemove: boolean[]
     openAssignModal: boolean
     openUnAssignModal: boolean
+    done: boolean
   };
   statuses: any[];
   priorities: any[];
@@ -47,7 +48,8 @@ export class ViewComponent implements OnInit {
       attachmentUpload: false,
       attachmentRemove: [],
       openAssignModal: false,
-      openUnAssignModal: false
+      openUnAssignModal: false,
+      done: false
     };
     this.resetErrors();
   }
@@ -155,6 +157,19 @@ export class ViewComponent implements OnInit {
       title: `Un-assign`,
     };
     this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
+  }
+
+  handleOnDoneBtnClick() {
+    this.isLoading.done = true;
+    this.taskService.finishTask(this.foundTask.id)
+      .then(value => {
+        this.foundTask = value;
+        this.isLoading.done = false;
+      })
+      .catch(reason => {
+        this.showErrorModal('Finish task fail');
+        this.isLoading.done = false;
+      })
   }
 
   handleUploadAttachmentClick() {

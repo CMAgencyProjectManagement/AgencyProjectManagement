@@ -177,6 +177,7 @@ namespace Service
                     if (user.ID == manager.ID)
                     {
                         task.Status = (int) TaskStatus.Done;
+                        db.SaveChanges();
                         return task;
                     }
                     else
@@ -473,7 +474,7 @@ namespace Service
         public IEnumerable<KeyValuePair<string, string>> getPriorities()
         {
             List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
-            foreach (TaskStatus priority in Enum.GetValues(typeof(TaskStatus)))
+            foreach (TaskPriority priority in Enum.GetValues(typeof(TaskPriority)))
             {
                 result.Add(new KeyValuePair<string, string>(
                     ((int) priority).ToString(),
