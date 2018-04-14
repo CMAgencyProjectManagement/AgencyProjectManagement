@@ -44,10 +44,9 @@ export class ListService {
       ID: listId,
     };
     return new Promise<any>((resolve, reject) => {
-      request.post(serverPath.updateList)
+      request.put(serverPath.updateList)
         .set('token', this.tokenCursor.get())
         .send(objData)
-        .type('form')
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {

@@ -74,14 +74,11 @@
                             </button>
                             <ul *dropdownMenu class="dropdown-menu" role="menu">
                               <li role="menuitem">
-                                <a class="dropdown-item" href="#">Rename</a>
-                              </li>
-                              <li role="menuitem">
-                                <a class="dropdown-item" href="#">Clear all tasks</a>
+                                <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
                               </li>
                               <li class="divider dropdown-divider"></li>
                               <li role="menuitem">
-                                <a class="dropdown-item" href="#">Remove list</a>
+                                <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove list</a>
                               </li>
                             </ul>
                           </div>
@@ -99,9 +96,11 @@
                   <div class="card-footer" style="height: 30px;padding-top: 5px;
 
                   padding-right: 5px;">
+                  <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color: black">
                     <span class="badge badge-success float-right" *ngIf="task.status==0">To do</span>
                     <span class="badge badge-primary float-right" *ngIf="task.status==1">Executing</span>
                     <span class="badge badge-danger float-right" *ngIf="task.status==2">Late</span>
+                  </a>
                   </div>
                 </div>
               </div>

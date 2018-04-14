@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input,Output, OnInit, EventEmitter } from '@angular/core';
 import { Project } from '../../interfaces/project';
 import { Task } from 'app/interfaces/task';
 import { BsModalService } from 'ngx-bootstrap';
 import { CreateListModalComponent } from '../modals/create-list-modal/create-list-modal.component';
 import { ListService } from '../../services/list.service';
+import { RemoveListModalComponent, RenameListModalComponent } from 'app/cmaComponents/modals';
 @Component({
   selector: 'app-project-card',
   templateUrl: './project-card.component.html',
@@ -12,7 +13,7 @@ import { ListService } from '../../services/list.service';
 export class ProjectCardComponent implements OnInit {
   @Input() project: Project;
   @Input() showbutton: boolean;
-
+  @Output() refresh= new EventEmitter();
   foundTasks: Task[];
   isCollapsed: boolean;
   max = 200;
@@ -34,10 +35,40 @@ export class ProjectCardComponent implements OnInit {
         this.listService.createList(
           this.project.id,
           listName
-        )
+        ).then(value => {
+          this.refresh.emit();
+        })
       }
     };
     this.modalService.show(CreateListModalComponent, { initialState, class: 'modal-dialog' });
+  }
+
+  handleOnRenameListClick(listid: number, defaultlistname: string) {
+    const initialState = {
+      confirmCallback: (listName) => {
+        this.listService.updateList(
+          listid,
+          listName
+        ).then(value => {
+          this.refresh.emit();
+        })
+      },
+      defaultlistname:defaultlistname
+    };
+    this.modalService.show(RenameListModalComponent, { initialState, class: 'modal-dialog' });
+  }
+
+  handleOnRemoveListClick(listid: number){
+    const initialState = {
+      confirmCallback: () => {
+        this.listService.removeList(
+          listid
+        ).then(value => {
+          this.refresh.emit();
+        })
+      }
+    };
+    this.modalService.show(RemoveListModalComponent, { initialState, class: 'modal-dialog' });
   }
 
   search(searchStr: string) {
