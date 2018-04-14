@@ -113,7 +113,7 @@ namespace Web.Controllers
                         UserService userService = new UserService(db);
                         ProjectService projectService = new ProjectService(db);
                         Project project = projectService.GetProjectOfTask(taskId);
-                        string attachmentPath =  Path.Combine(
+                        string attachmentPath = Path.Combine(
                             $"project_{project.ID}",
                             $"task_{taskId}"
                         );
@@ -132,14 +132,14 @@ namespace Web.Controllers
                         {
                             attachment.InputStream.CopyTo(newfileStream);
                         }
-                        
+
                         string userIdString = User.Identity.GetUserId();
                         User user = userService.GetUser(userIdString);
                         Attachment attachmentResult = attachmentService.AddAttachment(
                             Path.GetFileName(path), attachmentPath, taskId, user.ID, DateTime.Today
-                            );
+                        );
                         return Ok(ResponseHelper.GetResponse(
-                            attachmentService.ParseToJson(attachmentResult,AgencyConfig.AttachmentPath))
+                            attachmentService.ParseToJson(attachmentResult, AgencyConfig.AttachmentPath))
                         );
                     }
                 }
@@ -147,6 +147,43 @@ namespace Web.Controllers
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse("No attachment file found"));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+
+        [HttpPut]
+        [Route("attachment/{attId:int}/delete")]
+        [Authorize(Roles = "Admin, Staff")]
+        public IHttpActionResult DeleteAttachment(int attId)
+        {
+            
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    AttachmentService attachmentService = new AttachmentService(db);
+                    Attachment attachment = attachmentService.GetAttachment(attId);
+
+                    string path = Path.Combine(
+                        HttpContext.Current.Server.MapPath("~"),
+                        AgencyConfig.AttachmentPath.Substring(1),
+                        attachment.Path,
+                        attachment.Name
+                    );
+
+                    File.Delete(path);
+                    attachmentService.DeleteAttachment(attId);
+                    return Ok(ResponseHelper.GetResponse(new JObject
+                        {
+                            ["id"] = attId
+                        }
+                    ));
                 }
             }
             catch (Exception ex)

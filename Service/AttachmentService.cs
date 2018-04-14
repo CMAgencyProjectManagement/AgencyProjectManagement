@@ -19,6 +19,16 @@ namespace Service
             this.db = db;
         }
 
+        public Attachment GetAttachment(int attachmentId)
+        {
+            Attachment attachment = db.Attachments.Find(attachmentId);
+            if (attachment != null)
+            {
+                return attachment;                
+            }
+            throw new ObjectNotFoundException($"Can't find attachment with ID {attachmentId}");
+        }
+
         public Attachment AddAttachment(string name, string path, int taskId, int creatorId, DateTime createdTime)
         {
             Attachment attachment = new Attachment
@@ -33,6 +43,13 @@ namespace Service
             db.Attachments.Add(attachment);
             db.SaveChanges();
             return attachment;
+        }
+
+        public void DeleteAttachment(int attachmentId)
+        {
+            Attachment attachment = GetAttachment(attachmentId);
+            db.Attachments.Remove(attachment);
+            db.SaveChanges();
         }
 
         public JObject ParseToJson(Attachment attachment, string attachmentPath = null)
