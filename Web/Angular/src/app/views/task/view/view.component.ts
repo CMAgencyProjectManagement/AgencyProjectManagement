@@ -26,6 +26,7 @@ export class ViewComponent implements OnInit {
     attachmentUpload: boolean
     attachmentRemove: boolean[]
     openAssignModal: boolean
+    openUnAssignModal: boolean
   };
   statuses: any[];
   priorities: any[];
@@ -45,7 +46,8 @@ export class ViewComponent implements OnInit {
       page: true,
       attachmentUpload: false,
       attachmentRemove: [],
-      openAssignModal: false
+      openAssignModal: false,
+      openUnAssignModal: false
     };
     this.resetErrors();
   }
@@ -83,9 +85,11 @@ export class ViewComponent implements OnInit {
       this.taskService.assignTask(this.foundTask.id, selectedIds)
         .then(value => {
           this.foundTask.assignees = _.concat(this.foundTask.assignees, selectedUsers);
+          this.isLoading.openAssignModal = false
         })
         .catch(reason => {
           this.showErrorModal('Assign fail');
+          this.isLoading.openAssignModal = false
         })
     };
     this.isLoading.openAssignModal = true;
@@ -106,16 +110,51 @@ export class ViewComponent implements OnInit {
 
         const initialState = {
           confirmCallback: onConfirm,
+          cancelCallback: () => {
+            this.isLoading.openAssignModal = false;
+          },
+          closeCallback: () => {
+            this.isLoading.openAssignModal = false;
+          },
           userPool: pool,
-          title: `Assignment`,
+          title: `Assign`,
         };
         this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
-        this.isLoading.openAssignModal = false
       })
       .catch(reason => {
         this.showErrorModal('An error has occurred while trying to open assign pop-up ');
         this.isLoading.openAssignModal = false
       });
+  }
+
+  handleOnUnAssignBtnClick() {
+    this.isLoading.openUnAssignModal = true;
+    const onConfirm = (selectedUsers: User[]) => {
+      let selectedIds = _.map(selectedUsers, 'id');
+      this.taskService.unassignTask(this.foundTask.id, selectedIds)
+        .then(value => {
+          this.foundTask.assignees = _.filter(this.foundTask.assignees, (user: User) => {
+            return !selectedIds.includes(user.id)
+          });
+          this.isLoading.openUnAssignModal = false;
+        })
+        .catch(reason => {
+          this.showErrorModal('Un-Assign fail');
+          this.isLoading.openUnAssignModal = false;
+        })
+    };
+    const initialState = {
+      confirmCallback: onConfirm,
+      cancelCallback: () => {
+        this.isLoading.openUnAssignModal = false;
+      },
+      closeCallback: () => {
+        this.isLoading.openUnAssignModal = false;
+      },
+      userPool: this.foundTask.assignees,
+      title: `Un-assign`,
+    };
+    this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   handleUploadAttachmentClick() {

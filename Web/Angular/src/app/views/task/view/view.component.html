@@ -20,7 +20,11 @@
                 [ladda]="isLoading.openAssignModal">
           <i class="fa fa-user-plus"></i>&nbsp; Assign
         </button>
-
+        <button class="btn btn-secondary bg-light"
+                (click)="handleOnUnAssignBtnClick()"
+                [ladda]="isLoading.openUnAssignModal">
+          <i class="fa fa-user-times"></i>&nbsp; Un-Assign
+        </button>
         <button class="btn btn-secondary bg-light">
           <i class="fa fa-check"></i>&nbsp; Done
         </button>
