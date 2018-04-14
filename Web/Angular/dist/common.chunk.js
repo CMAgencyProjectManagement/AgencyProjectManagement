@@ -3,7 +3,7 @@ webpackJsonp(["common"],{
 /***/ "../../../../../src/app/components/spinner/spinner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sk-folding-cube\">\r\n  <div class=\"sk-cube1 sk-cube\"></div>\r\n  <div class=\"sk-cube2 sk-cube\"></div>\r\n  <div class=\"sk-cube4 sk-cube\"></div>\r\n  <div class=\"sk-cube3 sk-cube\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"sk-folding-cube\">\n  <div class=\"sk-cube1 sk-cube\"></div>\n  <div class=\"sk-cube2 sk-cube\"></div>\n  <div class=\"sk-cube4 sk-cube\"></div>\n  <div class=\"sk-cube3 sk-cube\"></div>\n</div>\n"
 
 /***/ }),
 

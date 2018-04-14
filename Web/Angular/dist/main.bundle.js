@@ -141,6 +141,7 @@ var serverPath = {
     createUser: '/api/user',
     updateUser: '/api/user/update',
     leaderBoard: '/api/user/leaderboard',
+    getUserOfProject: function (projectId) { return "/api/user//project/" + projectId; },
     resetPassword: function (userId) { return "/api/user/" + userId + "/resetpassword"; },
     // Project
     allProject: '/api/project/all',
@@ -153,6 +154,7 @@ var serverPath = {
     // List
     createList: '/api/list',
     updateList: '/api/list/update',
+    deleteList: '/api/list',
     // Team
     allTeam: '/api/team/all',
     deleteTeam: '/api/team',
@@ -165,8 +167,13 @@ var serverPath = {
     editTask: '/api/task',
     getPriority: '/api/task/priority',
     getStatus: '/api/task/status',
+    assignTask: '/api/task/assign',
+    unassignTask: "/api/task/unassign",
+    finishTask: function (taskID) { return "/api/task/" + taskID + "/finishTask"; },
     // File
-    uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; }
+    uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; },
+    uploadAttachment: function (taskID) { return "api/file/task/" + taskID + "/attachment"; },
+    deleteAttachment: function (attachmentId) { return "api/file/attachment/" + attachmentId + "/delete"; }
 };
 
 
@@ -369,10 +376,13 @@ var SERVICES = [
 // Import modal
 
 var MODALS = [
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* SuccessModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["c" /* ErrorModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["b" /* CreateListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* ConfirmModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* ConfirmModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* RemoveListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["e" /* RenameListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["f" /* SelectUsersModalComponent */]
 ];
 // Import 3rd party components
 
@@ -516,7 +526,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-12 text-center margin-down\">\r\n  <h1>{{title }}</h1>\r\n</div>\r\n<div class=\"col-12\">\r\n  <table class=\"table\">\r\n    <thead>\r\n    <tr>\r\n      <th class=\"text-center\">\r\n        <h5>{{leftTableName}}</h5>\r\n      </th>\r\n      <th></th>\r\n      <th class=\"text-center\">\r\n        <h5>{{rightTableName}}</h5>\r\n      </th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr>\r\n      <td colspan=\"3\">\r\n        <div class=\"row\" style=\"margin-top: 1em\">\r\n          <div class=\"col-5\">\r\n            <app-mini-users-table\r\n              [users]=\"leftUser\"\r\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\r\n              [showRole]=\"false\"></app-mini-users-table>\r\n          </div>\r\n          <div class=\"col-1 center-section\">\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"unAssign()\"\r\n                    [ladda]=\"unAssignLoading\">\r\n              <i class=\"fa fa-angle-double-left\"></i>\r\n            </button>\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"assign()\"\r\n                    [ladda]=\"assignLoading\">\r\n              <i class=\"fa fa-angle-double-right\"></i>\r\n            </button>\r\n          </div>\r\n          <div class=\"col-6\">\r\n            <app-mini-users-table\r\n              [users]=\"rightUser\"\r\n              [showRole]=\"true\"\r\n              [changeRoleable]=\"false\"\r\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\r\n              (onRoleChange)=\"setRole($event)\">\r\n            </app-mini-users-table>\r\n          </div>\r\n        </div>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div class=\"col-12 text-center margin-down\">\n  <h1>{{title }}</h1>\n</div>\n<div class=\"col-12\">\n  <table class=\"table\">\n    <thead>\n    <tr>\n      <th class=\"text-center\">\n        <h5>{{leftTableName}}</h5>\n      </th>\n      <th></th>\n      <th class=\"text-center\">\n        <h5>{{rightTableName}}</h5>\n      </th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n      <td colspan=\"3\">\n        <div class=\"row\" style=\"margin-top: 1em\">\n          <div class=\"col-5\">\n            <app-mini-users-table\n              [users]=\"leftUser\"\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\n              [showRole]=\"false\"></app-mini-users-table>\n          </div>\n          <div class=\"col-1 center-section\">\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"unAssign()\"\n                    [ladda]=\"unAssignLoading\">\n              <i class=\"fa fa-angle-double-left\"></i>\n            </button>\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"assign()\"\n                    [ladda]=\"assignLoading\">\n              <i class=\"fa fa-angle-double-right\"></i>\n            </button>\n          </div>\n          <div class=\"col-6\">\n            <app-mini-users-table\n              [users]=\"rightUser\"\n              [showRole]=\"true\"\n              [changeRoleable]=\"false\"\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\n              (onRoleChange)=\"setRole($event)\">\n            </app-mini-users-table>\n          </div>\n        </div>\n      </td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
@@ -671,6 +681,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var CmaModule = /** @class */ (function () {
     function CmaModule() {
     }
@@ -685,7 +696,8 @@ var CmaModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap__["c" /* CollapseModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */],
                 __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */]
+                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap__["e" /* TypeaheadModule */].forRoot(),
             ],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
@@ -696,7 +708,10 @@ var CmaModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
                 __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* ErrorModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* CreateListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* SuccessModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* RemoveListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["g" /* SuccessModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["e" /* RenameListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["f" /* SelectUsersModalComponent */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
@@ -707,7 +722,10 @@ var CmaModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
                 __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* ErrorModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* CreateListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* SuccessModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_13__modals__["g" /* SuccessModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* RemoveListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["e" /* RenameListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["f" /* SelectUsersModalComponent */]
             ]
         })
     ], CmaModule);
@@ -721,7 +739,7 @@ var CmaModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/comment/comment.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\n  <div class=\"col-1 left-section text-center\">\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\n  </div>\n  <div class=\"col-11 right-section\">\n    <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\n    <a href=\"#/account/detail?id={{comment.createdBy.id}}\">\n      {{comment.createdBy.name}}\n    </a>\n    <div class=\"mt-3\" *ngIf=\"!isCollapsed\">\n      <p>{{comment.body}}</p>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\r\n  <div class=\"col-1 left-section text-center\">\r\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\r\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\r\n  </div>\r\n  <div class=\"col-11 right-section\">\r\n    <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\r\n    <a href=\"#/account/detail?id={{comment.createdBy.id}}\">\r\n      {{comment.createdBy.name}}\r\n    </a>\r\n    <div class=\"mt-3\" *ngIf=\"!isCollapsed\">\r\n      <p>{{comment.body}}</p>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -919,7 +937,7 @@ var MiniUsersTableComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\r\n  <thead>\r\n  <tr>\r\n    <th>ID</th>\r\n    <th>Avatar</th>\r\n    <th>Name</th>\r\n    <th>Birthdate</th>\r\n    <th *ngIf=\"showRole\">Manager</th>\r\n  </tr>\r\n  </thead>\r\n  <tbody>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.id}}</td>\r\n    <td class=text-center>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\r\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.name\">{{user.name}}</span>\r\n      <span *ngIf=\"!user.name\">N/A</span>\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\r\n      <span *ngIf=\"!user.birthdate\">N/A</span>\r\n    </td>\r\n    <td *ngIf=\"showRole\">\r\n      <label class=\"switch switch-icon switch-info switch-sm\"\r\n             (click)=\"roleSwitch(user.id,user.isManager)\">\r\n        <input class=\"switch-input\"\r\n               [checked]=\"user.isManager\"\r\n               [disabled]=\"!changeRoleable\"\r\n               type=\"checkbox\">\r\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\r\n        <span class=\"switch-handle\"></span>\r\n      </label>\r\n    </td>\r\n  </tr>\r\n  </tbody>\r\n</table>\r\n"
+module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\n  <thead>\n  <tr>\n    <th>ID</th>\n    <th>Avatar</th>\n    <th>Name</th>\n    <th>Birthdate</th>\n    <th *ngIf=\"showRole\">Manager</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let user of users\">\n    <td>{{user.id}}</td>\n    <td class=text-center>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\n    </td>\n    <td>\n      <span *ngIf=\"user.name\">{{user.name}}</span>\n      <span *ngIf=\"!user.name\">N/A</span>\n    </td>\n    <td>\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\n      <span *ngIf=\"!user.birthdate\">N/A</span>\n    </td>\n    <td *ngIf=\"showRole\">\n      <label class=\"switch switch-icon switch-info switch-sm\"\n             (click)=\"roleSwitch(user.id,user.isManager)\">\n        <input class=\"switch-input\"\n               [checked]=\"user.isManager\"\n               [disabled]=\"!changeRoleable\"\n               type=\"checkbox\">\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -1094,7 +1112,7 @@ var CreateListModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">Error</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <p>{{message}}</p>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnClose()\">Close</button>\n</div>\n\n"
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Error</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\">\r\n  <p>{{message}}</p>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnClose()\">Close</button>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -1172,7 +1190,16 @@ var ErrorModalComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/success-modal/success-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
+
+
+
 
 
 
@@ -1181,10 +1208,276 @@ var ErrorModalComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Remove list</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\" id=\"listname\">\r\n  <div class=\"col-sm-9\">\r\n      Do you want to remove this list?\r\n    </div>  \r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".listname {\n  width: 200px; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RemoveListModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var RemoveListModalComponent = /** @class */ (function () {
+    function RemoveListModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    RemoveListModalComponent.prototype.ngOnInit = function () {
+    };
+    RemoveListModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            this.confirmCallback(this.listID);
+        }
+        this.bsModalRef.hide();
+    };
+    RemoveListModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    RemoveListModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('listNameInput'),
+        __metadata("design:type", Object)
+    ], RemoveListModalComponent.prototype, "listNameInput", void 0);
+    RemoveListModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-remove-list-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], RemoveListModalComponent);
+    return RemoveListModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Rename list</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\" id=\"listname\">\r\n  <div class=\"col-sm-9\">\r\n      <input #listNameInput type=\"text\" id=\"input-large\" name=\"input-large\" class=\"form-control form-control-lg\" placeholder=\"List name\" style=\"width: 400px; align-content: center\" value=\"{{defaultlistname}}\">\r\n    </div>\r\n  \r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".listname {\n  width: 200px; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RenameListModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var RenameListModalComponent = /** @class */ (function () {
+    function RenameListModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    RenameListModalComponent.prototype.ngOnInit = function () {
+    };
+    RenameListModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            this.confirmCallback(this.listNameInput.nativeElement.value);
+        }
+        this.bsModalRef.hide();
+    };
+    RenameListModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    RenameListModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('listNameInput'),
+        __metadata("design:type", Object)
+    ], RenameListModalComponent.prototype, "listNameInput", void 0);
+    RenameListModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-rename-list-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], RenameListModalComponent);
+    return RenameListModalComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select users</h4>\n  <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n\n<div class=\"modal-body\" id=\"listname\">\n  <div class=\"col-12\" *ngIf=\"message\">\n    {{message}}\n  </div>\n  <div class=\"col-12\">\n    <div class=\"form-group row\">\n      <div class=\"col-md-9\">\n        <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\n          <option value=\"{{undefined}}\">Please select members</option>\n          <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\n        </select>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-12\">\n    <h3>Selected</h3>\n    <app-user-list [users]=\"selectedUsers\"></app-user-list>\n  </div>\n\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Assign</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectUsersModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SelectUsersModalComponent = /** @class */ (function () {
+    function SelectUsersModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    SelectUsersModalComponent.prototype.ngOnInit = function () {
+        this.selectedUsers = [];
+    };
+    SelectUsersModalComponent.prototype.handleOnSelect = function (userId) {
+        this.selectedUsers = __WEBPACK_IMPORTED_MODULE_2_lodash__["concat"](this.selectedUsers, __WEBPACK_IMPORTED_MODULE_2_lodash__["find"](this.userPool, function (user) {
+            return user.id == userId;
+        }));
+        this.userPool = __WEBPACK_IMPORTED_MODULE_2_lodash__["filter"](this.userPool, function (user) {
+            return user.id != userId;
+        });
+    };
+    SelectUsersModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            this.confirmCallback(this.selectedUsers);
+        }
+        this.bsModalRef.hide();
+    };
+    SelectUsersModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    SelectUsersModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    SelectUsersModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-select-users-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], SelectUsersModalComponent);
+    return SelectUsersModalComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/cmaComponents/modals/success-modal/success-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  success-modal works!\n</p>\n"
+module.exports = "<p>\r\n  success-modal works!\r\n</p>\r\n"
 
 /***/ }),
 
@@ -1245,7 +1538,7 @@ var SuccessModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <div *ngIf=\"showbutton\">\r\n    <div class=\"card-body scroll\" *ngIf=\"project\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\" *ngFor=\"let lists of project.lists;let i = index\">\r\n          <ng-container>\r\n            <div class=\"card\">\r\n              <div class=\"card-header cardheadertext\">\r\n                {{lists.name}}\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div *ngIf=\"!showbutton\">\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks\">\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\">\r\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\r\n                <div class=\"form-group row\">\r\n                    <div class=\"col-9\">\r\n                        {{lists.name}}\r\n                    </div>\r\n                    <div class=\"col-3\">\r\n                        <div class=\"btn-group\" dropdown>\r\n                            <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\r\n                              <span class=\"caret\"></span>\r\n                            </button>\r\n                            <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" href=\"#\">Rename</a>\r\n                              </li>\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" href=\"#\">Clear all tasks</a>\r\n                              </li>\r\n                              <li class=\"divider dropdown-divider\"></li>\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" href=\"#\">Remove list</a>\r\n                              </li>\r\n                            </ul>\r\n                          </div>\r\n                    </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\r\n\r\n                  padding-right: 5px;\">\r\n                    <span class=\"badge badge-success float-right\" *ngIf=\"task.status==0\">To do</span>\r\n                    <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Executing</span>\r\n                    <span class=\"badge badge-danger float-right\" *ngIf=\"task.status==2\">Late</span>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-footer\">\r\n                <a href=\"#/task/create?projectID={{project.id}}&listID={{lists.id}}\">\r\n                  <div style=\"text-align: center; font-size: 20px;\">\r\n                    <b>Add Task</b>\r\n                  </div>\r\n                </a>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container>\r\n            <div style=\"margin-left: 15px;\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\r\n\r\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\r\n                <b>Add List</b>\r\n              </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <div>\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\r\n        Found tasks: \r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\r\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px;color: black\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\r\n                <div class=\"form-group row\">\r\n                    <div class=\"col-9\">\r\n                        {{lists.name}}\r\n                    </div>\r\n                    <div class=\"col-3\">\r\n                        <div class=\"btn-group\" dropdown>\r\n                            <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\r\n                              <span class=\"caret\"></span>\r\n                            </button>\r\n                            <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\r\n                              </li>\r\n                              <li class=\"divider dropdown-divider\"></li>\r\n                              <li role=\"menuitem\">\r\n                                <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove list</a>\r\n                              </li>\r\n                            </ul>\r\n                          </div>\r\n                    </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\r\n\r\n                  padding-right: 5px;\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <span class=\"badge badge-success float-right\" *ngIf=\"task.status==0\">To do</span>\r\n                    <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Executing</span>\r\n                    <span class=\"badge badge-danger float-right\" *ngIf=\"task.status==2\">Late</span>\r\n                  </a>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-footer\">\r\n                <a href=\"#/task/create?projectID={{project.id}}&listID={{lists.id}}\">\r\n                  <div style=\"text-align: center; font-size: 20px;\">\r\n                    <b>Add Task</b>\r\n                  </div>\r\n                </a>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container>\r\n            <div style=\"margin-left: 15px;\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\r\n\r\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\r\n                <b>Add List</b>\r\n              </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -1274,8 +1567,9 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectCardComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modals_create_list_modal_create_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/create-list-modal/create-list-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_list_service__ = __webpack_require__("../../../../../src/app/services/list.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1289,10 +1583,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectCardComponent = /** @class */ (function () {
     function ProjectCardComponent(modalService, listService) {
         this.modalService = modalService;
         this.listService = listService;
+        this.refresh = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.max = 200;
         this.status = { isOpen: false };
         this.disabled = false;
@@ -1307,10 +1603,35 @@ var ProjectCardComponent = /** @class */ (function () {
         var _this = this;
         var initialState = {
             confirmCallback: function (listName) {
-                _this.listService.createList(_this.project.id, listName);
+                _this.listService.createList(_this.project.id, listName).then(function (value) {
+                    _this.refresh.emit();
+                });
             }
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_2__modals_create_list_modal_create_list_modal_component__["a" /* CreateListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_2__modals__["b" /* CreateListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+    };
+    ProjectCardComponent.prototype.handleOnRenameListClick = function (listid, defaultlistname) {
+        var _this = this;
+        var initialState = {
+            confirmCallback: function (listName) {
+                _this.listService.updateList(listid, listName).then(function (value) {
+                    _this.refresh.emit();
+                });
+            },
+            defaultlistname: defaultlistname
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["e" /* RenameListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+    };
+    ProjectCardComponent.prototype.handleOnRemoveListClick = function (listid) {
+        var _this = this;
+        var initialState = {
+            confirmCallback: function () {
+                _this.listService.removeList(listid).then(function (value) {
+                    _this.refresh.emit();
+                });
+            }
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["d" /* RemoveListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ProjectCardComponent.prototype.search = function (searchStr) {
         this.foundTasks = [];
@@ -1354,6 +1675,10 @@ var ProjectCardComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", Boolean)
     ], ProjectCardComponent.prototype, "showbutton", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ProjectCardComponent.prototype, "refresh", void 0);
     ProjectCardComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-project-card',
@@ -1372,7 +1697,7 @@ var ProjectCardComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/detail?id={{user.id}}\">\n          {{user.name}}\n        </a>\n      </div>\n      <small>{{user.email}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
+module.exports = "<ul class=\"icons-list\">\r\n  <li *ngFor=\"let user of users\">\r\n    <i>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\r\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\r\n    </i>\r\n    <div class=\"desc\">\r\n      <div class=\"title\">\r\n        <a href=\"#/account/detail?id={{user.id}}\">\r\n          {{user.name}}\r\n        </a>\r\n      </div>\r\n      <small>{{user.email}}</small>\r\n    </div>\r\n    <div class=\"value\">\r\n      <small>{{user.phone}}</small>\r\n    </div>\r\n    <div class=\"actions\">\r\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\r\n    </div>\r\n  </li>\r\n</ul>\r\n"
 
 /***/ }),
 
@@ -1616,7 +1941,7 @@ var AppFooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\r\n    <form class=\"form-inline my-lg-0 my-lg-5\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\r\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\r\n    </form>\r\n  </a> -->\r\n  <ul class=\"nav navbar-nav ml-auto\">\r\n    <li class=\"nav-item dropdown\" dropdown>\r\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\r\n        <span class=\"d-md-down-none\">{{user.name}}</span>\r\n\r\n      </a>\r\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Account</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Settings</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-user\"></i> Profile</a>\r\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\r\n          <i class=\"fa fa-lock\"></i> Logout</a>\r\n      </div>\r\n    </li>\r\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n      <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n  </ul>\r\n</header>\r\n"
+module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\n    <form class=\"form-inline my-lg-0 my-lg-5\">\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\n    </form>\n  </a> -->\n  <ul class=\"nav navbar-nav ml-auto\">\n    <li class=\"nav-item dropdown\" dropdown>\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\n        <span class=\"d-md-down-none\">{{user.name}}</span>\n\n      </a>\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Account</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-file\"></i> Projects</a>\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Settings</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-user\"></i> Profile</a>\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\n          <i class=\"fa fa-lock\"></i> Logout</a>\n      </div>\n    </li>\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  </ul>\n</header>\n"
 
 /***/ }),
 
@@ -2828,7 +3153,7 @@ var ListService = /** @class */ (function () {
             ProjectID: projectId,
         };
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_1_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createList)
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["post"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createList)
                 .set('token', _this.tokenCursor.get())
                 .send(objData)
                 .type('form')
@@ -2851,7 +3176,28 @@ var ListService = /** @class */ (function () {
             ID: listId,
         };
         return new Promise(function (resolve, reject) {
-            Object(__WEBPACK_IMPORTED_MODULE_1_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateList)
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateList)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ListService.prototype.removeList = function (listId) {
+        var _this = this;
+        var objData = {
+            ID: listId,
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].deleteList)
                 .set('token', _this.tokenCursor.get())
                 .send(objData)
                 .type('form')
@@ -3054,11 +3400,12 @@ var ProjectService = /** @class */ (function () {
                 .catch(function (reason) { return reject(reason.response.body); });
         });
     };
-    ProjectService.prototype.getAllProjects = function () {
+    ProjectService.prototype.getAllProjects = function (force) {
         var _this = this;
+        if (force === void 0) { force = false; }
         return new Promise(function (resolve, reject) {
             var projects = _this.projectsCursor.get();
-            if (projects) {
+            if (projects && !force) {
                 resolve(projects);
             }
             else {
@@ -3211,6 +3558,7 @@ var TaskService = /** @class */ (function () {
         this.treeService = treeService;
         this.tokenCursor = this.treeService.select(['token', 'access_token']);
         this.prioritiesCursor = this.treeService.select(['priorities']);
+        this.statusesCursor = this.treeService.select(['statuses']);
     }
     TaskService.prototype.getPriorities = function () {
         var _this = this;
@@ -3225,6 +3573,31 @@ var TaskService = /** @class */ (function () {
                     .then(function (res) {
                     var content = res.body;
                     if (content.IsSuccess) {
+                        _this.prioritiesCursor.set(content.Data);
+                        resolve(content.Data);
+                    }
+                    else {
+                        reject(content.Message);
+                    }
+                })
+                    .catch(function (reason) { return reject(reason.response.body); });
+            }
+        });
+    };
+    TaskService.prototype.getStatuses = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var statuses = _this.statusesCursor.get();
+            if (statuses) {
+                resolve(statuses);
+            }
+            else {
+                __WEBPACK_IMPORTED_MODULE_1_superagent__["get"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].getStatus)
+                    .set('token', _this.tokenCursor.get())
+                    .then(function (res) {
+                    var content = res.body;
+                    if (content.IsSuccess) {
+                        _this.statusesCursor.set(content.Data);
                         resolve(content.Data);
                     }
                     else {
@@ -3280,6 +3653,67 @@ var TaskService = /** @class */ (function () {
                 .set('token', _this.tokenCursor.get())
                 .send(objData)
                 .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    TaskService.prototype.assignTask = function (taskId, userIds) {
+        var _this = this;
+        var objData = {
+            TaskID: taskId,
+            UserIDs: userIds,
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].assignTask)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    TaskService.prototype.unassignTask = function (taskId, userIds) {
+        var _this = this;
+        var objData = {
+            TaskID: taskId,
+            UserIDs: userIds,
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].unassignTask)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    TaskService.prototype.finishTask = function (taskId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].finishTask(taskId))
+                .set('token', _this.tokenCursor.get())
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {
@@ -3482,8 +3916,9 @@ var StoreTree = {
     projects: undefined,
     // task detail
     tasksDetail: undefined,
-    // Priorities
-    priorities: undefined
+    // enum
+    priorities: undefined,
+    statuses: undefined
 };
 var StoreService = /** @class */ (function () {
     function StoreService() {
@@ -3538,6 +3973,41 @@ var UploadService = /** @class */ (function () {
         this.currentUserCursor = storeService.select(['currentUser']);
         this.tokenCursor = storeService.select(['token', 'access_token']);
     }
+    UploadService.prototype.uploadAttachment = function (file, taskId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_2_superagent__["put"](__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].uploadAttachment(taskId))
+                .set('token', _this.tokenCursor.get())
+                .attach('attachment', file)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    UploadService.prototype.deleteAttachment = function (attachmentId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_2_superagent__["put"](__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].deleteAttachment(attachmentId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
     UploadService.prototype.uploadAvatarFile = function (file, userId) {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -3638,6 +4108,23 @@ var UserService = /** @class */ (function () {
                     message: reason.response.body.error_description
                 });
             });
+        });
+    };
+    UserService.prototype.getUserOfProject = function (projectId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].getUserOfProject(projectId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    _this.usersCursor.set(content.Data);
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            }).catch(reject);
         });
     };
     UserService.prototype.getLeaderBoard = function () {
