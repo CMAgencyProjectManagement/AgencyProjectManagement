@@ -18,6 +18,7 @@ const serverPath = {
   // List
   createList: '/api/list',
   updateList: '/api/list/update',
+  deleteList: '/api/list',
   // Team
   allTeam: '/api/team/all',
   deleteTeam: '/api/team',
@@ -31,7 +32,8 @@ const serverPath = {
   getPriority: '/api/task/priority',
   getStatus: '/api/task/status',
   // File
-  uploadAvatar: userId => `/api/file/user/${userId}/avatar`
+  uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
+  uploadAttachment: taskID => `/api/file/attachment/task/${taskID}`
 };
 
 export {
