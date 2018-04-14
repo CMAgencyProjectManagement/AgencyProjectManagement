@@ -122,7 +122,7 @@ namespace Service
                 }
                 else
                 {
-                    throw new ObjectNotFoundException($"List has contain Task{listID} ");
+                    throw new ObjectNotFoundException($"List with ID {listID} has contain Task, please erase or move all task in list with ID {listID} to remove it ");
                 }
             }
             else
