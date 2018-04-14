@@ -126,27 +126,6 @@ namespace Service
             }
 
             return false;
-            //var result = new List<Task>();
-            //var taskIdList = db.Lists.Where(x => x.ProjectID == projectId).ToList();
-            //foreach (var item in taskIdList)
-            //{
-            //    var taskIdList1 = item.Tasks.Select(x => x.ID).ToList();
-            //    foreach (var item2 in taskIdList1)
-            //    {
-            //        var task = db.Tasks.FirstOrDefault(x => x.ID == item2);
-            //        if (task!= null)
-            //        {
-            //            result.Add(task);
-            //        }
-            //    }
-            //    var tasks = result.Where(task => task.Name == taskName).ToList();
-            //    return tasks.Count > 0;
-            //}
-            //return false;
-
-
-            //var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
-            //return tasks.Count > 0;
         }
 
         public bool CheckDuplicatedTaskname(string taskName)
@@ -215,18 +194,6 @@ namespace Service
                 throw new ObjectNotFoundException($"Can't find project with ID {id}");
             }
         }
-        /* public UserTask CreAssignTask(int taskId, int userId)
-         {
-             UserTask newUserTask = new UserTask
-             {
-                 TaskID = taskId,
-                 UserID = userId,
-             };
-             db.UserTasks.Add(newUserTask);
-             db.SaveChanges();
-             return newUserTask;
-         } */
-
         public UserTask AssignTask(int taskID, int userID)
         {
             User user = db.Users.Find(userID);
