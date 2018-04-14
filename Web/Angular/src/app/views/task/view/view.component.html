@@ -119,7 +119,7 @@
               <dt class="col-12">Assignees:</dt>
               <dd class="col-12 pl-4">
                 <app-user-list *ngIf="foundTask.assignees" [users]="foundTask.assignees"></app-user-list>
-                <span *ngIf="!foundTask.assignees">N/A</span>
+                <span *ngIf="!foundTask.assignees || foundTask.assignees.length < 1">N/A</span>
               </dd>
               <dt class="col-12">Creator:</dt>
               <dd class="col-12 pl-4">
