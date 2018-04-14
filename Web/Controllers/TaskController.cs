@@ -76,7 +76,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    IEnumerable<KeyValuePair<string,string>> priorities = taskService.getPriorities();
+                    IEnumerable<KeyValuePair<string, string>> priorities = taskService.getPriorities();
                     IEnumerable<JObject> prioritiesJson = priorities.Select(pair => new JObject
                     {
                         ["key"] = pair.Key,
@@ -84,8 +84,6 @@ namespace Web.Controllers
                     });
                     return Ok(ResponseHelper.GetResponse(new JArray(prioritiesJson)));
                 }
-
-                
             }
             catch (Exception ex)
             {
@@ -104,7 +102,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    IEnumerable<KeyValuePair<string,string>> statuses = taskService.getStatuses();
+                    IEnumerable<KeyValuePair<string, string>> statuses = taskService.getStatuses();
                     IEnumerable<JObject> statusesJson = statuses.Select(pair => new JObject
                     {
                         ["key"] = pair.Key,
@@ -147,6 +145,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("{id:int}/staff/needreview")]
         [Authorize]
@@ -171,6 +170,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("{id:int}/manager/done")]
         [Authorize(Roles = "Manager")]
@@ -290,9 +290,8 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-                        
                         TaskService taskService = new TaskService(db);
-                        
+
                         bool flag = true;
                         if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                         {
@@ -302,12 +301,13 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
-                       
+
                         if (taskService.CheckForListId(updateTaskViewModel.ListID))
                         {
                             ModelState.AddModelError("ListID", "The System don't have this list");
                             flag = false;
                         }
+
                         if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
                         {
                             ModelState.AddModelError("Priority", "Invalid Priority ");
@@ -317,7 +317,7 @@ namespace Web.Controllers
                         if (updateTaskViewModel.Duration < 1)
                         {
                             ModelState.AddModelError("Duration",
-                                  "Duration must be greater than 1 ");
+                                "Duration must be greater than 1 ");
                             flag = false;
                         }
 
@@ -325,17 +325,17 @@ namespace Web.Controllers
                             updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
                         {
                             ModelState.AddModelError("Effort",
-                                  "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
+                                "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
                             flag = false;
                         }
+
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
                         UserService userService = new UserService(db);
                         string userIdString = User.Identity.GetUserId();
                         User currentUser = userService.GetUser(userIdString);
-                        
-                        
+
 
                         var updateTask = taskService.UpdateTask(
                             updateTaskViewModel.Id,
@@ -423,7 +423,10 @@ namespace Web.Controllers
                             );
                         }
 
-                        return Ok(ResponseHelper.GetResponse());
+                        return Ok(ResponseHelper.GetResponse(new JObject
+                        {
+                            ["id"] = new JArray(unassignTaskModel.UserIDs)
+                        }));
                     }
                 }
                 else
