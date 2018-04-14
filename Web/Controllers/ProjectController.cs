@@ -61,7 +61,7 @@ namespace Web.Controllers
 
                     foreach (var project in projects)
                     {
-                        dataObject.Add(projectService.ParseToJson(project, isDetailed: false));
+                        dataObject.Add(projectService.ParseToJson(project));
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));

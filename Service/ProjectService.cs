@@ -15,7 +15,6 @@ namespace Service
         private readonly CmAgencyEntities db;
 
 
-
         public ProjectService(CmAgencyEntities db)
         {
             this.db = db;
@@ -35,15 +34,14 @@ namespace Service
                 )
                 .ToList();
         }
+
         public IEnumerable<Project> GetProjectOfTeam(int teamId)
         {
             return db.Projects
                 .Where(project => project.TeamProjects
-                                    .Any(userTeam => userTeam.TeamID == teamId)
+                    .Any(userTeam => userTeam.TeamID == teamId)
                 ).ToList();
         }
-        
-
 
 
         /// <summary>
@@ -81,6 +79,7 @@ namespace Service
             ListService listService = new ListService(db);
             return listService.GetListOfTask(taskId).Project;
         }
+
         //public bool CheckDuplicatedUsername(string username)
         //{
         //    var users = db.Users.Where(user => user.Username == username).ToList();
@@ -120,7 +119,7 @@ namespace Service
             var project = db.Projects.Find(id);
             if (project != null)
             {
-                project.Status = (int)ProjectStatus.Finished;
+                project.Status = (int) ProjectStatus.Finished;
                 db.SaveChanges();
                 return id;
             }
@@ -134,6 +133,7 @@ namespace Service
         {
             return db.Projects.Find(id);
         }
+
         public UserProject AssignProject(int userId, int projectId)
         {
             User user = db.Users.Find(userId);
@@ -142,24 +142,22 @@ namespace Service
                 Project project = db.Projects.Find(projectId);
                 if (project != null)
                 {
-                    //var userProjectId = db.UserProjects.Where(x => x.UserID == userId).ToList();
-                    //if (userProjectId == null)
-                    //{
+                    UserProject newUserProject;
 
-                        UserProject newUserProject;
-
-                        IEnumerable<TeamProject> teamProjects = db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
-                        foreach (var teamProject in teamProjects)
+                    IEnumerable<TeamProject> teamProjects =
+                        db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
+                    foreach (var teamProject in teamProjects)
+                    {
+                        if (user.TeamID == teamProject.TeamID)
                         {
-                            if (user.TeamID == teamProject.TeamID)
+                            newUserProject = new UserProject
                             {
-                                newUserProject = new UserProject
-                                {
-                                    UserID = userId,
-                                    ProjectID = projectId,
-                                };
-                            IEnumerable<UserProject> UserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
-                            if (UserProject.Count()==0)
+                                UserID = userId,
+                                ProjectID = projectId,
+                            };
+                            IEnumerable<UserProject> UserProject =
+                                db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
+                            if (UserProject.Count() == 0)
                             {
                                 db.UserProjects.Add(newUserProject);
                                 db.SaveChanges();
@@ -169,51 +167,25 @@ namespace Service
                             {
                                 throw new ObjectNotFoundException($"UserProject existed");
                             }
-                            
-                            
-                            }
-                            else
-                            {
-                                throw new ObjectNotFoundException($"Project and user not in one team");
-                            }
                         }
-                        //var teamId2 = db.TeamProjects.Where(x => x.ProjectID == projectId);
-                        throw new ObjectNotFoundException($"Eo biet");
-                    //}
-                    //else
-                    //{
-                    //    throw new ObjectNotFoundException($"User with ID{userId} maybe already have in another project");
-                    //}
+                        else
+                        {
+                            throw new ObjectNotFoundException($"Project and user not in one team");
+                        }
+                    }
+                    throw new ObjectNotFoundException($"Eo biet");
                 }
                 else
                 {
-                    throw new ObjectNotFoundException($"Project with ID{projectId} not found"); 
+                    throw new ObjectNotFoundException($"Project with ID{projectId} not found");
                 }
             }
             else
             {
                 throw new ObjectNotFoundException($"User with ID{userId} not found");
             }
-
-
-
-            //UserProject newUserProject;
-            //if (true)
-            //{
-            //    newUserProject = new UserProject
-            //    {
-            //        UserID = id,
-            //        ProjectID = projectId,
-            //    };
-            //}
-            //else
-            //{
-
-            //}
-            //db.UserProjects.Add(newUserProject);
-            //db.SaveChanges();
-            //return newUserProject;
         }
+
         public UserProject UnAssignProject(int userId, int projectId)
         {
             User user = db.Users.Find(userId);
@@ -222,8 +194,8 @@ namespace Service
                 Project project = db.Projects.Find(projectId);
                 if (project != null)
                 {
-
-                    var choosedUserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId).FirstOrDefault();
+                    var choosedUserProject = db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId)
+                        .FirstOrDefault();
                     if (choosedUserProject != null)
                     {
                         db.UserProjects.Remove(choosedUserProject);
@@ -232,9 +204,9 @@ namespace Service
                     }
                     else
                     {
-                        throw new ObjectNotFoundException($"User with ID {userId} not have in project with ID {projectId}");
+                        throw new ObjectNotFoundException(
+                            $"User with ID {userId} not have in project with ID {projectId}");
                     }
-
                 }
                 else
                 {
@@ -246,6 +218,7 @@ namespace Service
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
             }
         }
+
         public JObject ParseToJsonStatusReport(Project project)
         {
             List<Task> tasks = new List<Task>();
@@ -259,21 +232,22 @@ namespace Service
                     tasks.Add(taskInList);
                 }
             }
-            int taskNotStarted = tasks.Where(x => x.Status== (int)TaskStatus.NotStarted).Count();
-            int taskExcuting = tasks.Where(x => x.Status == (int)TaskStatus.Executing).Count();
-            int taskNeedReview = tasks.Where(x => x.Status == (int)TaskStatus.NeedReview).Count();
-            int taskDone = tasks.Where(x => x.Status == (int)TaskStatus.Done).Count();
+
+            int taskNotStarted = tasks.Where(x => x.Status == (int) TaskStatus.NotStarted).Count();
+            int taskExcuting = tasks.Where(x => x.Status == (int) TaskStatus.Executing).Count();
+            int taskNeedReview = tasks.Where(x => x.Status == (int) TaskStatus.NeedReview).Count();
+            int taskDone = tasks.Where(x => x.Status == (int) TaskStatus.Done).Count();
             int taskNumber = tasks.Count();
 
             List<JObject> calculatedResult = new List<JObject>();
             foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
             {
-                int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                int taskStatusCount = tasks.Where(x => x.Status == (int) status).Count();
                 calculatedResult.Add(new JObject
                 {
                     ["key"] = status.ToString(),
-                    ["value"] = (decimal)(taskStatusCount * 100) / taskNumber
-                });               
+                    ["value"] = (decimal) (taskStatusCount * 100) / taskNumber
+                });
             }
 
             var result = new JObject
@@ -283,13 +257,14 @@ namespace Service
                 ["taskCount"] = tasks.Count(),
                 ["result"] = new JArray(calculatedResult),
             };
-            
+
 
             return result;
         }
 
 
-        public JObject ParseToJson(Project project, bool isDetailed = false, bool isDetailedUsers = false, string avatarPath =null)
+        public JObject ParseToJson(Project project, bool isDetailed = false, bool isDetailedUsers = false,
+            string avatarPath = null)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
@@ -310,7 +285,7 @@ namespace Service
             if (project.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(project.ChangedBy.Value);
-                result["changedBy"] = userService.ParseToJson(changer,avatarPath);
+                result["changedBy"] = userService.ParseToJson(changer, avatarPath);
             }
 
             if (isDetailed)
@@ -324,6 +299,7 @@ namespace Service
 
                 result["lists"] = listJArray;
             }
+
             if (isDetailedUsers)
             {
                 var users = userService.GetUsersOfProject(
@@ -333,9 +309,10 @@ namespace Service
                 {
                     jArray.Add(userService.ParseToJson(user, avatarPath));
                 }
-                result["Project's Member"] = jArray; 
+
+                result["Project's Member"] = jArray;
             }
-              
+
             return result;
         }
     }

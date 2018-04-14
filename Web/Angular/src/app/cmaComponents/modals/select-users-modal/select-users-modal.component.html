@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="!title">Select users</h4>
+  <h4 class="modal-title pull-left" *ngIf="title">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="handleOnClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body" id="listname">
+  <div class="col-12" *ngIf="message">
+    {{message}}
+  </div>
+  <div class="col-12">
+    <app-mini-users-table [users]="allProjectUsers" (onSelectedChange)="selectedUsersChanged($event)">
+
+    </app-mini-users-table>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="handleOnConfirm()">Confirm</button>
+  <button type="button" class="btn btn-secondary" (click)="handleOnCancel()">Cancel</button>
+</div>

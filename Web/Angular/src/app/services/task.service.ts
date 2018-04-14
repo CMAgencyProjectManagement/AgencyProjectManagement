@@ -132,6 +132,48 @@ export class TaskService {
     });
   }
 
+  assignTask(taskId, userIds) {
+    const objData = {
+      TaskID: taskId,
+      UserIDs: userIds,
+    };
+    return new Promise<Task>((resolve, reject) => {
+      request.put(serverPath.assignTask)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
+  unassignTask(taskId, userIds) {
+    const objData = {
+      TaskID: taskId,
+      UserIDs: userIds,
+    };
+    return new Promise<Task>((resolve, reject) => {
+      request.put(serverPath.unassignTask)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
   getTaskDetail(id: number): Promise<Task> {
     return new Promise<Task>((resolve, reject) => {
       request.get(serverPath.getTask(id))

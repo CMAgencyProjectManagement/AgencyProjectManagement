@@ -4,11 +4,12 @@ import {TaskService} from '../../../services/task.service';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BsModalService} from 'ngx-bootstrap';
-import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import {ErrorModalComponent, SelectUsersModalComponent} from '../../../cmaComponents/modals';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {Attachment} from '../../../interfaces/attachment';
 import * as _ from 'lodash' ;
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-view',
@@ -23,6 +24,7 @@ export class ViewComponent implements OnInit {
     page: boolean
     attachmentUpload: boolean
     attachmentRemove: boolean[]
+    openAssignModal: boolean
   };
   statuses: any[];
   priorities: any[];
@@ -33,6 +35,7 @@ export class ViewComponent implements OnInit {
 
   constructor(private taskService: TaskService,
               private uploadService: UploadService,
+              private userServcice: UserService,
               private router: Router,
               private route: ActivatedRoute,
               private location: Location,
@@ -40,7 +43,8 @@ export class ViewComponent implements OnInit {
     this.isLoading = {
       page: true,
       attachmentUpload: false,
-      attachmentRemove: []
+      attachmentRemove: [],
+      openAssignModal: false
     };
     this.resetErrors();
   }
@@ -70,6 +74,31 @@ export class ViewComponent implements OnInit {
 
   handleOnCommentBtnClick() {
 
+  }
+
+  // TODO preselected assgined
+
+  handleOnAssignBtnClick() {
+    const onConfirm = (selectedUsers) => {
+      console.debug('handleOnAssignBtnClick', selectedUsers);
+    };
+    this.isLoading.openAssignModal = true;
+    this.userServcice.getUserOfProject(this.foundTask.project.id)
+      .then(value => {
+        const initialState = {
+          confirmCallback: onConfirm,
+          selectedUsers: this.foundTask.assignees,
+          allProjectUsers: value,
+          title: 'Assignment',
+          // message: 'Please select project members to assign them to this task or de-select members to remove them from assignees list'
+        };
+        this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
+        this.isLoading.openAssignModal = false
+      })
+      .catch(reason => {
+        this.showErrorModal('An error has occured while trying to open assign pop-up ');
+        this.isLoading.openAssignModal = false
+      });
   }
 
   handleUploadAttachmentClick() {

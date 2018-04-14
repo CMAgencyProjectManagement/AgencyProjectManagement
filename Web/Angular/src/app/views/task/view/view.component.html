@@ -15,9 +15,11 @@
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
-        <!--<button class="btn btn-secondary bg-light" (click)="handleOnUploadBtnClick()">-->
-        <!--<i class="fa fa-upload"></i>&nbsp; Upload-->
-        <!--</button>-->
+        <button class="btn btn-secondary bg-light"
+                (click)="handleOnAssignBtnClick()"
+                [ladda]="isLoading.openAssignModal">
+          <i class="fa fa-user-plus"></i>&nbsp; Assign
+        </button>
 
         <button class="btn btn-secondary bg-light">
           <i class="fa fa-check"></i>&nbsp; Done

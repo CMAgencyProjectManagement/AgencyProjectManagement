@@ -6,6 +6,7 @@ const serverPath = {
   createUser: '/api/user',
   updateUser: '/api/user/update',
   leaderBoard: '/api/user/leaderboard',
+  getUserOfProject: (projectId) => `/api/user//project/${projectId}`,
   resetPassword: userId => `/api/user/${userId}/resetpassword`,
   // Project
   allProject: '/api/project/all',
@@ -31,6 +32,8 @@ const serverPath = {
   editTask: '/api/task',
   getPriority: '/api/task/priority',
   getStatus: '/api/task/status',
+  assignTask: '/api/task/assign',
+  unassignTask: '/api/task/unassign',
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
   uploadAttachment: taskID => `api/file/task/${taskID}/attachment`,

@@ -62,6 +62,28 @@ namespace Web.Controllers
         }
 
         [HttpGet]
+        [Route("project/{projectId:int}")]
+        [Authorize(Roles = "Manager, Admin")]
+        public IHttpActionResult GetUserOfProject(int projectId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    IEnumerable<JObject> usersObject = userService.GetUsersOfProject(projectId)
+                        .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
+                    return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
         [Route("all")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetAllUser()
@@ -90,7 +112,6 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-       
 
 
         [HttpPost]
@@ -100,14 +121,15 @@ namespace Web.Controllers
         {
             try
             {
-
-                if (createUserModel.Birthdate != null && (createUserModel.Username == null || createUserModel.Password == null || createUserModel.Name == null || createUserModel.Email == null))
+                if (createUserModel.Birthdate != null && (createUserModel.Username == null ||
+                                                          createUserModel.Password == null ||
+                                                          createUserModel.Name == null ||
+                                                          createUserModel.Email == null))
                 {
                     if (createUserModel.Birthdate > DateTime.Now)
                     {
                         ModelState.AddModelError("Birthdate",
                             "Birthdate must be smaller than the current time ");
-
                     }
 
                     string UpdatedTime = createUserModel.Birthdate.ToString();
@@ -143,6 +165,7 @@ namespace Web.Controllers
                             ModelState.AddModelError("Email", "Email is taken");
                             flag = false;
                         }
+
                         if (createUserModel.Birthdate != null)
                         {
                             if (createUserModel.Birthdate > DateTime.Now)
@@ -162,6 +185,7 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
+
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
@@ -186,7 +210,6 @@ namespace Web.Controllers
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(newUser)));
                     }
-
                 }
 
                 else
@@ -194,7 +217,6 @@ namespace Web.Controllers
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
                 }
-
             }
             catch (Exception ex)
             {
@@ -202,7 +224,6 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
 
 
         [HttpDelete]
@@ -233,7 +254,6 @@ namespace Web.Controllers
         {
             try
             {
-               
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
@@ -250,6 +270,7 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
+
                         if (db.Users.Find(updateUserModel.ID).Email != updateUserModel.Email)
                         {
                             if (userService.CheckDuplicateEmail(updateUserModel.Email))
@@ -258,6 +279,7 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
+
                         if (updateUserModel.Birthdate != null)
                         {
                             if (updateUserModel.Birthdate > DateTime.Now)
@@ -277,12 +299,12 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
+
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
-                    
 
-                    User updatedUser = userService.Updateuser(
+                        User updatedUser = userService.Updateuser(
                             updateUserModel.ID,
                             updateUserModel.Name,
                             updateUserModel.Phone,
@@ -343,14 +365,14 @@ namespace Web.Controllers
                     //Init service
                     UserService userService = new UserService(db);
                     TaskService taskService = new TaskService(db);
-                    
+
                     //Lấy hết user
                     var allUsers = userService.GetAll();
-                    
+
                     //Lọc ra ai còn active
                     var activeUsers = allUsers.Where(user => user.IsActive);
-                    
-                    List<JObject> result = new List<JObject>();                    
+
+                    List<JObject> result = new List<JObject>();
                     //Phân tích từng user 
                     foreach (var user in activeUsers)
                     {
@@ -369,7 +391,7 @@ namespace Web.Controllers
                         userJson["score"] = Math.Round(userScore, 3);
                         result.Add(userJson);
                     }
-                    
+
                     result.Sort(compareUsersWithScore);
                     return Ok(ResponseHelper.GetResponse(new JArray(result)));
                 }
@@ -387,6 +409,7 @@ namespace Web.Controllers
             double score2 = user2.Value<double>("score");
             return score2.CompareTo(score1);
         }
+
         public class UserNameComparer : IComparer<User>
         {
             public int Compare(User x, User y)
@@ -394,6 +417,5 @@ namespace Web.Controllers
                 return x.Username.CompareTo(y.Username);
             }
         }
-        
     }
 }

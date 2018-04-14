@@ -17,7 +17,8 @@ import {
   RemoveListModalComponent,
   ErrorModalComponent,
   SuccessModalComponent,
-  RenameListModalComponent
+  RenameListModalComponent,
+  SelectUsersModalComponent
 } from './modals';
 
 @NgModule({
@@ -43,7 +44,8 @@ import {
     CreateListModalComponent,
     RemoveListModalComponent,
     SuccessModalComponent,
-    RenameListModalComponent
+    RenameListModalComponent,
+    SelectUsersModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -56,7 +58,8 @@ import {
     CreateListModalComponent,
     SuccessModalComponent,
     RemoveListModalComponent,
-    RenameListModalComponent
+    RenameListModalComponent,
+    SelectUsersModalComponent
   ]
 })
 export class CmaModule {
