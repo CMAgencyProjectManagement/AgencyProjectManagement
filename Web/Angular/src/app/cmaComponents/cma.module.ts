@@ -14,8 +14,10 @@ import { FormsModule } from '@angular/forms';
 import {
   ConfirmModalComponent,
   CreateListModalComponent,
+  RemoveListModalComponent,
   ErrorModalComponent,
-  SuccessModalComponent
+  SuccessModalComponent,
+  RenameListModalComponent
 } from './modals';
 
 @NgModule({
@@ -39,7 +41,9 @@ import {
     CommentComponent,
     ErrorModalComponent,
     CreateListModalComponent,
-    SuccessModalComponent
+    RemoveListModalComponent,
+    SuccessModalComponent,
+    RenameListModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -50,7 +54,9 @@ import {
     CommentComponent,
     ErrorModalComponent,
     CreateListModalComponent,
-    SuccessModalComponent
+    SuccessModalComponent,
+    RemoveListModalComponent,
+    RenameListModalComponent
   ]
 })
 export class CmaModule {

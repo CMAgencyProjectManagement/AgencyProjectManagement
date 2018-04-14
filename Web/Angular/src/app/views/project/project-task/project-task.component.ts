@@ -37,7 +37,12 @@ export class ProjectTaskComponent implements OnInit {
 
     ngOnInit() {
         this.projectID = Number(this.GetURLParameter('projectID'));
-        this.projectService.getAllProjects()
+        this.loadData();
+    }
+
+    loadData() {
+        console.log("loadData");
+        this.projectService.getAllProjects(true)
             .then(data => {
                 this.projects = data;
                 for (let i = 0; i < this.projects.length; i++) {
@@ -50,6 +55,11 @@ export class ProjectTaskComponent implements OnInit {
                 console.debug('ProjectUpdateComponent', reason);
             })
     }
+
+    onNeedRefresh(){
+        this.loadData();
+    }
+
     GetURLParameter(sParam) {
         var sPageURL = window.location.href;
         var sURLVariables = sPageURL.split('?');

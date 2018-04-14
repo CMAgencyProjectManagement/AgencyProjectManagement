@@ -96,14 +96,18 @@ import {
   SuccessModalComponent,
   ErrorModalComponent,
   CreateListModalComponent,
-  ConfirmModalComponent
+  ConfirmModalComponent,
+  RemoveListModalComponent,
+  RenameListModalComponent
 } from './cmaComponents/modals';
 
 const MODALS = [
   SuccessModalComponent,
   ErrorModalComponent,
   CreateListModalComponent,
-  ConfirmModalComponent
+  ConfirmModalComponent,
+  RemoveListModalComponent,
+  RenameListModalComponent
 ];
 
 // Import 3rd party components

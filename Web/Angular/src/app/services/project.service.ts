@@ -45,10 +45,10 @@ export class ProjectService {
     });
   }
 
-  public getAllProjects(): Promise<any> {
+  public getAllProjects(force: boolean = false): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       let projects = this.projectsCursor.get();
-      if (projects) {
+      if (projects && !force) {
         resolve(projects);
       } else {
         get(serverPath.allProject)
