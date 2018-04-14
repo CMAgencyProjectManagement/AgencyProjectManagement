@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import * as request from 'superagent';
-import {post} from 'superagent';
 import {serverPath} from '../_serverPath';
 import {Cursor, StoreService} from './tree.service';
 @Injectable()
@@ -10,7 +9,7 @@ export class ListService {
   constructor(private storeService: StoreService) {
     this.tokenCursor = storeService.select(['token', 'access_token']);
   }
-  
+
   public createList(
     projectId: number,
     name: string
@@ -20,7 +19,7 @@ export class ListService {
       ProjectID: projectId,
     };
     return new Promise<any>((resolve, reject) => {
-      post(serverPath.createList)
+      request.post(serverPath.createList)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .type('form')
@@ -45,7 +44,30 @@ export class ListService {
       ID: listId,
     };
     return new Promise<any>((resolve, reject) => {
-      post(serverPath.updateList)
+      request.post(serverPath.updateList)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    })
+  }
+
+  public removeList(
+    listId: number,
+  ): Promise<any> {
+    const objData = {
+      ID: listId,
+    };
+    return new Promise<any>((resolve, reject) => {
+      request.delete(serverPath.deleteList)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .type('form')
