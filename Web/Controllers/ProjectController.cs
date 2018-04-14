@@ -363,6 +363,48 @@ namespace Web.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{id:int}/report")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetProjectStatusReport(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    var project = projectService.GetProjectByID(id);
+                    if (project!=null)
+                    {
+                        return Ok(ResponseHelper.GetResponse(
+                            projectService.ParseToJsonStatusReport(project)
+                        ));
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
+                    }
+                    //if (project != null)
+                    //{
+                    //    return Ok(ResponseHelper.GetResponse(
+                    //        projectService.ParseToJson(project, isDetailedUsers: true,
+                    //            avatarPath: AgencyConfig.AvatarPath,
+                    //            isDetailed: true)
+                    //    ));
+                    //}
+                    //else
+                    //{
+                    //    return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
         [HttpPost]
         [Route("assign")]
         [Authorize(Roles = "Admin,Manager")]
