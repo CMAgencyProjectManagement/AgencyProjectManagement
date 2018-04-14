@@ -7,32 +7,7 @@
       </button>
     </a>
   </div>
-  <div *ngIf="showbutton">
-    <div class="card-body scroll" *ngIf="project">
-      <div class="row">
-        <div class="col-sm-6 col-md-6" *ngFor="let lists of project.lists;let i = index">
-          <ng-container>
-            <div class="card">
-              <div class="card-header cardheadertext">
-                {{lists.name}}
-              </div>
-              <div class="card-body cardbodytext" *ngIf="lists.tasks">
-                <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
-                  id="task">
-                  <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color: black">
-                    <div class="card-body">
-                      {{task.name}}
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="!showbutton">
+  <div>
     <div class="card-body" *ngIf="project">
       <div class="row" style="margin-bottom: 1rem;">
         <div class="input-group col-12">
@@ -48,10 +23,11 @@
         </div>
       </div>
       <!-- -->
-      <div class="well mb-4" *ngIf="foundTasks">
+      <div class="well mb-4" *ngIf="foundTasks.length > 0" style="font-size: 18px">
+        Found tasks: 
         <ul class="list-group" *ngFor="let task of foundTasks;let i=index">
-          <li class="list-group-item">
-            <a routerLink="/task/view/{{task.id}}" style="font-size: 17px">
+          <li class="list-group-item" style="background-color: #f0f3f5">
+            <a routerLink="/task/view/{{task.id}}" style="font-size: 17px;color: black">
               {{task.name}}
             </a>
           </li>
