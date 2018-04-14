@@ -67,7 +67,7 @@ export class ListService {
       ID: listId,
     };
     return new Promise<any>((resolve, reject) => {
-      request.delete(serverPath.deleteList)
+      request.put(serverPath.deleteList)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .type('form')

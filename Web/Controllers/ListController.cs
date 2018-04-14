@@ -53,8 +53,8 @@ namespace Web.Controllers
            
         }
 
-        [HttpDelete]
-        [Route("delete")]
+        [HttpPut]
+        [Route("")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteList(DeleteListModel deleteListModel)
         {
