@@ -141,19 +141,7 @@ namespace Service
                 throw new ObjectNotFoundException($"Task with ID {taskId} not found");
             }
         }
-        public Task TaskDoneAPIwithManager(int taskId)
-        {
-            var task = db.Tasks.Find(taskId);
-            if (task != null)
-            {
-                task.Status = (int)TaskStatus.Done;
-                return task;
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"Task with ID {taskId} not found");
-            }
-        }
+    
         public Task TaskDoneAPIwithManager(int taskId, User user)
         {
 
