@@ -29,8 +29,6 @@ import {User} from '../../../interfaces/user';
 export class CreateUserComponent implements OnInit {
   @ViewChild('datepicker') datepicker;
   signupForm: FormGroup;
-  currentAccountCursor: Cursor;
-  tokenCursor: Cursor;
   isLoading: boolean;
   isLoadingPage: boolean;
   errors: {
@@ -59,8 +57,6 @@ export class CreateUserComponent implements OnInit {
               private teamService: TeamService,
               private uploadService: UploadService,
               private router: Router) {
-    this.currentAccountCursor = this.storeService.select(['currentUser']);
-    this.tokenCursor = this.storeService.select(['token']);
     this.isLoading = false;
     this.isLoadingPage = true;
     this.setErrorsNull();

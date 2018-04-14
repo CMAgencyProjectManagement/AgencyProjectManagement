@@ -2,8 +2,8 @@
   <div class="card-header">
     Task detail
   </div>
-  <app-spinner *ngIf=loading.page></app-spinner>
-  <div *ngIf=!loading.page class="card-body row">
+  <app-spinner *ngIf=isLoading.page></app-spinner>
+  <div *ngIf=!isLoading.page class="card-body row">
     <div class="col-12">
       <h2 class="card-title">{{foundTask.name}}</h2>
     </div>
@@ -15,9 +15,10 @@
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
-        <button class="btn btn-secondary bg-light">
-          <i class="fa fa-upload"></i>&nbsp; Upload
-        </button>
+        <!--<button class="btn btn-secondary bg-light" (click)="handleOnUploadBtnClick()">-->
+          <!--<i class="fa fa-upload"></i>&nbsp; Upload-->
+        <!--</button>-->
+
         <button class="btn btn-secondary bg-light">
           <i class="fa fa-check"></i>&nbsp; Done
         </button>
@@ -64,6 +65,32 @@
             <!--ATTACHMENT-->
             <h5 class="mb-3">Attachments</h5>
             <dl class="row ml-1">
+              <div class="col-12">
+                <!--<div class="form-inline">-->
+                  <!--<div class="form-group">-->
+                    <!--<label for="exampleInputName2">Name</label>-->
+                    <!--<input class="form-control" id="exampleInputName2" placeholder="Jane Doe" type="text">-->
+                  <!--</div>-->
+                  <!--<div class="form-group">-->
+                    <!--<label for="exampleInputEmail2">Email</label>-->
+                    <!--<input class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com" type="email">-->
+                  <!--</div>-->
+                <!--</div>-->
+                <div class="form-group row" [formGroup]="attachmentForm">
+                  <label class="col-3 col-form-label" for="file-input">Attachment</label>
+                  <div class="col-6">
+                    <input #attachmentInput
+                           id="file-input" name="file-input" type="file"
+                           formGroupName="attachment"
+                           (change)="attachmentFileChange($event)">
+                  </div>
+                  <div class="col-3">
+                    <button class="btn btn-success" [ladda]="isLoading.attachmentUpload" (click)="handleUploadAttachmentClick()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="col-12">
                 <ul class="list-group" *ngFor="let attachment of foundTask.attachments">
                   <a href="{{attachment.source}}">

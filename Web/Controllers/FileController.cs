@@ -85,9 +85,9 @@ namespace Web.Controllers
         
         
         [HttpPut]
-        [Route("task/{id:int}")]
-        [Authorize(Roles = "Staff")]
-        public IHttpActionResult UploadAttachment(int taskId)
+        [Route("task/{id:int}/attachment")]
+        [Authorize(Roles = "Admin, Staff")]
+        public IHttpActionResult UploadAttachment(int id)
         {
             try
             {
