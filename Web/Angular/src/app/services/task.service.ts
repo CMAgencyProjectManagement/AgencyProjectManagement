@@ -8,10 +8,12 @@ import {Cursor, StoreService} from './tree.service';
 export class TaskService {
   private tokenCursor: Cursor;
   private prioritiesCursor: Cursor;
+  private statusesCursor: Cursor;
 
   constructor(private treeService: StoreService) {
     this.tokenCursor = this.treeService.select(['token', 'access_token']);
     this.prioritiesCursor = this.treeService.select(['priorities']);
+    this.statusesCursor = this.treeService.select(['statuses']);
   }
 
   getPriorities(): Promise<any> {
@@ -25,6 +27,29 @@ export class TaskService {
           .then(res => {
             const content = res.body;
             if (content.IsSuccess) {
+              this.prioritiesCursor.set(content.Data);
+              resolve(content.Data);
+            } else {
+              reject(content.Message);
+            }
+          })
+          .catch(reason => reject(reason.response.body));
+      }
+    });
+  }
+
+  getStatuses(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      let statuses = this.statusesCursor.get();
+      if (statuses) {
+        resolve(statuses);
+      } else {
+        request.get(serverPath.getStatus)
+          .set('token', this.tokenCursor.get())
+          .then(res => {
+            const content = res.body;
+            if (content.IsSuccess) {
+              this.statusesCursor.set(content.Data);
               resolve(content.Data);
             } else {
               reject(content.Message);

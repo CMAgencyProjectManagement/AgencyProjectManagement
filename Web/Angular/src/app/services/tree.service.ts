@@ -17,8 +17,9 @@ const StoreTree = {
   projects: undefined,
   // task detail
   tasksDetail: undefined,
-  // Priorities
-  priorities: undefined
+  // enum
+  priorities: undefined,
+  statuses: undefined
 };
 
 @Injectable()
