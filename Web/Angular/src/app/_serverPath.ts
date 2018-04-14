@@ -33,7 +33,8 @@ const serverPath = {
   getStatus: '/api/task/status',
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
-  uploadAttachment: taskID => `api/file/task/${taskID}/attachment`
+  uploadAttachment: taskID => `api/file/task/${taskID}/attachment`,
+  deleteAttachment: attachmentId => `api/file/attachment/${attachmentId}/delete`
 };
 
 export {

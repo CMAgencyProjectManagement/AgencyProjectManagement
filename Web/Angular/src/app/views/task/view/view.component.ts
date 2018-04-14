@@ -8,6 +8,7 @@ import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {Attachment} from '../../../interfaces/attachment';
+import * as _ from 'lodash' ;
 
 @Component({
   selector: 'app-view',
@@ -21,6 +22,7 @@ export class ViewComponent implements OnInit {
   isLoading: {
     page: boolean
     attachmentUpload: boolean
+    attachmentRemove: boolean[]
   };
   statuses: any[];
   priorities: any[];
@@ -38,6 +40,7 @@ export class ViewComponent implements OnInit {
     this.isLoading = {
       page: true,
       attachmentUpload: false,
+      attachmentRemove: []
     };
     this.resetErrors();
   }
@@ -81,13 +84,29 @@ export class ViewComponent implements OnInit {
           this.isLoading.attachmentUpload = false;
         })
         .catch(reason => {
+          this.errors.attachment = reason.Data;
           this.isLoading.attachmentUpload = false;
-          this.showErrorModal(reason.Data);
         })
     } else {
       this.resetErrors();
       // show some form of success message here
     }
+  }
+
+  handleDeleteAttachmentClick(attachmentId) {
+    this.isLoading.attachmentRemove[attachmentId] = true;
+    this.uploadService.deleteAttachment(attachmentId)
+      .then(value => {
+        let removedItemId = value.id as number;
+        this.attachments = _.filter(this.attachments, item => {
+          return item.ID !== removedItemId;
+        });
+        this.isLoading.attachmentRemove[attachmentId] = false;
+      })
+      .catch(reason => {
+        this.isLoading.attachmentRemove[attachmentId] = false;
+        this.showErrorModal(reason.Data);
+      })
   }
 
   attachmentFileChange(fileInput: any) {

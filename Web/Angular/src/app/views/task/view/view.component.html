@@ -16,7 +16,7 @@
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
         <!--<button class="btn btn-secondary bg-light" (click)="handleOnUploadBtnClick()">-->
-          <!--<i class="fa fa-upload"></i>&nbsp; Upload-->
+        <!--<i class="fa fa-upload"></i>&nbsp; Upload-->
         <!--</button>-->
 
         <button class="btn btn-secondary bg-light">
@@ -67,29 +67,36 @@
             <dl class="row ml-1">
               <div class="col-12">
                 <div class="form-group row" [formGroup]="attachmentForm">
-                  <label class="col-3 col-form-label" for="file-input">Attachment</label>
-                  <div class="col-6">
+                  <div class="col-9">
                     <input #attachmentInput
                            id="file-input" name="file-input" type="file"
                            formGroupName="attachment"
                            (change)="attachmentFileChange($event)">
                   </div>
                   <div class="col-3">
-                    <button class="btn btn-success" [ladda]="isLoading.attachmentUpload" (click)="handleUploadAttachmentClick()">
+                    <button class="btn btn-success float-right"
+                            [disabled]="!attachmentForm.value.attachment"
+                            [ladda]="isLoading.attachmentUpload"
+                            (click)="handleUploadAttachmentClick()">
                       <i class="fa fa-plus"></i>
                     </button>
                   </div>
                 </div>
               </div>
               <div class="col-12">
-                <ul class="list-group" *ngFor="let attachment of attachments">
-                  <a href="{{attachment.source}}">
-                    <li
-                      class="list-group-item d-flex list-group-item-action justify-content-between align-items-center">
-                      <span>{{attachment.name}}</span>
-                      <i class="fa fa-download"></i>
-                    </li>
-                  </a>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let attachment of attachments">
+                    <div class="d-flex align-items-center">
+                      <a href="{{attachment.source}}">
+                        <span>{{attachment.name}}</span>
+                      </a>
+                      <button class="btn btn-danger btn-sm ml-auto"
+                              (click)="handleDeleteAttachmentClick(attachment.ID)"
+                              [ladda]="isLoading.attachmentRemove[attachment.ID]">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </dl>
