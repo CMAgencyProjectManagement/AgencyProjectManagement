@@ -128,6 +128,71 @@ namespace Service
             return false;
         }
 
+        public Task TaskDoneAPIwithStaff(int taskId)
+        {
+            var task = db.Tasks.Find(taskId);
+            if (task != null)
+            {
+                task.Status = (int)TaskStatus.NeedReview;
+                return task;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Task with ID {taskId} not found");
+            }
+        }
+        public Task TaskDoneAPIwithManager(int taskId)
+        {
+            var task = db.Tasks.Find(taskId);
+            if (task != null)
+            {
+                task.Status = (int)TaskStatus.Done;
+                return task;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Task with ID {taskId} not found");
+            }
+        }
+        public Task TaskDoneAPIwithManager(int taskId, User user)
+        {
+
+            var task = db.Tasks.Find(taskId);
+            if (task != null)
+            {
+                int listId = task.ListID;
+                int projectId = db.Lists.Find(listId).ProjectID;
+                var teamId = db.TeamProjects.Where(x => x.ProjectID == projectId).Select(x => x.TeamID).FirstOrDefault();
+                Team team = db.Teams.Find(teamId);
+                if (team != null)
+                {
+
+                    User manager = db.Users.Where(x => x.TeamID == teamId && x.IsManager == true).FirstOrDefault();
+                    if (user.ID == manager.ID)
+                    {
+
+                        task.Status = (int)TaskStatus.Done;
+                        return task;
+
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"User is not manager of team");
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"The project with ID: {projectId} doesn't belong to any team");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Task with ID {taskId} not found");
+            }
+
+
+        }
+
         public bool CheckDuplicatedTaskname(string taskName)
         {
             var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();

@@ -147,6 +147,54 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpGet]
+        [Route("{id:int}/staff/status/")]
+        [Authorize(Roles = "Staff")]
+        public IHttpActionResult TaskDoneAPIwithStaff(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+
+                    TaskService taskService = new TaskService(db);
+                    Task task = taskService.TaskDoneAPIwithStaff(id);
+                    return Ok(ResponseHelper.GetResponse(
+                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                    ));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        [HttpGet]
+        [Route("{id:int}/manager/done")]
+        [Authorize(Roles = "Manager")]
+        public IHttpActionResult TaskDoneAPIwithManager(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    int userId = Int32.Parse(User.Identity.GetUserId());
+                    User user = db.Users.Find(userId);
+                    TaskService taskService = new TaskService(db);
+                    Task task = taskService.TaskDoneAPIwithManager(id, user);
+                    return Ok(ResponseHelper.GetResponse(
+                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                    ));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
 
         [HttpPost]
         [Route("")]
