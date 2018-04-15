@@ -37,8 +37,7 @@ namespace Service
                 CreatedBy = creatorId,
                 CreatedTime = createdTime,
                 Path = path,
-                TaskID = taskId,
-                Type = ""
+                TaskID = taskId
             };
             db.Attachments.Add(attachment);
             db.SaveChanges();

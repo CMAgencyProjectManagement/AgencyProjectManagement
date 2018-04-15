@@ -174,8 +174,7 @@ namespace Service
                 ["id"] = team.ID,
                 ["name"] = team.Name,
                 ["createdBy"] = userService.ParseToJson(creator),
-                ["createdDate"] = team.CreatedDate.ToShortDateString(),
-                ["isClosed"] = team.IsClosed
+                ["createdDate"] = team.CreatedDate.ToShortDateString()
             };
 
             if (includeManager)
@@ -223,8 +222,7 @@ namespace Service
                 ["id"] = team.ID,
                 ["name"] = team.Name,
                 ["createdBy"] = userService.ParseToJson(creator),
-                ["createdDate"] = team.CreatedDate.ToShortDateString(),
-                ["isClosed"] = team.IsClosed
+                ["createdDate"] = team.CreatedDate.ToShortDateString()
             };
 
             if (includeManager)
