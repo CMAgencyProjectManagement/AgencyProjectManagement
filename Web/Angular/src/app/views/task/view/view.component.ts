@@ -4,7 +4,7 @@ import {TaskService} from '../../../services/task.service';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BsModalService} from 'ngx-bootstrap';
-import {ErrorModalComponent, SelectUsersModalComponent} from '../../../cmaComponents/modals';
+import {CommentModalComponent, ErrorModalComponent, SelectUsersModalComponent} from '../../../cmaComponents/modals';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {Attachment} from '../../../interfaces/attachment';
@@ -13,6 +13,7 @@ import {UserService} from '../../../services/user.service';
 import {User} from '../../../interfaces/user';
 import {CommentService} from '../../../services/comment.service';
 import {Comment} from '../../../interfaces/comment';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-view',
@@ -23,7 +24,6 @@ export class ViewComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput: ElementRef;
   foundTask: Task;
   attachments: Attachment[];
-  comments: Comment[];
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -241,6 +241,28 @@ export class ViewComponent implements OnInit {
         this.isLoading.attachmentRemove[attachmentId] = false;
         this.showErrorModal(reason.Data);
       })
+  }
+
+  handleEditComment(comment) {
+    const confirmCallback = (newComment: Comment) => {
+      this.commentService.updateComment(newComment.ID, newComment.body)
+        .then((returnedComment: Comment) => {
+          for (let i = 0; i < this.foundTask.comments.length; i++) {
+            if (this.foundTask.comments[i].ID == returnedComment.ID) {
+              this.foundTask.comments[i] = returnedComment;
+              break;
+            }
+          }
+        })
+        .catch(reason => {
+          this.showErrorModal(reason.Data);
+        })
+    };
+    const initialState = {
+      comment: comment,
+      confirmCallback: confirmCallback,
+    };
+    this.modalService.show(CommentModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   attachmentFileChange(fileInput: any) {

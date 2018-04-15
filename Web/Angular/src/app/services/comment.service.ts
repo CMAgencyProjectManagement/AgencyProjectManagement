@@ -35,8 +35,8 @@ export class CommentService {
   }
 
   public updateComment(
-    commentId: number[],
-    newBody: number): Promise<any> {
+    commentId: number,
+    newBody: string): Promise<any> {
     const dataObj = {
       id: commentId,
       Body: newBody

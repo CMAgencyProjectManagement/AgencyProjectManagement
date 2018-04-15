@@ -140,7 +140,8 @@
               </div>
               <app-comment class="col-12"
                            *ngFor="let comment of foundTask.comments"
-                           [comment]="comment"></app-comment>
+                           [comment]="comment"
+                           (onEdit)="handleEditComment($event)"></app-comment>
             </dl>
           </div>
         </div>

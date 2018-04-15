@@ -21,6 +21,7 @@ import {
   SelectUsersModalComponent
 } from './modals';
 import { TypeaheadModule } from 'ngx-bootstrap';
+import { CommentModalComponent } from './modals/comment-modal/comment-modal.component';
 
 @NgModule({
   imports: [
@@ -30,10 +31,11 @@ import { TypeaheadModule } from 'ngx-bootstrap';
       style: 'slide-down'
     }),
     CollapseModule.forRoot(),
-    RouterModule,
     BsDropdownModule.forRoot(),
-    FormsModule,
     TypeaheadModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    RouterModule,
+    FormsModule
   ],
   exports: [
     ProjectCardComponent,
@@ -47,7 +49,8 @@ import { TypeaheadModule } from 'ngx-bootstrap';
     RemoveListModalComponent,
     SuccessModalComponent,
     RenameListModalComponent,
-    SelectUsersModalComponent
+    SelectUsersModalComponent,
+    CommentModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -61,7 +64,8 @@ import { TypeaheadModule } from 'ngx-bootstrap';
     SuccessModalComponent,
     RemoveListModalComponent,
     RenameListModalComponent,
-    SelectUsersModalComponent
+    SelectUsersModalComponent,
+    CommentModalComponent
   ]
 })
 export class CmaModule {

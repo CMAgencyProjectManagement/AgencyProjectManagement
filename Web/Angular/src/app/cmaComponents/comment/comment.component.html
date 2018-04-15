@@ -4,12 +4,19 @@
     <i class="fa fa-angle-right" *ngIf="isCollapsed"></i>
   </div>
   <div class="col-11 right-section">
-    <img class="avatar img-avatar" src="{{comment.createdBy.avatar}}"/>
-    <a href="#/account/detail?id={{comment.createdBy.id}}">
-      {{comment.createdBy.name}}
-    </a>
-    <div class="mt-3" *ngIf="!isCollapsed">
-      <p>{{comment.body}}</p>
+    <div class="row">
+      <div class="col-11">
+        <img class="avatar img-avatar" src="{{comment.createdBy.avatar}}"/>
+        <a href="#/account/detail?id={{comment.createdBy.id}}">
+          {{comment.createdBy.name}}
+        </a>
+      </div>
+      <div class="col-1 btn-edit" (click)="handleEditBtnClick($event)">
+        <i class="fa fa-pencil-square-o"></i>
+      </div>
+      <div class="col-12 mt-3" *ngIf="!isCollapsed">
+        <p>{{comment.body}}</p>
+      </div>
     </div>
   </div>
 </div>

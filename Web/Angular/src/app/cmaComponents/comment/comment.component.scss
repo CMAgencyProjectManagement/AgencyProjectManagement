@@ -1,13 +1,27 @@
 @import '../../../scss/bootstrap-variables';
+
 #comment {
   &:hover {
     background-color: #F4F5F7;
     cursor: pointer;
+
+    .btn-edit {
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: rgba(220, 221, 223, 0.6)
+      }
+
+    }
+
   }
+
   .left-section {
     padding-left: 0;
     padding-right: 0;
   }
+
   .right-section {
     border-left: 1px solid $gray-200;
   }
@@ -15,6 +29,11 @@
   i {
     width: 10px;
     height: 15px;
+  }
+
+  .btn-edit {
+    display: none;
+    //background-color: ;
   }
 }
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Comment} from '../../interfaces/comment';
 
 @Component({
@@ -8,7 +8,9 @@ import {Comment} from '../../interfaces/comment';
 })
 export class CommentComponent implements OnInit {
   @Input() comment: Comment;
+  @Output() onEdit = new EventEmitter<any>();
   isCollapsed: boolean;
+  status: { isopen: boolean } = {isopen: false};
 
   constructor() {
     this.isCollapsed = true;
@@ -19,5 +21,10 @@ export class CommentComponent implements OnInit {
 
   containerClick() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  handleEditBtnClick($event) {
+    $event.stopPropagation();
+    this.onEdit.emit(this.comment);
   }
 }

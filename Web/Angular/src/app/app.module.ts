@@ -99,7 +99,8 @@ import {
   ConfirmModalComponent,
   RemoveListModalComponent,
   RenameListModalComponent,
-  SelectUsersModalComponent
+  SelectUsersModalComponent,
+  CommentModalComponent
 } from './cmaComponents/modals';
 
 const MODALS = [
@@ -109,7 +110,8 @@ const MODALS = [
   ConfirmModalComponent,
   RemoveListModalComponent,
   RenameListModalComponent,
-  SelectUsersModalComponent
+  SelectUsersModalComponent,
+  CommentModalComponent
 ];
 
 // Import 3rd party components
