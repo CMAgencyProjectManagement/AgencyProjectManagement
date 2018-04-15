@@ -35,10 +35,13 @@ const serverPath = {
   assignTask: '/api/task/assign',
   unassignTask:  `/api/task/unassign`,
   finishTask: taskID => `/api/task/${taskID}/finishTask`,
+  // Comment
+  createComment: '/api/comment/create', // POST
+  updateComment: 'api/comment/update', // PUT
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
-  uploadAttachment: taskID => `api/file/task/${taskID}/attachment`,
-  deleteAttachment: attachmentId => `api/file/attachment/${attachmentId}/delete`
+  uploadAttachment: taskID => `/api/file/task/${taskID}/attachment`,
+  deleteAttachment: attachmentId => `/api/file/attachment/${attachmentId}/delete`
 };
 
 export {

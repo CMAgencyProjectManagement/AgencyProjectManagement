@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12">
+  <div class="col-12" *ngIf="selectedUsers.length > 0">
     <h3>Selected</h3>
     <app-user-list [users]="selectedUsers"></app-user-list>
   </div>

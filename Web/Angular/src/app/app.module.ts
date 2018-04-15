@@ -73,7 +73,6 @@ import {ProjectService} from './services/project.service';
 import {TeamService} from './services/team.service';
 import {TaskService} from './services/task.service';
 import {DependencyService} from './services/dependency.service';
-import {PagerService} from './services/pager.service';
 import {UploadService} from './services/upload.service';
 import {ListService} from 'app/services/list.service';
 const SERVICES = [
@@ -86,7 +85,6 @@ const SERVICES = [
   TeamService,
   TaskService,
   DependencyService,
-  PagerService,
   UploadService,
   ListService
 ];

@@ -137,6 +137,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Angular\dist\assets\img\100x100_avatar.png" />
     <Content Include="Angular\dist\assets\img\avatars\1.jpg" />
     <Content Include="Angular\dist\assets\img\avatars\2.jpg" />
     <Content Include="Angular\dist\assets\img\avatars\3.jpg" />
@@ -391,6 +392,7 @@
     <Content Include="Angular\dist\assets\img\flags\Zimbabwe.png" />
     <Content Include="Angular\dist\assets\img\logo-symbol.png" />
     <Content Include="Angular\dist\assets\img\logo.png" />
+    <Content Include="Angular\dist\assets\img\teampic\1.jpg" />
     <Content Include="Angular\dist\common.chunk.js" />
     <Content Include="Angular\dist\dashboard.module.chunk.js" />
     <Content Include="Angular\dist\fontawesome-webfont.912ec66d7572ff821749.svg" />
@@ -403,6 +405,7 @@
     <Content Include="Angular\dist\scripts.bundle.js" />
     <Content Include="Angular\dist\Simple-Line-Icons.2fe2efe63441d830b1ac.svg" />
     <Content Include="Angular\dist\styles.bundle.js" />
+    <Content Include="Angular\dist\task.module.chunk.js" />
     <Content Include="Angular\dist\team-management.module.chunk.js" />
     <Content Include="Angular\dist\user-management.module.chunk.js" />
     <Content Include="Angular\dist\vendor.bundle.js" />
@@ -429,6 +432,7 @@
     <Content Include="Angular\dist\user-management.module.chunk.js.map" />
     <Content Include="Angular\dist\vendor.bundle.js.map" />
     <Content Include="Angular\dist\team-management.module.chunk.js.map" />
+    <Content Include="Angular\dist\task.module.chunk.js.map" />
     <None Include="Properties\PublishProfiles\agencypm - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\agencypm - Web Deploy.pubxml" />
     <Content Include="Resource\attachment\project_14\task_52\Admin.docx" />

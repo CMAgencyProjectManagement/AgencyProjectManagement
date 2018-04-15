@@ -32,7 +32,7 @@ namespace Web.Controllers
                             createCommentModel.TaskID,
                             Int32.Parse(userIdString)
                             );
-                        return Ok(ResponseHelper.GetResponse());
+                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment)));
                     }
                 }
                 else
@@ -52,7 +52,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("update")]
-        [Authorize(Roles = "Admin, Manager, Staff")]
+        [Authorize(Roles = "Manager, Staff")]
         public IHttpActionResult UpdateComment(UpdateCommentModel updateCommentModel)
         {
             try
@@ -62,11 +62,11 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {       
                         CommentService commentService = new CommentService(db);
-                        var updateComment = commentService.UpdateComment(
+                        var updatedComment = commentService.UpdateComment(
                             updateCommentModel.id,
                             updateCommentModel.Body
                             );
-                        return Ok(ResponseHelper.GetResponse());
+                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(updatedComment)));
                     }
                 }
                 else

@@ -114,6 +114,30 @@
             <!--COMMENT-->
             <h5 class="mb-3">Comments</h5>
             <dl class="row ml-1">
+              <div class="col-12">
+                <div class="form-group row">
+                  <div class="col-12">
+                    <!--COMMENT BTN + LABEL-->
+                    <button class="btn btn-secondary bg-light"
+                            *ngIf="!openCommentForm"
+                            (click)="handleOnCommentBtnClick()">
+                      <i class="fa fa-comment-o"></i>&nbsp; Comment
+                    </button>
+                    <h4 *ngIf="openCommentForm">Comment</h4>
+                  </div>
+                  <div class="col-12" *ngIf="openCommentForm">
+                    <!--COMMENT TEXT AREA-->
+                    <textarea title="comment-input" rows="9" class="form-control"
+                              placeholder="Content.."></textarea>
+
+                  </div>
+                  <div class="col-12" *ngIf="openCommentForm">
+                    <!--ADD COMMENT, CANCEL BTN-->
+                    <button class="btn btn-success">Add</button>
+                    <button class="btn btn-secondary">Cancel</button>
+                  </div>
+                </div>
+              </div>
               <app-comment class="col-12"
                            *ngFor="let comment of foundTask.comments"
                            [comment]="comment"></app-comment>

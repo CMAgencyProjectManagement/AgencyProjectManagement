@@ -27,14 +27,18 @@ export class ViewComponent implements OnInit {
     attachmentRemove: boolean[]
     openAssignModal: boolean
     openUnAssignModal: boolean
-    done: boolean
+    done: boolean,
+    comment: boolean,
+    editComment: boolean
   };
   statuses: any[];
   priorities: any[];
   attachmentForm: FormGroup;
+  commentForm: FormGroup;
   errors: {
     attachment: string
   };
+  openCommentForm: boolean;
 
   constructor(private taskService: TaskService,
               private uploadService: UploadService,
@@ -49,8 +53,11 @@ export class ViewComponent implements OnInit {
       attachmentRemove: [],
       openAssignModal: false,
       openUnAssignModal: false,
-      done: false
+      done: false,
+      comment: false,
+      editComment: true,
     };
+    this.openCommentForm = false;
     this.resetErrors();
   }
 
@@ -74,11 +81,15 @@ export class ViewComponent implements OnInit {
 
     this.attachmentForm = new FormGroup({
       attachment: new FormControl(undefined),
-    })
+    });
+
+    this.commentForm = new FormGroup({
+      attachment: new FormControl(undefined),
+    });
   }
 
   handleOnCommentBtnClick() {
-
+    this.openCommentForm = true;
   }
 
   handleOnAssignBtnClick() {
