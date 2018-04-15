@@ -16,7 +16,6 @@ namespace Entity
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
         public int TaskID { get; set; }
         public string Path { get; set; }
         public Nullable<int> CreatedBy { get; set; }
