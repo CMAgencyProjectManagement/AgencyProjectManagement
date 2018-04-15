@@ -32,7 +32,7 @@ namespace Web.Controllers
                             createCommentModel.TaskID,
                             Int32.Parse(userIdString)
                             );
-                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment)));
+                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment, avatarPath: AgencyConfig.AvatarPath)));
                     }
                 }
                 else
@@ -66,7 +66,7 @@ namespace Web.Controllers
                             updateCommentModel.id,
                             updateCommentModel.Body
                             );
-                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(updatedComment)));
+                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(updatedComment, avatarPath: AgencyConfig.AvatarPath)));
                     }
                 }
                 else
