@@ -128,13 +128,13 @@
                   <div class="col-12" *ngIf="openCommentForm">
                     <!--COMMENT TEXT AREA-->
                     <textarea title="comment-input" rows="9" class="form-control"
+                              [(ngModel)]="commentBoxModel"
                               placeholder="Content.."></textarea>
-
                   </div>
-                  <div class="col-12" *ngIf="openCommentForm">
+                  <div class="col-12 mt-3 d-flex justify-content-end" *ngIf="openCommentForm">
                     <!--ADD COMMENT, CANCEL BTN-->
-                    <button class="btn btn-success">Add</button>
-                    <button class="btn btn-secondary">Cancel</button>
+                    <button class="btn btn-success mr-2" (click)="handleAddCommentBtnClick()">Add</button>
+                    <button class="btn btn-secondary" (click)="handleCancelCommentBtnClick()">Cancel</button>
                   </div>
                 </div>
               </div>

@@ -75,6 +75,7 @@ import {TaskService} from './services/task.service';
 import {DependencyService} from './services/dependency.service';
 import {UploadService} from './services/upload.service';
 import {ListService} from 'app/services/list.service';
+import {CommentService} from './services/comment.service';
 const SERVICES = [
   AlwaysAuthGuard,
   StoreService,
@@ -86,7 +87,8 @@ const SERVICES = [
   TaskService,
   DependencyService,
   UploadService,
-  ListService
+  ListService,
+  CommentService
 ];
 
 // Import modal
@@ -118,7 +120,6 @@ import {MyDatePickerModule} from 'mydatepicker';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {ModalModule} from 'ngx-bootstrap';
 import {CmaModule} from './cmaComponents/cma.module';
-import {TypeaheadModule} from 'ngx-bootstrap/typeahead';
 
 
 @NgModule({

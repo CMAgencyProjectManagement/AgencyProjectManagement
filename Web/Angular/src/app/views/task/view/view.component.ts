@@ -11,6 +11,8 @@ import {Attachment} from '../../../interfaces/attachment';
 import * as _ from 'lodash' ;
 import {UserService} from '../../../services/user.service';
 import {User} from '../../../interfaces/user';
+import {CommentService} from '../../../services/comment.service';
+import {Comment} from '../../../interfaces/comment';
 
 @Component({
   selector: 'app-view',
@@ -21,6 +23,7 @@ export class ViewComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput: ElementRef;
   foundTask: Task;
   attachments: Attachment[];
+  comments: Comment[];
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -34,7 +37,7 @@ export class ViewComponent implements OnInit {
   statuses: any[];
   priorities: any[];
   attachmentForm: FormGroup;
-  commentForm: FormGroup;
+  commentBoxModel: string;
   errors: {
     attachment: string
   };
@@ -42,7 +45,8 @@ export class ViewComponent implements OnInit {
 
   constructor(private taskService: TaskService,
               private uploadService: UploadService,
-              private userServcice: UserService,
+              private userService: UserService,
+              private commentService: CommentService,
               private router: Router,
               private route: ActivatedRoute,
               private location: Location,
@@ -57,7 +61,7 @@ export class ViewComponent implements OnInit {
       comment: false,
       editComment: true,
     };
-    this.openCommentForm = false;
+    this.openCommentForm = true;
     this.resetErrors();
   }
 
@@ -83,13 +87,32 @@ export class ViewComponent implements OnInit {
       attachment: new FormControl(undefined),
     });
 
-    this.commentForm = new FormGroup({
-      attachment: new FormControl(undefined),
-    });
   }
 
   handleOnCommentBtnClick() {
     this.openCommentForm = true;
+  }
+
+  handleAddCommentBtnClick() {
+    this.isLoading.comment = true;
+    let content = this.commentBoxModel;
+    this.commentService.createComment(content, this.foundTask.id)
+      .then(value => {
+          let comment = value as Comment;
+          this.foundTask.comments.push(comment);
+          this.isLoading.comment = true;
+        }
+      )
+      .catch(reason => {
+        this.showErrorModal('Comment fail');
+        console.debug('handleAddCommentBtnClick', reason);
+        this.isLoading.comment = true;
+      })
+  }
+
+  handleCancelCommentBtnClick() {
+    this.openCommentForm = false;
+    this.commentBoxModel = '';
   }
 
   handleOnAssignBtnClick() {
@@ -106,7 +129,7 @@ export class ViewComponent implements OnInit {
         })
     };
     this.isLoading.openAssignModal = true;
-    this.userServcice.getUserOfProject(this.foundTask.project.id)
+    this.userService.getUserOfProject(this.foundTask.project.id)
       .then(value => {
         const pool = [];
         for (let user of value as User[]) {
