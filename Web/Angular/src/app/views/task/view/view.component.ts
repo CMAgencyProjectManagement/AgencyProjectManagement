@@ -24,7 +24,6 @@ import {StoreService} from '../../../services/tree.service';
 export class ViewComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput: ElementRef;
   foundTask: Task;
-  attachments: Attachment[];
   managementMode: boolean;
   isLoading: {
     page: boolean
@@ -66,7 +65,7 @@ export class ViewComponent implements OnInit {
       comment: false,
       editComment: true,
     };
-    this.openCommentForm = true;
+    this.openCommentForm = false;
     this.resetErrors();
   }
 
@@ -76,7 +75,6 @@ export class ViewComponent implements OnInit {
       this.taskService.getTaskDetail(Number(id))
         .then(value => {
           this.foundTask = value as Task;
-          this.attachments = this.foundTask.attachments;
           this.isLoading.page = false;
         })
         .catch(reason => {
@@ -229,7 +227,7 @@ export class ViewComponent implements OnInit {
       this.uploadService.uploadAttachment(formValue.attachment, this.foundTask.id)
         .then(value => {
           let attachment = value as Attachment;
-          this.attachments.push(attachment);
+          this.foundTask.attachments.push(attachment);
           this.isLoading.attachmentUpload = false;
         })
         .catch(reason => {
@@ -248,14 +246,14 @@ export class ViewComponent implements OnInit {
       this.uploadService.deleteAttachment(attachmentId)
         .then(value => {
           let removedItemId = value.id as number;
-          this.attachments = _.filter(this.attachments, item => {
+          this.foundTask.attachments = _.filter(this.foundTask.attachments, item => {
             return item.ID !== removedItemId;
           });
           this.isLoading.attachmentRemove[attachmentId] = false;
         })
         .catch(reason => {
           this.isLoading.attachmentRemove[attachmentId] = false;
-          this.showErrorModal(reason.Data);
+          this.showErrorModal(reason.Message);
         })
     };
     const initialState = {
