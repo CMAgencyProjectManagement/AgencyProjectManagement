@@ -6,7 +6,8 @@ const serverPath = {
   createUser: '/api/user',
   updateUser: '/api/user/update',
   leaderBoard: '/api/user/leaderboard',
-  getUserOfProject: (projectId) => `/api/user//project/${projectId}`,
+  getUserOfProject: (projectId) => `/api/user/project/${projectId}`,
+  getUserOfTeam: (teamId) => `/api/user/team/${teamId}`,
   resetPassword: userId => `/api/user/${userId}/resetpassword`,
   // Project
   allProject: '/api/project/all',
@@ -26,6 +27,7 @@ const serverPath = {
   assignTeam: '/api/team/assign',
   unAssignTeam: '/api/team/unassign',
   setTeamRole: '/api/team/assign/role',
+  getTeamDetail: (teamId) => `/api/team/${teamId}`,
   // Task
   getTask: taskId => `/api/task/${taskId}`,
   createTask: '/api/task',

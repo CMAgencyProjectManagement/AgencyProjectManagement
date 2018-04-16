@@ -9,6 +9,7 @@ import { AddComponent } from './add/add.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
 import {MyDatePickerModule} from 'mydatepicker';
+import { MyTasksComponent } from './my-tasks/my-tasks.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import {MyDatePickerModule} from 'mydatepicker';
   declarations: [
     ViewComponent,
     EditComponent,
-    AddComponent
+    AddComponent,
+    MyTasksComponent
   ]
 })
 export class TaskModule {

@@ -5,5 +5,6 @@ export interface Team {
   name: string,
   createdBy: User,
   createdDate: string,
-  manager: User
+  manager: User,
+  users: User[]
 }

@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {ViewComponent as ViewTask} from './view/view.component';
 import {EditComponent as EditTask} from './edit/edit.component';
 import {AddComponent as CreateTask} from './add/add.component';
+import {MyTasksComponent} from './my-tasks/my-tasks.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,13 @@ const routes: Routes = [
         },
         path: 'create',
         component: CreateTask,
+      },
+      {
+        data: {
+          title: 'My tasks'
+        },
+        path: 'mytasks',
+        component: MyTasksComponent,
       }
     ]
   }

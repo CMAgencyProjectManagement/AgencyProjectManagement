@@ -8,7 +8,6 @@ import {ProjectDetailComponent} from 'app/views/project/project-detail/project-d
 import {AddProjectComponent} from 'app/views/project/add-project/add-project.component';
 import {ProjectUpdateComponent} from 'app/views/project/project-update/project-update.component';
 import {ProjectTaskComponent} from 'app/views/project/project-task/project-task.component';
-import {TaskDetailComponent} from 'app/views/project/task-detail/task-detail.component';
 import {MyDatePickerModule} from 'mydatepicker';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataTablesModule} from 'angular-datatables';
@@ -41,7 +40,6 @@ import {ReportComponent} from './report/report.component';
     AddProjectComponent,
     ProjectUpdateComponent,
     ProjectTaskComponent,
-    TaskDetailComponent,
     ReportComponent,
   ]
 })

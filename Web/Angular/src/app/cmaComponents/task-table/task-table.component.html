@@ -1,0 +1,34 @@
+<table datatable [dtOptions]="datatableOptions" class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Status</th>
+    <th>priority</th>
+    <th>Deadline</th>
+    <th>Project</th>
+    <th>List</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let task of tasks;let i = index">
+    <td>
+      <a routerLink="/task/view/{{team.id}}">{{task.name}}</a>
+    </td>
+    <td>
+      <span>{{task.statusText}}</span>
+    </td>
+    <td>
+      <span>{{task.priorityText}}</span>
+    </td>
+    <td>
+      <span>{{task.deadline}}</span>
+    </td>
+    <td>
+      <span>{{task.project.name}}</span>
+    </td>
+    <td>
+      <span>{{task.list.name}}</span>
+    </td>
+  </tr>
+  </tbody>
+</table>

@@ -43,7 +43,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize]
         public IHttpActionResult GetTeamDetail(int id)
         {
             try
@@ -55,8 +55,12 @@ namespace Web.Controllers
                     if (team != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            teamService.ParseToJsonVer2(team, includeUsers: true, avatarPath: AgencyConfig.AvatarPath,
-                                isDetailedUsers: true, isDetailedProjects: true)
+                            teamService.ParseToJsonVer2(
+                                team,
+                                includeUsers: true,
+                                avatarPath: AgencyConfig.AvatarPath,
+                                isDetailedUsers: true,
+                                isDetailedProjects: true)
                         ));
                     }
                     else

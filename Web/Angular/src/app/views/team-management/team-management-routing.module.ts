@@ -26,6 +26,13 @@ const routes: Routes = [
         }
       },
       {
+        path: 'my',
+        component: DetailTeamComponent,
+        data: {
+          title: 'My department'
+        }
+      },
+      {
         path: 'create',
         component: CreateTeamComponent,
         data: {

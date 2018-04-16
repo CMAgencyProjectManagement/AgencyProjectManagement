@@ -82,6 +82,31 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
+        [HttpGet]
+        [Route("team/{teamId:int}")]
+        [Authorize]
+        public IHttpActionResult GetUserOfTeam(int teamId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    
+                    IEnumerable<JObject> usersObject = userService.GetUsersOfTeam(teamId,currentUser.IsAdmin)
+                        .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
+                    return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
 
         [HttpGet]
         [Route("all")]
@@ -172,7 +197,6 @@ namespace Web.Controllers
                             {
                                 ModelState.AddModelError("Birthdate",
                                     "Birthdate must be smaller than the current time ");
-                                // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
                                 flag = false;
                             }
 

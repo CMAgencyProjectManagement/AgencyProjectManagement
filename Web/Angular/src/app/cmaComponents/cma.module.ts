@@ -22,6 +22,7 @@ import {
 } from './modals';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { CommentModalComponent } from './modals/comment-modal/comment-modal.component';
+import { TaskTableComponent } from './task-table/task-table.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { CommentModalComponent } from './modals/comment-modal/comment-modal.comp
     SuccessModalComponent,
     RenameListModalComponent,
     SelectUsersModalComponent,
-    CommentModalComponent
+    CommentModalComponent,
+    TaskTableComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -65,7 +67,8 @@ import { CommentModalComponent } from './modals/comment-modal/comment-modal.comp
     RemoveListModalComponent,
     RenameListModalComponent,
     SelectUsersModalComponent,
-    CommentModalComponent
+    CommentModalComponent,
+    TaskTableComponent
   ]
 })
 export class CmaModule {

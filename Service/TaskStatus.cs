@@ -3,8 +3,7 @@ namespace Service
 {
     public enum TaskStatus
     {
-        NotStarted,
-        Executing,
+        NotDone,
         NeedReview,
         Done
     }

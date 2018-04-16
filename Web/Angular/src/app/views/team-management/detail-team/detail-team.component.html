@@ -14,16 +14,19 @@
           <table class="table table-bordered">
             <thead>
             <tr>
-
               <th>User</th>
               <th>Role</th>
-              <th>Status</th>
+              <th *ngIf="managementMode">Status</th>
             </tr>
             </thead>
-            <tbody *ngIf="foundUser.length !== 0">
-            <tr *ngFor="let user of foundUser">
+            <tbody *ngIf="foundTeam.users.length !== 0">
+            <tr *ngFor="let user of foundTeam.users">
               <td>
-                <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+                <a href="#/account/detail?id={{user.id}}"
+                   *ngIf="managementMode">
+                  {{user.username}}
+                </a>
+                <span *ngIf="!managementMode">{{user.username}}</span>
               </td>
               <td>
                 <div *ngIf="user.isAdmin">
@@ -37,10 +40,9 @@
                 </div>
 
               </td>
-              <td>
-                <div *ngIf="user.status">Active</div>
-                <div *ngIf="!user.status">Banned</div>
-
+              <td *ngIf="managementMode">
+                <div *ngIf="user.isActive">Active</div>
+                <div *ngIf="!user.isActive">Banned</div>
               </td>
             </tr>
             </tbody>

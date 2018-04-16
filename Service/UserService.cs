@@ -37,7 +37,6 @@ namespace Service
             return users.Count > 0;
         }
 
-        
 
         public User GetUser(string username, string password)
         {
@@ -84,9 +83,16 @@ namespace Service
             return db.Users.ToList();
         }
 
-        public IEnumerable<User> GetUsersOfTeam(int teamId)
+        public IEnumerable<User> GetUsersOfTeam(int teamId, bool includeBanned = false)
         {
-            IEnumerable<User> users = db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
+            IEnumerable<User> users =
+                db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
+            
+            if (!includeBanned)
+            {
+                users = users.Where(user => user.IsActive);
+            }
+
             return users.ToList();
         }
 
@@ -99,21 +105,21 @@ namespace Service
             {
                 var userIdList = db.UserProjects.Where(x => x.ProjectID == projectId)
                     .Select(x => x.UserID).ToList();
-                
+
                 foreach (var item in userIdList)
                 {
                     var user = db.Users.FirstOrDefault(x => x.ID == item);
-                    if(user!= null)
+                    if (user != null)
                     {
                         result.Add(user);
                     }
                 }
+
                 return result;
             }
+
             throw new ObjectNotFoundException($"Can't find Project with ID {projectId} ");
         }
-
-
 
 
         public IEnumerable<User> GetUsersOfTeamVer2(int teamId)
@@ -128,7 +134,7 @@ namespace Service
                 throw new ObjectNotFoundException($"Can't find team with ID{teamId} ");
             }
         }
-        
+
 
         public void UpdateAvatar(string avatarFileName, int id)
         {
@@ -227,7 +233,7 @@ namespace Service
             }
             else
             {
-                throw new ObjectNotFoundException($"User with ID{id} not found"); 
+                throw new ObjectNotFoundException($"User with ID{id} not found");
             }
         }
 

@@ -6,7 +6,6 @@ import {ProjectDetailComponent} from './project-detail/project-detail.component'
 import {AddProjectComponent} from './add-project/add-project.component';
 import {ProjectUpdateComponent} from './project-update/project-update.component';
 import {ProjectTaskComponent} from './project-task/project-task.component';
-import {TaskDetailComponent} from 'app/views/project/task-detail/task-detail.component';
 import {ReportComponent} from './report/report.component';
 
 const routes: Routes = [
@@ -50,13 +49,6 @@ const routes: Routes = [
     component: ProjectTaskComponent,
     data: {
       title: 'Task'
-    }
-  },
-  {
-    path: 'task-detail',
-    component: TaskDetailComponent,
-    data: {
-      title: 'Task detail'
     }
   },
   {

@@ -233,12 +233,8 @@ namespace Service
                     tasks.Add(taskInList);
                 }
             }
-
-            int taskNotStarted = tasks.Where(x => x.Status == (int) TaskStatus.NotStarted).Count();
-            int taskExcuting = tasks.Where(x => x.Status == (int) TaskStatus.Executing).Count();
-            int taskNeedReview = tasks.Where(x => x.Status == (int) TaskStatus.NeedReview).Count();
-            int taskDone = tasks.Where(x => x.Status == (int) TaskStatus.Done).Count();
-            int taskNumber = tasks.Count();
+            
+            int taskNumber = tasks.Count;
 
             List<JObject> calculatedResult = new List<JObject>();
             foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))

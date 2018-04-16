@@ -14,23 +14,18 @@ const staff_navigation = [
   },
   {
     name: 'Department',
-    url: '/dashboard',
-    icon: 'icon-speedometer'
-  },
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'icon-speedometer'
+    url: '/department/my',
+    icon: 'icon-people'
   },
   {
     name: 'Project',
     url: '/dashboard',
-    icon: 'icon-speedometer'
+    icon: 'icon-calendar'
   },
   {
     name: 'Task',
-    url: '/dashboard',
-    icon: 'icon-speedometer'
+    url: '/task/mytasks',
+    icon: 'icon-briefcase'
   },
   {
     name: 'Profile',

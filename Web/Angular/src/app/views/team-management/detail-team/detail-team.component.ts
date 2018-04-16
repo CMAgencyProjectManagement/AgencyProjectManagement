@@ -7,6 +7,7 @@ import {Location} from '@angular/common';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import {StoreService} from '../../../services/tree.service';
 
 @Component({
   selector: 'app-detail-team',
@@ -14,81 +15,55 @@ import {ErrorModalComponent} from '../../../cmaComponents/modals';
   styleUrls: ['./detail-team.component.scss']
 })
 export class DetailTeamComponent implements OnInit {
-  entity: any;
   teamID: number;
-  teams: Team[];
-  users = [];
   foundTeam: Team;
-  foundUser = [];
-  selectedUser = [];
   isLoading: boolean;
-  dropdownSettings = {};
+  managementMode: boolean;
+  currentUser: User;
 
   constructor(
     private teamService: TeamService,
     private userService: UserService,
+    private storeService: StoreService,
     private modalService: BsModalService,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location
   ) {
+    this.currentUser = this.storeService.get(['currentUser']);
+    this.managementMode = this.currentUser.isManager || this.currentUser.isAdmin;
   }
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
-    if (Number!(id)) {
-      this.teamID = Number(id);
-      this.entity = {};
-      this.teams = [];
-      this.users = [];
-      this.getAllTeam();
-      this.getAllUser();
+    if (id) {
+      // Specific department
+      if (Number!(id)) {
+        this.teamID = Number(id);
+      } else {
+        this.showErrorModal(`Invalid department id "${id}"`, true);
+      }
     } else {
-      this.showErrorModal(`Invalid department id "${id}"`, true);
+      // My department
+      this.teamID = this.currentUser.team.id;
     }
+
+    this.getAllTeam();
   }
 
   getAllTeam() {
-    this.teamService.getAllTeam()
+    this.teamService.getDetail(this.teamID)
       .then(value => {
-        this.teams = value;
-        for (let i = 0; i < this.teams.length; i++) {
-          if (this.teams[i].id == this.teamID) {
-            this.foundTeam = this.teams[i];
-            this.selectedUser.push({
-              id: this.foundTeam.manager.id,
-              itemName: this.foundTeam.manager.username,
-              itemAvatar: this.foundTeam.manager.avatar,
-              item: this.foundTeam.manager.id,
-              item1: this.foundTeam.manager.isActive,
-            });
-          }
+        this.foundTeam = value;
+        if (!this.managementMode) {
+          this.foundTeam.users = this.foundTeam.users.filter(user => {
+            return user.isActive
+          });
         }
       })
-  }
-
-  getAllUser() {
-    this.userService.getAllUser()
-      .then(value => {
-        this.users = value;
-        for (let i = 0; i < this.users.length; i++) {
-          let userTeam = this.users[i].team;
-          if (userTeam !== null) {
-            if (userTeam.id === this.foundTeam.id) {
-              this.foundUser.push({
-                id: this.users[i].id,
-                name: this.users[i].name,
-                username: this.users[i].username,
-                status: this.users[i].isActive,
-                isad: this.users[i].isAdmin,
-                ismng: this.users[i].isManager,
-
-              })
-            }
-          }
-
-        }
-        console.log(this.foundUser);
+      .catch(reason => {
+        this.showErrorModal(`An error happened while loading data`);
+        console.debug(`ERROR: getAllTeam - detail-team`, reason);
       })
   }
 
