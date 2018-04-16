@@ -25,6 +25,7 @@
               <th>Status</th>
               <th>Update</th>
               <th>Tasks</th>
+              <th>Report</th>
             </tr>
             </thead>
             <tbody>
@@ -66,10 +67,17 @@
               <td>
                   <a href="#/project/task?projectID={{project.id}}">
                     <button type="button" class="btn btn-primary">
-                      View all tasks
+                      Tasks
                     </button>
                   </a>
                 </td>
+              <td>
+                <a routerLink="/project/{{project.id}}/report">
+                  <button type="button" class="btn btn-primary">
+                    Report
+                  </button>
+                </a>
+              </td>
             </tr>
             </tbody>
           </table>

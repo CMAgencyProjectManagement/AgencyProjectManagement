@@ -13,9 +13,10 @@ import {MyDatePickerModule} from 'mydatepicker';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DataTablesModule} from 'angular-datatables';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CmaModule} from '../../cmaComponents/cma.module';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
+import {ReportComponent} from './report/report.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {SpinnerModule} from '../../components/spinner/spinner.module';
     ProjectUpdateComponent,
     ProjectTaskComponent,
     TaskDetailComponent,
+    ReportComponent,
   ]
 })
 export class ProjectManagementModule {

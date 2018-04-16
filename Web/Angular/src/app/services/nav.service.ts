@@ -19,11 +19,12 @@ export class NavService {
 
   public getMenu(isAdmin: boolean, isManager: boolean) {
     let menu = staff_navigation;
+
     if (isManager) {
-      menu = menu.concat(manager_navigation);
+      menu = manager_navigation;
     }
     if (isAdmin) {
-      menu = menu.concat(admin_navigation);
+      menu = admin_navigation;
     }
     return menu;
   }

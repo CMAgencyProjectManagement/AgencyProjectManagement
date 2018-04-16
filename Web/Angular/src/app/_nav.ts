@@ -1,3 +1,11 @@
+/**
+ *  home page (user)
+ *  my department
+ *  my projects
+ *  my tasks (assigned)
+ *  my account (profile)
+ *  update profile
+ */
 const staff_navigation = [
   {
     name: 'Dashboard',
@@ -6,10 +14,35 @@ const staff_navigation = [
   }
 ];
 
-const manager_navigation = [];
+/**
+ * home page (manager)
+ * my department
+ * my department's active projects
+ * my account (profile)
+ * update profile
+ */
+const manager_navigation = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer'
+  }
+];
 
-
+/**
+ * home page (admin)
+ * view account
+ * create account
+ * view department
+ * view project
+ * create project
+ */
 const admin_navigation = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer'
+  },
   {
     name: 'Project',
     url: '/project',
@@ -31,32 +64,7 @@ const admin_navigation = [
     name: 'Department',
     url: '/department/view',
     icon: 'icon-people',
-    // children: [
-    //   {
-    //     name: 'View',
-    //     url: '/team/view',
-    //     icon: 'icon-people',
-    //   }
-    // ]
   },
-  /*
-  {
-    name: 'Team-create',
-    url: '/team/create',
-    icon: 'icon-people',
-    badge: {
-      variant: 'info'
-    }
-  },
-  {
-    name: 'Team-update',
-    url: '/team/update',
-    icon: 'icon-people',
-    badge: {
-      variant: 'info'
-    }
-  },
-  */
   {
     name: 'Account',
     url: '/account/view',

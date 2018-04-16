@@ -10,6 +10,7 @@ import {MyDatePickerModule} from 'mydatepicker';
 import {DetailUserComponent} from './detail-user/detail-user.component';
 import {DataTablesModule} from 'angular-datatables';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
+import { UpdateMyUserComponent } from './update-my-user/update-my-user.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import {SpinnerModule} from '../../components/spinner/spinner.module';
     CreateUserComponent,
     ViewUserComponent,
     UpdateUserComponent,
-    DetailUserComponent
+    DetailUserComponent,
+    UpdateMyUserComponent
   ]
 })
 export class UserManagementModule {

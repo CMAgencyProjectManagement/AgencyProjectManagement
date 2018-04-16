@@ -4,6 +4,7 @@ import {CreateUserComponent} from './create-user/create-user.component';
 import {ViewUserComponent} from './view-user/view-user.component';
 import {UpdateUserComponent} from './update-user/update-user.component';
 import { DetailUserComponent } from './detail-user/detail-user.component';
+import { UpdateMyUserComponent } from './update-my-user/update-my-user.component';
 const routes: Routes = [
   {
     path: '',
@@ -38,6 +39,13 @@ const routes: Routes = [
         },
         path: 'update',
         component: UpdateUserComponent
+      },
+      {
+        data: {
+          title: 'Update'
+        },
+        path: 'profile/update/:id',
+        component: UpdateMyUserComponent
       },
     ]
   }
