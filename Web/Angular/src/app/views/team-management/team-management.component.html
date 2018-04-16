@@ -19,7 +19,7 @@
           <tbody>
             <tr *ngFor="let team of teams;let i = index">
               <td>
-                <a href="#/department/detail?id={{team.id}}">{{team.name}}</a>
+                <a routerLink="/department/{{team.id}}/detail">{{team.name}}</a>
               </td>
               <td>
                 <p>{{team.manager.username}}</p>
@@ -28,7 +28,7 @@
                 <p>{{team.createdDate}}</p>
               </td>
               <td class="text-center">
-                <a href="#/department/update?id={{team.id}}">
+                <a routerLink="/department/{{team.id}}/update">
                   <button type="button" class="btn btn-primary">Update</button>
                 </a>
               </td>

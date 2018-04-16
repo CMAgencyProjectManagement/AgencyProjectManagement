@@ -4,6 +4,10 @@ import {UserService} from '../../../services/user.service';
 import {Team} from 'app/interfaces/team';
 import {User} from 'app/interfaces/user';
 import * as _ from 'lodash';
+import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import {Location} from '@angular/common';
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-update-team',
@@ -26,6 +30,10 @@ export class UpdateTeamComponent implements OnInit {
   constructor(
     private teamService: TeamService,
     private userService: UserService,
+    private modalService: BsModalService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
   ) {
     this.loading = {
       page: true,
@@ -36,22 +44,34 @@ export class UpdateTeamComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.teamID = Number(this.GetURLParameter('id'));
-    this.teamService.getAllTeam()
-      .then(value => {
-        let teams = value as Team[];
-        for (let team of teams) {
-          if (team.id === this.teamID) {
-            this.foundTeam = team;
-            this.updateLoadingState();
+    let id = this.route.snapshot.paramMap.get('id');
+    if (Number(id)) {
+      this.teamID = Number(Number(id));
+      this.teamService.getAllTeam()
+        .then(value => {
+          let teams = value as Team[];
+          for (let team of teams) {
+            if (team.id === this.teamID) {
+              this.foundTeam = team;
+              this.updateLoadingState();
+            }
           }
-        }
-      });
-    this.userService.getAllUser()
-      .then(value => {
-        this.users = value;
-        this.updateLoadingState();
-      });
+        })
+        .catch(reason => {
+          this.showErrorModal(reason.Data);
+        });
+      this.userService.getAllUser()
+        .then(value => {
+          this.users = value;
+          this.updateLoadingState();
+        })
+        .catch(reason => {
+            this.showErrorModal(reason.Data);
+          }
+        )
+    } else {
+      this.showErrorModal(`Invalid team id "${id}"`, true);
+    }
   }
 
   updateLoadingState() {
@@ -100,11 +120,16 @@ export class UpdateTeamComponent implements OnInit {
   }
 
 
-  GetURLParameter(sParam) {
-    var sPageURL = window.location.href;
-    var sURLVariables = sPageURL.split('?');
-    var sTeam = sURLVariables[1].split('=');
-    return sTeam[1];
+  showErrorModal(message: string, isNavigateBack: boolean = false) {
+    const initialState = {
+      closeCallback: () => {
+        if (isNavigateBack) {
+          this.location.back();
+        }
+      },
+      message: message
+    };
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
 
 }

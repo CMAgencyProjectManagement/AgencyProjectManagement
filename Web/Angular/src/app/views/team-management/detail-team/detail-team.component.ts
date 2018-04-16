@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { TeamService } from '../../../services/team.service';
-import { UserService } from '../../../services/user.service';
-import { Team } from 'app/interfaces/team';
-import { User } from 'app/interfaces/user';
+import {Component, OnInit} from '@angular/core';
+import {TeamService} from '../../../services/team.service';
+import {UserService} from '../../../services/user.service';
+import {Team} from 'app/interfaces/team';
+import {User} from 'app/interfaces/user';
+import {Location} from '@angular/common';
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ErrorModalComponent} from '../../../cmaComponents/modals';
 
 @Component({
   selector: 'app-detail-team',
@@ -23,18 +27,27 @@ export class DetailTeamComponent implements OnInit {
   constructor(
     private teamService: TeamService,
     private userService: UserService,
-  ) { }
+    private modalService: BsModalService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {
+  }
 
   ngOnInit() {
-
-    this.entity = {};
-    this.teamID = Number(this.GetURLParameter('id'));
-    this.teams = [];
-    this.users = [];
-    this.getAllTeam();
-    this.getAllUser();
-
+    let id = this.route.snapshot.paramMap.get('id');
+    if (Number!(id)) {
+      this.teamID = Number(id);
+      this.entity = {};
+      this.teams = [];
+      this.users = [];
+      this.getAllTeam();
+      this.getAllUser();
+    } else {
+      this.showErrorModal(`Invalid department id "${id}"`, true);
+    }
   }
+
   getAllTeam() {
     this.teamService.getAllTeam()
       .then(value => {
@@ -48,25 +61,12 @@ export class DetailTeamComponent implements OnInit {
               itemAvatar: this.foundTeam.manager.avatar,
               item: this.foundTeam.manager.id,
               item1: this.foundTeam.manager.isActive,
-              // item2: this.foundTeam.
             });
           }
         }
-        // for (let i = 0; i < this.teams.length; i++) {
-        //   if (this.teams[i].id == this.teamID) {
-        //     this.foundTeam = this.teams[i];
-        //     this.selectedUser.push({
-        //       id: this.foundTeam.manager.id,
-        //       itemName: this.foundTeam.manager.username,
-        //       itemAvatar: this.foundTeam.manager.avatar,
-        //       item: this.foundTeam.manager.id,
-        //       item1: this.foundTeam.manager.isActive,
-        //       // item2: this.foundTeam.
-        //     });
-        //   }
-        // }
       })
   }
+
   getAllUser() {
     this.userService.getAllUser()
       .then(value => {
@@ -91,10 +91,17 @@ export class DetailTeamComponent implements OnInit {
         console.log(this.foundUser);
       })
   }
-  GetURLParameter(sParam) {
-    var sPageURL = window.location.href;
-    var sURLVariables = sPageURL.split('?');
-    var sTeam = sURLVariables[1].split('=');
-    return sTeam[1];
+
+  showErrorModal(message: string, isNavigateBack: boolean = false) {
+    const initialState = {
+      closeCallback: () => {
+        if (isNavigateBack) {
+          this.location.back();
+        }
+      },
+      message: message
+    };
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
+
 }

@@ -154,6 +154,7 @@ export class ViewComponent implements OnInit {
           },
           userPool: pool,
           title: `Assign`,
+          confirmButtonText: 'Assign'
         };
         this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
       })
@@ -189,6 +190,7 @@ export class ViewComponent implements OnInit {
       },
       userPool: this.foundTask.assignees,
       title: `Un-assign`,
+      confirmButtonText: 'Un-assign'
     };
     this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
   }

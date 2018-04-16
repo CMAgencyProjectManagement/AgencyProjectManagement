@@ -11,6 +11,44 @@ const staff_navigation = [
     name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer'
+  },
+  {
+    name: 'Department',
+    url: '/dashboard',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: 'Project',
+    url: '/dashboard',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: 'Task',
+    url: '/dashboard',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: 'Profile',
+    url: '/account/view',
+    icon: 'icon-user',
+    children: [
+      {
+        name: 'View account',
+        url: '/account/view',
+        icon: 'icon-user',
+
+      },
+      {
+        name: 'Create account',
+        url: '/account/create',
+        icon: 'icon-user',
+      },
+    ]
   }
 ];
 

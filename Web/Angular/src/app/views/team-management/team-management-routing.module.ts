@@ -19,7 +19,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'detail',
+        path: ':id/detail',
         component: DetailTeamComponent,
         data: {
           title: 'Department Detail'
@@ -33,7 +33,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'update',
+        path: ':id/update',
         component: UpdateTeamComponent,
         data: {
           title: 'Update'

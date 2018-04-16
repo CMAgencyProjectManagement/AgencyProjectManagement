@@ -13,11 +13,15 @@ export class SelectUsersModalComponent implements OnInit {
   cancelCallback: any;
   closeCallback: any;
   title: string;
+  confirmButtonText: string;
   message: string;
   selectedUsers: User[];
   userPool: User[];
 
   constructor(private bsModalRef: BsModalRef) {
+    if (!this.confirmButtonText) {
+      this.confirmButtonText = 'Confirm';
+    }
   }
 
   ngOnInit() {
