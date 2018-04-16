@@ -31,7 +31,7 @@ namespace Web.Controllers
                     JArray dataObject = new JArray();
                     foreach (var project in projects)
                     {
-                        dataObject.Add(projectService.ParseToJson(project,true));
+                        dataObject.Add(projectService.ParseToJson(project, true, AgencyConfig.AvatarPath));
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -345,7 +345,7 @@ namespace Web.Controllers
                     if (project != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            projectService.ParseToJson(project, isDetailedUsers: true,
+                            projectService.ParseToJson(project,
                                 avatarPath: AgencyConfig.AvatarPath,
                                 isDetailed: true)
                         ));
@@ -374,7 +374,7 @@ namespace Web.Controllers
                 {
                     ProjectService projectService = new ProjectService(db);
                     var project = projectService.GetProjectByID(id);
-                    if (project!=null)
+                    if (project != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
                             projectService.ParseToJsonStatusReport(project)
@@ -384,6 +384,7 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
                     }
+
                     //if (project != null)
                     //{
                     //    return Ok(ResponseHelper.GetResponse(
@@ -419,14 +420,14 @@ namespace Web.Controllers
                         ProjectService projectService = new ProjectService(db);
                         foreach (var userId in assignProjectModel.UserIds)
                         {
-                            UserProject NewUserProject = projectService.AssignProject(
+                            UserProject newUserProject = projectService.AssignProject(
                                 userId,
                                 assignProjectModel.ProjectId
                             );
-                            //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
+                            return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(newUserProject.Project)));
                         }
 
-                        return Ok(ResponseHelper.GetResponse());
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(""));
                     }
                 }
                 else

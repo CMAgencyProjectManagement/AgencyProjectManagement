@@ -263,8 +263,7 @@ namespace Service
         }
 
 
-        public JObject ParseToJson(Project project, bool isDetailed = false, bool isDetailedUsers = false,
-            string avatarPath = null)
+        public JObject ParseToJson(Project project, bool isDetailed = false,string avatarPath = null)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
@@ -298,10 +297,7 @@ namespace Service
                 }
 
                 result["lists"] = listJArray;
-            }
-
-            if (isDetailedUsers)
-            {
+                
                 var users = userService.GetUsersOfProject(
                     project.ID);
                 var jArray = new JArray();
@@ -310,7 +306,7 @@ namespace Service
                     jArray.Add(userService.ParseToJson(user, avatarPath));
                 }
 
-                result["Project's Member"] = jArray;
+                result["asignees"] = jArray;
             }
 
             return result;
