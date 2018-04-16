@@ -110,27 +110,7 @@ namespace Service
             return newList;
         }
 
-        public List DeleteList1(int listID)
-        {
-            List foundList = db.Lists.Find(listID);
-            if (foundList != null)
-            {
-                if (!foundList.Tasks.Any())
-                {
-                    db.Lists.Remove(foundList);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"List with ID {listID} has contain Task, please erase or move all task in list with ID {listID} to remove it ");
-                }
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"Can't find list with listID{listID} ");
-            }
-            return foundList;
-        }
+       
         public List DeleteList(int listID, User CurrentUser)
         {
             List foundList = db.Lists.Find(listID);
@@ -213,22 +193,6 @@ namespace Service
             }
             
         }
-        public List UpdateList1(int id, int userID, string name)
-        {
-            List foundList = db.Lists.Find(id);
-            if (foundList != null)
-            {
-
-                foundList.Name = name;
-                foundList.ChangedBy = userID;
-                foundList.ChangedTime = DateTime.Now;
-                db.SaveChanges();
-                return foundList;
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"Can't find list with listID{id} ");
-            }
-        }
+        
     }
 }

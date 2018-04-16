@@ -267,7 +267,7 @@ namespace Service
             }
         }
 
-        public UserTask AssignTask(int taskID, int userID)
+        public UserTask AssignTask(int taskID, int userID, int currentUserId)
         {
             User user = db.Users.Find(userID);
             if (user == null)
@@ -290,6 +290,9 @@ namespace Service
             }
             else
             {
+                
+                task.ChangedBy = currentUserId;
+                task.ChangedTime = DateTime.Now.Date;
                 foundUserTask = new UserTask
                 {
                     UserID = userID,
@@ -357,7 +360,27 @@ namespace Service
 //            return null;
         }
 
-        public int UnAssignTask(int taskID, int userID)
+        public int UnAssignTask(int taskID, int userID, int currentUserId)
+        {
+            IEnumerable<UserTask> userTasks =
+                db.UserTasks.Where(p => p.TaskID == taskID && p.UserID == userID).ToList();
+            if (userTasks != null)
+            {
+                Task task = db.Tasks.Find(taskID);
+                task.ChangedBy = currentUserId;
+                task.ChangedTime = DateTime.Now.Date;
+                foreach (var userTask in userTasks)
+                {
+                    
+                    userTask.IsAssigned = false;
+                    db.SaveChanges();
+                    return userTask.UserID;
+                }
+            }
+
+            throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
+        }
+        public int UnAssignTaskgoc(int taskID, int userID)
         {
             IEnumerable<UserTask> userTasks =
                 db.UserTasks.Where(p => p.TaskID == taskID && p.UserID == userID).ToList();

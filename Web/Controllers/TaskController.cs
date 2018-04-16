@@ -406,12 +406,13 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TaskService taskService = new TaskService(db);
-
+                        int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         foreach (int userID in assignTaskModel.UserIDs)
                         {
                             taskService.AssignTask(
                                 userID: userID,
-                                taskID: assignTaskModel.TaskID
+                                taskID: assignTaskModel.TaskID,
+                                currentUserId: currentUserId
                             );
                         }
 
@@ -442,13 +443,15 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
+                        int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         TaskService taskService = new TaskService(db);
 
                         foreach (int userID in unassignTaskModel.UserIDs)
                         {
                             taskService.UnAssignTask(
                                 userID: userID,
-                                taskID: unassignTaskModel.TaskID
+                                taskID: unassignTaskModel.TaskID,
+                                currentUserId : currentUserId
                             );
                         }
 
