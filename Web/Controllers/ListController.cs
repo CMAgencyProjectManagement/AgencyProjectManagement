@@ -55,7 +55,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult DeleteList(DeleteListModel deleteListModel)
         {
             try
@@ -64,10 +64,11 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
-
+                        int userId = Int32.Parse(User.Identity.GetUserId());
+                        User user = db.Users.Find(userId);
                         ListService listService = new ListService(db);
                         //TaskService taskService = new TaskService(db);
-                        listService.DeleteList(deleteListModel.ID);
+                        listService.DeleteList(deleteListModel.ID,user);
 
                         return Ok(ResponseHelper.GetResponse());
                     }
@@ -91,7 +92,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("update")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult UpdateList(UpdateListModel updateListModel)
         {
             try
@@ -102,13 +103,12 @@ namespace Web.Controllers
                     {
 
                         ListService listService = new ListService(db);
-
                         UserService userService = new UserService(db);
-                        string userIDString = User.Identity.GetUserId();
-
+                        int userId = Int32.Parse(User.Identity.GetUserId());
+                       // User user = db.Users.Find(userId);
                         var updateList = listService.UpdateList(
                             updateListModel.ID,
-                            Int32.Parse(userIDString),
+                            userId,
                             updateListModel.Name
                             );
 

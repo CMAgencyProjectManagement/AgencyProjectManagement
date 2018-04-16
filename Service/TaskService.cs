@@ -143,6 +143,8 @@ namespace Service
                         if (user.IsManager == false)
                         {
                             task.Status = (int) TaskStatus.NeedReview;
+                            task.ChangedBy = user.ID;
+                            task.ChangedTime = DateTime.Now.Date;
                             return task;
                         }
                     }
@@ -177,6 +179,8 @@ namespace Service
                     if (user.ID == manager.ID)
                     {
                         task.Status = (int) TaskStatus.Done;
+                        task.ChangedBy = user.ID;
+                        task.ChangedTime = DateTime.Now.Date;
                         db.SaveChanges();
                         return task;
                     }

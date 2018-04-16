@@ -63,9 +63,9 @@ namespace Service
             JObject result = new JObject
             {
                 ["id"] = list.ID,
-                ["projectId"] = list.ProjectID, 
+                ["projectId"] = list.ProjectID,
                 ["name"] = list.Name
-                
+
             };
 
             if (isDetailed)
@@ -82,7 +82,7 @@ namespace Service
             }
             if (isShowtask)
             {
-               Project project = projectService.GetProjectByID(list.ProjectID);
+                Project project = projectService.GetProjectByID(list.ProjectID);
                 result["project"] = projectService.ParseToJson(project);
             }
 
@@ -101,7 +101,7 @@ namespace Service
             {
                 ProjectID = projectId,
                 Name = name,
-               
+
             };
             db.Lists.Add(newList);
             db.SaveChanges();
@@ -109,13 +109,13 @@ namespace Service
 
             return newList;
         }
-        
-        public List DeleteList(int listID)
+
+        public List DeleteList1(int listID)
         {
             List foundList = db.Lists.Find(listID);
             if (foundList != null)
             {
-                if(!foundList.Tasks.Any())
+                if (!foundList.Tasks.Any())
                 {
                     db.Lists.Remove(foundList);
                     db.SaveChanges();
@@ -131,13 +131,94 @@ namespace Service
             }
             return foundList;
         }
+        public List DeleteList(int listID, User CurrentUser)
+        {
+            List foundList = db.Lists.Find(listID);
+            if (foundList != null)
+            {
+                int projectId = db.Lists.Find(listID).ProjectID;
+                var teamId = db.TeamProjects.Where(x => x.ProjectID == projectId).Select(x => x.TeamID)
+                    .FirstOrDefault();
+                Team team = db.Teams.Find(teamId);
+                if (team != null)
+                {
+                    User manager = db.Users.Where(x => x.TeamID == teamId && x.IsManager == true).FirstOrDefault();
+                    if (CurrentUser.ID == manager.ID)
+                    {
+                        if (!foundList.Tasks.Any())
+                        {
+                            db.Lists.Remove(foundList);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            throw new ObjectNotFoundException($"List with ID {listID} has contain Task, please erase or move all task in list with ID {listID} to remove it ");
+                        }
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"User is not manager of team");
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($" the list with ID {listID} be long to the project with ID: {projectId} which doesn't belong to any team");
+                }
+
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find list with listID{listID} ");
+            }
+            return foundList;
+        }
+
 
         public List UpdateList(int listID, int userID, string name)
         {
+            
             List foundList = db.Lists.Find(listID);
-            if(foundList != null)
+            if (foundList != null)
             {
-                
+                int projectId = db.Lists.Find(listID).ProjectID;
+                var teamId = db.TeamProjects.Where(x => x.ProjectID == projectId).Select(x => x.TeamID)
+                    .FirstOrDefault();
+                Team team = db.Teams.Find(teamId);
+                if (team!=null)
+                {
+                    User manager = db.Users.Where(x => x.TeamID == teamId && x.IsManager == true).FirstOrDefault();
+                    //User CurrentUser = db.Users.Find(userID);
+                    if (userID==manager.ID)
+                    {
+                        foundList.Name = name;
+                        foundList.ChangedBy = userID;
+                        foundList.ChangedTime = DateTime.Now;
+                        db.SaveChanges();
+                        return foundList;
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"User is not manager of team");
+                    }
+                    
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($" the list with ID {listID} be long to the project with ID: {projectId} which doesn't belong to any team");
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Can't find list with listID{listID} ");
+            }
+            
+        }
+        public List UpdateList1(int id, int userID, string name)
+        {
+            List foundList = db.Lists.Find(id);
+            if (foundList != null)
+            {
+
                 foundList.Name = name;
                 foundList.ChangedBy = userID;
                 foundList.ChangedTime = DateTime.Now;
@@ -146,8 +227,8 @@ namespace Service
             }
             else
             {
-                throw new ObjectNotFoundException($"Can't find list with listID{listID} ");
-            }         
+                throw new ObjectNotFoundException($"Can't find list with listID{id} ");
+            }
         }
     }
 }
