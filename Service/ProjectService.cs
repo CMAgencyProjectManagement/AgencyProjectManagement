@@ -173,6 +173,7 @@ namespace Service
                             throw new ObjectNotFoundException($"Project and user not in one team");
                         }
                     }
+
                     throw new ObjectNotFoundException($"Eo biet");
                 }
                 else
@@ -263,7 +264,7 @@ namespace Service
         }
 
 
-        public JObject ParseToJson(Project project, bool isDetailed = false,string avatarPath = null)
+        public JObject ParseToJson(Project project, bool isDetailed = false, string avatarPath = null)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
@@ -276,7 +277,7 @@ namespace Service
                 ["description"] = project.Description,
                 ["deadline"] = project.Deadline,
                 ["createdTime"] = project.CreatedTime,
-                ["createdBy"] = userService.ParseToJson(creator),
+                ["createdBy"] = userService.ParseToJson(creator, avatarPath),
                 ["startDate"] = project.StartDate,
                 ["changedTime"] = project.ChangedTime,
                 ["status"] = project.Status
@@ -297,7 +298,7 @@ namespace Service
                 }
 
                 result["lists"] = listJArray;
-                
+
                 var users = userService.GetUsersOfProject(
                     project.ID);
                 var jArray = new JArray();
