@@ -307,7 +307,7 @@ namespace Service
                     jArray.Add(userService.ParseToJson(user, avatarPath));
                 }
 
-                result["asignees"] = jArray;
+                result["assignees"] = jArray;
             }
 
             return result;
