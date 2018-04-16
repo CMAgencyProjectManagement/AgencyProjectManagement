@@ -26,10 +26,11 @@
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>
         <button class="btn btn-secondary bg-light"
+                *ngIf="!managementMode"
                 [disabled]="foundTask.statusText == 'Done'"
-                (click)="handleOnDoneBtnClick()"
+                (click)="handleOnNeedReviewBtnClick()"
                 [ladda]="isLoading.done">
-          <i class="fa fa-check"></i>&nbsp; Done
+          <i class="fa fa-check"></i>&nbsp; Need review
         </button>
       </div>
     </div>
@@ -123,13 +124,12 @@
                             (click)="handleOnCommentBtnClick()">
                       <i class="fa fa-comment-o"></i>&nbsp; Comment
                     </button>
-                    <h4 *ngIf="openCommentForm">Comment</h4>
                   </div>
                   <div class="col-12" *ngIf="openCommentForm">
                     <!--COMMENT TEXT AREA-->
                     <textarea title="comment-input" rows="9" class="form-control"
                               [(ngModel)]="commentBoxModel"
-                              placeholder="Content.."></textarea>
+                              placeholder="Content..."></textarea>
                   </div>
                   <div class="col-12 mt-3 d-flex justify-content-end" *ngIf="openCommentForm">
                     <!--ADD COMMENT, CANCEL BTN-->

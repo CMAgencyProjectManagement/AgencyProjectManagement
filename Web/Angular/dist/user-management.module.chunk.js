@@ -3,7 +3,7 @@ webpackJsonp(["user-management.module"],{
 /***/ "../../../../../src/app/views/user-management/create-user/create-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>New account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"signupForm\" class=\"form-horizontal col-6 \">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"username-input\">Username <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"username-input\" name=\"username-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.username}\"\r\n                formControlName=\"username\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.username\">{{errors.username}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n                formControlName=\"password\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Full name <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone<span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth<span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker #datepicker [options]=\"myDatePickerOptions\" formControlName=\"birthDate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n\r\n            <label class=\"col-4 col-form-label text-right\">Department </label>\r\n\r\n\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\" (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div>\r\n\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreate()\" [ladda]=\"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Reset</button>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>New account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"signupForm\" class=\"form-horizontal col-6 \">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"username-input\">Username <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"username-input\" name=\"username-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.username}\"\r\n                formControlName=\"username\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.username\">{{errors.username}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n                formControlName=\"password\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Full name <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone<span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker #datepicker [options]=\"myDatePickerOptions\" formControlName=\"birthDate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n\r\n            <label class=\"col-4 col-form-label text-right\">Department </label>\r\n\r\n\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\" (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div>\r\n\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreate()\" [ladda]=\"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Reset</button>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -314,10 +314,106 @@ var DetailUserComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/views/user-management/update-my-user/update-my-user.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  update-my-user works!, user id is {{userId}}\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/views/user-management/update-my-user/update-my-user.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/views/user-management/update-my-user/update-my-user.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UpdateMyUserComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var UpdateMyUserComponent = /** @class */ (function () {
+    function UpdateMyUserComponent(router, route, location, modalService) {
+        this.router = router;
+        this.route = route;
+        this.location = location;
+        this.modalService = modalService;
+    }
+    UpdateMyUserComponent.prototype.ngOnInit = function () {
+        var id = this.route.snapshot.paramMap.get('id');
+        if (Number(id)) {
+            this.userId = Number(id);
+        }
+        else {
+            this.showErrorModal(id + " is not a valid ID");
+        }
+    };
+    UpdateMyUserComponent.prototype.showErrorModal = function (message, isNavigateBack) {
+        var _this = this;
+        if (isNavigateBack === void 0) { isNavigateBack = false; }
+        var initialState = {
+            closeCallback: function () {
+                if (isNavigateBack) {
+                    _this.location.back();
+                }
+            },
+            message: message
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
+    };
+    UpdateMyUserComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-update-my-user',
+            template: __webpack_require__("../../../../../src/app/views/user-management/update-my-user/update-my-user.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/views/user-management/update-my-user/update-my-user.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common__["f" /* Location */],
+            __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["b" /* BsModalService */]])
+    ], UpdateMyUserComponent);
+    return UpdateMyUserComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/views/user-management/update-user/update-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isPageLoading\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-6\">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span> </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n            <label class=\"col-4 col-form-label text-right\">Department</label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\">Active</label>\r\n            <div class=\"col-8\">\r\n              <label class=\"switch switch-3d switch-primary\">\r\n                <input type=\"checkbox\" class=\"switch-input\" formControlName=\"isActive\">\r\n                <span class=\"switch-label\"></span>\r\n                <span class=\"switch-handle\"></span>\r\n              </label>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.isActive\">{{errors.isActive}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\">Password </label>\r\n            <div class=\"col-8\">\r\n              <button type=\"button\" class=\"btn btn-secondary\"\r\n                      (click)=\"openConfirmResetPassword()\"\r\n                      [ladda]=\"isResetPasswordLoading\">\r\n                Reset Password</button>\r\n              <div *ngIf=\"newpassword\" class=\"alert alert-success\" role=\"alert\">\r\n                New password: {{newpassword}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdate()\" [ladda]=\"isSavingChange\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"setDefaultValue(foundUser)\">Reset</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>Update account</strong>\n      </div>\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isPageLoading\">\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-6\">\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span> </label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\n                formControlName=\"phone\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\" *ngIf=\"teams\">\n            <label class=\"col-4 col-form-label text-right\">Department</label>\n            <div class=\"col-8\">\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\">Active</label>\n            <div class=\"col-8\">\n              <label class=\"switch switch-3d switch-primary\">\n                <input type=\"checkbox\" class=\"switch-input\" formControlName=\"isActive\">\n                <span class=\"switch-label\"></span>\n                <span class=\"switch-handle\"></span>\n              </label>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.isActive\">{{errors.isActive}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-4 col-form-label text-right\">Password </label>\n            <div class=\"col-8\">\n              <button type=\"button\" class=\"btn btn-secondary\"\n                      (click)=\"openConfirmResetPassword()\"\n                      [ladda]=\"isResetPasswordLoading\">\n                Reset Password</button>\n              <div *ngIf=\"newpassword\" class=\"alert alert-success\" role=\"alert\">\n                New password: {{newpassword}}\n              </div>\n            </div>\n          </div>\n          <div class=\"form-actions text-center\">\n            <div class=\"col-12\">\n              <button class=\"btn btn-primary\" (click)=\"handleUpdate()\" [ladda]=\"isSavingChange\">\n                Save changes\n              </button>\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"setDefaultValue(foundUser)\">Reset</button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -536,12 +632,14 @@ var UpdateUserComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__view_user_view_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__update_user_update_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/update-user/update-user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/detail-user/detail-user.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__update_my_user_update_my_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/update-my-user/update-my-user.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -583,6 +681,13 @@ var routes = [
                 path: 'update',
                 component: __WEBPACK_IMPORTED_MODULE_4__update_user_update_user_component__["a" /* UpdateUserComponent */]
             },
+            {
+                data: {
+                    title: 'Update'
+                },
+                path: 'profile/update/:id',
+                component: __WEBPACK_IMPORTED_MODULE_6__update_my_user_update_my_user_component__["a" /* UpdateMyUserComponent */]
+            },
         ]
     }
 ];
@@ -621,12 +726,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__detail_user_detail_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/detail-user/detail-user.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_spinner_spinner_module__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__update_my_user_update_my_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/update-my-user/update-my-user.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -660,7 +767,8 @@ var UserManagementModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__create_user_create_user_component__["a" /* CreateUserComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__view_user_view_user_component__["a" /* ViewUserComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__update_user_update_user_component__["a" /* UpdateUserComponent */],
-                __WEBPACK_IMPORTED_MODULE_9__detail_user_detail_user_component__["a" /* DetailUserComponent */]
+                __WEBPACK_IMPORTED_MODULE_9__detail_user_detail_user_component__["a" /* DetailUserComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__update_my_user_update_my_user_component__["a" /* UpdateMyUserComponent */]
             ]
         })
     ], UserManagementModule);

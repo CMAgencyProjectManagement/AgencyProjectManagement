@@ -34,6 +34,7 @@ const serverPath = {
   editTask: '/api/task',
   getPriority: '/api/task/priority',
   getStatus: '/api/task/status',
+  getMyTask: '/api/task/myTask',
   assignTask: '/api/task/assign',
   unassignTask:  `/api/task/unassign`,
   finishTask: taskID => `/api/task/${taskID}/finishTask`,

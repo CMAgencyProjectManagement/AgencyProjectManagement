@@ -64,7 +64,7 @@ var CreateTeamComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/detail-team/detail-team.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n    <div class=\"card-header\">\r\n      <strong>Department's detail</strong>\r\n    </div>\r\n    <div class=\"card-body\" *ngIf=\"foundTeam\">\r\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n        <div class=\"col-12 text-center\" *ngIf=\"foundTeam\" style=\" text-transform: uppercase\">\r\n          <h1>\r\n            {{foundTeam.name}}\r\n          </h1>\r\n        </div>\r\n        <div>\r\n\r\n\r\n\r\n          <table class=\"table table-bordered\">\r\n            <thead>\r\n              <tr>\r\n\r\n                <th>User </th>\r\n                <th>Role</th>\r\n                <th>Status</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody *ngIf=\"foundUser.length !== 0\">\r\n\r\n              <!-- <tr>          \r\n                <td >Larry the Bird</td>\r\n                <td>@twitter</td>\r\n                <td>@twitter</td>\r\n              </tr> -->\r\n\r\n              <tr *ngFor=\"let user of foundUser\">\r\n                <td>\r\n                  <a href=\"#/account/detail?id={{user.id}}\">{{user.username}}</a>\r\n                </td>\r\n                <td>\r\n                  <div *ngIf=\"user.isAdmin\">\r\n                    <strong>Admin </strong>\r\n                  </div>\r\n                  <div *ngIf=\"!user.isAdmin && user.isManager\">\r\n                    <strong>Manager </strong>\r\n                  </div>\r\n                  <div *ngIf=\"!user.isAdmin && !user.isManager\">\r\n                    Staff\r\n                  </div>\r\n\r\n                </td>\r\n                <td>\r\n                  <div *ngIf=\"user.status\">Active</div>\r\n                  <div *ngIf=\"!user.status\">Banned</div>\r\n\r\n                </td>\r\n              </tr>\r\n\r\n\r\n\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n\r\n\r\n\r\n        <!-- Phan cu -->\r\n        <!--\r\n          <div id=\"1\" class=\"row\" *ngIf=\"foundUser.length !== 0\">\r\n            <div class=\"col-3 text-center card\" *ngFor=\"let user of foundUser\">\r\n              <div>\r\n                <strong>\r\n                  <h3>\r\n                    <a href=\"#/account/detail?id={{user.id}}\">{{user.username}}</a>\r\n                  </h3>\r\n                </strong>\r\n\r\n\r\n\r\n                <div class=\"row\" *ngIf=\"user\">\r\n                  <div *ngIf=\"user.isAdmin\" class=\"col-4 text-right\">\r\n                    <strong>Admin </strong>\r\n                  </div>\r\n                  <div *ngIf=\"!user.isAdmin && user.isManager\" class=\"col-4 text-right\">\r\n                    <strong>Manager </strong>\r\n                  </div>\r\n                  <div *ngIf=\"!user.isAdmin && !user.isManager\" class=\"col-4 text-right\">\r\n                    Staff\r\n                  </div>\r\n                </div>\r\n                <div *ngIf=\"user.status\" class=\"badge badge-primary\" style=\"font-size: 20px;\">Active</div>\r\n                <div *ngIf=\"!user.status\" class=\"badge badge-secondary\" style=\"font-size: 20px;\">Banned</div> -->\r\n\r\n        <!-- <a href=\"#/account/detail?id={{foundTeam.manager.id}}\" id=\"viewInfo\">\r\n                    <button type=\"button\" class=\"btn btn-primary\" style=\"color: black;\r\n                    background-color: white;\r\n                    border-color: black;\" id=\"viewprofilebutton\">\r\n                      View profile\r\n                    </button>\r\n                  </a> \r\n        </div>\r\n    </div>-->\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div style=\"align-content: left\">\n  <div class=\"card align-items-left\">\n    <div class=\"card-header\">\n      <strong>Department's detail</strong>\n    </div>\n    <div class=\"card-body\" *ngIf=\"foundTeam\">\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\n        <div class=\"col-12 text-center\" *ngIf=\"foundTeam\" style=\" text-transform: uppercase\">\n          <h1>\n            {{foundTeam.name}}\n          </h1>\n        </div>\n        <div>\n          <table class=\"table table-bordered\">\n            <thead>\n            <tr>\n              <th>User</th>\n              <th>Role</th>\n              <th *ngIf=\"managementMode\">Status</th>\n            </tr>\n            </thead>\n            <tbody *ngIf=\"foundTeam.users.length !== 0\">\n            <tr *ngFor=\"let user of foundTeam.users\">\n              <td>\n                <a href=\"#/account/detail?id={{user.id}}\"\n                   *ngIf=\"managementMode\">\n                  {{user.username}}\n                </a>\n                <span *ngIf=\"!managementMode\">{{user.username}}</span>\n              </td>\n              <td>\n                <div *ngIf=\"user.isAdmin\">\n                  <strong>Admin </strong>\n                </div>\n                <div *ngIf=\"!user.isAdmin && user.isManager\">\n                  <strong>Manager </strong>\n                </div>\n                <div *ngIf=\"!user.isAdmin && !user.isManager\">\n                  Staff\n                </div>\n\n              </td>\n              <td *ngIf=\"managementMode\">\n                <div *ngIf=\"user.isActive\">Active</div>\n                <div *ngIf=\"!user.isActive\">Banned</div>\n              </td>\n            </tr>\n            </tbody>\n          </table>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -94,6 +94,11 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -106,83 +111,68 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
+
+
 var DetailTeamComponent = /** @class */ (function () {
-    function DetailTeamComponent(teamService, userService) {
+    function DetailTeamComponent(teamService, userService, storeService, modalService, router, route, location) {
         this.teamService = teamService;
         this.userService = userService;
-        this.users = [];
-        this.foundUser = [];
-        this.selectedUser = [];
-        this.dropdownSettings = {};
+        this.storeService = storeService;
+        this.modalService = modalService;
+        this.router = router;
+        this.route = route;
+        this.location = location;
+        this.currentUser = this.storeService.get(['currentUser']);
+        this.managementMode = this.currentUser.isManager || this.currentUser.isAdmin;
     }
     DetailTeamComponent.prototype.ngOnInit = function () {
-        this.entity = {};
-        this.teamID = Number(this.GetURLParameter('id'));
-        this.teams = [];
-        this.users = [];
+        var id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            // Specific department
+            if (Number(id)) {
+                this.teamID = Number(id);
+            }
+            else {
+                this.showErrorModal("Invalid department id \"" + id + "\"", true);
+            }
+        }
+        else {
+            // My department
+            this.teamID = this.currentUser.team.id;
+        }
         this.getAllTeam();
-        this.getAllUser();
     };
     DetailTeamComponent.prototype.getAllTeam = function () {
         var _this = this;
-        this.teamService.getAllTeam()
+        this.teamService.getDetail(this.teamID)
             .then(function (value) {
-            _this.teams = value;
-            for (var i = 0; i < _this.teams.length; i++) {
-                if (_this.teams[i].id == _this.teamID) {
-                    _this.foundTeam = _this.teams[i];
-                    _this.selectedUser.push({
-                        id: _this.foundTeam.manager.id,
-                        itemName: _this.foundTeam.manager.username,
-                        itemAvatar: _this.foundTeam.manager.avatar,
-                        item: _this.foundTeam.manager.id,
-                        item1: _this.foundTeam.manager.isActive,
-                    });
-                }
+            _this.foundTeam = value;
+            if (!_this.managementMode) {
+                _this.foundTeam.users = _this.foundTeam.users.filter(function (user) {
+                    return user.isActive;
+                });
             }
-            // for (let i = 0; i < this.teams.length; i++) {
-            //   if (this.teams[i].id == this.teamID) {
-            //     this.foundTeam = this.teams[i];
-            //     this.selectedUser.push({
-            //       id: this.foundTeam.manager.id,
-            //       itemName: this.foundTeam.manager.username,
-            //       itemAvatar: this.foundTeam.manager.avatar,
-            //       item: this.foundTeam.manager.id,
-            //       item1: this.foundTeam.manager.isActive,
-            //       // item2: this.foundTeam.
-            //     });
-            //   }
-            // }
+        })
+            .catch(function (reason) {
+            _this.showErrorModal("An error happened while loading data");
+            console.debug("ERROR: getAllTeam - detail-team", reason);
         });
     };
-    DetailTeamComponent.prototype.getAllUser = function () {
+    DetailTeamComponent.prototype.showErrorModal = function (message, isNavigateBack) {
         var _this = this;
-        this.userService.getAllUser()
-            .then(function (value) {
-            _this.users = value;
-            for (var i = 0; i < _this.users.length; i++) {
-                var userTeam = _this.users[i].team;
-                if (userTeam !== null) {
-                    if (userTeam.id === _this.foundTeam.id) {
-                        _this.foundUser.push({
-                            id: _this.users[i].id,
-                            name: _this.users[i].name,
-                            username: _this.users[i].username,
-                            status: _this.users[i].isActive,
-                            isad: _this.users[i].isAdmin,
-                            ismng: _this.users[i].isManager,
-                        });
-                    }
+        if (isNavigateBack === void 0) { isNavigateBack = false; }
+        var initialState = {
+            closeCallback: function () {
+                if (isNavigateBack) {
+                    _this.location.back();
                 }
-            }
-            console.log(_this.foundUser);
-        });
-    };
-    DetailTeamComponent.prototype.GetURLParameter = function (sParam) {
-        var sPageURL = window.location.href;
-        var sURLVariables = sPageURL.split('?');
-        var sTeam = sURLVariables[1].split('=');
-        return sTeam[1];
+            },
+            message: message
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     DetailTeamComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -191,7 +181,12 @@ var DetailTeamComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/views/team-management/detail-team/detail-team.component.scss")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_team_service__["a" /* TeamService */],
-            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]])
+            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_7__services_tree_service__["a" /* StoreService */],
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__["b" /* BsModalService */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */]])
     ], DetailTeamComponent);
     return DetailTeamComponent;
 }());
@@ -234,28 +229,35 @@ var routes = [
                 path: 'view',
                 component: __WEBPACK_IMPORTED_MODULE_2__team_management_component__["a" /* TeamManagePageComponent */],
                 data: {
-                    title: 'View Department'
+                    title: 'View'
                 }
             },
             {
-                path: 'detail',
+                path: ':id/detail',
                 component: __WEBPACK_IMPORTED_MODULE_5__detail_team_detail_team_component__["a" /* DetailTeamComponent */],
                 data: {
                     title: 'Department Detail'
                 }
             },
             {
-                path: 'create',
-                component: __WEBPACK_IMPORTED_MODULE_3__create_team_create_team_component__["a" /* CreateTeamComponent */],
+                path: 'my',
+                component: __WEBPACK_IMPORTED_MODULE_5__detail_team_detail_team_component__["a" /* DetailTeamComponent */],
                 data: {
-                    title: 'Create Department'
+                    title: 'My department'
                 }
             },
             {
-                path: 'update',
+                path: 'create',
+                component: __WEBPACK_IMPORTED_MODULE_3__create_team_create_team_component__["a" /* CreateTeamComponent */],
+                data: {
+                    title: 'Create'
+                }
+            },
+            {
+                path: ':id/update',
                 component: __WEBPACK_IMPORTED_MODULE_4__update_team_update_team_component__["a" /* UpdateTeamComponent */],
                 data: {
-                    title: 'Update Department'
+                    title: 'Update'
                 }
             }
         ]
@@ -280,7 +282,7 @@ var TeamManagementRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/team-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>All departments</strong>\r\n\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Department Leader</th>\r\n            <th>Created date</th>\r\n            <th>Update</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let team of teams;let i = index\">\r\n              <td>\r\n                <a href=\"#/department/detail?id={{team.id}}\">{{team.name}}</a>\r\n              </td>\r\n              <td>\r\n                <p>{{team.manager.username}}</p>\r\n              </td>\r\n              <td>\r\n                <p>{{team.createdDate}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/department/update?id={{team.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>All departments</strong>\n\n      </div>\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\n          <thead>\n          <tr>\n            <th>Name</th>\n            <th>Department Leader</th>\n            <th>Created date</th>\n            <th>Update</th>\n          </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let team of teams;let i = index\">\n              <td>\n                <a routerLink=\"/department/{{team.id}}/detail\">{{team.name}}</a>\n              </td>\n              <td>\n                <p>{{team.manager.username}}</p>\n              </td>\n              <td>\n                <p>{{team.createdDate}}</p>\n              </td>\n              <td class=\"text-center\">\n                <a routerLink=\"/department/{{team.id}}/update\">\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\n                </a>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -438,6 +440,10 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -451,10 +457,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
+
 var UpdateTeamComponent = /** @class */ (function () {
-    function UpdateTeamComponent(teamService, userService) {
+    function UpdateTeamComponent(teamService, userService, modalService, router, route, location) {
         this.teamService = teamService;
         this.userService = userService;
+        this.modalService = modalService;
+        this.router = router;
+        this.route = route;
+        this.location = location;
         this.loading = {
             page: true,
             assign: false,
@@ -464,23 +478,35 @@ var UpdateTeamComponent = /** @class */ (function () {
     }
     UpdateTeamComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.teamID = Number(this.GetURLParameter('id'));
-        this.teamService.getAllTeam()
-            .then(function (value) {
-            var teams = value;
-            for (var _i = 0, teams_1 = teams; _i < teams_1.length; _i++) {
-                var team = teams_1[_i];
-                if (team.id === _this.teamID) {
-                    _this.foundTeam = team;
-                    _this.updateLoadingState();
+        var id = this.route.snapshot.paramMap.get('id');
+        if (Number(id)) {
+            this.teamID = Number(Number(id));
+            this.teamService.getAllTeam()
+                .then(function (value) {
+                var teams = value;
+                for (var _i = 0, teams_1 = teams; _i < teams_1.length; _i++) {
+                    var team = teams_1[_i];
+                    if (team.id === _this.teamID) {
+                        _this.foundTeam = team;
+                        _this.updateLoadingState();
+                    }
                 }
-            }
-        });
-        this.userService.getAllUser()
-            .then(function (value) {
-            _this.users = value;
-            _this.updateLoadingState();
-        });
+            })
+                .catch(function (reason) {
+                _this.showErrorModal(reason.Data);
+            });
+            this.userService.getAllUser()
+                .then(function (value) {
+                _this.users = value;
+                _this.updateLoadingState();
+            })
+                .catch(function (reason) {
+                _this.showErrorModal(reason.Data);
+            });
+        }
+        else {
+            this.showErrorModal("Invalid team id \"" + id + "\"", true);
+        }
     };
     UpdateTeamComponent.prototype.updateLoadingState = function () {
         var _this = this;
@@ -526,11 +552,18 @@ var UpdateTeamComponent = /** @class */ (function () {
             _this.loading.unAssign = false;
         });
     };
-    UpdateTeamComponent.prototype.GetURLParameter = function (sParam) {
-        var sPageURL = window.location.href;
-        var sURLVariables = sPageURL.split('?');
-        var sTeam = sURLVariables[1].split('=');
-        return sTeam[1];
+    UpdateTeamComponent.prototype.showErrorModal = function (message, isNavigateBack) {
+        var _this = this;
+        if (isNavigateBack === void 0) { isNavigateBack = false; }
+        var initialState = {
+            closeCallback: function () {
+                if (isNavigateBack) {
+                    _this.location.back();
+                }
+            },
+            message: message
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     UpdateTeamComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -539,7 +572,11 @@ var UpdateTeamComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/views/team-management/update-team/update-team.component.scss")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_team_service__["a" /* TeamService */],
-            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]])
+            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap_modal__["b" /* BsModalService */],
+            __WEBPACK_IMPORTED_MODULE_7__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_7__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_common__["f" /* Location */]])
     ], UpdateTeamComponent);
     return UpdateTeamComponent;
 }());

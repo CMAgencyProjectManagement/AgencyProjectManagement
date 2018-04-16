@@ -4,7 +4,7 @@ import {TaskService} from '../../../services/task.service';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BsModalService} from 'ngx-bootstrap';
-import {CommentModalComponent, ErrorModalComponent, SelectUsersModalComponent} from '../../../cmaComponents/modals';
+import {CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent} from '../../../cmaComponents/modals';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {Attachment} from '../../../interfaces/attachment';
@@ -14,6 +14,7 @@ import {User} from '../../../interfaces/user';
 import {CommentService} from '../../../services/comment.service';
 import {Comment} from '../../../interfaces/comment';
 import {forEach} from '@angular/router/src/utils/collection';
+import {StoreService} from '../../../services/tree.service';
 
 @Component({
   selector: 'app-view',
@@ -24,6 +25,7 @@ export class ViewComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput: ElementRef;
   foundTask: Task;
   attachments: Attachment[];
+  managementMode: boolean;
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -47,10 +49,13 @@ export class ViewComponent implements OnInit {
               private uploadService: UploadService,
               private userService: UserService,
               private commentService: CommentService,
+              private storeService: StoreService,
               private router: Router,
               private route: ActivatedRoute,
               private location: Location,
               private modalService: BsModalService) {
+    let currentUser = this.storeService.get(['currentUser']) as User;
+    this.managementMode = currentUser.isManager || currentUser.isAdmin;
     this.isLoading = {
       page: true,
       attachmentUpload: false,
@@ -195,17 +200,25 @@ export class ViewComponent implements OnInit {
     this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
   }
 
-  handleOnDoneBtnClick() {
-    this.isLoading.done = true;
-    this.taskService.finishTask(this.foundTask.id)
-      .then(value => {
-        this.foundTask = value;
-        this.isLoading.done = false;
-      })
-      .catch(reason => {
-        this.showErrorModal('Finish task fail');
-        this.isLoading.done = false;
-      })
+  handleOnNeedReviewBtnClick() {
+    const onConfirm = () => {
+      this.isLoading.done = true;
+      this.taskService.finishTask(this.foundTask.id)
+        .then(value => {
+          this.foundTask = value;
+          this.isLoading.done = false;
+        })
+        .catch(reason => {
+          this.showErrorModal('Finish task fail');
+          this.isLoading.done = false;
+        })
+    };
+
+    const initialState = {
+      message: `Are you sure you want to finish this task!`,
+      confirmCallback: onConfirm
+    };
+    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   handleUploadAttachmentClick() {
@@ -230,19 +243,26 @@ export class ViewComponent implements OnInit {
   }
 
   handleDeleteAttachmentClick(attachmentId) {
-    this.isLoading.attachmentRemove[attachmentId] = true;
-    this.uploadService.deleteAttachment(attachmentId)
-      .then(value => {
-        let removedItemId = value.id as number;
-        this.attachments = _.filter(this.attachments, item => {
-          return item.ID !== removedItemId;
-        });
-        this.isLoading.attachmentRemove[attachmentId] = false;
-      })
-      .catch(reason => {
-        this.isLoading.attachmentRemove[attachmentId] = false;
-        this.showErrorModal(reason.Data);
-      })
+    const onConfirm = () => {
+      this.isLoading.attachmentRemove[attachmentId] = true;
+      this.uploadService.deleteAttachment(attachmentId)
+        .then(value => {
+          let removedItemId = value.id as number;
+          this.attachments = _.filter(this.attachments, item => {
+            return item.ID !== removedItemId;
+          });
+          this.isLoading.attachmentRemove[attachmentId] = false;
+        })
+        .catch(reason => {
+          this.isLoading.attachmentRemove[attachmentId] = false;
+          this.showErrorModal(reason.Data);
+        })
+    };
+    const initialState = {
+      message: `Are you sure you want to delete attachment !`,
+      confirmCallback: onConfirm
+    };
+    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   handleEditComment(comment) {

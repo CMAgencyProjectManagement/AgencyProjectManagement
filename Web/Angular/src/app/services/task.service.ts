@@ -205,4 +205,20 @@ export class TaskService {
         .catch(reason => reject(reason.response.body));
     });
   }
+
+  getMyTask() {
+    return new Promise<Task[]>((resolve, reject) => {
+      request.get(serverPath.getMyTask)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
 }

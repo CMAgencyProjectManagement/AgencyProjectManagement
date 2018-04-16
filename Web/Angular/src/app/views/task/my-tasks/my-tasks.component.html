@@ -1,3 +1,12 @@
-<p>
-  my-tasks works!
-</p>
+<app-task-table [tasks]="tasks"></app-task-table>
+<div class="row">
+  <div class="card col-12">
+    <div class="card-header">
+
+    </div>
+    <app-spinner *ngIf="isLoading.page"></app-spinner>
+    <div *ngIf="!isLoading.page" class="card-body">
+
+    </div>
+  </div>
+</div>

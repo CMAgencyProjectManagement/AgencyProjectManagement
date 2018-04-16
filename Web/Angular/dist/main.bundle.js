@@ -56,15 +56,81 @@ module.exports = webpackAsyncContext;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return admin_navigation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return manager_navigation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return staff_navigation; });
+/**
+ *  home page (user)
+ *  my department
+ *  my projects
+ *  my tasks (assigned)
+ *  my account (profile)
+ *  update profile
+ */
 var staff_navigation = [
+    {
+        name: 'Dashboard',
+        url: '/dashboard',
+        icon: 'icon-speedometer'
+    },
+    {
+        name: 'Department',
+        url: '/department/my',
+        icon: 'icon-people'
+    },
+    {
+        name: 'Project',
+        url: '/dashboard',
+        icon: 'icon-calendar'
+    },
+    {
+        name: 'Task',
+        url: '/task/mytasks',
+        icon: 'icon-briefcase'
+    },
+    {
+        name: 'Profile',
+        url: '/account/view',
+        icon: 'icon-user',
+        children: [
+            {
+                name: 'View account',
+                url: '/account/view',
+                icon: 'icon-user',
+            },
+            {
+                name: 'Create account',
+                url: '/account/create',
+                icon: 'icon-user',
+            },
+        ]
+    }
+];
+/**
+ * home page (manager)
+ * my department
+ * my department's active projects
+ * my account (profile)
+ * update profile
+ */
+var manager_navigation = [
     {
         name: 'Dashboard',
         url: '/dashboard',
         icon: 'icon-speedometer'
     }
 ];
-var manager_navigation = [];
+/**
+ * home page (admin)
+ * view account
+ * create account
+ * view department
+ * view project
+ * create project
+ */
 var admin_navigation = [
+    {
+        name: 'Dashboard',
+        url: '/dashboard',
+        icon: 'icon-speedometer'
+    },
     {
         name: 'Project',
         url: '/project',
@@ -87,24 +153,6 @@ var admin_navigation = [
         url: '/department/view',
         icon: 'icon-people',
     },
-    /*
-    {
-      name: 'Team-create',
-      url: '/team/create',
-      icon: 'icon-people',
-      badge: {
-        variant: 'info'
-      }
-    },
-    {
-      name: 'Team-update',
-      url: '/team/update',
-      icon: 'icon-people',
-      badge: {
-        variant: 'info'
-      }
-    },
-    */
     {
         name: 'Account',
         url: '/account/view',
@@ -141,7 +189,8 @@ var serverPath = {
     createUser: '/api/user',
     updateUser: '/api/user/update',
     leaderBoard: '/api/user/leaderboard',
-    getUserOfProject: function (projectId) { return "/api/user//project/" + projectId; },
+    getUserOfProject: function (projectId) { return "/api/user/project/" + projectId; },
+    getUserOfTeam: function (teamId) { return "/api/user/team/" + teamId; },
     resetPassword: function (userId) { return "/api/user/" + userId + "/resetpassword"; },
     // Project
     allProject: '/api/project/all',
@@ -161,19 +210,24 @@ var serverPath = {
     assignTeam: '/api/team/assign',
     unAssignTeam: '/api/team/unassign',
     setTeamRole: '/api/team/assign/role',
+    getTeamDetail: function (teamId) { return "/api/team/" + teamId; },
     // Task
     getTask: function (taskId) { return "/api/task/" + taskId; },
     createTask: '/api/task',
     editTask: '/api/task',
     getPriority: '/api/task/priority',
     getStatus: '/api/task/status',
+    getMyTask: '/api/task/myTask',
     assignTask: '/api/task/assign',
     unassignTask: "/api/task/unassign",
     finishTask: function (taskID) { return "/api/task/" + taskID + "/finishTask"; },
+    // Comment
+    createComment: '/api/comment/create',
+    updateComment: 'api/comment/update',
     // File
     uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; },
-    uploadAttachment: function (taskID) { return "api/file/task/" + taskID + "/attachment"; },
-    deleteAttachment: function (attachmentId) { return "api/file/attachment/" + attachmentId + "/delete"; }
+    uploadAttachment: function (taskID) { return "/api/file/task/" + taskID + "/attachment"; },
+    deleteAttachment: function (attachmentId) { return "/api/file/attachment/" + attachmentId + "/delete"; }
 };
 
 
@@ -293,9 +347,9 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_pager_service__ = __webpack_require__("../../../../../src/app/services/pager.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__services_upload_service__ = __webpack_require__("../../../../../src/app/services/upload.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_app_services_list_service__ = __webpack_require__("../../../../../src/app/services/list.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_upload_service__ = __webpack_require__("../../../../../src/app/services/upload.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_app_services_list_service__ = __webpack_require__("../../../../../src/app/services/list.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_comment_service__ = __webpack_require__("../../../../../src/app/services/comment.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
@@ -369,20 +423,21 @@ var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_15__services_team_service__["a" /* TeamService */],
     __WEBPACK_IMPORTED_MODULE_16__services_task_service__["a" /* TaskService */],
     __WEBPACK_IMPORTED_MODULE_17__services_dependency_service__["a" /* DependencyService */],
-    __WEBPACK_IMPORTED_MODULE_18__services_pager_service__["a" /* PagerService */],
-    __WEBPACK_IMPORTED_MODULE_19__services_upload_service__["a" /* UploadService */],
-    __WEBPACK_IMPORTED_MODULE_20_app_services_list_service__["a" /* ListService */]
+    __WEBPACK_IMPORTED_MODULE_18__services_upload_service__["a" /* UploadService */],
+    __WEBPACK_IMPORTED_MODULE_19_app_services_list_service__["a" /* ListService */],
+    __WEBPACK_IMPORTED_MODULE_20__services_comment_service__["a" /* CommentService */]
 ];
 // Import modal
 
 var MODALS = [
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* SuccessModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["c" /* ErrorModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["b" /* CreateListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* ConfirmModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* RemoveListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["e" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["f" /* SelectUsersModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["h" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* ErrorModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["c" /* CreateListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["b" /* ConfirmModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["e" /* RemoveListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["f" /* RenameListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* CommentModalComponent */]
 ];
 // Import 3rd party components
 
@@ -476,10 +531,6 @@ var routes = [
                 loadChildren: './views/user-management/user-management.module#UserManagementModule'
             },
             {
-                path: 'account-detail',
-                loadChildren: './views/user-management/user-management.module#UserManagementModule'
-            },
-            {
                 path: 'department',
                 loadChildren: './views/team-management/team-management.module#TeamManagementModule'
             },
@@ -526,7 +577,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-12 text-center margin-down\">\n  <h1>{{title }}</h1>\n</div>\n<div class=\"col-12\">\n  <table class=\"table\">\n    <thead>\n    <tr>\n      <th class=\"text-center\">\n        <h5>{{leftTableName}}</h5>\n      </th>\n      <th></th>\n      <th class=\"text-center\">\n        <h5>{{rightTableName}}</h5>\n      </th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n      <td colspan=\"3\">\n        <div class=\"row\" style=\"margin-top: 1em\">\n          <div class=\"col-5\">\n            <app-mini-users-table\n              [users]=\"leftUser\"\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\n              [showRole]=\"false\"></app-mini-users-table>\n          </div>\n          <div class=\"col-1 center-section\">\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"unAssign()\"\n                    [ladda]=\"unAssignLoading\">\n              <i class=\"fa fa-angle-double-left\"></i>\n            </button>\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"assign()\"\n                    [ladda]=\"assignLoading\">\n              <i class=\"fa fa-angle-double-right\"></i>\n            </button>\n          </div>\n          <div class=\"col-6\">\n            <app-mini-users-table\n              [users]=\"rightUser\"\n              [showRole]=\"true\"\n              [changeRoleable]=\"false\"\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\n              (onRoleChange)=\"setRole($event)\">\n            </app-mini-users-table>\n          </div>\n        </div>\n      </td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div class=\"col-12 text-center margin-down\">\r\n  <h1>{{title }}</h1>\r\n</div>\r\n<div class=\"col-12\">\r\n  <table class=\"table\">\r\n    <thead>\r\n    <tr>\r\n      <th class=\"text-center\">\r\n        <h5>{{leftTableName}}</h5>\r\n      </th>\r\n      <th></th>\r\n      <th class=\"text-center\">\r\n        <h5>{{rightTableName}}</h5>\r\n      </th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr>\r\n      <td colspan=\"3\">\r\n        <div class=\"row\" style=\"margin-top: 1em\">\r\n          <div class=\"col-5\">\r\n            <app-mini-users-table\r\n              [users]=\"leftUser\"\r\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\r\n              [showRole]=\"false\"></app-mini-users-table>\r\n          </div>\r\n          <div class=\"col-1 center-section\">\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"unAssign()\"\r\n                    [ladda]=\"unAssignLoading\">\r\n              <i class=\"fa fa-angle-double-left\"></i>\r\n            </button>\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"assign()\"\r\n                    [ladda]=\"assignLoading\">\r\n              <i class=\"fa fa-angle-double-right\"></i>\r\n            </button>\r\n          </div>\r\n          <div class=\"col-6\">\r\n            <app-mini-users-table\r\n              [users]=\"rightUser\"\r\n              [showRole]=\"true\"\r\n              [changeRoleable]=\"false\"\r\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\r\n              (onRoleChange)=\"setRole($event)\">\r\n            </app-mini-users-table>\r\n          </div>\r\n        </div>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -661,12 +712,16 @@ var AssignMembersCardComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__modals_comment_modal_comment_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__task_table_task_table_component__ = __webpack_require__("../../../../../src/app/cmaComponents/task-table/task-table.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -694,38 +749,43 @@ var CmaModule = /** @class */ (function () {
                     style: 'slide-down'
                 }),
                 __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap__["c" /* CollapseModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */],
                 __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_9_ngx_bootstrap__["e" /* TypeaheadModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */],
+                __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */]
             ],
             exports: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["a" /* ConfirmModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* ConfirmModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__user_list_user_list_component__["a" /* UserListComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* ErrorModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* CreateListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* RemoveListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["g" /* SuccessModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["e" /* RenameListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["f" /* SelectUsersModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* ErrorModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* CreateListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["e" /* RemoveListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["h" /* SuccessModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["f" /* RenameListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["g" /* SelectUsersModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__modals_comment_modal_comment_modal_component__["a" /* CommentModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__task_table_task_table_component__["a" /* TaskTableComponent */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["a" /* ConfirmModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* ConfirmModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__user_list_user_list_component__["a" /* UserListComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* ErrorModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["b" /* CreateListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["g" /* SuccessModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* RemoveListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["e" /* RenameListModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__modals__["f" /* SelectUsersModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_13__modals__["d" /* ErrorModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["c" /* CreateListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["h" /* SuccessModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["e" /* RemoveListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["f" /* RenameListModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__modals__["g" /* SelectUsersModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__modals_comment_modal_comment_modal_component__["a" /* CommentModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__task_table_task_table_component__["a" /* TaskTableComponent */]
             ]
         })
     ], CmaModule);
@@ -739,7 +799,7 @@ var CmaModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/comment/comment.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\r\n  <div class=\"col-1 left-section text-center\">\r\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\r\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\r\n  </div>\r\n  <div class=\"col-11 right-section\">\r\n    <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\r\n    <a href=\"#/account/detail?id={{comment.createdBy.id}}\">\r\n      {{comment.createdBy.name}}\r\n    </a>\r\n    <div class=\"mt-3\" *ngIf=\"!isCollapsed\">\r\n      <p>{{comment.body}}</p>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\r\n  <div class=\"col-1 left-section text-center\">\r\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\r\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\r\n  </div>\r\n  <div class=\"col-11 right-section\">\r\n    <div class=\"row\">\r\n      <div class=\"col-11\">\r\n        <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\r\n        <a href=\"#/account/detail?id={{comment.createdBy.id}}\">\r\n          {{comment.createdBy.name}}\r\n        </a>\r\n      </div>\r\n      <div class=\"col-1 btn-edit\" (click)=\"handleEditBtnClick($event)\">\r\n        <i class=\"fa fa-pencil-square-o\"></i>\r\n      </div>\r\n      <div class=\"col-12 mt-3\" *ngIf=\"!isCollapsed\">\r\n        <p>{{comment.body}}</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -751,7 +811,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#comment:hover {\n  background-color: #F4F5F7;\n  cursor: pointer; }\n\n#comment .left-section {\n  padding-left: 0;\n  padding-right: 0; }\n\n#comment .right-section {\n  border-left: 1px solid #c2cfd6; }\n\n#comment i {\n  width: 10px;\n  height: 15px; }\n", ""]);
+exports.push([module.i, "#comment:hover {\n  background-color: #F4F5F7;\n  cursor: pointer; }\n  #comment:hover .btn-edit {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center; }\n  #comment:hover .btn-edit:hover {\n      background-color: rgba(220, 221, 223, 0.6); }\n  #comment .left-section {\n  padding-left: 0;\n  padding-right: 0; }\n  #comment .right-section {\n  border-left: 1px solid #c2cfd6; }\n  #comment i {\n  width: 10px;\n  height: 15px; }\n  #comment .btn-edit {\n  display: none; }\n", ""]);
 
 // exports
 
@@ -781,6 +841,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var CommentComponent = /** @class */ (function () {
     function CommentComponent() {
+        this.onEdit = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.status = { isopen: false };
         this.isCollapsed = true;
     }
     CommentComponent.prototype.ngOnInit = function () {
@@ -788,10 +850,18 @@ var CommentComponent = /** @class */ (function () {
     CommentComponent.prototype.containerClick = function () {
         this.isCollapsed = !this.isCollapsed;
     };
+    CommentComponent.prototype.handleEditBtnClick = function ($event) {
+        $event.stopPropagation();
+        this.onEdit.emit(this.comment);
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1__interfaces_comment__["a" /* Comment */])
     ], CommentComponent.prototype, "comment", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], CommentComponent.prototype, "onEdit", void 0);
     CommentComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-comment',
@@ -937,7 +1007,103 @@ var MiniUsersTableComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\n  <thead>\n  <tr>\n    <th>ID</th>\n    <th>Avatar</th>\n    <th>Name</th>\n    <th>Birthdate</th>\n    <th *ngIf=\"showRole\">Manager</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let user of users\">\n    <td>{{user.id}}</td>\n    <td class=text-center>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\n    </td>\n    <td>\n      <span *ngIf=\"user.name\">{{user.name}}</span>\n      <span *ngIf=\"!user.name\">N/A</span>\n    </td>\n    <td>\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\n      <span *ngIf=\"!user.birthdate\">N/A</span>\n    </td>\n    <td *ngIf=\"showRole\">\n      <label class=\"switch switch-icon switch-info switch-sm\"\n             (click)=\"roleSwitch(user.id,user.isManager)\">\n        <input class=\"switch-input\"\n               [checked]=\"user.isManager\"\n               [disabled]=\"!changeRoleable\"\n               type=\"checkbox\">\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\r\n  <thead>\r\n  <tr>\r\n    <th>ID</th>\r\n    <th>Avatar</th>\r\n    <th>Name</th>\r\n    <th>Birthdate</th>\r\n    <th *ngIf=\"showRole\">Manager</th>\r\n  </tr>\r\n  </thead>\r\n  <tbody>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.id}}</td>\r\n    <td class=text-center>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\r\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.name\">{{user.name}}</span>\r\n      <span *ngIf=\"!user.name\">N/A</span>\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\r\n      <span *ngIf=\"!user.birthdate\">N/A</span>\r\n    </td>\r\n    <td *ngIf=\"showRole\">\r\n      <label class=\"switch switch-icon switch-info switch-sm\"\r\n             (click)=\"roleSwitch(user.id,user.isManager)\">\r\n        <input class=\"switch-input\"\r\n               [checked]=\"user.isManager\"\r\n               [disabled]=\"!changeRoleable\"\r\n               type=\"checkbox\">\r\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\r\n        <span class=\"switch-handle\"></span>\r\n      </label>\r\n    </td>\r\n  </tr>\r\n  </tbody>\r\n</table>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">{{title}}</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\">\r\n  <div class=\"form-group row\">\r\n    <div class=\"col-12\">\r\n      <!--COMMENT TEXT AREA-->\r\n      <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\"\r\n                [(ngModel)]=\"commentBoxModel\"\r\n                placeholder=\"Content..\"></textarea>\r\n    </div>\r\n  </div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button class=\"btn btn-success\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n  <button class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommentModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CommentModalComponent = /** @class */ (function () {
+    function CommentModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    CommentModalComponent.prototype.ngOnInit = function () {
+        if (this.comment) {
+            this.title = 'Edit comment';
+            this.confirmButtonText = 'Save change';
+            this.commentBoxModel = this.comment.body;
+        }
+        else {
+            this.title = 'Add comment';
+            this.confirmButtonText = 'Add';
+        }
+    };
+    CommentModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            var comment = __WEBPACK_IMPORTED_MODULE_2_lodash__["clone"](this.comment);
+            comment.body = this.commentBoxModel;
+            this.confirmCallback(comment);
+        }
+        this.bsModalRef.hide();
+    };
+    CommentModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    CommentModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    CommentModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-comment-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], CommentModalComponent);
+    return CommentModalComponent;
+}());
+
+
 
 /***/ }),
 
@@ -1112,7 +1278,7 @@ var CreateListModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Error</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\">\r\n  <p>{{message}}</p>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnClose()\">Close</button>\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">Error</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <p>{{message}}</p>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnClose()\">Close</button>\n</div>\n\n"
 
 /***/ }),
 
@@ -1184,19 +1350,22 @@ var ErrorModalComponent = /** @class */ (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__confirm_modal_confirm_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/confirm-modal/confirm-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__confirm_modal_confirm_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__confirm_modal_confirm_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__create_list_modal_create_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/create-list-modal/create-list-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__create_list_modal_create_list_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__create_list_modal_create_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/success-modal/success-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__comment_modal_comment_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_7__comment_modal_comment_modal_component__["a"]; });
+
 
 
 
@@ -1383,7 +1552,7 @@ var RenameListModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select users</h4>\n  <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n\n<div class=\"modal-body\" id=\"listname\">\n  <div class=\"col-12\" *ngIf=\"message\">\n    {{message}}\n  </div>\n  <div class=\"col-12\">\n    <div class=\"form-group row\">\n      <div class=\"col-md-9\">\n        <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\n          <option value=\"{{undefined}}\">Please select members</option>\n          <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\n        </select>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-12\">\n    <h3>Selected</h3>\n    <app-user-list [users]=\"selectedUsers\"></app-user-list>\n  </div>\n\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Assign</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select users</h4>\n  <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n\n<div class=\"modal-body\" id=\"listname\">\n  <div class=\"col-12\" *ngIf=\"message\">\n    {{message}}\n  </div>\n  <div class=\"col-12\">\n    <div class=\"form-group row\">\n      <div class=\"col-md-9\">\n        <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\n          <option value=\"{{undefined}}\">Please select members</option>\n          <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\n        </select>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-12\" *ngIf=\"selectedUsers.length > 0\">\n    <h3>Selected</h3>\n    <app-user-list [users]=\"selectedUsers\"></app-user-list>\n  </div>\n\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
 
 /***/ }),
 
@@ -1429,6 +1598,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var SelectUsersModalComponent = /** @class */ (function () {
     function SelectUsersModalComponent(bsModalRef) {
         this.bsModalRef = bsModalRef;
+        if (!this.confirmButtonText) {
+            this.confirmButtonText = 'Confirm';
+        }
     }
     SelectUsersModalComponent.prototype.ngOnInit = function () {
         this.selectedUsers = [];
@@ -1477,7 +1649,7 @@ var SelectUsersModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/success-modal/success-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  success-modal works!\r\n</p>\r\n"
+module.exports = "<p>\n  success-modal works!\n</p>\n"
 
 /***/ }),
 
@@ -1608,7 +1780,7 @@ var ProjectCardComponent = /** @class */ (function () {
                 });
             }
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_2__modals__["b" /* CreateListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_2__modals__["c" /* CreateListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ProjectCardComponent.prototype.handleOnRenameListClick = function (listid, defaultlistname) {
         var _this = this;
@@ -1620,7 +1792,7 @@ var ProjectCardComponent = /** @class */ (function () {
             },
             defaultlistname: defaultlistname
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["e" /* RenameListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["f" /* RenameListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ProjectCardComponent.prototype.handleOnRemoveListClick = function (listid) {
         var _this = this;
@@ -1631,7 +1803,7 @@ var ProjectCardComponent = /** @class */ (function () {
                 });
             }
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["d" /* RemoveListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["e" /* RemoveListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ProjectCardComponent.prototype.search = function (searchStr) {
         this.foundTasks = [];
@@ -1694,10 +1866,81 @@ var ProjectCardComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cmaComponents/task-table/task-table.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\n  <thead>\n  <tr>\n    <th>Name</th>\n    <th>Status</th>\n    <th>priority</th>\n    <th>Deadline</th>\n    <th>Project</th>\n    <th>List</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let task of tasks;let i = index\">\n    <td>\n      <a routerLink=\"/task/view/{{team.id}}\">{{task.name}}</a>\n    </td>\n    <td>\n      <span>{{task.statusText}}</span>\n    </td>\n    <td>\n      <span>{{task.priorityText}}</span>\n    </td>\n    <td>\n      <span>{{task.deadline}}</span>\n    </td>\n    <td>\n      <span>{{task.project.name}}</span>\n    </td>\n    <td>\n      <span>{{task.list.name}}</span>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/task-table/task-table.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/task-table/task-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TaskTableComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TaskTableComponent = /** @class */ (function () {
+    function TaskTableComponent() {
+        this.datatableOptions = {
+            searching: false,
+            lengthChange: false,
+            paging: false,
+            ordering: false
+        };
+    }
+    TaskTableComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Array)
+    ], TaskTableComponent.prototype, "tasks", void 0);
+    TaskTableComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-task-table',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/task-table/task-table.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/task-table/task-table.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], TaskTableComponent);
+    return TaskTableComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"icons-list\">\r\n  <li *ngFor=\"let user of users\">\r\n    <i>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\r\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\r\n    </i>\r\n    <div class=\"desc\">\r\n      <div class=\"title\">\r\n        <a href=\"#/account/detail?id={{user.id}}\">\r\n          {{user.name}}\r\n        </a>\r\n      </div>\r\n      <small>{{user.email}}</small>\r\n    </div>\r\n    <div class=\"value\">\r\n      <small>{{user.phone}}</small>\r\n    </div>\r\n    <div class=\"actions\">\r\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\r\n    </div>\r\n  </li>\r\n</ul>\r\n"
+module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/detail?id={{user.id}}\">\n          {{user.name}}\n        </a>\n      </div>\n      <small>{{user.email}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
 
 /***/ }),
 
@@ -1941,7 +2184,7 @@ var AppFooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\n    <form class=\"form-inline my-lg-0 my-lg-5\">\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\n    </form>\n  </a> -->\n  <ul class=\"nav navbar-nav ml-auto\">\n    <li class=\"nav-item dropdown\" dropdown>\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\n        <span class=\"d-md-down-none\">{{user.name}}</span>\n\n      </a>\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Account</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-file\"></i> Projects</a>\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Settings</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-user\"></i> Profile</a>\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\n          <i class=\"fa fa-lock\"></i> Logout</a>\n      </div>\n    </li>\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  </ul>\n</header>\n"
+module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\r\n    <form class=\"form-inline my-lg-0 my-lg-5\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\r\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\r\n    </form>\r\n  </a> -->\r\n  <ul class=\"nav navbar-nav ml-auto\">\r\n    <li class=\"nav-item dropdown\" dropdown>\r\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\r\n        <span class=\"d-md-down-none\">{{user.name}}</span>\r\n\r\n      </a>\r\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Account</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Settings</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-user\"></i> Profile</a>\r\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\r\n          <i class=\"fa fa-lock\"></i> Logout</a>\r\n      </div>\r\n    </li>\r\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n      <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n  </ul>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -3087,6 +3330,88 @@ var AlwaysAuthGuard = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/comment.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CommentService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_superagent__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var CommentService = /** @class */ (function () {
+    function CommentService(storeService) {
+        this.storeService = storeService;
+        this.tokenCursor = storeService.select(['token', 'access_token']);
+    }
+    CommentService.prototype.createComment = function (commentBody, taskId) {
+        var _this = this;
+        var dataObject = {
+            Body: commentBody,
+            TaskID: taskId
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["post"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createComment)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObject)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    CommentService.prototype.updateComment = function (commentId, newBody) {
+        var _this = this;
+        var dataObj = {
+            id: commentId,
+            Body: newBody
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateComment)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObj)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    CommentService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__tree_service__["a" /* StoreService */]])
+    ], CommentService);
+    return CommentService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/dependency.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3256,10 +3581,10 @@ var NavService = /** @class */ (function () {
     NavService.prototype.getMenu = function (isAdmin, isManager) {
         var menu = __WEBPACK_IMPORTED_MODULE_2__nav__["c" /* staff_navigation */];
         if (isManager) {
-            menu = menu.concat(__WEBPACK_IMPORTED_MODULE_2__nav__["b" /* manager_navigation */]);
+            menu = __WEBPACK_IMPORTED_MODULE_2__nav__["b" /* manager_navigation */];
         }
         if (isAdmin) {
-            menu = menu.concat(__WEBPACK_IMPORTED_MODULE_2__nav__["a" /* admin_navigation */]);
+            menu = __WEBPACK_IMPORTED_MODULE_2__nav__["a" /* admin_navigation */];
         }
         return menu;
     };
@@ -3268,69 +3593,6 @@ var NavService = /** @class */ (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__tree_service__["a" /* StoreService */]])
     ], NavService);
     return NavService;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/services/pager.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PagerService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-
-// http://jasonwatmore.com/post/2016/08/23/angular-2-pagination-example-with-logic-like-google
-var PagerService = /** @class */ (function () {
-    function PagerService() {
-    }
-    PagerService.prototype.getPager = function (totalItems, currentPage, pageSize) {
-        if (currentPage === void 0) { currentPage = 1; }
-        if (pageSize === void 0) { pageSize = 10; }
-        // calculate total pages
-        var totalPages = Math.ceil(totalItems / pageSize);
-        var startPage, endPage;
-        if (totalPages <= 10) {
-            // less than 10 total pages so show all
-            startPage = 1;
-            endPage = totalPages;
-        }
-        else {
-            // more than 10 total pages so calculate start and end pages
-            if (currentPage <= 6) {
-                startPage = 1;
-                endPage = 10;
-            }
-            else if (currentPage + 4 >= totalPages) {
-                startPage = totalPages - 9;
-                endPage = totalPages;
-            }
-            else {
-                startPage = currentPage - 5;
-                endPage = currentPage + 4;
-            }
-        }
-        // calculate start and end item indexes
-        var startIndex = (currentPage - 1) * pageSize;
-        var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-        // create an array of pages to ng-repeat in the pager control
-        var pages = __WEBPACK_IMPORTED_MODULE_0_lodash__["range"](startPage, endPage + 1);
-        // return object with all pager properties required by the view
-        return {
-            totalItems: totalItems,
-            currentPage: currentPage,
-            pageSize: pageSize,
-            totalPages: totalPages,
-            startPage: startPage,
-            endPage: endPage,
-            startIndex: startIndex,
-            endIndex: endIndex,
-            pages: pages
-        };
-    };
-    return PagerService;
 }());
 
 
@@ -3743,6 +4005,23 @@ var TaskService = /** @class */ (function () {
                 .catch(function (reason) { return reject(reason.response.body); });
         });
     };
+    TaskService.prototype.getMyTask = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["get"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].getMyTask)
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
     TaskService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__tree_service__["a" /* StoreService */]])
@@ -3806,6 +4085,22 @@ var TeamService = /** @class */ (function () {
                     }
                 });
             }
+        });
+    };
+    TeamService.prototype.getDetail = function (teamId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getTeamDetail(teamId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
         });
     };
     TeamService.prototype.assignTeam = function (userIdArray, teamId) {
