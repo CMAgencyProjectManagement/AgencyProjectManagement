@@ -51,7 +51,7 @@ namespace Web.Controllers
                     string userIdString = User.Identity.GetUserId();
                     User user = userService.GetUser(userIdString);
                     string avatarPath = AgencyConfig.AvatarPath;
-                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath)));
+                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath, includeTeam: true)));
                 }
             }
             catch (Exception ex)

@@ -290,24 +290,32 @@ namespace Service
 
             if (isDetailed)
             {
+                TeamService teamservice = new TeamService(db);
                 IEnumerable<List> lists = listService.GetListOfProject(project.ID);
                 JArray listJArray = new JArray();
                 foreach (List list in lists)
                 {
                     listJArray.Add(listService.ParseToJson(list));
                 }
-
                 result["lists"] = listJArray;
 
                 var users = userService.GetUsersOfProject(
-                    project.ID);
+                    project.ID
+                );
+                
                 var jArray = new JArray();
                 foreach (User user in users)
                 {
                     jArray.Add(userService.ParseToJson(user, avatarPath));
                 }
-
                 result["assignees"] = jArray;
+
+                JArray teamsJson = new JArray();
+                foreach (TeamProject teamProject in project.TeamProjects)
+                {
+                    teamsJson.Add(teamservice.ParseToJson(teamProject.Team,false,avatarPath: avatarPath));
+                }
+                result["teams"] = teamsJson;
             }
 
             return result;
