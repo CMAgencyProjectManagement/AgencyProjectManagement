@@ -466,6 +466,25 @@ namespace Service
                    finishedTime.Month == currentSystemTime.Month;
         }
 
+
+        public bool IsTaskDeadlineInThisWeek(Task task)
+        {
+            DateTime date = DateTime.Now.Date;
+            DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
+            DateTime weekLastDay = weekFirstDay.AddDays(6);
+            if (task.StartDate != null)
+            {
+                DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
+            
+                if (deadline.Date >= weekFirstDay.Date && deadline.Date <= weekLastDay.Date)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
         public double GetTaskRemainingTime(Task task)
         {
             if (!task.FinishedDate.HasValue || !task.StartDate.HasValue)
