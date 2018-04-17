@@ -259,6 +259,60 @@ namespace Service
             return result;
         }
 
+        public JObject ParseToJsonReportAPI(Project project, bool isIncludeTask = false)
+        {
+            var usersInProject = db.UserProjects.Where(x => x.ProjectID == project.ID).Select(x => x.User);
+            var userIdsInProject = usersInProject.Select(x => x.ID);
+            List<User> noTaskUser = new List<User>();
+            foreach (var userId in userIdsInProject)
+            {
+                var users = db.UserTasks.Where(x => x.UserID == userId && x.IsAssigned == false).Select(x => x.User).ToList();
+                noTaskUser.AddRange(users);
+            }
+            
+
+
+            var result = new JObject
+            {
+
+                ["id"] = project.ID,
+                ["name"] = project.Name,
+                ["userNumberInProject"] = usersInProject.Count(),
+                ["userNumberNotInTask"] = noTaskUser.Count()
+            };
+            if (isIncludeTask)
+            {
+                TaskService taskService = new TaskService(db);
+                List<Task> tasks = new List<Task>();
+                var listIdsWithProjectID = db.Lists.Where(x => x.ProjectID == project.ID).Select(x => x.ID).ToList();
+                foreach (var listId in listIdsWithProjectID)
+                {
+                    var tasksInList = db.Tasks.Where(x => x.ListID == listId);
+                    foreach (var taskInList in tasksInList)
+                    {
+                        tasks.Add(taskInList);
+                    }
+                }
+                List<Task> TasksFinishedThisWeek = new List<Task>();
+                foreach (var task in tasks)
+                {
+                    if (taskService.IsTaskDeadlineInThisWeek(task))
+                    {
+                        TasksFinishedThisWeek.Add(task);
+                    }
+                }
+                
+                var tasksJArray = new JArray();
+                foreach (var task in TasksFinishedThisWeek)
+                {
+                   tasksJArray.Add(taskService.ParseToJson(task));
+                }
+                
+                result["task"]  = tasksJArray;
+            }
+
+            return result;
+        }
 
         public JObject ParseToJson(Project project, bool isDetailed = false, string avatarPath = null)
         {
