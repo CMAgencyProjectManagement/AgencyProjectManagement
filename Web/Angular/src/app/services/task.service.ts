@@ -116,7 +116,7 @@ export class TaskService {
       Effort: effort
     };
     return new Promise<any>((resolve, reject) => {
-      request.put(serverPath.createTask)
+      request.put(serverPath.editTask)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .type('form')

@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {TaskService} from '../../../services/task.service';
-import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import {ErrorModalComponent, SuccessModalComponent} from '../../../cmaComponents/modals';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {Task} from '../../../interfaces/task';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -190,11 +190,24 @@ export class EditComponent implements OnInit {
       values.effort
     ).then(value => {
       this.foundTask = value as Task;
+      this.showSuccessModal('Update task successfully');
       this.isLoading.update = false;
     }).catch(reason => {
       this.setErrors(reason.Data);
       this.isLoading.update = false;
     })
+  }
+
+  showSuccessModal(message: string, isNavigateBack: boolean = false) {
+    const initialState = {
+      closeCallback: () => {
+        if (isNavigateBack) {
+          this.location.back();
+        }
+      },
+      message: message
+    };
+    this.modalService.show(SuccessModalComponent, {initialState, class: 'modal-dialog modal-success'});
   }
 
   showErrorModal(message: string, isNavigateBack: boolean = false) {
