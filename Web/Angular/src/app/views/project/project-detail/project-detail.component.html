@@ -7,11 +7,11 @@
         </div>
         <app-spinner *ngIf="isPageLoading"></app-spinner>
         <div *ngIf="!isPageLoading" class="card-body">
-          <div class="card-body" style="font-size:23px" [formGroup]="viewForm" *ngIf="foundProject">
+          <div class="card-body" style="font-size:18px" [formGroup]="viewForm" *ngIf="foundProject">
             <div class="row">
               <div class="col-7">
                 <div class="form-horizontal">
-                  <div style="font-size: 30px">
+                  <div style="font-size: 20px">
                     Project Name: {{foundProject.name}}
                   </div>
                   <div>

@@ -7,7 +7,8 @@
       </button>
     </a>
   </div>
-  <div>
+  <app-spinner *ngIf=!project></app-spinner>
+  <div *ngIf=project>
     <div class="card-body" *ngIf="project">
       <div class="row" style="margin-bottom: 1rem;">
         <div class="input-group col-12">
@@ -75,9 +76,10 @@
 
                   padding-right: 5px;">
                   <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color: black">
-                    <span class="badge badge-success float-right" *ngIf="task.status==0">To do</span>
+                    <span class="badge badge-success float-right" *ngIf="task.status==0">Not yet</span>
                     <span class="badge badge-primary float-right" *ngIf="task.status==1">Executing</span>
                     <span class="badge badge-danger float-right" *ngIf="task.status==2">Late</span>
+                    <span class="badge badge-warning float-right" *ngIf="task.status==3">Waiting for review</span>
                   </a>
                   </div>
                 </div>
@@ -87,7 +89,6 @@
           <ng-container>
             <div style="margin-left: 15px;">
               <button type="button" class="btn btn-primary" style="width: 300px;height: 56px;
-
               font-size: 17px;" (click)="handleOnAddListClick()">
                 <b>Add List</b>
               </button>

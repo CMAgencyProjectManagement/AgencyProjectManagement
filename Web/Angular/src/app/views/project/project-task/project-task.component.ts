@@ -28,16 +28,30 @@ export class ProjectTaskComponent implements OnInit {
     foundProject: Project;
     projectID: number;
     project: Project;
+    isPageLoading: boolean;
     tokenCursor: Cursor;
     isLoading: boolean;
     errorMessage: string;
     constructor(private projectService: ProjectService, private router: Router
     ) {
+        this.isPageLoading = true;
     }
 
     ngOnInit() {
         this.projectID = Number(this.GetURLParameter('projectID'));
-        this.loadData();
+        this.projectService.getAllProjects(true).then(data => {
+            this.projects = data;
+            for (let i = 0; i < this.projects.length; i++) {
+                if (this.projects[i].id == this.projectID) {
+                    this.foundProject = this.projects[i];
+                }
+            }
+            this.isPageLoading = false;
+        }
+        )
+            .catch(reason => {
+                console.debug('ProjectUpdateComponent', reason);
+            });
     }
 
     loadData() {
@@ -56,7 +70,7 @@ export class ProjectTaskComponent implements OnInit {
             })
     }
 
-    onNeedRefresh(){
+    onNeedRefresh() {
         this.loadData();
     }
 
