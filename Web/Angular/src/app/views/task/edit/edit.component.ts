@@ -151,6 +151,10 @@ export class EditComponent implements OnInit {
     }
   }
 
+  onCancelBtnClick() {
+    this.location.back();
+  }
+
   setDefaultValue() {
     let startDate = moment(this.foundTask.startDate);
     this.updateForm.patchValue({
@@ -188,7 +192,7 @@ export class EditComponent implements OnInit {
       this.foundTask = value as Task;
       this.isLoading.update = false;
     }).catch(reason => {
-      this.setErrors(reason.Message);
+      this.setErrors(reason.Data);
       this.isLoading.update = false;
     })
   }

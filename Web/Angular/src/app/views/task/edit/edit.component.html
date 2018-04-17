@@ -85,7 +85,7 @@
                 <input type="text" id="duration-input"
                        [ngClass]="{'form-control': true, 'is-invalid': errors.duration}"
                        formControlName="duration">
-                <span class="input-group-addon">day</span>
+                <span class="input-group-addon">day(s)</span>
               </div>
 
               <div class="invalid-feedback" *ngIf="errors.duration">{{errors.duration}}</div>
@@ -101,7 +101,7 @@
                 <input type="text" id="effort-input"
                        [ngClass]="{'form-control': true, 'is-invalid': errors.effort}"
                        formControlName="effort">
-                <span class="input-group-addon">hour</span>
+                <span class="input-group-addon">hour(s)</span>
               </div>
               <div class="invalid-feedback" *ngIf="errors.effort">{{errors.effort}}</div>
             </div>
@@ -112,7 +112,7 @@
               <button class="btn btn-primary" (click)="handleUpdateTask()" [ladda]="isLoading.update">
                 Save changes
               </button>
-              <button class="btn btn-secondary" type="button" (click)="setDefaultValue()">Reset</button>
+              <button class="btn btn-secondary" type="button" (click)="onCancelBtnClick()">Cancel</button>
             </div>
           </div>
         </div>
