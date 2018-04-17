@@ -18,7 +18,7 @@
                     <a routerLink="/project/update/{{foundProject.id}}" class="btn btn-secondary bg-light">
                       <i class="fa fa-edit"></i>&nbsp; Update
                     </a>
-                    <a class="btn btn-secondary bg-light" (click)="dangerModal.show()">
+                    <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)">
                       <i class="fa fa-close"></i>&nbsp; Close project
                     </a>
                   </div>
