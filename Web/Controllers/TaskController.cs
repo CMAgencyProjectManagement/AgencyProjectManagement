@@ -147,27 +147,56 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        [Route("{id:int}/finishTask")]
-        [Authorize(Roles = "Manager, Staff")]
-        public IHttpActionResult TaskDone(int id)
+        [Route("{taskId:int}/finishTask")]
+        [Authorize(Roles = "Staff")]
+        public IHttpActionResult TaskDone(int taskId)
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    int userId = Int32.Parse(User.Identity.GetUserId());
-                    User user = db.Users.Find(userId);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
 
                     TaskService taskService = new TaskService(db);
-                    var task = user.IsManager
-                        ? taskService.TaskDoneAPIwithManager(id, user)
-                        : taskService.TaskDoneAPIwithStaff(id, user);
+                    var task = taskService.setStatus(taskId, currentUserId, TaskStatus.NeedReview);
 
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                     ));
                 }
             }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("{taskId:int}/status")]
+        [Authorize(Roles = "Manager")]
+        public IHttpActionResult SetStatus(int taskId, TaskStatus status)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    TaskService taskService = new TaskService(db);
+
+                    if (taskService.IsUserManagerOfTask(currentUserId))
+                    {
+                        Task task = taskService.setStatus(taskId, currentUserId, status);
+                        return Ok(ResponseHelper.GetResponse(
+                            taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                        ));
+                    }
+
+                    return Ok(ResponseHelper.GetExceptionResponse(
+                        "User have to be manager of this task to edit it's status"));
+                }
+            }
+
             catch (Exception ex)
             {
                 return Content(HttpStatusCode.InternalServerError,
@@ -412,7 +441,7 @@ namespace Web.Controllers
                             taskService.UnAssignTask(
                                 userID: userID,
                                 taskID: unassignTaskModel.TaskID,
-                                currentUserId : currentUserId
+                                currentUserId: currentUserId
                             );
                         }
 
@@ -435,7 +464,6 @@ namespace Web.Controllers
             }
         }
 
-
         [HttpPut]
         [Route("archive")]
         [Authorize(Roles = "Admin")]
@@ -448,10 +476,12 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TaskService taskService = new TaskService(db);
+                        var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
 
-                        var archiveTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
-
-                        return Ok(ResponseHelper.GetResponse());
+                        return Ok(ResponseHelper.GetResponse(
+                            taskService.ParseToJson(archivedTask,avatarPath: AgencyConfig.AvatarPath,
+                                attachmentPath: AgencyConfig.AttachmentPath)
+                        ));
                     }
                 }
                 else

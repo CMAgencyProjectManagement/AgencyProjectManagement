@@ -15,6 +15,7 @@ import {CommentService} from '../../../services/comment.service';
 import {Comment} from '../../../interfaces/comment';
 import {forEach} from '@angular/router/src/utils/collection';
 import {StoreService} from '../../../services/tree.service';
+import {SelectStatusModalComponent} from '../../../cmaComponents/modals/select-status-modal/select-status-modal.component';
 
 @Component({
   selector: 'app-view',
@@ -257,7 +258,7 @@ export class ViewComponent implements OnInit {
         })
     };
     const initialState = {
-      message: `Are you sure you want to delete attachment !`,
+      message: `Are you sure you want to delete attachment ?`,
       confirmCallback: onConfirm
     };
     this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
@@ -283,6 +284,10 @@ export class ViewComponent implements OnInit {
       confirmCallback: confirmCallback,
     };
     this.modalService.show(CommentModalComponent, {initialState, class: 'modal-dialog'});
+  }
+
+  handleSetStatusBtnClick() {
+    this.modalService.show(SelectStatusModalComponent, {class: 'modal-dialog'});
   }
 
   attachmentFileChange(fileInput: any) {

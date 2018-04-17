@@ -24,6 +24,7 @@ import {SpinnerModule} from '../components/spinner/spinner.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { CommentModalComponent } from './modals/comment-modal/comment-modal.component';
 import { TaskTableComponent } from './task-table/task-table.component';
+import { SelectStatusModalComponent } from './modals/select-status-modal/select-status-modal.component';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { TaskTableComponent } from './task-table/task-table.component';
     RenameListModalComponent,
     SelectUsersModalComponent,
     CommentModalComponent,
-    TaskTableComponent
+    TaskTableComponent,
+    SelectStatusModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -70,7 +72,8 @@ import { TaskTableComponent } from './task-table/task-table.component';
     RenameListModalComponent,
     SelectUsersModalComponent,
     CommentModalComponent,
-    TaskTableComponent
+    TaskTableComponent,
+    SelectStatusModalComponent
   ]
 })
 export class CmaModule {

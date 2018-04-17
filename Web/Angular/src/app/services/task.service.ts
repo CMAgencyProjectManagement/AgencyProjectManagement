@@ -60,6 +60,22 @@ export class TaskService {
     });
   }
 
+  setStatus(taskId): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      request.get(serverPath.setTaskStatus(taskId))
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
   createTask(
     name: string,
     description: string,

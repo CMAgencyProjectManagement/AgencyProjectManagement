@@ -113,91 +113,57 @@ namespace Service
             return db.Tasks.Find(id);
         }
 
-        public bool CheckDuplicatedTaskname1(string taskName)
+        public IEnumerable<User> GetManagersOfTask(int taskId)
         {
-            var result = new List<List>();
-            var taskWithName = db.Tasks.Where(task => task.Name == taskName).Select(x => x.ListID).ToList();
-            foreach (var item in taskWithName)
+            Task task = GetTask(taskId);
+            if (task == null)
             {
-                var list = db.Lists.FirstOrDefault(x => x.ID == item);
-                if (list != null)
+                throw new ObjectNotFoundException($"Task with id {taskId} not found");
+            }
+
+            TeamService teamService = new TeamService(db);
+            List<User> users = new List<User>(); 
+            foreach (var teamProject in task.List.Project.TeamProjects)
+            {
+                users.Add(teamService.GetManager(teamProject.TeamID));
+            }
+
+            return users;
+        }
+
+        public bool IsUserManagerOfTask(int userId)
+        {
+            IEnumerable<User> managers = GetManagersOfTask(userId);
+            foreach (User manager in managers)
+            {
+                if (manager.ID == userId)
                 {
-                    result.Add(list);
+                    return true;
                 }
             }
 
             return false;
         }
 
-        public Task TaskDoneAPIwithStaff(int taskId, User user)
+        public Task setStatus(int taskId, int modifierId, TaskStatus taskStatus)
         {
-            var task = db.Tasks.Find(taskId);
-            if (task != null)
+            UserService userService = new UserService(db);
+            User modifier = userService.GetUser(modifierId);
+            Task task = GetTask(taskId);
+            if (modifier == null)
             {
-                var memberIds = db.UserTasks.Where(x => x.TaskID == taskId).Select(x => x.UserID);
-                foreach (var memberId in memberIds)
-                {
-                    User member = db.Users.Find(memberId);
-                    if (user.ID == member.ID)
-                    {
-                        if (user.IsManager == false)
-                        {
-                            task.Status = (int) TaskStatus.NeedReview;
-                            task.ChangedBy = user.ID;
-                            task.ChangedTime = DateTime.Now.Date;
-                            return task;
-                        }
-                    }
-                    else
-                    {
-                        throw new ObjectNotFoundException(
-                            $"User:  {user.Username} not member in task with id {task.ID}");
-                    }
-                }
-
-                throw new ObjectNotFoundException($"User:  {user.Username} not join in task with id {task.ID}");
+                throw new ObjectNotFoundException($"Can't find user with id {modifierId}");
             }
-            else
+            
+            if (task == null)
             {
-                throw new ObjectNotFoundException($"Task with ID {taskId} not found");
+                throw new ObjectNotFoundException($"Can't find task with id {taskId}");
             }
-        }
-
-        public Task TaskDoneAPIwithManager(int taskId, User user)
-        {
-            var task = db.Tasks.Find(taskId);
-            if (task != null)
-            {
-                int listId = task.ListID;
-                int projectId = db.Lists.Find(listId).ProjectID;
-                var teamId = db.TeamProjects.Where(x => x.ProjectID == projectId).Select(x => x.TeamID)
-                    .FirstOrDefault();
-                Team team = db.Teams.Find(teamId);
-                if (team != null)
-                {
-                    User manager = db.Users.Where(x => x.TeamID == teamId && x.IsManager == true).FirstOrDefault();
-                    if (user.ID == manager.ID)
-                    {
-                        task.Status = (int) TaskStatus.Done;
-                        task.ChangedBy = user.ID;
-                        task.ChangedTime = DateTime.Now.Date;
-                        db.SaveChanges();
-                        return task;
-                    }
-                    else
-                    {
-                        throw new ObjectNotFoundException($"User is not manager of team");
-                    }
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"The project with ID: {projectId} doesn't belong to any team");
-                }
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"Task with ID {taskId} not found");
-            }
+            
+            task.Status = (int) taskStatus;
+            task.ChangedBy = modifier.ID;
+            db.SaveChangesAsync();
+            return task;
         }
 
         public bool CheckDuplicatedTaskname(string taskName)
@@ -397,14 +363,14 @@ namespace Service
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
 
-        public int ArchiveTask(int taskID)
+        public Task ArchiveTask(int taskID)
         {
             var archiveTask = db.Tasks.Find(taskID);
             if (archiveTask.ID == taskID)
             {
                 archiveTask.IsArchived = true;
                 db.SaveChanges();
-                return archiveTask.ID;
+                return archiveTask;
             }
 
             throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");

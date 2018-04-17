@@ -33,12 +33,11 @@
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
         <button class="btn btn-secondary bg-light"
-                          *ngIf="managementMode"
-                          [disabled]="true"
-                          (click)="handleOnNeedReviewBtnClick()"
-                          [ladda]="isLoading.done">
-        Set status
-      </button>
+                *ngIf="managementMode"
+                (click)="handleSetStatusBtnClick()"
+                [ladda]="isLoading.done">
+          Set status
+        </button>
       </div>
     </div>
     <div class="col-12 mt-5">
@@ -178,32 +177,32 @@
             <!--DATE SECTION-->
             <!--<h5 class="mb-3">Date</h5>-->
             <dl class="row ml-1">
-              <dt class="col-3">Start date:</dt>
-              <dd class="col-9">
+              <dt class="col-4">Start date:</dt>
+              <dd class="col-8">
                 <span *ngIf="foundTask.startDate">
                   {{foundTask.startDate | date:'dd/MM/yyyy'}}
                 </span>
               </dd>
-              <dt class="col-3">Duration:</dt>
-              <dd class="col-9">
+              <dt class="col-4">Duration:</dt>
+              <dd class="col-8">
                 {{foundTask.duration}}
                 <span *ngIf="foundTask.duration <= 1">Day</span>
                 <span *ngIf="foundTask.duration > 1">Days</span>
               </dd>
-              <dt class="col-3">Deadline:</dt>
-              <dd class="col-9">
+              <dt class="col-4">Deadline date:</dt>
+              <dd class="col-8">
                 {{foundTask.deadline | date:'dd/MM/yyyy'}}
               </dd>
-              <dt class="col-3">Finished:</dt>
-              <dd class="col-9">
+              <dt class="col-4">Finished date:</dt>
+              <dd class="col-8">
               <span *ngIf="!foundTask.finishedDate">
                 N/A
               </span>
               </dd>
-              <dt class="col-3">Created:</dt>
-              <dd class="col-9">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
-              <dt class="col-3">Changed:</dt>
-              <dd class="col-9">
+              <dt class="col-4">Created date:</dt>
+              <dd class="col-8">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
+              <dt class="col-4">Changed date:</dt>
+              <dd class="col-8">
                 <span *ngIf="foundTask.changedDate">
                   {{foundTask.changedDate | date:'dd/MM/yyyy'}}
                 </span>
