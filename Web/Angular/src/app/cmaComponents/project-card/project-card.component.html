@@ -52,9 +52,11 @@
                               <li role="menuitem">
                                 <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
                               </li>
-                              <li class="divider dropdown-divider"></li>
                               <li role="menuitem">
                                 <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove list</a>
+                              </li>
+                              <li role="menuitem">
+                                <a class="dropdown-item" style="cursor: pointer" href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">Add task</a>
                               </li>
                             </ul>
                           </div>
@@ -79,13 +81,6 @@
                   </a>
                   </div>
                 </div>
-              </div>
-              <div class="card-footer">
-                <a href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">
-                  <div style="text-align: center; font-size: 20px;">
-                    <b>Add Task</b>
-                  </div>
-                </a>
               </div>
             </div>
           </ng-container>

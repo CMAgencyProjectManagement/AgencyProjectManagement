@@ -52,18 +52,36 @@
                 </div>
               </div>
               <div class="col-5">
-                <br/>
-                <div class="row" style="font-size: 28px;">
-                  Members:&nbsp;
-                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/1.jpg">&nbsp;
-                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/2.jpg"> &nbsp;
-                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/3.jpg"> &nbsp;
-                  <img alt="admin@bootstrapmaster.com" class="img-avatar" src="assets/img/avatars/4.jpg">..... &nbsp;
-                </div>
-                <div class="row">
-                  <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue">
-                    View all tasks...
-                  </a>
+                <div class="section" style="font-size: 16px">
+                  <!-- <dt class="col-12">Assignees:</dt>
+                    <dd class="col-12 pl-4">
+                      <app-user-list *ngIf="foundTask.assignees" [users]="foundTask.assignees"></app-user-list>
+                      <span *ngIf="!foundTask.assignees || foundTask.assignees.length < 1">N/A</span>
+                    </dd> -->
+                  <dt class="col-12">Creator:</dt>
+                  <dd class="col-12 pl-4">
+                    <app-user-list [user]="foundProject.createdBy"></app-user-list>
+                    <span *ngIf="!foundProject.createdBy">N/A</span>
+                  </dd>
+                  <br/>
+                  <dt class="col-12">Assignees:</dt>
+                  <dd class="col-12 pl-4">
+                      <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees"></app-user-list>
+                      <span *ngIf="!foundProject.assignees || foundProject.assignees.length < 1">N/A</span>
+                  </dd>
+                  <br/>
+                  <!-- <dt class="col-12">Modifier:</dt>
+                    <dd class="col-12 pl-4">
+                      <app-user-list *ngIf="foundTask.changedBy" [user]="foundTask.changedBy"></app-user-list>
+                      <span *ngIf="!foundTask.changedBy">N/A</span>
+                    </dd> -->
+                  <dt class="col-12">
+                  </dt>
+                  <dd class="col-12 pl-4">
+                      <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue">
+                        View all tasks...
+                      </a>
+                  </dd>
                 </div>
               </div>
             </div>
