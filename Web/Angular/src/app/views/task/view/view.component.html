@@ -32,6 +32,13 @@
                 [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
+        <button class="btn btn-secondary bg-light"
+                          *ngIf="managementMode"
+                          [disabled]="true"
+                          (click)="handleOnNeedReviewBtnClick()"
+                          [ladda]="isLoading.done">
+        Set status
+      </button>
       </div>
     </div>
     <div class="col-12 mt-5">
