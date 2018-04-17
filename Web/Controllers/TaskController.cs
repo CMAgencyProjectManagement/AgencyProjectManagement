@@ -182,48 +182,54 @@ namespace Web.Controllers
         {
             try
             {
+                
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    bool flag = true;
+                    if (taskService.CheckDuplicatedTaskname(createTaskModel.Name))
+                    {
+                        ModelState.AddModelError("Name", "Task name is taken");
+                        flag = false;
+                    }
+
+                    if (taskService.CheckForListId(createTaskModel.ListID))
+                    {
+                        ModelState.AddModelError("ListID", "The System don't have this list");
+                        flag = false;
+                    }
+
+                    if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
+                    {
+                        ModelState.AddModelError("Priority", "Invalid Priority ");
+                        flag = false;
+                    }
+
+                    if (createTaskModel.Duration < 1)
+                    {
+                        ModelState.AddModelError("Duration",
+                            "Duration must be greater than 1 ");
+                        flag = false;
+                    }
+
+                    if (createTaskModel.Effort < 1 || createTaskModel.Effort > (createTaskModel.Duration * 24))
+                    {
+                        ModelState.AddModelError("Effort",
+                            "Effort(hours) must be smaller than the Duration(days)");
+                        flag = false;
+                    }
+
+                    if (flag == false)
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+                }
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TaskService taskService = new TaskService(db);
                         UserService userService = new UserService(db);
-                        bool flag = true;
-                        if (taskService.CheckDuplicatedTaskname(createTaskModel.Name))
-                        {
-                            ModelState.AddModelError("Name", "Task name is taken");
-                            flag = false;
-                        }
-
-                        if (taskService.CheckForListId(createTaskModel.ListID))
-                        {
-                            ModelState.AddModelError("ListID", "The System don't have this list");
-                            flag = false;
-                        }
-
-                        if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
-                        {
-                            ModelState.AddModelError("Priority", "Invalid Priority ");
-                            flag = false;
-                        }
-
-                        if (createTaskModel.Duration < 1)
-                        {
-                            ModelState.AddModelError("Duration",
-                                "Duration must be greater than 1 ");
-                            flag = false;
-                        }
-
-                        if (createTaskModel.Effort < 1 || createTaskModel.Effort > (createTaskModel.Duration * 24))
-                        {
-                            ModelState.AddModelError("Effort",
-                                "Effort(hours) must be smaller than the Duration(days)");
-                            flag = false;
-                        }
-
-                        if (flag == false)
-                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-
+                        
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
                         DateTime startTime = createTaskModel.StartDate;
@@ -264,78 +270,83 @@ namespace Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                using (CmAgencyEntities db =  new CmAgencyEntities())
                 {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    TaskService taskService = new TaskService(db);
+                    bool flag = true;
+                    if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                     {
-                        TaskService taskService = new TaskService(db);
-
-                        bool flag = true;
-                        if (db.Tasks.Find(updateTaskViewModel.Id).Name.ToLower() != updateTaskViewModel.Name.ToLower())
+                        if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
                         {
-                            if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
-                            {
-                                ModelState.AddModelError("Name", "Task name is taken");
-                                flag = false;
-                            }
-                        }
-
-                        if (taskService.CheckForListId(updateTaskViewModel.ListID))
-                        {
-                            ModelState.AddModelError("ListID", "The System don't have this list");
+                            ModelState.AddModelError("Name", "Task name is taken");
                             flag = false;
                         }
-
-                        if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
-                        {
-                            ModelState.AddModelError("Priority", "Invalid Priority ");
-                            flag = false;
-                        }
-
-                        if (updateTaskViewModel.Duration < 1)
-                        {
-                            ModelState.AddModelError("Duration",
-                                "Duration must be greater than 1 ");
-                            flag = false;
-                        }
-
-                        if (updateTaskViewModel.Effort < 1 ||
-                            updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
-                        {
-                            ModelState.AddModelError("Effort",
-                                "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
-                            flag = false;
-                        }
-
-                        if (flag == false)
-                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-
-                        UserService userService = new UserService(db);
-                        string userIdString = User.Identity.GetUserId();
-                        User currentUser = userService.GetUser(userIdString);
-
-                        var updatedTask = taskService.UpdateTask(
-                            updateTaskViewModel.Id,
-                            updateTaskViewModel.Name,
-                            updateTaskViewModel.Description,
-                            updateTaskViewModel.ListID,
-                            updateTaskViewModel.Priority,
-                            updateTaskViewModel.StartDate,
-                            updateTaskViewModel.Duration,
-                            updateTaskViewModel.Effort,
-                            currentUser.ID,
-                            DateTime.Now.Date
-                        );
-                        return Ok(ResponseHelper.GetResponse(
-                            taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
-                        ));
                     }
+
+                    if (taskService.CheckForListId(updateTaskViewModel.ListID))
+                    {
+                        ModelState.AddModelError("ListID", "The System don't have this list");
+                        flag = false;
+                    }
+
+                    if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
+                    {
+                        ModelState.AddModelError("Priority", "Invalid Priority ");
+                        flag = false;
+                    }
+
+                    if (updateTaskViewModel.Duration < 1)
+                    {
+                        ModelState.AddModelError("Duration",
+                            "Duration must be greater than 1 ");
+                        flag = false;
+                    }
+
+                    if (updateTaskViewModel.Effort < 1 ||
+                        updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
+                    {
+                        ModelState.AddModelError("Effort",
+                            "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
+                        flag = false;
+                    }
+
+                    if (flag == false)
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
                 }
-                else
-                {
-                    return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState));
-                }
+                if (ModelState.IsValid)
+                    {
+                        using (CmAgencyEntities db = new CmAgencyEntities())
+                        {
+
+
+                        TaskService taskService = new TaskService(db);
+                        UserService userService = new UserService(db);
+                            string userIdString = User.Identity.GetUserId();
+                            User currentUser = userService.GetUser(userIdString);
+
+                            var updatedTask = taskService.UpdateTask(
+                                updateTaskViewModel.Id,
+                                updateTaskViewModel.Name,
+                                updateTaskViewModel.Description,
+                                updateTaskViewModel.ListID,
+                                updateTaskViewModel.Priority,
+                                updateTaskViewModel.StartDate,
+                                updateTaskViewModel.Duration,
+                                updateTaskViewModel.Effort,
+                                currentUser.ID,
+                                DateTime.Now.Date
+                            );
+                            return Ok(ResponseHelper.GetResponse(
+                                taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                            ));
+                        }
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest,
+                            ResponseHelper.GetExceptionResponse(ModelState));
+                    }
             }
             catch (Exception ex)
             {

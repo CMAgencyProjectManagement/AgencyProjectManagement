@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../../services/project.service';
 import { Project } from '../../../interfaces/project';
+import { Location } from '@angular/common';
+import { BsModalService } from 'ngx-bootstrap';
+import { CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent } from '../../../cmaComponents/modals';
 import {
   FormControl,
   FormGroup,
@@ -29,7 +32,7 @@ export class ProjectDetailComponent implements OnInit {
   project: Project;
   isLoading: boolean;
   isPageLoading: boolean;
-  constructor(private projectService: ProjectService, private router: Router
+  constructor(private projectService: ProjectService, private router: Router, private location: Location, private modalService: BsModalService
   ) {
     this.isPageLoading = true;
   }
@@ -94,5 +97,35 @@ export class ProjectDetailComponent implements OnInit {
       const errorMessage = error.message;
       console.debug('handleCreateProjectError', fieldName, errorMessage);
     }
+  }
+
+  handleCloseProject(projectID: number) {
+    const onConfirm = () => {
+      this.projectService.closeProject(projectID)
+        .then(value => {
+          this.isLoading = false;
+          this.router.navigate(['project']);
+        })
+        .catch(reason => {
+          this.showErrorModal(reason.Message);
+        })
+    };
+    const initialState = {
+      message: `Are you sure to close this project?`,
+      confirmCallback: onConfirm
+    };
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
+  }
+
+  private showErrorModal(message: string, isNavigateBack: boolean = false) {
+    const initialState = {
+      closeCallback: () => {
+        if (isNavigateBack) {
+          this.location.back();
+        }
+      },
+      message: message
+    };
+    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
 }

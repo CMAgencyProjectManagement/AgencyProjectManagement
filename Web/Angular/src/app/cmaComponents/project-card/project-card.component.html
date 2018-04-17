@@ -25,7 +25,7 @@
       </div>
       <!-- -->
       <div class="well mb-4" *ngIf="foundTasks.length > 0" style="font-size: 18px">
-        Found tasks: 
+        Found tasks:
         <ul class="list-group" *ngFor="let task of foundTasks;let i=index">
           <li class="list-group-item" style="background-color: #f0f3f5">
             <a routerLink="/task/view/{{task.id}}" style="font-size: 17px;color: black">
@@ -41,27 +41,27 @@
             <div class="card cardstyle" style="margin-left: 15px;">
               <div class="card-header cardheadertext" style="font-size: 18px">
                 <div class="form-group row">
-                    <div class="col-9">
-                        {{lists.name}}
+                  <div class="col-9">
+                    {{lists.name}}
+                  </div>
+                  <div class="col-3">
+                    <div class="btn-group" dropdown>
+                      <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <li role="menuitem">
+                          <a class="dropdown-item" style="cursor: pointer" href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">Add task</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
+                        </li>
+                        <li role="menuitem">
+                          <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove list</a>
+                        </li>
+                      </ul>
                     </div>
-                    <div class="col-3">
-                        <div class="btn-group" dropdown>
-                            <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
-                              <span class="caret"></span>
-                            </button>
-                            <ul *dropdownMenu class="dropdown-menu" role="menu">
-                              <li role="menuitem">
-                                <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
-                              </li>
-                              <li role="menuitem">
-                                <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove list</a>
-                              </li>
-                              <li role="menuitem">
-                                <a class="dropdown-item" style="cursor: pointer" href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">Add task</a>
-                              </li>
-                            </ul>
-                          </div>
-                    </div>
+                  </div>
                 </div>
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
@@ -75,12 +75,11 @@
                   <div class="card-footer" style="height: 30px;padding-top: 5px;
 
                   padding-right: 5px;">
-                  <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color: black">
-                    <span class="badge badge-success float-right" *ngIf="task.status==0">Not yet</span>
-                    <span class="badge badge-primary float-right" *ngIf="task.status==1">Executing</span>
-                    <span class="badge badge-danger float-right" *ngIf="task.status==2">Late</span>
-                    <span class="badge badge-warning float-right" *ngIf="task.status==3">Waiting for review</span>
-                  </a>
+                    <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color:white">
+                      <span class="badge badge-warning float-right" style="color: white" *ngIf="task.status==0">Not Done</span>
+                      <span class="badge badge-primary float-right" *ngIf="task.status==1">Need Review</span>
+                      <span class="badge badge-success float-right" *ngIf="task.status==2">Done</span>
+                    </a>
                   </div>
                 </div>
               </div>

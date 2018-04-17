@@ -7,41 +7,41 @@
         </div>
         <app-spinner *ngIf="isPageLoading"></app-spinner>
         <div *ngIf="!isPageLoading" class="card-body">
-          <div class="card-body" style="font-size:18px" [formGroup]="viewForm" *ngIf="foundProject">
+          <div class="card-body" [formGroup]="viewForm" *ngIf="foundProject">
             <div class="row">
               <div class="col-7">
                 <div class="form-horizontal">
                   <div style="font-size: 20px">
-                    Project Name: {{foundProject.name}}
+                    <h2 class="card-title">{{foundProject.name}}</h2>
                   </div>
-                  <div>
-                    Description:
-                    <div class="div-text">
-                      {{foundProject.description}}
-                    </div>
-                    <!-- <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" style="font-size:20px" disabled="true">{{foundProject.description}}</textarea> -->
+                  <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;">
+                    <a routerLink="/project/update/{{foundProject.id}}" class="btn btn-secondary bg-light">
+                      <i class="fa fa-edit"></i>&nbsp; Update
+                    </a>
+                    <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)">
+                      <i class="fa fa-close"></i>&nbsp; Close project
+                    </a>
                   </div>
-                  <div>
-                    Created Time: {{foundProject.createdTime | date:'d/M/y'}}
+                  <div class="section mt-4">
+                    <!--DESCRIPTION-->
+                    <h5 class="mb-3">Description</h5>
+                    <dl class="row ml-1">
+                      <p class="col-12">
+                        {{foundProject.description}}
+                      </p>
+                    </dl>
                   </div>
-                  <div>
-                    Start Date: {{foundProject.startDate | date:'d/M/y'}}
+                  <div class="section">
+                    <!--Created Date-->
+                    <h5 class="mb-3">Created Date: {{foundProject.createdTime | date:'d/M/y'}}</h5>
                   </div>
-                  <div>
-                    Deadline: {{foundProject.deadline | date:'d/M/y'}}
+                  <div class="section">
+                    <!--Start Date-->
+                    <h5 class="mb-3">Start Date: {{foundProject.startDate | date:'d/M/y'}}</h5>
                   </div>
-                  <br/>
-                  <div class="row">
-                    <div class="col-6 text-center">
-                      <a routerLink="/project/update/{{foundProject.id}}">
-                        <button type="button" class="btn btn-primary btn-lg blackwhitebutton">Update
-                        </button>
-                      </a>
-                    </div>
-                    <div class="col-6 text-left">
-                      <button type="button" class="btn btn-danger btn-lg blackwhitebutton" data-toggle="modal" (click)="dangerModal.show()">Close
-                      </button>
-                    </div>
+                  <div class="section">
+                    <!--Deadline-->
+                    <h5 class="mb-3">Deadline: {{foundProject.deadline | date:'d/M/y'}}</h5>
                   </div>
                   <!--<div class="form-group row" >-->
                   <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
@@ -66,8 +66,8 @@
                   <br/>
                   <dt class="col-12">Assignees:</dt>
                   <dd class="col-12 pl-4">
-                      <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees"></app-user-list>
-                      <span *ngIf="!foundProject.assignees || foundProject.assignees.length < 1">N/A</span>
+                    <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees"></app-user-list>
+                    <span *ngIf="!foundProject.assignees || foundProject.assignees.length < 1">N/A</span>
                   </dd>
                   <br/>
                   <!-- <dt class="col-12">Modifier:</dt>
@@ -78,9 +78,9 @@
                   <dt class="col-12">
                   </dt>
                   <dd class="col-12 pl-4">
-                      <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue">
-                        View all tasks...
-                      </a>
+                    <a href="#/project/task?projectID={{foundProject.id}}" style="text-decoration-color: blue">
+                      View all tasks...
+                    </a>
                   </dd>
                 </div>
               </div>
