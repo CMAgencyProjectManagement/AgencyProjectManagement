@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="!title">Select status</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="handleOnClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <app-spinner *ngIf="!statuses"></app-spinner>
+  <div class="row" *ngIf="statuses">
+    <div class="col-12" *ngIf="message">
+      {{message}}
+    </div>
+    <div class="col-12">
+      <div class="form-group row">
+        <label class="col-3 col-form-label" for="status-select">Status</label>
+        <div class="col-9">
+          <select id="status-select"
+                  name="status-select"
+                  class="form-control"
+                  [ngClass]="{'form-control': true, 'is-invalid': errorMessage}"
+                  (change)="handleOnSelect()">
+            <option value="{{status.key}}" *ngFor="let status of statuses">{{status.value}}</option>
+          </select>
+        </div>
+        <div class="invalid-feedback" *ngIf="errorMessage">
+          {{errorMessage}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="handleOnConfirm()">Confirm</button>
+  <button type="button" class="btn btn-secondary" (click)="handleOnCancel()">Cancel</button>
+</div>
