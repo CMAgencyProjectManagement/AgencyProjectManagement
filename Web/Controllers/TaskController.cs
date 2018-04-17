@@ -271,7 +271,7 @@ namespace Web.Controllers
                         TaskService taskService = new TaskService(db);
 
                         bool flag = true;
-                        if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
+                        if (db.Tasks.Find(updateTaskViewModel.Id).Name.ToLower() != updateTaskViewModel.Name.ToLower())
                         {
                             if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
                             {
