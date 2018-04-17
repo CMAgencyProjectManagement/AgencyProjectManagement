@@ -20,6 +20,7 @@ import {
   RenameListModalComponent,
   SelectUsersModalComponent
 } from './modals';
+import {SpinnerModule} from '../components/spinner/spinner.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { CommentModalComponent } from './modals/comment-modal/comment-modal.component';
 import { TaskTableComponent } from './task-table/task-table.component';
@@ -28,6 +29,7 @@ import { TaskTableComponent } from './task-table/task-table.component';
   imports: [
     CommonModule,
     DataTablesModule,
+    SpinnerModule,
     LaddaModule.forRoot({
       style: 'slide-down'
     }),

@@ -7,7 +7,8 @@
       </button>
     </a>
   </div>
-  <div>
+  <app-spinner *ngIf=!project></app-spinner>
+  <div *ngIf=project>
     <div class="card-body" *ngIf="project">
       <div class="row" style="margin-bottom: 1rem;">
         <div class="input-group col-12">
@@ -52,9 +53,11 @@
                               <li role="menuitem">
                                 <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
                               </li>
-                              <li class="divider dropdown-divider"></li>
                               <li role="menuitem">
                                 <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove list</a>
+                              </li>
+                              <li role="menuitem">
+                                <a class="dropdown-item" style="cursor: pointer" href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">Add task</a>
                               </li>
                             </ul>
                           </div>
@@ -73,26 +76,19 @@
 
                   padding-right: 5px;">
                   <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color: black">
-                    <span class="badge badge-success float-right" *ngIf="task.status==0">To do</span>
+                    <span class="badge badge-success float-right" *ngIf="task.status==0">Not yet</span>
                     <span class="badge badge-primary float-right" *ngIf="task.status==1">Executing</span>
                     <span class="badge badge-danger float-right" *ngIf="task.status==2">Late</span>
+                    <span class="badge badge-warning float-right" *ngIf="task.status==3">Waiting for review</span>
                   </a>
                   </div>
                 </div>
-              </div>
-              <div class="card-footer">
-                <a href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">
-                  <div style="text-align: center; font-size: 20px;">
-                    <b>Add Task</b>
-                  </div>
-                </a>
               </div>
             </div>
           </ng-container>
           <ng-container>
             <div style="margin-left: 15px;">
               <button type="button" class="btn btn-primary" style="width: 300px;height: 56px;
-
               font-size: 17px;" (click)="handleOnAddListClick()">
                 <b>Add List</b>
               </button>

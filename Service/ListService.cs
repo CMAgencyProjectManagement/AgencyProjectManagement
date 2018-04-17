@@ -70,13 +70,14 @@ namespace Service
 
             if (isDetailed)
             {
-                var tasks = taskService.GetTasksOfList(list.ID);
+                var tasks = taskService.GetTasksOfList(list.ID).OrderBy(x => x.IsArchived);
                 var tasksJArray = new JArray();
 
                 foreach (var task in tasks)
                 {
                     tasksJArray.Add(taskService.ParseToJson(task));
                 }
+                
 
                 result["tasks"] = tasksJArray;
             }
