@@ -202,7 +202,7 @@ namespace Service
 
         public bool CheckDuplicatedTaskname(string taskName)
         {
-            var tasks = db.Tasks.Where(task => task.Name == taskName).ToList();
+            var tasks = db.Tasks.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
             return tasks.Count > 0;
         }
 
