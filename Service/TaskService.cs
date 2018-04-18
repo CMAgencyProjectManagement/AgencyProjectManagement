@@ -94,7 +94,8 @@ namespace Service
 
                 foreach (var task in user.Tasks)
                 {
-                    if (task.Status == 0 || task.Status == 1)
+                    if (task.Status == (int) TaskStatus.NotDone ||
+                        task.Status == (int) TaskStatus.NeedReview)
                     {
                         taskList.Add(task);
                     }
@@ -122,7 +123,7 @@ namespace Service
             }
 
             TeamService teamService = new TeamService(db);
-            List<User> users = new List<User>(); 
+            List<User> users = new List<User>();
             foreach (var teamProject in task.List.Project.TeamProjects)
             {
                 users.Add(teamService.GetManager(teamProject.TeamID));
@@ -154,14 +155,20 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"Can't find user with id {modifierId}");
             }
-            
+
             if (task == null)
             {
                 throw new ObjectNotFoundException($"Can't find task with id {taskId}");
             }
-            
+
             task.Status = (int) taskStatus;
             task.ChangedBy = modifier.ID;
+
+            if (taskStatus == TaskStatus.Done)
+            {
+                task.FinishedDate = DateTime.Today;
+            }
+
             db.SaveChangesAsync();
             return task;
         }
@@ -249,14 +256,13 @@ namespace Service
 
             UserTask foundUserTask = db.UserTasks
                 .SingleOrDefault(userTask => userTask.TaskID == task.ID && userTask.UserID == userID);
-            
+
             if (foundUserTask != null)
             {
                 foundUserTask.IsAssigned = true;
             }
             else
             {
-                
                 task.ChangedBy = currentUserId;
                 task.ChangedTime = DateTime.Now.Date;
                 foundUserTask = new UserTask
@@ -271,59 +277,6 @@ namespace Service
 
             db.SaveChanges();
             return foundUserTask;
-
-//            User user = db.Users.Find(userID);
-//            if (user != null)
-//            {
-//                Task task = db.Tasks.Find(taskID);
-//                if (task != null)
-//                {
-//                    UserTask assignTask;
-//                    IEnumerable<UserTask> userTasks = db.UserTasks.Where(x => x.TaskID == taskID).ToList();
-//                    foreach (var userTask in userTasks)
-//                    {
-//                        if (user.ID != userTask.UserID)
-//                        {
-//                            assignTask = new UserTask
-//                            {
-//                                TaskID = taskID,
-//                                UserID = userID,
-//                                IsFollow = false,
-//                                IsAssigned = true,
-//                            };
-//                            IEnumerable<UserTask> UserTask =
-//                                db.UserTasks.Where(x => x.UserID == userID && x.TaskID == taskID);
-//                            if (UserTask.Count() == 0)
-//                            {
-//                                db.UserTasks.Add(assignTask);
-//                                db.SaveChanges();
-//                                return assignTask;
-//                            }
-//                            else
-//                            {
-//                                //throw new ObjectNotFoundException($"UserTask existed");
-//                            }
-//                        }
-//                        else
-//                        {
-//                            userTask.TaskID = taskID;
-//                            userTask.UserID = userID;
-//                            userTask.IsAssigned = true;
-//                            db.SaveChanges();
-//                        }
-//                    }
-//                }
-//                else
-//                {
-//                    throw new ObjectNotFoundException($"Task with ID{taskID} not found");
-//                }
-//            }
-//            else
-//            {
-//                throw new ObjectNotFoundException($"User with ID{userID} not found");
-//            }
-//
-//            return null;
         }
 
         public int UnAssignTask(int taskID, int userID, int currentUserId)
@@ -337,7 +290,6 @@ namespace Service
                 task.ChangedTime = DateTime.Now.Date;
                 foreach (var userTask in userTasks)
                 {
-                    
                     userTask.IsAssigned = false;
                     db.SaveChanges();
                     return userTask.UserID;
@@ -346,6 +298,7 @@ namespace Service
 
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
+
         public int UnAssignTaskgoc(int taskID, int userID)
         {
             IEnumerable<UserTask> userTasks =
@@ -382,7 +335,6 @@ namespace Service
             const int mediumPriorityScore = 3;
             const int highPriorityScore = 9;
 
-            const double remainingTimeBonusMultiplier = 1.2f;
             const double lateFinishMultiplier = 0.4f;
 
             double score = 0f;
@@ -410,7 +362,8 @@ namespace Service
             double remainingTime = GetTaskRemainingTime(task);
             if (remainingTime >= 0)
             {
-                score += remainingTimeBonusMultiplier * remainingTime;
+                double bonusPercent = remainingTime / task.Duration;
+                score += score * bonusPercent;
             }
             else
             {
@@ -441,13 +394,13 @@ namespace Service
             if (task.StartDate != null)
             {
                 DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
-            
+
                 if (deadline.Date >= weekFirstDay.Date && deadline.Date <= weekLastDay.Date)
                 {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
