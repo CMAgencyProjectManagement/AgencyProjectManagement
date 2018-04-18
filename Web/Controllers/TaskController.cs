@@ -187,6 +187,8 @@ namespace Web.Controllers
                     if (taskService.IsUserManagerOfTask(currentUserId,taskId))
                     {
                         Task task = taskService.setStatus(taskId, currentUserId, status);
+                        task.ChangedBy = currentUserId;
+                        task.ChangedTime = DateTime.Now;
                         return Ok(ResponseHelper.GetResponse(
                             taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                         ));
@@ -466,7 +468,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("archive")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult Archive(ArchiveTaskModel archiveTaskModel)
         {
             try
@@ -475,13 +477,20 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
+                        int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         TaskService taskService = new TaskService(db);
-                        var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
-
-                        return Ok(ResponseHelper.GetResponse(
-                            taskService.ParseToJson(archivedTask,avatarPath: AgencyConfig.AvatarPath,
-                                attachmentPath: AgencyConfig.AttachmentPath)
-                        ));
+                           var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
+                            Task task = db.Tasks.Find(archivedTask);
+                        if (currentUserId== task.CreatedBy)
+                        {
+                            task.ChangedBy = currentUserId;
+                            task.ChangedTime = DateTime.Now;
+                            return Ok(ResponseHelper.GetResponse(
+                                taskService.ParseToJson(task)
+                            ));
+                        }
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                         "User have to be manager who create this task to edit it's Archive status"));
                     }
                 }
                 else
@@ -496,5 +505,45 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpPut]
+        [Route("unarchive")]
+        [Authorize(Roles = "Admin, Manager")]
+        public IHttpActionResult UnArchive(ArchiveTaskModel archiveTaskModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                        TaskService taskService = new TaskService(db);
+                        var archivedTask = taskService.UnArchiveTask(archiveTaskModel.TaskID);
+                        Task task = db.Tasks.Find(archivedTask);
+                        if (currentUserId == task.CreatedBy)
+                        {
+                            task.ChangedBy = currentUserId;
+                            task.ChangedTime = DateTime.Now;
+                            return Ok(ResponseHelper.GetResponse(
+                                taskService.ParseToJson(task)
+                            ));
+                        }
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                         "User have to be manager who create this task to edit it's Archive status"));
+                    }
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
     }
 }
