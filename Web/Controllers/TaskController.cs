@@ -184,7 +184,7 @@ namespace Web.Controllers
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     TaskService taskService = new TaskService(db);
 
-                    if (taskService.IsUserManagerOfTask(currentUserId))
+                    if (taskService.IsUserManagerOfTask(currentUserId,taskId))
                     {
                         Task task = taskService.setStatus(taskId, currentUserId, status);
                         task.ChangedBy = currentUserId;

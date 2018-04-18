@@ -213,16 +213,6 @@ namespace Web.Controllers
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
-                        //DateTime? birthdate = null;
-                        //if (createUserModel.Birthdate != null)
-                        //{
-                        //    DateTime dt;
-                        //    if (DateTime.TryParse(createUserModel.Birthdate, out dt))
-                        //    {
-                        //        birthdate = dt;
-                        //    }
-                        //}
-
                         User newUser = userService.CreateAccount(
                             createUserModel.Name,
                             createUserModel.Phone,
