@@ -72,8 +72,9 @@ export class ViewComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      console.log('ngOnInit');
+    // DEMO for default route that don't have ID
+    if (!id) {
+      console.log('get id from other place');
     }
     if (Number(id)) {
       this.taskService.getTaskDetail(Number(id))
