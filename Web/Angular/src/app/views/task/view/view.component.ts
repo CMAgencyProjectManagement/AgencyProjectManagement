@@ -72,6 +72,9 @@ export class ViewComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      console.log('ngOnInit');
+    }
     if (Number(id)) {
       this.taskService.getTaskDetail(Number(id))
         .then(value => {
@@ -287,7 +290,13 @@ export class ViewComponent implements OnInit {
   }
 
   handleSetStatusBtnClick() {
-    this.modalService.show(SelectStatusModalComponent, {class: 'modal-dialog'});
+    const initialState = {
+      task: this.foundTask,
+      confirmCallback: (newTask) => {
+        this.foundTask = newTask;
+      }
+    };
+    this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   attachmentFileChange(fileInput: any) {

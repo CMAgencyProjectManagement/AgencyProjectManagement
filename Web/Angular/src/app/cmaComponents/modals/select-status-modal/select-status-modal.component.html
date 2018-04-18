@@ -18,18 +18,18 @@
                   name="status-select"
                   class="form-control"
                   [ngClass]="{'form-control': true, 'is-invalid': errorMessage}"
-                  (change)="handleOnSelect()">
+                  (change)="handleOnSelect($event)">
             <option value="{{status.key}}" *ngFor="let status of statuses">{{status.value}}</option>
           </select>
         </div>
-        <div class="invalid-feedback" *ngIf="errorMessage">
-          {{errorMessage}}
+        <div class="invalid-feedback col-9 offset-3" *ngIf="errorMessage">
+          <span>{{errorMessage}}</span>
         </div>
       </div>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="handleOnConfirm()">Confirm</button>
+  <button type="button" class="btn btn-primary" [ladda]="isConfirmLoading" (click)="handleOnConfirm()">Confirm</button>
   <button type="button" class="btn btn-secondary" (click)="handleOnCancel()">Cancel</button>
 </div>

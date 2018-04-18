@@ -27,25 +27,31 @@ export class SelectStatusModalComponent implements OnInit {
     this.taskService.getStatuses()
       .then(value => {
         this.statuses = value;
+        if (this.statuses) {
+          this.selectedStatus = this.statuses[0].key;
+        }
       })
   }
 
-  handleOnSelect(status) {
-    this.selectedStatus = status;
+  handleOnSelect($event) {
+    this.selectedStatus = $event.target.value;
   }
 
   handleOnConfirm() {
     this.isConfirmLoading = true;
-    if (this.confirmCallback) {
-      this.taskService.setStatus(this.task.id)
-        .then(value => {
+    this.errorMessage = '';
+    this.taskService.setStatus(this.task.id, this.selectedStatus)
+      .then(value => {
+        if (this.confirmCallback) {
           this.confirmCallback(value);
-          this.bsModalRef.hide();
-        })
-        .catch(reason => {
-          this.errorMessage = reason.Message;
-        })
-    }
+        }
+        this.isConfirmLoading = false;
+        this.bsModalRef.hide();
+      })
+      .catch(reason => {
+        this.errorMessage = reason.Message;
+        this.isConfirmLoading = false;
+      })
   }
 
   handleOnCancel() {

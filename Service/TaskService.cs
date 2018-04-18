@@ -189,8 +189,12 @@ namespace Service
             {
                 task.FinishedDate = DateTime.Today;
             }
+            else
+            {
+                task.FinishedDate = null;
+            }
 
-            db.SaveChangesAsync();
+            db.SaveChanges();
             return task;
         }
 
@@ -539,6 +543,11 @@ namespace Service
                 var changer = userService.GetUser(task.ChangedBy.Value);
                 result["changedBy"] = userService.ParseToJson(changer, avatarPath);
             }
+            
+            if (task.FinishedDate.HasValue)
+            {
+                result["finishedDate"] = task.FinishedDate;
+            }
 
             if (task.StartDate.HasValue)
             {
@@ -552,7 +561,7 @@ namespace Service
             result["priorityText"] = DisplayCamelCaseString(taskPriority.ToString());
 
             if (isDetailed)
-            {
+            {                
                 ProjectService projectService = new ProjectService(db);
                 CommentService commentService = new CommentService(db);
                 AttachmentService attachmentService = new AttachmentService(db);

@@ -21,6 +21,13 @@ const routes: Routes = [
       },
       {
         data: {
+          title: 'View'
+        },
+        path: 'view',
+        component: ViewTask,
+      },
+      {
+        data: {
           title: 'Update'
         },
         path: 'edit/:id',

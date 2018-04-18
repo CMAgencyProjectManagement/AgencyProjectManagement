@@ -18,7 +18,7 @@ namespace Web.Controllers
     {
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize(Roles = "Admin,Staff,Manager")]
+        [Authorize]
         public IHttpActionResult GetTask(int id)
         {
             try
@@ -173,9 +173,9 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        [Route("{taskId:int}/status")]
+        [Route("setstatus")]
         [Authorize(Roles = "Manager")]
-        public IHttpActionResult SetStatus(int taskId, TaskStatus status)
+        public IHttpActionResult SetStatus(SetStatusViewModel setStatusViewModel)
         {
             try
             {
@@ -184,18 +184,28 @@ namespace Web.Controllers
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     TaskService taskService = new TaskService(db);
 
-                    if (taskService.IsUserManagerOfTask(currentUserId, taskId))
+                    if (!ModelState.IsValid)
                     {
-                        Task task = taskService.setStatus(taskId, currentUserId, status);
-                        task.ChangedBy = currentUserId;
-                        task.ChangedTime = DateTime.Now;
-                        return Ok(ResponseHelper.GetResponse(
-                            taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
-                        ));
+                        return Content(HttpStatusCode.BadRequest,
+                            ResponseHelper.GetExceptionResponse(ModelState));
                     }
 
-                    return Ok(ResponseHelper.GetExceptionResponse(
-                        "User have to be manager of this task to edit it's status"));
+                    if (!taskService.IsUserManagerOfTask(currentUserId, setStatusViewModel.TaskId.Value))
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            "User have to be manager of this task to edit it's status"));
+                    }
+
+                    Task task = taskService.setStatus(
+                        setStatusViewModel.TaskId.Value,
+                        currentUserId,
+                        (TaskStatus) setStatusViewModel.TaskStatus);
+                    task.ChangedBy = currentUserId;
+                    task.ChangedTime = DateTime.Now;
+                    return Ok(ResponseHelper.GetResponse(
+                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath,
+                            AgencyConfig.AttachmentPath)
+                    ));
                 }
             }
 
@@ -213,7 +223,6 @@ namespace Web.Controllers
         {
             try
             {
-
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
@@ -252,8 +261,8 @@ namespace Web.Controllers
 
                     if (flag == false)
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-
                 }
+
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
@@ -508,8 +517,9 @@ namespace Web.Controllers
                                 taskService.ParseToJson(task)
                             ));
                         }
+
                         return Ok(ResponseHelper.GetExceptionResponse(
-                         "User have to be manager of this task to edit it's Archive status"));
+                            "User have to be manager of this task to edit it's Archive status"));
                     }
                 }
                 else
@@ -524,6 +534,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpPut]
         [Route("unarchive")]
         [Authorize(Roles = "Manager")]
@@ -547,8 +558,9 @@ namespace Web.Controllers
                                 taskService.ParseToJson(task)
                             ));
                         }
+
                         return Ok(ResponseHelper.GetExceptionResponse(
-                         "User have to be manager of this task to edit it's Archive status"));
+                            "User have to be manager of this task to edit it's Archive status"));
                     }
                 }
                 else
@@ -563,7 +575,5 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
-
     }
 }
