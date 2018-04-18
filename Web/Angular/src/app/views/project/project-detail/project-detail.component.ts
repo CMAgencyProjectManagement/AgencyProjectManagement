@@ -3,13 +3,16 @@ import { ProjectService } from '../../../services/project.service';
 import { Project } from '../../../interfaces/project';
 import { Location } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap';
-import { CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent } from '../../../cmaComponents/modals';
+import { CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent, SelectTeamsModalComponent } from '../../../cmaComponents/modals';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import * as _ from 'lodash';
 import { Router } from '@angular/router';
+import { Team } from '../../../interfaces/team';
+import { TeamService } from 'app/services/team.service';
 
 @Component({
   templateUrl: './project-detail.component.html',
@@ -30,10 +33,33 @@ export class ProjectDetailComponent implements OnInit {
   foundProject: Project;
   projectID: number;
   project: Project;
-  isLoading: boolean;
   isPageLoading: boolean;
-  constructor(private projectService: ProjectService, private router: Router, private location: Location, private modalService: BsModalService
+  isLoading: {
+    page: boolean
+    attachmentUpload: boolean
+    attachmentRemove: boolean[]
+    openAssignModal: boolean
+    openUnAssignModal: boolean
+    done: boolean,
+    comment: boolean,
+    editComment: boolean
+  };
+  constructor(private projectService: ProjectService,
+    private router: Router,
+    private location: Location,
+    private modalService: BsModalService,
+    private teamService: TeamService
   ) {
+    this.isLoading = {
+      page: true,
+      attachmentUpload: false,
+      attachmentRemove: [],
+      openAssignModal: false,
+      openUnAssignModal: false,
+      done: false,
+      comment: false,
+      editComment: true,
+    };
     this.isPageLoading = true;
   }
 
@@ -81,10 +107,10 @@ export class ProjectDetailComponent implements OnInit {
     this.projectService.closeProject(
       projectID
     ).then(value => {
-      this.isLoading = false;
+      this.isPageLoading = false;
       this.router.navigate(['project']);
     }).catch(reason => {
-      this.isLoading = false;
+      this.isPageLoading = false;
       console.debug(reason);
       this.handleCloseError(reason.Data);
     })
@@ -103,7 +129,7 @@ export class ProjectDetailComponent implements OnInit {
     const onConfirm = () => {
       this.projectService.closeProject(projectID)
         .then(value => {
-          this.isLoading = false;
+          this.isPageLoading = false;
           this.router.navigate(['project']);
         })
         .catch(reason => {
@@ -128,4 +154,48 @@ export class ProjectDetailComponent implements OnInit {
     };
     this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
+
+  handleOnAssignBtnClick() {
+    console.debug(this.foundProject.id);
+    const onConfirm = (selectedTeams: Team[]) => {
+      let selectedIds = _.map(selectedTeams, 'id');
+      this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
+        .then(value => {
+          this.foundProject.teams = _.concat(this.foundProject.teams, selectedTeams);
+          this.isLoading.openAssignModal = false
+        })
+        .catch(reason => {
+          console.debug("Here");
+          this.showErrorModal('Assign fail');
+          this.isLoading.openAssignModal = false
+        })
+    };
+    this.teamService.getAllTeam()
+      .then(value => {
+        const pool = [];
+        for (let team of value as Team[]) {
+          let removeFlag = false;
+          for (let assignedTeam of this.foundProject.teams) {
+            if (assignedTeam.id == team.id) {
+              removeFlag = true;
+            }
+          }
+          if (!removeFlag) {
+            pool.push(team);
+          }
+        }
+
+        const initialState = {
+          confirmCallback: onConfirm,
+          cancelCallback: () => {
+          },
+          closeCallback: () => {
+          },
+          userPool: pool,
+          title: `Assign`,
+          confirmButtonText: 'Assign'
+        };
+        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
+      })
+  };
 }

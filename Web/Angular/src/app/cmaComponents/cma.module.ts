@@ -18,7 +18,8 @@ import {
   ErrorModalComponent,
   SuccessModalComponent,
   RenameListModalComponent,
-  SelectUsersModalComponent
+  SelectUsersModalComponent,
+  SelectTeamsModalComponent
 } from './modals';
 import {SpinnerModule} from '../components/spinner/spinner.module';
 import { TypeaheadModule } from 'ngx-bootstrap';
@@ -56,7 +57,8 @@ import { SelectStatusModalComponent } from './modals/select-status-modal/select-
     SelectUsersModalComponent,
     CommentModalComponent,
     TaskTableComponent,
-    SelectStatusModalComponent
+    SelectStatusModalComponent,
+    SelectTeamsModalComponent
   ],
   declarations: [
     ProjectCardComponent,
@@ -64,7 +66,7 @@ import { SelectStatusModalComponent } from './modals/select-status-modal/select-
     AssignMembersCardComponent,
     ConfirmModalComponent,
     UserListComponent,
-    CommentComponent,
+    CommentComponent, 
     ErrorModalComponent,
     CreateListModalComponent,
     SuccessModalComponent,
@@ -73,7 +75,8 @@ import { SelectStatusModalComponent } from './modals/select-status-modal/select-
     SelectUsersModalComponent,
     CommentModalComponent,
     TaskTableComponent,
-    SelectStatusModalComponent
+    SelectStatusModalComponent,
+    SelectTeamsModalComponent
   ]
 })
 export class CmaModule {

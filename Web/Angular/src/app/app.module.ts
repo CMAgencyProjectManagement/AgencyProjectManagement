@@ -101,10 +101,12 @@ import {
   RenameListModalComponent,
   SelectUsersModalComponent,
   CommentModalComponent,
-  SelectStatusModalComponent
+  SelectStatusModalComponent,
+  SelectTeamsModalComponent
 } from './cmaComponents/modals';
 
 const MODALS = [
+  SelectTeamsModalComponent,
   SuccessModalComponent,
   ErrorModalComponent,
   CreateListModalComponent,
