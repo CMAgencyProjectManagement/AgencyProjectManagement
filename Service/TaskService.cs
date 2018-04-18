@@ -132,9 +132,9 @@ namespace Service
             return users;
         }
 
-        public bool IsUserManagerOfTask(int userId)
+        public bool IsUserManagerOfTask(int userId, int taskId)
         {
-            IEnumerable<User> managers = GetManagersOfTask(userId);
+            IEnumerable<User> managers = GetManagersOfTask(taskId);
             foreach (User manager in managers)
             {
                 if (manager.ID == userId)

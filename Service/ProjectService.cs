@@ -233,7 +233,7 @@ namespace Service
                     tasks.Add(taskInList);
                 }
             }
-            
+
             int taskNumber = tasks.Count;
 
             List<JObject> calculatedResult = new List<JObject>();
@@ -259,6 +259,37 @@ namespace Service
             return result;
         }
 
+        public Project SetProjectToTeams(int projectId, int[] teamIds, int modifierId)
+        {
+            Project project = GetProjectByID(projectId);
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with id ${projectId} not found");
+            }
+
+            foreach (int teamId in teamIds)
+            {
+                Team team = db.Teams.Find(teamId);
+                if (team == null)
+                {
+                    throw new ObjectNotFoundException($"Team with id ${teamId} not found");
+                }
+
+                TeamProject teamProject = new TeamProject
+                {
+                    ProjectID = project.ID,
+                    TeamID = team.ID
+                };
+                db.TeamProjects.Add(teamProject);
+            }
+
+            project.ChangedBy = modifierId;
+            project.ChangedTime = DateTime.Today;
+
+            db.SaveChanges();
+            return project;
+        }
+
         public JObject ParseToJsonReportAPI(Project project, bool isIncludeTask = false)
         {
             var usersInProject = db.UserProjects.Where(x => x.ProjectID == project.ID).Select(x => x.User);
@@ -266,15 +297,14 @@ namespace Service
             List<User> noTaskUser = new List<User>();
             foreach (var userId in userIdsInProject)
             {
-                var users = db.UserTasks.Where(x => x.UserID == userId && x.IsAssigned == false).Select(x => x.User).ToList();
+                var users = db.UserTasks.Where(x => x.UserID == userId && x.IsAssigned == false).Select(x => x.User)
+                    .ToList();
                 noTaskUser.AddRange(users);
             }
-            
 
 
             var result = new JObject
             {
-
                 ["id"] = project.ID,
                 ["name"] = project.Name,
                 ["userNumberInProject"] = usersInProject.Count(),
@@ -293,6 +323,7 @@ namespace Service
                         tasks.Add(taskInList);
                     }
                 }
+
                 List<Task> TasksFinishedThisWeek = new List<Task>();
                 foreach (var task in tasks)
                 {
@@ -301,14 +332,14 @@ namespace Service
                         TasksFinishedThisWeek.Add(task);
                     }
                 }
-                
+
                 var tasksJArray = new JArray();
                 foreach (var task in TasksFinishedThisWeek)
                 {
-                   tasksJArray.Add(taskService.ParseToJson(task));
+                    tasksJArray.Add(taskService.ParseToJson(task));
                 }
-                
-                result["task"]  = tasksJArray;
+
+                result["task"] = tasksJArray;
             }
 
             return result;
@@ -347,24 +378,27 @@ namespace Service
                 {
                     listJArray.Add(listService.ParseToJson(list));
                 }
+
                 result["lists"] = listJArray;
 
                 var users = userService.GetUsersOfProject(
                     project.ID
                 );
-                
+
                 var jArray = new JArray();
                 foreach (User user in users)
                 {
                     jArray.Add(userService.ParseToJson(user, avatarPath));
                 }
+
                 result["assignees"] = jArray;
 
                 JArray teamsJson = new JArray();
                 foreach (TeamProject teamProject in project.TeamProjects)
                 {
-                    teamsJson.Add(teamservice.ParseToJson(teamProject.Team,false,avatarPath: avatarPath));
+                    teamsJson.Add(teamservice.ParseToJson(teamProject.Team, false, avatarPath: avatarPath));
                 }
+
                 result["teams"] = teamsJson;
             }
 

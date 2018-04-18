@@ -44,6 +44,36 @@ namespace Web.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("setteams")]
+        [Authorize]
+        public IHttpActionResult SetProjectToTeams(SetProjectToTeamsViewModel projectToTeamsViewModel)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    UserService userService = new UserService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+
+                    Project project = projectService.SetProjectToTeams(
+                        projectToTeamsViewModel.ProjectID,
+                        projectToTeamsViewModel.TeamIDs,
+                        currentUser.ID);
+
+                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+
         [HttpGet]
         [Route("")]
         [Authorize]
@@ -405,6 +435,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("{id:int}/reportapi")]
         [Authorize(Roles = "Admin")]
@@ -426,8 +457,6 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
                     }
-
-                    
                 }
             }
             catch (Exception ex)
