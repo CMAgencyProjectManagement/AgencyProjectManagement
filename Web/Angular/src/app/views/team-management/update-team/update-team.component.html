@@ -5,6 +5,8 @@
         <strong>Update department</strong>
       </div>
       <app-spinner *ngIf="loading.page"></app-spinner>
+      
+
       <div *ngIf="!loading.page" class="card-body">
         <app-assign-members-card
           [title]="foundTeam.name"
@@ -17,7 +19,6 @@
           (onAssign)="assign($event)"
           (onUnAssign)="unAssign($event)"
           (onSetRole)="setRole($event)">
-
         </app-assign-members-card>
       </div>
     </div>

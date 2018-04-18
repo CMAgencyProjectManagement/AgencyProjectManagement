@@ -6,6 +6,7 @@
  *  my account (profile)
  *  update profile
  */
+
 const staff_navigation = [
   {
     name: 'Dashboard',
@@ -28,22 +29,9 @@ const staff_navigation = [
     icon: 'icon-briefcase'
   },
   {
-    name: 'Profile',
-    url: '/account/view',
+    name: 'My Profile',
+    url: '/account/detail',
     icon: 'icon-user',
-    children: [
-      {
-        name: 'View account',
-        url: '/account/view',
-        icon: 'icon-user',
-
-      },
-      {
-        name: 'Create account',
-        url: '/account/create',
-        icon: 'icon-user',
-      },
-    ]
   }
 ];
 
