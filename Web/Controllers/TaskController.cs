@@ -184,7 +184,7 @@ namespace Web.Controllers
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     TaskService taskService = new TaskService(db);
 
-                    if (taskService.IsUserManagerOfTask(currentUserId,taskId))
+                    if (taskService.IsUserManagerOfTask(currentUserId, taskId))
                     {
                         Task task = taskService.setStatus(taskId, currentUserId, status);
                         task.ChangedBy = currentUserId;
@@ -213,7 +213,7 @@ namespace Web.Controllers
         {
             try
             {
-                
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
@@ -260,7 +260,7 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         UserService userService = new UserService(db);
-                        
+
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
                         DateTime startTime = createTaskModel.StartDate;
@@ -301,83 +301,89 @@ namespace Web.Controllers
         {
             try
             {
-                using (CmAgencyEntities db =  new CmAgencyEntities())
+                using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    bool flag = true;
-                    if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
+                    UserService userService = new UserService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    User currentUser = userService.GetUser(currentUserId);
+
+                    if (taskService.IsUserManagerOfTask(currentUserId, updateTaskViewModel.Id))
                     {
-                        if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                        bool flag = true;
+                        if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                         {
-                            ModelState.AddModelError("Name", "Task name is taken");
+                            if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                            {
+                                ModelState.AddModelError("Name", "Task name is taken");
+                                flag = false;
+                            }
+                        }
+
+                        if (taskService.CheckForListId(updateTaskViewModel.ListID))
+                        {
+                            ModelState.AddModelError("ListID", "The System don't have this list");
                             flag = false;
                         }
-                    }
 
-                    if (taskService.CheckForListId(updateTaskViewModel.ListID))
-                    {
-                        ModelState.AddModelError("ListID", "The System don't have this list");
-                        flag = false;
-                    }
+                        if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
+                        {
+                            ModelState.AddModelError("Priority", "Invalid Priority ");
+                            flag = false;
+                        }
 
-                    if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
-                    {
-                        ModelState.AddModelError("Priority", "Invalid Priority ");
-                        flag = false;
-                    }
+                        if (updateTaskViewModel.Duration < 1)
+                        {
+                            ModelState.AddModelError("Duration",
+                                "Duration must be greater than 1 ");
+                            flag = false;
+                        }
 
-                    if (updateTaskViewModel.Duration < 1)
-                    {
-                        ModelState.AddModelError("Duration",
-                            "Duration must be greater than 1 ");
-                        flag = false;
-                    }
+                        if (updateTaskViewModel.Effort < 1 ||
+                            updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
+                        {
+                            ModelState.AddModelError("Effort",
+                                "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
+                            flag = false;
+                        }
 
-                    if (updateTaskViewModel.Effort < 1 ||
-                        updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
-                    {
-                        ModelState.AddModelError("Effort",
-                            "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
-                        flag = false;
-                    }
+                        if (flag == false)
+                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
-                    if (flag == false)
-                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
-                }
-                if (ModelState.IsValid)
-                    {
-                        using (CmAgencyEntities db = new CmAgencyEntities())
+                        if (ModelState.IsValid)
                         {
 
 
-                        TaskService taskService = new TaskService(db);
-                        UserService userService = new UserService(db);
-                            string userIdString = User.Identity.GetUserId();
-                            User currentUser = userService.GetUser(userIdString);
 
                             var updatedTask = taskService.UpdateTask(
-                                updateTaskViewModel.Id,
-                                updateTaskViewModel.Name,
-                                updateTaskViewModel.Description,
-                                updateTaskViewModel.ListID,
-                                updateTaskViewModel.Priority,
-                                updateTaskViewModel.StartDate,
-                                updateTaskViewModel.Duration,
-                                updateTaskViewModel.Effort,
-                                currentUser.ID,
-                                DateTime.Now.Date
-                            );
+                                                        updateTaskViewModel.Id,
+                                                        updateTaskViewModel.Name,
+                                                        updateTaskViewModel.Description,
+                                                        updateTaskViewModel.ListID,
+                                                        updateTaskViewModel.Priority,
+                                                        updateTaskViewModel.StartDate,
+                                                        updateTaskViewModel.Duration,
+                                                        updateTaskViewModel.Effort,
+                                                        currentUser.ID,
+                                                        DateTime.Now.Date
+                                                    );
                             return Ok(ResponseHelper.GetResponse(
                                 taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                             ));
+
+
+
+                        }
+                        else
+                        {
+                            return Content(HttpStatusCode.BadRequest,
+                                ResponseHelper.GetExceptionResponse(ModelState));
                         }
                     }
-                    else
-                    {
-                        return Content(HttpStatusCode.BadRequest,
-                            ResponseHelper.GetExceptionResponse(ModelState));
-                    }
+                    return Ok(ResponseHelper.GetExceptionResponse(
+                  "User have to be manager of this task to edit task "));
+                }
             }
             catch (Exception ex)
             {
@@ -399,16 +405,24 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                        foreach (int userID in assignTaskModel.UserIDs)
+                        if (taskService.IsUserManagerOfTask(currentUserId, assignTaskModel.TaskID))
                         {
-                            taskService.AssignTask(
-                                userID: userID,
-                                taskID: assignTaskModel.TaskID,
-                                currentUserId: currentUserId
-                            );
-                        }
+                            foreach (int userID in assignTaskModel.UserIDs)
+                            {
+                                taskService.AssignTask(
+                                    userID: userID,
+                                    taskID: assignTaskModel.TaskID,
+                                    currentUserId: currentUserId
+                                );
+                            }
+                            return Ok(ResponseHelper.GetResponse());
 
-                        return Ok(ResponseHelper.GetResponse());
+                        }
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                       "User have to be manager of this task to Assign this task"));
+
+
+
                     }
                 }
                 else
@@ -437,20 +451,25 @@ namespace Web.Controllers
                     {
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         TaskService taskService = new TaskService(db);
-
-                        foreach (int userID in unassignTaskModel.UserIDs)
+                        if (taskService.IsUserManagerOfTask(currentUserId, unassignTaskModel.TaskID))
                         {
-                            taskService.UnAssignTask(
-                                userID: userID,
-                                taskID: unassignTaskModel.TaskID,
-                                currentUserId: currentUserId
-                            );
+                            foreach (int userID in unassignTaskModel.UserIDs)
+                            {
+                                taskService.UnAssignTask(
+                                    userID: userID,
+                                    taskID: unassignTaskModel.TaskID,
+                                    currentUserId: currentUserId
+                                );
+                            }
+                            return Ok(ResponseHelper.GetResponse(new JObject
+                            {
+                                ["id"] = new JArray(unassignTaskModel.UserIDs)
+                            }));
                         }
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                        "User have to be manager of this task to Unassign this task"));
 
-                        return Ok(ResponseHelper.GetResponse(new JObject
-                        {
-                            ["id"] = new JArray(unassignTaskModel.UserIDs)
-                        }));
+
                     }
                 }
                 else
@@ -479,8 +498,8 @@ namespace Web.Controllers
                     {
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         TaskService taskService = new TaskService(db);
-                           var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
-                            Task task = db.Tasks.Find(archivedTask);
+                        var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
+                        Task task = db.Tasks.Find(archivedTask);
                         if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
                         {
                             task.ChangedBy = currentUserId;
