@@ -13,7 +13,7 @@ const serverPath = {
   allProject: '/api/project/all',
   getProject: (projectId) => `/api/project/${projectId}`,
   myProject: '/api/project',
-  setProjectToTeams: '/api/project/assignteams',
+  setProjectToTeams: '/api/project/setteams',
   getProjectList: (projectId: number) => `/api/project/${projectId}/list`,
   updateProject: '/api/project',
   createProject: '/api/project',
