@@ -14,10 +14,15 @@ export class ProjectService {
   }
 
 
-  public setTeamToProject(projectId: number, teamIds: number): Promise<any> {
+  public setTeamToProject(projectId: number, teamIds: number[]): Promise<any> {
+    const objData = {
+      ProjectID: name,
+      TeamIDs: teamIds
+    };
     return new Promise<any>((resolve, reject) => {
       put(serverPath.setProjectToTeams)
         .set('token', this.tokenCursor.get())
+        .send(objData)
         .then(res => {
           const content = res.body;
           if (content.IsSuccess) {
