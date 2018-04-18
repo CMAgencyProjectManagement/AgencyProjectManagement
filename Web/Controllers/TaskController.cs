@@ -468,7 +468,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("archive")]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult Archive(ArchiveTaskModel archiveTaskModel)
         {
             try
@@ -507,7 +507,7 @@ namespace Web.Controllers
         }
         [HttpPut]
         [Route("unarchive")]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult UnArchive(ArchiveTaskModel archiveTaskModel)
         {
             try
