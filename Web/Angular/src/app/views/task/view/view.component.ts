@@ -34,7 +34,8 @@ export class ViewComponent implements OnInit {
     openUnAssignModal: boolean
     done: boolean,
     comment: boolean,
-    editComment: boolean
+    editComment: boolean,
+    setStatus: boolean
   };
   statuses: any[];
   priorities: any[];
@@ -65,6 +66,7 @@ export class ViewComponent implements OnInit {
       done: false,
       comment: false,
       editComment: true,
+      setStatus: false
     };
     this.openCommentForm = false;
     this.resetErrors();
@@ -98,7 +100,7 @@ export class ViewComponent implements OnInit {
   }
 
   handleOnCommentBtnClick() {
-    this.openCommentForm = true;
+    this.openCommentForm = !this.openCommentForm;
   }
 
   handleAddCommentBtnClick() {
@@ -291,10 +293,18 @@ export class ViewComponent implements OnInit {
   }
 
   handleSetStatusBtnClick() {
+    this.isLoading.setStatus = true;
     const initialState = {
       task: this.foundTask,
       confirmCallback: (newTask) => {
         this.foundTask = newTask;
+        this.isLoading.setStatus = false;
+      },
+      cancelCallback: () => {
+        this.isLoading.setStatus = false;
+      },
+      closeCallback: () => {
+      this.isLoading.setStatus = false;
       }
     };
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog'});

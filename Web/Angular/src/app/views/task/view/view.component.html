@@ -15,24 +15,24 @@
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
-        <button class="btn btn-secondary bg-light"
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
                 (click)="handleOnAssignBtnClick()"
                 [ladda]="isLoading.openAssignModal">
           <i class="fa fa-user-plus"></i>&nbsp; Assign
         </button>
-        <button class="btn btn-secondary bg-light"
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}"
                 (click)="handleOnUnAssignBtnClick()"
                 [ladda]="isLoading.openUnAssignModal">
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>
-        <button class="btn btn-secondary bg-light"
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
                 *ngIf="!managementMode"
                 [disabled]="foundTask.statusText == 'Done'"
                 (click)="handleOnNeedReviewBtnClick()"
                 [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
-        <button class="btn btn-secondary bg-light"
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
                 *ngIf="managementMode"
                 (click)="handleSetStatusBtnClick()"
                 [ladda]="isLoading.done">
