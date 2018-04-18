@@ -92,12 +92,12 @@ namespace Service
             {
                 var taskList = new List<Task>();
 
-                foreach (var task in user.Tasks)
+                foreach (var userTask in user.UserTasks)
                 {
-                    if (task.Status == (int) TaskStatus.NotDone ||
-                        task.Status == (int) TaskStatus.NeedReview)
+                    if (userTask.Task.Status == (int) TaskStatus.NotDone ||
+                        userTask.Task.Status == (int) TaskStatus.NeedReview)
                     {
-                        taskList.Add(task);
+                        taskList.Add(userTask.Task);
                     }
                 }
 

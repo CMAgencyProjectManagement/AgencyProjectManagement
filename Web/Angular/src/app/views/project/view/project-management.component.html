@@ -38,24 +38,24 @@
                 <p *ngIf="!project.description">N/A</p>
               </td>
               <td>
-                <span *ngIf=project.deadline>{{project.deadline | date:'dd/M/y'}}</span>
+                <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
                 <span *ngIf=!project.deadline>N/A</span>
               </td>
               <td>
-                <span *ngIf=project.startDate>{{project.startDate | date:'dd/M/y'}}</span>
+                <span *ngIf=project.startDate>{{project.startDate | date:'dd/MM/yyyy'}}</span>
                 <span *ngIf=!project.startDate>N/A</span>
               </td>
               <td>
-                <p *ngIf="project.status && project.status == 0">
+                <span *ngIf="project.status === 0">
                   Not started
-                </p>
-                <p *ngIf="project.status && project.status == 1">
+                </span>
+                <span *ngIf="project.status === 1">
                   Executing
-                </p>
-                <p *ngIf="project.status && project.status == 2">
+                </span>
+                <span *ngIf="project.status === 2">
                   Closed
-                </p>
-                <span *ngIf=!project.status>N/A</span>
+                </span>
+                <span *ngIf="project.status === null">N/A</span>
               </td>
               <td>
                 <a routerLink="#/project/update/{{project.id}}">

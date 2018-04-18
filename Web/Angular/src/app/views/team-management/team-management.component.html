@@ -22,7 +22,8 @@
                 <a routerLink="/department/{{team.id}}/detail">{{team.name}}</a>
               </td>
               <td>
-                <p>{{team.manager.username}}</p>
+                <span *ngIf="team.manager">{{team.manager.username}}</span>
+                <span *ngIf="!team.manager">N/A</span>
               </td>
               <td>
                 <p>{{team.createdDate}}</p>

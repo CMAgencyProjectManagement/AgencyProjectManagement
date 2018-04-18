@@ -10,6 +10,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LaddaModule} from 'angular2-ladda';
 import {MyDatePickerModule} from 'mydatepicker';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
+import {DataTablesModule} from 'angular-datatables';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { MyTasksComponent } from './my-tasks/my-tasks.component';
     }),
     FormsModule,
     MyDatePickerModule,
+    DataTablesModule,
   ],
   declarations: [
     ViewComponent,

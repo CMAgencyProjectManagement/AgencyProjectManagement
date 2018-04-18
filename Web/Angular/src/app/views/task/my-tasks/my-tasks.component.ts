@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {StoreService} from '../../../services/tree.service';
 import {User} from '../../../interfaces/user';
 import {Task} from '../../../interfaces/task';
@@ -7,6 +7,7 @@ import {Location} from '@angular/common';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import {DataTableDirective} from 'angular-datatables';
 
 @Component({
   selector: 'app-my-tasks',
@@ -14,10 +15,21 @@ import {ErrorModalComponent} from '../../../cmaComponents/modals';
   styleUrls: ['./my-tasks.component.scss']
 })
 export class MyTasksComponent implements OnInit {
+  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
   currentUser: User;
   tasks: Task[];
   isLoading: {
     page: boolean
+  };
+  datatableOptions: DataTables.Settings = {
+    lengthChange: false,
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: [5]
+      }
+    ]
   };
 
   constructor(
@@ -30,16 +42,26 @@ export class MyTasksComponent implements OnInit {
   ) {
     this.currentUser = storeService.get(['currentUser']);
     this.tasks = [];
-    this.isLoading.page = true;
+    this.isLoading = {
+      page: true
+    };
+  }
+
+  search(searchStr: string) {
+    this.datatableElement.dtInstance.then(
+      (dtInstance: DataTables.Api) => dtInstance.search(searchStr).draw()
+    );
   }
 
   ngOnInit() {
     this.taskService.getMyTask()
       .then(value => {
         this.tasks = value;
+        this.isLoading.page = false;
       })
       .catch(reason => {
         this.showErrorModal(reason.Message);
+        this.isLoading.page = false;
       })
   }
 

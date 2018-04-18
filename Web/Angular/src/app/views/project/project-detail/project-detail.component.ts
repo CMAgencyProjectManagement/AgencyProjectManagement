@@ -29,7 +29,7 @@ export class ProjectDetailComponent implements OnInit {
   public dangerModal;
   public infoModal;
   projects: Project[];
-  viewForm: FormGroup
+  viewForm: FormGroup;
   foundProject: Project;
   projectID: number;
   project: Project;
