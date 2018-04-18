@@ -145,6 +145,27 @@ namespace Service
 
             return false;
         }
+       
+        public bool IsAssigneeOfTask(int userId, int taskId)
+        {
+            Task task = GetTask(taskId);
+            if (task == null){throw new ObjectNotFoundException($"Task with id {taskId} not found");}
+
+            var staff = db.UserTasks
+                .Where(x => x.TaskID == taskId && x.UserID == userId && x.IsAssigned == true)
+                .Select(x => x.User)
+                .SingleOrDefault();
+            if (staff != null)
+            {
+                if (!staff.IsManager)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
 
         public Task setStatus(int taskId, int modifierId, TaskStatus taskStatus)
         {

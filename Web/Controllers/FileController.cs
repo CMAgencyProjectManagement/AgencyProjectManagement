@@ -94,7 +94,17 @@ namespace Web.Controllers
         {
             try
             {
-                if (!Request.Content.IsMimeMultipartContent())
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());                    
+                    if (!taskService.IsAssigneeOfTask(currentUserId,taskId))
+                    {
+                        return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Not assignee of this task"));
+                    }
+                }
+                    if (!Request.Content.IsMimeMultipartContent())
                 {
                     return Content(HttpStatusCode.UnsupportedMediaType,
                         ResponseHelper.GetExceptionResponse("Not supported media type"));
@@ -165,6 +175,17 @@ namespace Web.Controllers
             
             try
             {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    var taskId = db.Attachments.Find(attId).TaskID;
+                    if (!taskService.IsAssigneeOfTask(currentUserId,taskId))
+                    {
+                        return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Dont have assignee of this task"));
+                    }
+                }
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     AttachmentService attachmentService = new AttachmentService(db);

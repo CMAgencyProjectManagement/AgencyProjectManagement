@@ -21,6 +21,17 @@ namespace Web.Controllers
         {
             try
             {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    if (!taskService.IsAssigneeOfTask(currentUserId, createCommentModel.TaskID))
+                    {
+                        return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Not assignee of this task"));
+                    }
+                }
+
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
@@ -57,6 +68,18 @@ namespace Web.Controllers
         {
             try
             {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    var taskId = db.Comments.Find(updateCommentModel.id).TaskID;
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
+                    {
+                        return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Not assignee of this task"));
+                    }
+                }
+
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
