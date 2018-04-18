@@ -187,7 +187,7 @@ export class AddComponent implements OnInit {
       const initialState = {
         message: 'Your task successfully created'
       };
-      this.modalService.show(SuccessModalComponent, {initialState, class: 'modal-dialog modal-danger'});
+      this.modalService.show(SuccessModalComponent, {initialState, class: 'modal-dialog'});
       this.isLoading.create = false;
     }).catch(reason => {
       this.setErrors(reason.Data);
