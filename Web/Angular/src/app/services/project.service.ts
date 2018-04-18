@@ -16,7 +16,7 @@ export class ProjectService {
 
   public setTeamToProject(projectId: number, teamIds: number[]): Promise<any> {
     const objData = {
-      ProjectID: name,
+      ProjectID: projectId,
       TeamIDs: teamIds
     };
     return new Promise<any>((resolve, reject) => {
