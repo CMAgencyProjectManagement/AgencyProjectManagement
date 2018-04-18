@@ -481,7 +481,7 @@ namespace Web.Controllers
                         TaskService taskService = new TaskService(db);
                            var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
                             Task task = db.Tasks.Find(archivedTask);
-                        if (currentUserId== task.CreatedBy)
+                        if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
                         {
                             task.ChangedBy = currentUserId;
                             task.ChangedTime = DateTime.Now;
@@ -490,7 +490,7 @@ namespace Web.Controllers
                             ));
                         }
                         return Ok(ResponseHelper.GetExceptionResponse(
-                         "User have to be manager who create this task to edit it's Archive status"));
+                         "User have to be manager of this task to edit it's Archive status"));
                     }
                 }
                 else
@@ -520,7 +520,7 @@ namespace Web.Controllers
                         TaskService taskService = new TaskService(db);
                         var archivedTask = taskService.UnArchiveTask(archiveTaskModel.TaskID);
                         Task task = db.Tasks.Find(archivedTask);
-                        if (currentUserId == task.CreatedBy)
+                        if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
                         {
                             task.ChangedBy = currentUserId;
                             task.ChangedTime = DateTime.Now;
@@ -529,7 +529,7 @@ namespace Web.Controllers
                             ));
                         }
                         return Ok(ResponseHelper.GetExceptionResponse(
-                         "User have to be manager who create this task to edit it's Archive status"));
+                         "User have to be manager of this task to edit it's Archive status"));
                     }
                 }
                 else
@@ -544,6 +544,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
 
     }
 }
