@@ -165,8 +165,8 @@ export class EditComponent implements OnInit {
       startDate: {
         date: {
           year: startDate.year(),
-          month: startDate.month() + 1, // FOR SOME F*CKING REASON month() and day() come out as 0
-          day: startDate.day() + 1
+          month: startDate.month() + 1,
+          day: startDate.date()
         }
       },
       duration: this.foundTask.duration,

@@ -36,7 +36,7 @@
           <div class="form-group row">
             <!--LIST-->
             <label class="col-4 col-form-label text-right" for="list-input">
-              List <span style="color: red"><strong>*</strong></span>
+              List
             </label>
             <div class="col-8">
               <select formControlName="list" id="list-input"
@@ -67,9 +67,9 @@
             <div class="col-8 datepicker-group">
               <my-date-picker id="startDate-input" #datepicker
                               [options]="myDatePickerOptions"
-                              formControlName="startDate"
                               [ngClass]="{'form-control': false, 'is-invalid': errors.startDate}"
-                              required></my-date-picker>
+                              formControlName="startDate" required>
+              </my-date-picker>
               <div class="invalid-feedback" [ngStyle]="{'display':'block'}" *ngIf="errors.startDate">
                 {{errors.startDate}}
               </div>
@@ -112,7 +112,7 @@
               <button class="btn btn-primary" (click)="handleCreateTask()" [ladda]="isLoading.create">
                 Create
               </button>
-              <button class="btn btn-secondary" type="button" (click)="setDefaultValue()">Reset</button>
+              <button class="btn btn-secondary" type="button" (click)="handleOnCancelBtnClick()">Reset</button>
             </div>
           </div>
         </div>

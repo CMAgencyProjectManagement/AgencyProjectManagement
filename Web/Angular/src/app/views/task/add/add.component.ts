@@ -8,7 +8,10 @@ import {
 } from '@angular/forms';
 import {IMyDpOptions} from 'mydatepicker';
 import {BsModalService} from 'ngx-bootstrap/modal';
-import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import {
+  ErrorModalComponent,
+  SuccessModalComponent
+} from '../../../cmaComponents/modals';
 import {TaskService} from '../../../services/task.service';
 import {Location} from '@angular/common';
 import {Project} from '../../../interfaces/project';
@@ -101,6 +104,11 @@ export class AddComponent implements OnInit {
     }
   }
 
+  handleOnCancelBtnClick() {
+    this.setDefaultValue();
+    this.location.back();
+  }
+
   resetError() {
     this.errors = {
       name: '',
@@ -154,7 +162,7 @@ export class AddComponent implements OnInit {
         date: {
           year: now.year(),
           month: now.month() + 1,
-          day: now.day()
+          day: now.date()
         }
       },
       duration: '',
@@ -176,6 +184,10 @@ export class AddComponent implements OnInit {
       values.duration,
       values.effort
     ).then(value => {
+      const initialState = {
+        message: 'Your task successfully created'
+      };
+      this.modalService.show(SuccessModalComponent, {initialState, class: 'modal-dialog modal-danger'});
       this.isLoading.create = false;
     }).catch(reason => {
       this.setErrors(reason.Data);
