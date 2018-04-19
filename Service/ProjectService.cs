@@ -220,44 +220,6 @@ namespace Service
             }
         }
 
-        public JObject ParseToJsonStatusReport(Project project)
-        {
-            List<Task> tasks = new List<Task>();
-            var lists = db.Lists.Where(x => x.ProjectID == project.ID);
-            var listIds = db.Lists.Where(x => x.ProjectID == project.ID).Select(x => x.ID).ToList();
-            foreach (var listId in listIds)
-            {
-                var tasksInList = db.Tasks.Where(x => x.ListID == listId);
-                foreach (var taskInList in tasksInList)
-                {
-                    tasks.Add(taskInList);
-                }
-            }
-
-            int taskNumber = tasks.Count;
-
-            List<JObject> calculatedResult = new List<JObject>();
-            foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
-            {
-                int taskStatusCount = tasks.Where(x => x.Status == (int) status).Count();
-                calculatedResult.Add(new JObject
-                {
-                    ["key"] = status.ToString(),
-                    ["value"] = (decimal) (taskStatusCount * 100) / taskNumber
-                });
-            }
-
-            var result = new JObject
-            {
-                ["id"] = project.ID,
-                ["name"] = project.Name,
-                ["taskCount"] = tasks.Count(),
-                ["result"] = new JArray(calculatedResult),
-            };
-
-
-            return result;
-        }
 
         public Project SetProjectToTeams(int projectId, int[] teamIds, int modifierId)
         {
@@ -289,10 +251,15 @@ namespace Service
             db.SaveChanges();
             return project;
         }
-
-        public JObject ParseToJsonReportAPI(Project project, bool isIncludeTask = false)
+        public IQueryable<int> GetUsersInProject(int projectId)
         {
-            var usersInProject = db.UserProjects.Where(x => x.ProjectID == project.ID).Select(x => x.User);
+            var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
+            var userIdsInProject = usersInProject.Select(x => x.ID);
+            return userIdsInProject;
+        }
+        public List<User>  GetNoTaskUsersInProject(int projectId)
+        {
+            var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
             var userIdsInProject = usersInProject.Select(x => x.ID);
             List<User> noTaskUser = new List<User>();
             foreach (var userId in userIdsInProject)
@@ -301,49 +268,98 @@ namespace Service
                     .ToList();
                 noTaskUser.AddRange(users);
             }
+            return noTaskUser;
+        }
+        public JArray GetTaskExpireThisWeek(int projectId)
+        {
+            TaskService taskService = new TaskService(db);
+            List<Task> tasks = new List<Task>();
+            var listIdsWithProjectID = db.Lists.Where(x => x.ProjectID == projectId).Select(x => x.ID).ToList();
+            foreach (var listId in listIdsWithProjectID)
+            {
+                var tasksInList = db.Tasks.Where(x => x.ListID == listId);
+                foreach (var taskInList in tasksInList)
+                {
+                    tasks.Add(taskInList);
+                }
+            }
 
+            List<Task> TasksFinishedThisWeek = new List<Task>();
+            foreach (var task in tasks)
+            {
+                if (taskService.IsTaskDeadlineInThisWeek(task))
+                {
+                    TasksFinishedThisWeek.Add(task);
+                }
+            }
+
+            var tasksJArray = new JArray();
+            foreach (var task in TasksFinishedThisWeek)
+            {
+                tasksJArray.Add(taskService.ParseToJson(task));
+            }
+            return tasksJArray;
+        }
+        public JObject ParseToJsonProjectReport(Project project, bool isIncludeTask = false)
+        {
+            var result = new JObject
+            {
+                ["id"] = project.ID,
+                ["name"] = project.Name,
+                ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
+                ["userNumberNotInTask"] = GetNoTaskUsersInProject(project.ID).Count()
+            };
+            if (isIncludeTask)
+            {
+                result["taskExpireThisWeek"] = GetTaskExpireThisWeek(project.ID);
+            }
+
+            return result;
+        }
+        public JObject ParseToJsonTotalReport(Project project, bool isIncludeTask = false)
+        {
+            List<Task> tasks = new List<Task>();
+            var lists = db.Lists.Where(x => x.ProjectID == project.ID);
+            var listIds = db.Lists.Where(x => x.ProjectID == project.ID).Select(x => x.ID).ToList();
+            foreach (var listId in listIds)
+            {
+                var tasksInList = db.Tasks.Where(x => x.ListID == listId);
+                foreach (var taskInList in tasksInList)
+                {
+                    tasks.Add(taskInList);
+                }
+            }
+
+            int taskNumber = tasks.Count;
+
+            List<JObject> calculatedResult = new List<JObject>();
+            foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+            {
+                int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                calculatedResult.Add(new JObject
+                {
+                    ["key"] = status.ToString(),
+                    ["value"] = (decimal)(taskStatusCount * 100) / taskNumber
+                });
+            }
 
             var result = new JObject
             {
                 ["id"] = project.ID,
                 ["name"] = project.Name,
-                ["userNumberInProject"] = usersInProject.Count(),
-                ["userNumberNotInTask"] = noTaskUser.Count()
+                ["taskCount"] = tasks.Count(),
+                ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
+                ["userNumberNotInTask"] = GetNoTaskUsersInProject(project.ID).Count(),
+                ["taskStatusReport"] = new JArray(calculatedResult),
             };
             if (isIncludeTask)
             {
-                TaskService taskService = new TaskService(db);
-                List<Task> tasks = new List<Task>();
-                var listIdsWithProjectID = db.Lists.Where(x => x.ProjectID == project.ID).Select(x => x.ID).ToList();
-                foreach (var listId in listIdsWithProjectID)
-                {
-                    var tasksInList = db.Tasks.Where(x => x.ListID == listId);
-                    foreach (var taskInList in tasksInList)
-                    {
-                        tasks.Add(taskInList);
-                    }
-                }
-
-                List<Task> TasksFinishedThisWeek = new List<Task>();
-                foreach (var task in tasks)
-                {
-                    if (taskService.IsTaskDeadlineInThisWeek(task))
-                    {
-                        TasksFinishedThisWeek.Add(task);
-                    }
-                }
-
-                var tasksJArray = new JArray();
-                foreach (var task in TasksFinishedThisWeek)
-                {
-                    tasksJArray.Add(taskService.ParseToJson(task));
-                }
-
-                result["task"] = tasksJArray;
+                result["taskExpireThisWeek"] = GetTaskExpireThisWeek(project.ID);
             }
 
             return result;
         }
+
 
         public JObject ParseToJson(Project project, bool isDetailed = false, string avatarPath = null)
         {
