@@ -30,4 +30,6 @@ export class Task {
   effort: number;
   isArchived: boolean;
   attachments: Attachment[];
+  predecessors: Task[];
+  successors: Task[];
 }
