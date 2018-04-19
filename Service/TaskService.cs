@@ -182,7 +182,9 @@ namespace Service
             var listId = db.Tasks.Find(taskId).ListID;
             var projectId = db.Lists.Find(listId).ProjectID;
             var staff = db.UserProjects
-                .Where(x => x.ProjectID == projectId && x.UserID == userId).Select(x => x.User).SingleOrDefault();
+                .Where(x => x.ProjectID == projectId && x.UserID == userId)
+                .Select(x => x.User)
+                .SingleOrDefault();
             if (staff != null)
             {
                 return true;

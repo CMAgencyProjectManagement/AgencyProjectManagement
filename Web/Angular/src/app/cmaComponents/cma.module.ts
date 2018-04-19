@@ -28,11 +28,12 @@ import {
   SelectUsersModalComponent,
   SelectTeamsModalComponent,
   CommentModalComponent,
-  SelectStatusModalComponent
+  SelectStatusModalComponent,
+  SelectTasksModalComponent
 } from './modals';
 import { TasklistComponent } from './tasklist/tasklist.component';
 
-const declare_exports = [
+const declares_exports = [
   ProjectCardComponent,
   AssignMembersCardComponent,
   MiniUsersTableComponent,
@@ -50,7 +51,10 @@ const declare_exports = [
   SelectStatusModalComponent,
   SelectTeamsModalComponent,
   TaskStatusComponent,
-  TasklistComponent
+  TasklistComponent,
+  SelectTasksModalComponent,
+  ProjectStatusComponent,
+  TaskPriorityComponent
 ];
 
 
@@ -70,10 +74,10 @@ const declare_exports = [
     FormsModule
   ],
   exports: [
-    ...declare_exports
+    ...declares_exports
   ],
   declarations: [
-    ...declare_exports,
+    ...declares_exports,
   ]
 })
 export class CmaModule {

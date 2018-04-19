@@ -180,11 +180,19 @@
             <dl class="row ml-1">
               <dt class="col-12">Predecessor tasks:</dt>
               <dd class="col-12 pl-4">
-                <app-tasklist [tasks]="foundTask.predecessors"></app-tasklist>
+                <span *ngIf="foundTask.predecessors.length <= 0">N/A</span>
+                <app-tasklist *ngIf="foundTask.predecessors.length > 0"
+                              [tasks]="foundTask.predecessors">
+
+                </app-tasklist>
               </dd>
               <dt class="col-12">Successor tasks:</dt>
               <dd class="col-12 pl-4">
-                <app-tasklist [tasks]="foundTask.successors"></app-tasklist>
+                <span *ngIf="foundTask.successors.length <= 0">N/A</span>
+                <app-tasklist *ngIf="foundTask.successors.length > 0"
+                              [tasks]="foundTask.successors">
+
+                </app-tasklist>
               </dd>
             </dl>
           </div>

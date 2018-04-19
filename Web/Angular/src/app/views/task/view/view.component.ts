@@ -73,12 +73,23 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      console.log('get id from other place');
+    this.route.params.subscribe(params => {
+      this.loadTask(params['id']);
+    });
+
+    this.attachmentForm = new FormGroup({
+      attachment: new FormControl(undefined),
+    });
+  }
+
+  loadTask(taskId) {
+    if (!taskId) {
+      this.showErrorModal(`${taskId} is not a valid ID`);
+      return;
     }
-    if (Number(id)) {
-      this.taskService.getTaskDetail(Number(id))
+
+    if (Number(taskId)) {
+      this.taskService.getTaskDetail(taskId)
         .then(value => {
           this.foundTask = value as Task;
           this.isLoading.page = false;
@@ -88,13 +99,8 @@ export class ViewComponent implements OnInit {
           this.showErrorModal(reason.Message);
         })
     } else {
-      this.showErrorModal(`${id} is not a valid ID`);
+      this.showErrorModal(`${taskId} is not a valid ID`);
     }
-
-    this.attachmentForm = new FormGroup({
-      attachment: new FormControl(undefined),
-    });
-
   }
 
   handleOnCommentBtnClick() {
@@ -302,7 +308,7 @@ export class ViewComponent implements OnInit {
         this.isLoading.setStatus = false;
       },
       closeCallback: () => {
-      this.isLoading.setStatus = false;
+        this.isLoading.setStatus = false;
       }
     };
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog'});
