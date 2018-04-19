@@ -218,11 +218,14 @@ namespace Service
             var tasks = db.Tasks.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
             return tasks.Count > 0;
         }
-        public bool CheckDuplicatedTasknameDemo(string taskName, int listId)
+        public bool CheckDuplicatedTasknameAllowDublicateProject(string taskName, int listId)
         {
+            List list = db.Lists.Find(listId);
+            if (list == null) { throw new ObjectNotFoundException($"List with id {listId} not found"); }
+            ProjectService projectService = new ProjectService(db);
             var projectId = db.Lists.Find(listId).ProjectID;
-            //var taskWithProjectId = 
-            var tasks = db.Tasks.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
+            List<Task> taskWithProjectId = projectService.GetTasksInProject(projectId);
+            var tasks = taskWithProjectId.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
             return tasks.Count > 0;
         }
 

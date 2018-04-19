@@ -176,7 +176,7 @@ namespace Web.Controllers
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member task with ID {taskId}"));
+                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member of task with ID {taskId}"));
 
                     }
                 }
@@ -255,7 +255,7 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     bool flag = true;
-                    if (taskService.CheckDuplicatedTasknameDemo(createTaskModel.Name, createTaskModel.ListID))
+                    if (taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name, createTaskModel.ListID))
                     {
                         ModelState.AddModelError("Name", "Task name is taken");
                         flag = false;
@@ -350,7 +350,7 @@ namespace Web.Controllers
                         bool flag = true;
                         if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                         {
-                            if (taskService.CheckDuplicatedTaskname(updateTaskViewModel.Name))
+                            if (taskService.CheckDuplicatedTasknameAllowDublicateProject(updateTaskViewModel.Name, updateTaskViewModel.ListID))
                             {
                                 ModelState.AddModelError("Name", "Task name is taken");
                                 flag = false;
