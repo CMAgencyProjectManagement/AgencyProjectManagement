@@ -6,7 +6,6 @@ namespace Service
         NotDone,
         NeedReview,
         Done,
-        Pending,
-        Late
+        Pending
     }
 }
