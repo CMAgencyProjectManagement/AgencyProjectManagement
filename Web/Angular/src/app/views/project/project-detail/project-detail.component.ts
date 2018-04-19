@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../../../services/project.service';
-import { Project } from '../../../interfaces/project';
-import { Location } from '@angular/common';
-import { BsModalService } from 'ngx-bootstrap';
-import { CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent, SelectTeamsModalComponent } from '../../../cmaComponents/modals';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from '../../../services/project.service';
+import {Project} from '../../../interfaces/project';
+import {Location} from '@angular/common';
+import {BsModalService} from 'ngx-bootstrap';
+import {
+  CommentModalComponent,
+  ConfirmModalComponent,
+  ErrorModalComponent,
+  SelectUsersModalComponent,
+  SelectTeamsModalComponent
+} from '../../../cmaComponents/modals';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as _ from 'lodash';
-import { Team } from '../../../interfaces/team';
-import { TeamService } from 'app/services/team.service';
-import { StoreService } from '../../../services/tree.service';
-import { User } from 'app/interfaces/user';
+import {Team} from '../../../interfaces/team';
+import {TeamService} from 'app/services/team.service';
+import {StoreService} from '../../../services/tree.service';
+import {User} from 'app/interfaces/user';
+
 @Component({
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
@@ -48,13 +55,14 @@ export class ProjectDetailComponent implements OnInit {
     comment: boolean,
     editComment: boolean
   };
+
   constructor(private projectService: ProjectService,
-    private router: Router,
-    private location: Location,
-    private modalService: BsModalService,
-    private teamService: TeamService,
-    private storeService: StoreService,
-    private route: ActivatedRoute,
+              private router: Router,
+              private location: Location,
+              private modalService: BsModalService,
+              private teamService: TeamService,
+              private storeService: StoreService,
+              private route: ActivatedRoute,
   ) {
     this.isLoading = {
       page: true,
@@ -70,25 +78,20 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    let id = this.route.snapshot.paramMap.get('id');
+    if (Number(id)) {
+        this.projectService.getProject(Number(id))
+          .then(value => {
+            this.isPageLoading = false;
+            this.foundProject = value;
+          })
+          .catch(reason => {
+            this.showErrorModal(reason.Message, true);
+          })
+    } else {
+      this.showErrorModal(`Invalid task id "${id}"`, true);
+    }
 
-    this.projectID = Number(this.GetURLParameter('projectID'));
-    this.projectService.getAllProjects()
-      .then(data => {
-        this.projects = data;
-        this.isPageLoading = false;
-        for (let i = 0; i < this.projects.length; i++) {
-          if (this.projects[i].id == this.projectID) {
-            this.foundProject = this.projects[i];
-            // this.updateForm.value.fullname= this.foundUser.name;
-            // this.viewForm.controls['projectName'].setValue(this.foundProject.name);
-            // this.updateForm.value.email=this.foundUser.email;
-            // this.updateForm.value.phone=this.foundUser.phone;
-          }
-        }
-      })
-      .catch(reason => {
-        console.debug('ProjectDetailComponent', reason);
-      });
     this.viewForm = new FormGroup({
       projectname: new FormControl(undefined, Validators.required),
       customername: new FormControl(undefined, Validators.required),
@@ -100,13 +103,6 @@ export class ProjectDetailComponent implements OnInit {
       changedTime: new FormControl(undefined, Validators.required),
 
     })
-  }
-
-  GetURLParameter(sParam) {
-    var sPageURL = window.location.href;
-    var sURLVariables = sPageURL.split('?');
-    var sUsername = sURLVariables[1].split('=');
-    return sUsername[1];
   }
 
   handleClose(projectID: number) {
@@ -146,7 +142,7 @@ export class ProjectDetailComponent implements OnInit {
       message: `Are you sure to close this project?`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
+    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {
@@ -158,7 +154,7 @@ export class ProjectDetailComponent implements OnInit {
       },
       message: message
     };
-    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
 
   handleOnAssignBtnClick() {
@@ -199,7 +195,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
+        this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog'});
       })
   };
 
@@ -230,7 +226,7 @@ export class ProjectDetailComponent implements OnInit {
               this.isLoading.openAssignModal = false
             })
             .catch(reason => {
-              console.debug("Here");
+              console.debug('Here');
               this.showErrorModal('Assign fail');
               this.isLoading.openAssignModal = false
             })
@@ -246,7 +242,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
+        this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog'});
       })
   }
 }

@@ -24,7 +24,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'detail',
+    path: ':id/detail',
     component: ProjectDetailComponent,
     data: {
       title: 'Detail'
@@ -38,7 +38,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'update/:id',
+    path: ':id/update',
     component: ProjectUpdateComponent,
     data: {
       title: 'Update'

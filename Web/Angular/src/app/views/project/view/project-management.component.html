@@ -31,8 +31,10 @@
             <tbody>
             <tr *ngFor="let project of projects;let i = index">
               <td>
-                <a href="#/project/detail?projectID={{project.id}}" style="color: blue">{{project.name |
-                truncatetext:80}}</a></td>
+                <a routerLink="/project/{{project.id}}/detail" style="color: blue">
+                  {{project.name | truncatetext:80}}
+                </a>
+              </td>
               <td>
                 <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
                 <p *ngIf="!project.description">N/A</p>
@@ -65,12 +67,12 @@
                 </a>
               </td>
               <td>
-                  <a href="#/project/task?projectID={{project.id}}">
-                    <button type="button" class="btn btn-primary">
-                      Tasks
-                    </button>
-                  </a>
-                </td>
+                <a href="#/project/task?projectID={{project.id}}">
+                  <button type="button" class="btn btn-primary">
+                    Tasks
+                  </button>
+                </a>
+              </td>
               <td>
                 <a routerLink="/project/{{project.id}}/report">
                   <button type="button" class="btn btn-primary">
