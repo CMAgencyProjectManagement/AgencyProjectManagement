@@ -257,6 +257,23 @@ namespace Service
             var userIdsInProject = usersInProject.Select(x => x.ID);
             return userIdsInProject;
         }
+        public List<Task> GetTasksInProject(int projectId)
+        {
+
+            TaskService taskService = new TaskService(db);
+            List<Task> tasksInProject = new List<Task>();
+            var listIdsWithProjectID = db.Lists.Where(x => x.ProjectID == projectId).Select(x => x.ID).ToList();
+            foreach (var listId in listIdsWithProjectID)
+            {
+                var tasksInList = db.Tasks.Where(x => x.ListID == listId);
+                foreach (var taskInList in tasksInList)
+                {
+                    tasksInProject.Add(taskInList);
+                }
+            }
+            return tasksInProject;
+        }
+
         public List<User>  GetNoTaskUsersInProject(int projectId)
         {
             var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
