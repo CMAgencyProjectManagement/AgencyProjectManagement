@@ -356,11 +356,13 @@ namespace Service
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
 
-        public int ArchiveTask(int taskID)
+        public int ArchiveTask(int taskID, int userID)
         {
             var archiveTask = db.Tasks.Find(taskID);
             if (archiveTask != null && archiveTask.ID == taskID)
             {
+                archiveTask.ChangedBy = userID;
+                archiveTask.ChangedTime = DateTime.Now;
                 archiveTask.IsArchived = true;
                 db.SaveChanges();
                 return archiveTask.ID;
@@ -368,11 +370,13 @@ namespace Service
 
             throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");
         }
-        public int UnArchiveTask(int taskID)
+        public int UnArchiveTask(int taskID, int userId)
         {
             var archiveTask = db.Tasks.Find(taskID);
             if (archiveTask != null && archiveTask.ID == taskID)
             {
+                archiveTask.ChangedBy = userId;
+                archiveTask.ChangedTime = DateTime.Now;
                 archiveTask.IsArchived = false;
                 db.SaveChanges();
                 return archiveTask.ID;

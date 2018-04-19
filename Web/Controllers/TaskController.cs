@@ -527,12 +527,10 @@ namespace Web.Controllers
                     {
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         TaskService taskService = new TaskService(db);
-                        var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID);
+                        var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID, currentUserId);
                         Task task = db.Tasks.Find(archivedTask);
                         if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
                         {
-                            task.ChangedBy = currentUserId;
-                            task.ChangedTime = DateTime.Now;
                             return Ok(ResponseHelper.GetResponse(
                                 taskService.ParseToJson(task)
                             ));
