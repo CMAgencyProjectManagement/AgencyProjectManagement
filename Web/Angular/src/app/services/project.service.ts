@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Cursor, StoreService} from './tree.service';
 import {get, put, post} from 'superagent';
 import {serverPath} from '../_serverPath';
+import * as _ from 'lodash';
 
 @Injectable()
 export class ProjectService {

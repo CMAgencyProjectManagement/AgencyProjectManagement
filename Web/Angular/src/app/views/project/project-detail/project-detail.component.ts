@@ -162,16 +162,14 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   handleOnAssignBtnClick() {
-    console.debug(this.foundProject.id);
     const onConfirm = (selectedTeams: Team[]) => {
       let selectedIds = _.map(selectedTeams, 'id');
       this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
         .then(value => {
-          this.foundProject.teams = _.concat(this.foundProject.teams, selectedTeams);
+          this.foundProject = value;
           this.isLoading.openAssignModal = false
         })
         .catch(reason => {
-          console.debug("Here");
           this.showErrorModal('Assign fail');
           this.isLoading.openAssignModal = false
         })
