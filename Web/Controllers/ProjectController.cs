@@ -63,7 +63,7 @@ namespace Web.Controllers
                         projectToTeamsViewModel.TeamIDs,
                         currentUser.ID);
 
-                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project)));
+                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project,true,AgencyConfig.AvatarPath)));
                 }
             }
             catch (Exception ex)

@@ -60,16 +60,21 @@ export class TaskService {
     });
   }
 
-  setStatus(taskId): Promise<any> {
+  setStatus(taskId, status): Promise<any> {
+    const objData = {
+      TaskId: taskId,
+      TaskStatus: status
+    };
     return new Promise<any>((resolve, reject) => {
-      request.get(serverPath.setTaskStatus(taskId))
+      request.put(serverPath.setStatus)
         .set('token', this.tokenCursor.get())
+        .send(objData)
         .then(res => {
           const content = res.body;
           if (content.IsSuccess) {
             resolve(content.Data);
           } else {
-            reject(content.Message);
+            reject(content);
           }
         })
         .catch(reason => reject(reason.response.body));

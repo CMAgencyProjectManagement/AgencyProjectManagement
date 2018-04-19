@@ -198,6 +198,9 @@
               <span *ngIf="!foundTask.finishedDate">
                 N/A
               </span>
+              <span *ngIf="foundTask.finishedDate">
+                {{foundTask.finishedDate | date:'dd/MM/yyyy'}}
+              </span>
               </dd>
               <dt class="col-4">Created date:</dt>
               <dd class="col-8">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
