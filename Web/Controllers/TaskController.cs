@@ -30,7 +30,7 @@ namespace Web.Controllers
                     if (!taskService.IsAssigneeOfProject(currentUserId, id))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse("Not assignee of project in this task"));
+                        ResponseHelper.GetExceptionResponse($"the person who do this action must be member of project of task with ID {id}"));
                     }
                 }
                 using (CmAgencyEntities db = new CmAgencyEntities())
@@ -170,7 +170,8 @@ namespace Web.Controllers
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse("Dont have assignee of this task"));
+                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member task with ID {taskId}"));
+
                     }
                 }
                 using (CmAgencyEntities db = new CmAgencyEntities())

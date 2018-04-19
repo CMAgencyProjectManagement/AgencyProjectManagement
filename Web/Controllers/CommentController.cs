@@ -28,7 +28,8 @@ namespace Web.Controllers
                     if (!taskService.IsAssigneeOfTask(currentUserId, createCommentModel.TaskID))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse("Not assignee of this task"));
+                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member task with ID {createCommentModel.TaskID}"));
+
                     }
                 }
 
@@ -76,7 +77,8 @@ namespace Web.Controllers
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse("Not assignee of this task"));
+                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member task with ID {taskId}"));
+
                     }
                 }
 
