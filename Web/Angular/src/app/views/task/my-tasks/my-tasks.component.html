@@ -37,7 +37,7 @@
             <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
             <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
             <td>
-              <a href="#/project/task?projectID={{task.project.id}}">
+              <a routerLink="/project/{{task.project.id}}/task">
                 {{task.project.name}}
               </a>
             </td>

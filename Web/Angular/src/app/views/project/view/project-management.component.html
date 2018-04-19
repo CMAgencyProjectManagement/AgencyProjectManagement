@@ -60,14 +60,14 @@
                 <span *ngIf="project.status === null">N/A</span>
               </td>
               <td>
-                <a routerLink="#/project/update/{{project.id}}">
+                <a routerLink="/project/{{project.id}}/update">
                   <button type="button" class="btn btn-primary">
                     Update
                   </button>
                 </a>
               </td>
               <td>
-                <a href="#/project/task?projectID={{project.id}}">
+                <a routerLink="/project/{{project.id}}/task">
                   <button type="button" class="btn btn-primary">
                     Tasks
                   </button>

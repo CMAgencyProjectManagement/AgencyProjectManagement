@@ -74,7 +74,6 @@ export class ViewComponent implements OnInit {
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
-    // DEMO for default route that don't have ID
     if (!id) {
       console.log('get id from other place');
     }
@@ -87,7 +86,6 @@ export class ViewComponent implements OnInit {
         .catch(reason => {
           console.debug('ViewComponent-onInit', reason);
           this.showErrorModal(reason.Message);
-          this.isLoading.page = false;
         })
     } else {
       this.showErrorModal(`${id} is not a valid ID`);

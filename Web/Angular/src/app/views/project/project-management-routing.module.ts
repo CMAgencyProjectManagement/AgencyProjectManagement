@@ -45,7 +45,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'task',
+    path: ':id/task',
     component: ProjectTaskComponent,
     data: {
       title: 'Task'
