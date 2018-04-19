@@ -218,6 +218,13 @@ namespace Service
             var tasks = db.Tasks.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
             return tasks.Count > 0;
         }
+        public bool CheckDuplicatedTasknameDemo(string taskName, int listId)
+        {
+            var projectId = db.Lists.Find(listId).ProjectID;
+            //var taskWithProjectId = 
+            var tasks = db.Tasks.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
+            return tasks.Count > 0;
+        }
 
         public bool CheckForListId(int listId)
         {

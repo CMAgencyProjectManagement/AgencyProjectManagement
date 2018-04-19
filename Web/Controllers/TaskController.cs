@@ -247,7 +247,7 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     bool flag = true;
-                    if (taskService.CheckDuplicatedTaskname(createTaskModel.Name))
+                    if (taskService.CheckDuplicatedTasknameDemo(createTaskModel.Name, createTaskModel.ListID))
                     {
                         ModelState.AddModelError("Name", "Task name is taken");
                         flag = false;
