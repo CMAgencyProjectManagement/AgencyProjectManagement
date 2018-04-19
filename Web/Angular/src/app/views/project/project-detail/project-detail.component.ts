@@ -207,23 +207,14 @@ export class ProjectDetailComponent implements OnInit {
 
   handleOnAssignMembersBtnClick() {
     let currentUser = this.storeService.get(['currentUser']) as User;
-    // if(currentUser.isManager){
-    //   this.teamService.getDetail(currentUser.team.id).then(value =>{
-    //     this.foundDepartment = value;
-    //     this.members= this.foundDepartment.users;
-    //     // for(let i=0; i< this.members.length;i++){
-    //     //   console.debug(this.members[i].username);
-    //     // }
-    //   })
-    // }
-    
+
     this.teamService.getDetail(currentUser.team.id)
       .then(value => {
         const pool = [];
         this.foundDepartment = value;
         for (let member of this.foundDepartment.users as User[]) {
           let removeFlag = false;
-          for (let assignedMember of this.members) {
+          for (let assignedMember of this.foundProject.assignees as User[]) {
             if (assignedMember.id == member.id) {
               removeFlag = true;
             }

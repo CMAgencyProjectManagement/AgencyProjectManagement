@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -63,7 +64,8 @@ namespace Web.Controllers
                         projectToTeamsViewModel.TeamIDs,
                         currentUser.ID);
 
-                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project,true,AgencyConfig.AvatarPath)));
+                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true,
+                        AgencyConfig.AvatarPath)));
                 }
             }
             catch (Exception ex)
@@ -393,6 +395,7 @@ namespace Web.Controllers
             }
         }
 
+
         [HttpGet]
         [Route("{id:int}/report")]
         [Authorize(Roles = "Admin")]
@@ -453,7 +456,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("assign")]
         [Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult AssignProject(AssignProjectModel assignProjectModel)
@@ -490,7 +493,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPut]
         [Route("Unassign")]
         [Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult UnAssignProject(AssignProjectModel assignProjectModel)

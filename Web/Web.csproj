@@ -491,6 +491,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Validators\AgencyArrayValidator.cs" />
     <Compile Include="Validators\AgencyDateValidation.cs" />
+    <Compile Include="ViewModels\AddDependencyViewModel.cs" />
     <Compile Include="ViewModels\ArchiveTaskModel.cs" />
     <Compile Include="ViewModels\AssignProjectModel.cs" />
     <Compile Include="ViewModels\AssignTaskModel.cs" />

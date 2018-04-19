@@ -58,7 +58,8 @@
               </dd>
               <dt class="col-3">Status:</dt>
               <dd class="col-9">
-                <span>{{foundTask.statusText}}</span>
+                <!--<span>{{foundTask.statusText}}</span>-->
+                <app-task-status [taskStatusNumber]="foundTask.status" ></app-task-status>
               </dd>
               <dt class="col-3">Effort:</dt>
               <dd class="col-9">

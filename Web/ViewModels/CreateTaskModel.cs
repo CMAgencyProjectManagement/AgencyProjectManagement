@@ -14,11 +14,10 @@ namespace Web.ViewModels
         [MaxLength(255)]
         public string Name { get; set; }
         public string Description { get; set; }
-        [Required(ErrorMessage = "ListId must not be empty")]
-
+        [Required(ErrorMessage = "List must not be empty")]
         public int ListID { get; set; }
         public int Priority { get; set; }
-        [Required(ErrorMessage = "StartDate must not be empty")]
+        [Required(ErrorMessage = "Start date must not be empty")]
         public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "Duration must not be empty")]
         public int Duration { get; set; }

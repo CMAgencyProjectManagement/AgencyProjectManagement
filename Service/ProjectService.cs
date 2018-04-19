@@ -133,6 +133,36 @@ namespace Service
         {
             return db.Projects.Find(id);
         }
+        
+        public IEnumerable<KeyValuePair<string, string>> getStatuses()
+        {
+            List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
+            foreach (ProjectStatus status in Enum.GetValues(typeof(ProjectStatus)))
+            {
+                result.Add(new KeyValuePair<string, string>(
+                    ((int) status).ToString(),
+                    DisplayCamelCaseString(status.ToString())));
+            }
+
+            return result;
+        }
+        
+        public string DisplayCamelCaseString(string camelCase)
+        {
+            List<char> chars = new List<char> {camelCase[0]};
+            foreach (char c in camelCase.Skip(1))
+            {
+                if (char.IsUpper(c))
+                {
+                    chars.Add(' ');
+                    chars.Add(char.ToLower(c));
+                }
+                else
+                    chars.Add(c);
+            }
+
+            return new string(chars.ToArray());
+        }
 
         public UserProject AssignProject(int userId, int projectId)
         {
