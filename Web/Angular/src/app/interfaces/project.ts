@@ -15,4 +15,5 @@ export interface Project {
   status: number,
   lists: List[],
   teams: Team[],
+  assignees: User[]
 }

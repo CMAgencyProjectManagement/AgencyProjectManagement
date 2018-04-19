@@ -2,7 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
 import {DataTableDirective} from 'angular-datatables';
-
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-view-user',
   templateUrl: './view-user.component.html',
@@ -30,12 +31,15 @@ export class ViewUserComponent implements OnInit {
     ]
   };
 
-  constructor(
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
     private userService: UserService) {
     this.isPageLoading = true;
   }
 
   ngOnInit() {
+    let id = this.route.snapshot.paramMap.get('id');
     this.userService.getAllUser()
       .then(value => {
           this.users = value;

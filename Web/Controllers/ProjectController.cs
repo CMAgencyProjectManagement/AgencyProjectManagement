@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -63,7 +64,8 @@ namespace Web.Controllers
                         projectToTeamsViewModel.TeamIDs,
                         currentUser.ID);
 
-                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project,true,AgencyConfig.AvatarPath)));
+                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true,
+                        AgencyConfig.AvatarPath)));
                 }
             }
             catch (Exception ex)
@@ -393,10 +395,11 @@ namespace Web.Controllers
             }
         }
 
+
         [HttpGet]
         [Route("{id:int}/report")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetProjectStatusReport(int id)
+        public IHttpActionResult GetProjectTotalReport(int id)
         {
             try
             {
@@ -407,26 +410,13 @@ namespace Web.Controllers
                     if (project != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            projectService.ParseToJsonStatusReport(project)
+                            projectService.ParseToJsonTotalReport(project, isIncludeTask: true)
                         ));
                     }
                     else
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
                     }
-
-                    //if (project != null)
-                    //{
-                    //    return Ok(ResponseHelper.GetResponse(
-                    //        projectService.ParseToJson(project, isDetailedUsers: true,
-                    //            avatarPath: AgencyConfig.AvatarPath,
-                    //            isDetailed: true)
-                    //    ));
-                    //}
-                    //else
-                    //{
-                    //    return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
-                    //}
                 }
             }
             catch (Exception ex)
@@ -439,7 +429,7 @@ namespace Web.Controllers
         [HttpGet]
         [Route("{id:int}/reportapi")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetProjectStatusAPI(int id)
+        public IHttpActionResult GetReport(int id)
         {
             try
             {
@@ -450,7 +440,7 @@ namespace Web.Controllers
                     if (project != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            projectService.ParseToJsonReportAPI(project, isIncludeTask: true)
+                            projectService.ParseToJsonProjectReport(project, isIncludeTask: true)
                         ));
                     }
                     else
@@ -466,7 +456,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("assign")]
         [Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult AssignProject(AssignProjectModel assignProjectModel)
@@ -503,7 +493,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPut]
         [Route("Unassign")]
         [Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult UnAssignProject(AssignProjectModel assignProjectModel)

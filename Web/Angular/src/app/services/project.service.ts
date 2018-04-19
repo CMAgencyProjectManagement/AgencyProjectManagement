@@ -2,15 +2,18 @@ import {Injectable} from '@angular/core';
 import {Cursor, StoreService} from './tree.service';
 import {get, put, post} from 'superagent';
 import {serverPath} from '../_serverPath';
+import * as _ from 'lodash';
 
 @Injectable()
 export class ProjectService {
   private tokenCursor;
   private projectsCursor: Cursor;
+  private projectStatusCursor: Cursor;
 
   constructor(private store: StoreService) {
     this.tokenCursor = this.store.select(['token', 'access_token']);
-    this.projectsCursor = this.store.select(['projects'])
+    this.projectsCursor = this.store.select(['projects']);
+    this.projectStatusCursor = this.store.select(['projectStatuses']);
   }
 
 
@@ -21,6 +24,48 @@ export class ProjectService {
     };
     return new Promise<any>((resolve, reject) => {
       put(serverPath.setProjectToTeams)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
+  public assignUsersToProject(projectId: number, userIds: number[]): Promise<any> {
+    const objData = {
+      ProjectId: projectId,
+      UserIds: userIds
+    };
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.assignUsersToProject)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
+  public unAssignUsersFromProject(projectId: number, userIds: number[]): Promise<any> {
+    const objData = {
+      ProjectID: projectId,
+      UserIds: userIds
+    };
+    return new Promise<any>((resolve, reject) => {
+      put(serverPath.unAssignUsersFromProject)
         .set('token', this.tokenCursor.get())
         .send(objData)
         .then(res => {
@@ -86,8 +131,24 @@ export class ProjectService {
           })
           .catch(reason => reject(reason.response.body));
       }
-
     });
+  }
+
+  public getProjectStatus() {
+    return new Promise<any>((resolve, reject) => {
+      post(serverPath.createProject)
+        .set('token', this.tokenCursor.get())
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    })
   }
 
   public createProject(

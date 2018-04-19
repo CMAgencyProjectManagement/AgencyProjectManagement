@@ -58,7 +58,8 @@
               </dd>
               <dt class="col-3">Status:</dt>
               <dd class="col-9">
-                <span>{{foundTask.statusText}}</span>
+                <!--<span>{{foundTask.statusText}}</span>-->
+                <app-task-status [taskStatusNumber]="foundTask.status" ></app-task-status>
               </dd>
               <dt class="col-3">Effort:</dt>
               <dd class="col-9">
@@ -170,6 +171,20 @@
               <dd class="col-12 pl-4">
                 <app-user-list *ngIf="foundTask.changedBy" [user]="foundTask.changedBy"></app-user-list>
                 <span *ngIf="!foundTask.changedBy">N/A</span>
+              </dd>
+            </dl>
+          </div>
+          <div class="section">
+            <!--TASK DEPENDENCY-->
+            <!--<h5 class="mb-3">Members</h5>-->
+            <dl class="row ml-1">
+              <dt class="col-12">Predecessor tasks:</dt>
+              <dd class="col-12 pl-4">
+
+              </dd>
+              <dt class="col-12">Successor tasks:</dt>
+              <dd class="col-12 pl-4">
+
               </dd>
             </dl>
           </div>

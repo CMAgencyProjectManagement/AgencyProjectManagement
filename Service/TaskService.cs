@@ -165,6 +165,21 @@ namespace Service
             }
             return false;
         }
+        public bool IsAssigneeOfProject(int userId, int taskId)
+        {
+            Task task = GetTask(taskId);
+            if (task == null) { throw new ObjectNotFoundException($"Task with id {taskId} not found"); }
+
+            var listId = db.Tasks.Find(taskId).ListID;
+            var projectId = db.Lists.Find(listId).ProjectID;
+            var staff = db.UserProjects
+                .Where(x => x.ProjectID == projectId && x.UserID == userId).Select(x => x.User).SingleOrDefault();
+            if (staff!=null)
+            {
+                return true;
+            }
+            return false;
+        }
 
 
         public Task setStatus(int taskId, int modifierId, TaskStatus taskStatus)
@@ -201,6 +216,16 @@ namespace Service
         public bool CheckDuplicatedTaskname(string taskName)
         {
             var tasks = db.Tasks.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
+            return tasks.Count > 0;
+        }
+        public bool CheckDuplicatedTasknameAllowDublicateProject(string taskName, int listId)
+        {
+            List list = db.Lists.Find(listId);
+            if (list == null) { throw new ObjectNotFoundException($"List with id {listId} not found"); }
+            ProjectService projectService = new ProjectService(db);
+            var projectId = db.Lists.Find(listId).ProjectID;
+            List<Task> taskWithProjectId = projectService.GetTasksInProject(projectId);
+            var tasks = taskWithProjectId.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
             return tasks.Count > 0;
         }
 
@@ -341,11 +366,13 @@ namespace Service
             throw new ObjectNotFoundException($"UserTask with TaskId{taskID} and Userid{userID} not found");
         }
 
-        public int ArchiveTask(int taskID)
+        public int ArchiveTask(int taskID, int userID)
         {
             var archiveTask = db.Tasks.Find(taskID);
             if (archiveTask != null && archiveTask.ID == taskID)
             {
+                archiveTask.ChangedBy = userID;
+                archiveTask.ChangedTime = DateTime.Now;
                 archiveTask.IsArchived = true;
                 db.SaveChanges();
                 return archiveTask.ID;
@@ -353,11 +380,13 @@ namespace Service
 
             throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");
         }
-        public int UnArchiveTask(int taskID)
+        public int UnArchiveTask(int taskID, int userId)
         {
             var archiveTask = db.Tasks.Find(taskID);
             if (archiveTask != null && archiveTask.ID == taskID)
             {
+                archiveTask.ChangedBy = userId;
+                archiveTask.ChangedTime = DateTime.Now;
                 archiveTask.IsArchived = false;
                 db.SaveChanges();
                 return archiveTask.ID;
@@ -455,6 +484,8 @@ namespace Service
 
             return remainingTime.TotalDays;
         }
+
+        
 
         public IEnumerable<User> getTaskAssignee(int taskId)
         {
@@ -564,7 +595,9 @@ namespace Service
             {                
                 ProjectService projectService = new ProjectService(db);
                 CommentService commentService = new CommentService(db);
+                DependencyService dependencyService = new DependencyService(db);
                 AttachmentService attachmentService = new AttachmentService(db);
+                
                 var project = projectService.GetProjectOfTask(task.ID);
                 result["project"] = projectService.ParseToJson(project);
 
@@ -585,6 +618,12 @@ namespace Service
                 IEnumerable<JObject> attachmentsJson = task.Attachments
                     .Select(attachment => attachmentService.ParseToJson(attachment, attachmentPath));
                 result["attachments"] = new JArray(attachmentsJson);
+
+                IEnumerable<Task> predecessors = dependencyService.GetPredecessors(task.ID);
+                result["predecessors"] = new JArray(predecessors);
+                
+                IEnumerable<Task> successors = dependencyService.GetSuccessors(task.ID);
+                result["successors"] = new JArray(successors);
             }
 
             return result;

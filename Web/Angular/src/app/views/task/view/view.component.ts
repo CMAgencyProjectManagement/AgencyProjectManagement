@@ -86,7 +86,7 @@ export class ViewComponent implements OnInit {
         })
         .catch(reason => {
           console.debug('ViewComponent-onInit', reason);
-          this.showErrorModal(reason.message);
+          this.showErrorModal(reason.Message);
           this.isLoading.page = false;
         })
     } else {

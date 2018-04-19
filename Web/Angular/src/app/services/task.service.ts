@@ -12,8 +12,8 @@ export class TaskService {
 
   constructor(private treeService: StoreService) {
     this.tokenCursor = this.treeService.select(['token', 'access_token']);
-    this.prioritiesCursor = this.treeService.select(['priorities']);
-    this.statusesCursor = this.treeService.select(['statuses']);
+    this.prioritiesCursor = this.treeService.select(['taskPriorities']);
+    this.statusesCursor = this.treeService.select(['taskStatuses']);
   }
 
   getPriorities(): Promise<any> {

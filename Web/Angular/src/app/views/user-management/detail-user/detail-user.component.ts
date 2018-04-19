@@ -3,35 +3,46 @@ import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { Team } from 'app/interfaces/team';
 import { User } from 'app/interfaces/user';
+import { StoreService } from '../../../services/tree.service';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-detail-user',
   templateUrl: './detail-user.component.html',
   styleUrls: ['./detail-user.component.scss']
 })
 export class DetailUserComponent implements OnInit {
+  managementMode: boolean;
   entity: any;
   userID: number;
   users: User[];
   foundUser: User;
   selectedUser = [];
 
-
-
   constructor(
     private teamService: TeamService,
     private userService: UserService,
-  ) { }
+    private storeService: StoreService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
+  ) {
+    this.foundUser== this.storeService.get(['currentUser']) as User;
+    // let currentUser = this.storeService.get(['currentUser']) as User;
+    // this.managementMode = currentUser.isManager || currentUser.isAdmin;
+  }
   ngOnInit() {
-
-
     this.entity = {};
-    this.userID = Number(this.GetURLParameter('id'));
-
-    this.users = [];
-    this.getAllTeam();
-
+    if (this.route.snapshot.paramMap.get('id') == undefined) {
+      this.foundUser= this.storeService.get(['currentUser']) as User;
+      console.debug(this.foundUser.id);
+    } else {
+      this.userID=Number(this.route.snapshot.paramMap.get('id') == undefined);
+      this.getAllTeam();
+    }
 
   }
+
   getAllTeam() {
     this.userService.getAllUser()
       .then(value => {
@@ -59,8 +70,12 @@ export class DetailUserComponent implements OnInit {
 
   GetURLParameter(sParam) {
     var sPageURL = window.location.href;
-    var sURLVariables = sPageURL.split('?');
-    var sTeam = sURLVariables[1].split('=');
+    if (sPageURL.indexOf('?') > 0) {
+      var sURLVariables = sPageURL.split('?');
+      var sTeam = sURLVariables[1].split('=');
+    } else {
+      return 0;
+    }
     return sTeam[1];
   }
 

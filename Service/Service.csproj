@@ -50,9 +50,11 @@
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
     <Compile Include="CommentService.cs" />
+    <Compile Include="DependencyService.cs" />
     <Compile Include="ListService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="ProjectStatus.cs" />
+    <Compile Include="ReportResult.cs" />
     <Compile Include="TaskPriority.cs" />
     <Compile Include="TaskService.cs" />
     <Compile Include="TaskStatus.cs" />

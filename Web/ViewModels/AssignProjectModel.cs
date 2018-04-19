@@ -9,10 +9,10 @@ namespace Web.ViewModels
 {
     public class AssignProjectModel
     {
-        [Required(ErrorMessage = "User is array is required")]
-        [AgencyArrayValidator.MustHaveOneElementAttribute(ErrorMessage = "Must at least one user")]
+        [Required(ErrorMessage = "Users must not be empty")]
+        [AgencyArrayValidator.MustHaveOneElementAttribute(ErrorMessage = "You must select at least one user")]
         public int[] UserIds { get; set; }
-        [Required(ErrorMessage = "ProjectId must not be empty")]
+        [Required(ErrorMessage = "Project must not be empty")]
         public int ProjectId { get; set; }
     }
 }

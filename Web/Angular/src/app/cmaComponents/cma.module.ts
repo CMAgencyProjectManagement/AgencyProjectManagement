@@ -9,8 +9,15 @@ import {UserListComponent} from './user-list/user-list.component';
 import {CommentComponent} from './comment/comment.component';
 import {CollapseModule} from 'ngx-bootstrap';
 import {RouterModule} from '@angular/router';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { FormsModule } from '@angular/forms';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {FormsModule} from '@angular/forms';
+import {SpinnerModule} from '../components/spinner/spinner.module';
+import {TypeaheadModule} from 'ngx-bootstrap';
+import {TaskTableComponent} from './task-table/task-table.component';
+import {TaskStatusComponent} from './task-status/task-status.component';
+import {ProjectStatusComponent} from './project-status/project-status.component';
+import {TaskPriorityComponent} from './task-priority/task-priority.component';
+
 import {
   ConfirmModalComponent,
   CreateListModalComponent,
@@ -19,13 +26,33 @@ import {
   SuccessModalComponent,
   RenameListModalComponent,
   SelectUsersModalComponent,
-  SelectTeamsModalComponent
+  SelectTeamsModalComponent,
+  CommentModalComponent,
+  SelectStatusModalComponent
 } from './modals';
-import {SpinnerModule} from '../components/spinner/spinner.module';
-import { TypeaheadModule } from 'ngx-bootstrap';
-import { CommentModalComponent } from './modals/comment-modal/comment-modal.component';
-import { TaskTableComponent } from './task-table/task-table.component';
-import { SelectStatusModalComponent } from './modals/select-status-modal/select-status-modal.component';
+import { TasklistComponent } from './tasklist/tasklist.component';
+
+const declare_exports = [
+  ProjectCardComponent,
+  AssignMembersCardComponent,
+  MiniUsersTableComponent,
+  ConfirmModalComponent,
+  UserListComponent,
+  CommentComponent,
+  ErrorModalComponent,
+  CreateListModalComponent,
+  RemoveListModalComponent,
+  SuccessModalComponent,
+  RenameListModalComponent,
+  SelectUsersModalComponent,
+  CommentModalComponent,
+  TaskTableComponent,
+  SelectStatusModalComponent,
+  SelectTeamsModalComponent,
+  TaskStatusComponent,
+  TasklistComponent
+];
+
 
 @NgModule({
   imports: [
@@ -43,40 +70,10 @@ import { SelectStatusModalComponent } from './modals/select-status-modal/select-
     FormsModule
   ],
   exports: [
-    ProjectCardComponent,
-    AssignMembersCardComponent,
-    MiniUsersTableComponent,
-    ConfirmModalComponent,
-    UserListComponent,
-    CommentComponent,
-    ErrorModalComponent,
-    CreateListModalComponent,
-    RemoveListModalComponent,
-    SuccessModalComponent,
-    RenameListModalComponent,
-    SelectUsersModalComponent,
-    CommentModalComponent,
-    TaskTableComponent,
-    SelectStatusModalComponent,
-    SelectTeamsModalComponent
+    ...declare_exports
   ],
   declarations: [
-    ProjectCardComponent,
-    MiniUsersTableComponent,
-    AssignMembersCardComponent,
-    ConfirmModalComponent,
-    UserListComponent,
-    CommentComponent, 
-    ErrorModalComponent,
-    CreateListModalComponent,
-    SuccessModalComponent,
-    RemoveListModalComponent,
-    RenameListModalComponent,
-    SelectUsersModalComponent,
-    CommentModalComponent,
-    TaskTableComponent,
-    SelectStatusModalComponent,
-    SelectTeamsModalComponent
+    ...declare_exports,
   ]
 })
 export class CmaModule {
