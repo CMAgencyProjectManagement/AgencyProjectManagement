@@ -485,6 +485,8 @@ namespace Service
             return remainingTime.TotalDays;
         }
 
+        
+
         public IEnumerable<User> getTaskAssignee(int taskId)
         {
             var task = db.Tasks.Find(taskId);
@@ -593,7 +595,9 @@ namespace Service
             {                
                 ProjectService projectService = new ProjectService(db);
                 CommentService commentService = new CommentService(db);
+                DependencyService dependencyService = new DependencyService(db);
                 AttachmentService attachmentService = new AttachmentService(db);
+                
                 var project = projectService.GetProjectOfTask(task.ID);
                 result["project"] = projectService.ParseToJson(project);
 
@@ -614,6 +618,12 @@ namespace Service
                 IEnumerable<JObject> attachmentsJson = task.Attachments
                     .Select(attachment => attachmentService.ParseToJson(attachment, attachmentPath));
                 result["attachments"] = new JArray(attachmentsJson);
+
+                IEnumerable<Task> predecessors = dependencyService.GetPredecessors(task.ID);
+                result["predecessors"] = new JArray(predecessors);
+                
+                IEnumerable<Task> successors = dependencyService.GetSuccessors(task.ID);
+                result["successors"] = new JArray(successors);
             }
 
             return result;
