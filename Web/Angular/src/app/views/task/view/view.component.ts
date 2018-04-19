@@ -84,7 +84,7 @@ export class ViewComponent implements OnInit {
         })
         .catch(reason => {
           console.debug('ViewComponent-onInit', reason);
-          this.showErrorModal(reason.message);
+          this.showErrorModal(reason.Message);
           this.isLoading.page = false;
         })
     } else {
@@ -294,7 +294,7 @@ export class ViewComponent implements OnInit {
     const initialState = {
       task: this.foundTask,
       confirmCallback: (newTask) => {
-        this.foundTask = newTask;
+        this.foundTask.status = newTask.status;
       }
     };
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog'});

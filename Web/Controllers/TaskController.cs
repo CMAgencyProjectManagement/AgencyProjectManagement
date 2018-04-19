@@ -23,20 +23,25 @@ namespace Web.Controllers
         {
             try
             {
+                int currentUserId = Int32.Parse(User.Identity.GetUserId());
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    ProjectService projectService = new ProjectService(db);
+                    
+                    Task task = taskService.GetTask(id);
+                    Project project = projectService.GetProjectOfTask(task.ID);
+
                     if (!taskService.IsAssigneeOfProject(currentUserId, id))
                     {
-                        return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be member of project of task with ID {id}"));
+                        return Content(
+                            HttpStatusCode.UnsupportedMediaType,
+                            ResponseHelper.GetExceptionResponse(
+                                $"You have to be in project {project.Name} to view this task")
+                        );
                     }
-                }
-                using (CmAgencyEntities db = new CmAgencyEntities())
-                {
-                    TaskService taskService = new TaskService(db);
-                    Task task = taskService.GetTask(id);
+                    
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                     ));
@@ -166,6 +171,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
@@ -174,10 +180,11 @@ namespace Web.Controllers
 
                     }
                 }
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                    
+
                     TaskService taskService = new TaskService(db);
                     var task = taskService.setStatus(taskId, currentUserId, TaskStatus.NeedReview);
 
@@ -383,27 +390,22 @@ namespace Web.Controllers
 
                         if (ModelState.IsValid)
                         {
-
-
-
                             var updatedTask = taskService.UpdateTask(
-                                                        updateTaskViewModel.Id,
-                                                        updateTaskViewModel.Name,
-                                                        updateTaskViewModel.Description,
-                                                        updateTaskViewModel.ListID,
-                                                        updateTaskViewModel.Priority,
-                                                        updateTaskViewModel.StartDate,
-                                                        updateTaskViewModel.Duration,
-                                                        updateTaskViewModel.Effort,
-                                                        currentUser.ID,
-                                                        DateTime.Now.Date
-                                                    );
+                                updateTaskViewModel.Id,
+                                updateTaskViewModel.Name,
+                                updateTaskViewModel.Description,
+                                updateTaskViewModel.ListID,
+                                updateTaskViewModel.Priority,
+                                updateTaskViewModel.StartDate,
+                                updateTaskViewModel.Duration,
+                                updateTaskViewModel.Effort,
+                                currentUser.ID,
+                                DateTime.Now.Date
+                            );
                             return Ok(ResponseHelper.GetResponse(
-                                taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                                taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
+                                    AgencyConfig.AttachmentPath)
                             ));
-
-
-
                         }
                         else
                         {
@@ -411,8 +413,9 @@ namespace Web.Controllers
                                 ResponseHelper.GetExceptionResponse(ModelState));
                         }
                     }
+
                     return Ok(ResponseHelper.GetExceptionResponse(
-                  "User have to be manager of this task to edit task "));
+                        "User have to be manager of this task to edit task "));
                 }
             }
             catch (Exception ex)
@@ -445,14 +448,12 @@ namespace Web.Controllers
                                     currentUserId: currentUserId
                                 );
                             }
+
                             return Ok(ResponseHelper.GetResponse());
-
                         }
+
                         return Ok(ResponseHelper.GetExceptionResponse(
-                       "User have to be manager of this task to Assign this task"));
-
-
-
+                            "User have to be manager of this task to Assign this task"));
                     }
                 }
                 else
@@ -491,15 +492,15 @@ namespace Web.Controllers
                                     currentUserId: currentUserId
                                 );
                             }
+
                             return Ok(ResponseHelper.GetResponse(new JObject
                             {
                                 ["id"] = new JArray(unassignTaskModel.UserIDs)
                             }));
                         }
+
                         return Ok(ResponseHelper.GetExceptionResponse(
-                        "User have to be manager of this task to Unassign this task"));
-
-
+                            "User have to be manager of this task to Unassign this task"));
                     }
                 }
                 else
@@ -565,7 +566,9 @@ namespace Web.Controllers
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
+                        UserService userService = new UserService(db);
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                        User user = userService.GetUser(currentUserId);
                         TaskService taskService = new TaskService(db);
                         var archivedTask = taskService.UnArchiveTask(archiveTaskModel.TaskID, currentUserId);
                         Task task = db.Tasks.Find(archivedTask);
@@ -593,5 +596,13 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+//        [HttpPut]
+//        [Route("addDependency")]
+//        [Authorize(Roles = "Manager")]
+//        public IHttpActionResult AddDependency(ArchiveTaskModel archiveTaskModel)
+//        {
+//            
+//        }
     }
 }
