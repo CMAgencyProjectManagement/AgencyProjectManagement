@@ -226,7 +226,6 @@ export class ProjectDetailComponent implements OnInit {
               this.isLoading.openAssignModal = false
             })
             .catch(reason => {
-              console.debug('Here');
               this.showErrorModal('Assign fail');
               this.isLoading.openAssignModal = false
             })
