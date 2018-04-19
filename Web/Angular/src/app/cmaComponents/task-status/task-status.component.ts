@@ -40,7 +40,7 @@ export class TaskStatusComponent implements OnInit, OnChanges {
             break;
           }
           case 1: { // NEED REVIEW
-            statusClass = 'badge-info';
+            statusClass = 'badge-primary';
             break;
           }
           case 2: { // DONE

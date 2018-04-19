@@ -15,7 +15,7 @@
                     <h2 class="card-title">{{foundProject.name}}</h2>
                   </div>
                   <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;">
-                    <a routerLink="/project/update/{{foundProject.id}}" class="btn btn-secondary bg-light">
+                    <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light">
                       <i class="fa fa-edit"></i>&nbsp; Update
                     </a>
                     <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)">
