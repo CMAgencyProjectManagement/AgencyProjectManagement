@@ -2,7 +2,7 @@
   <div class="card-header">
     <strong>Account's detail</strong>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="foundUser">
     <div id="AvaAndDe" class="row">
 
       <div id="left" class="col-4">
@@ -10,7 +10,7 @@
       </div>
       <div id="right" class="col-6">
         <div id="name" *ngIf="foundUser" style="text-transform: uppercase" class="col-8  text-center">
-          <strong>{{foundUser.name}}</strong>
+          <strong>{{foundUser.name}}</strong> 
         </div>
         <div id="username" *ngIf="foundUser" class="row">
           <div class="col-4  text-right">User name </div>

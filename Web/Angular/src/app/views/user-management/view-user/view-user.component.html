@@ -35,7 +35,7 @@
                 <img *ngIf="!user.avatar" src="/assets/img/100x100_avatar.png" class="avatar avatar-lg">
               </td>
               <td>
-                <a href="#/account/detail?id={{user.id}}">{{user.username}}</a>
+                <a href="#/account/detail/{{user.id}}">{{user.username}}</a>
               </td>
               <td>
                 <p *ngIf="user.name">{{user.name}}</p>

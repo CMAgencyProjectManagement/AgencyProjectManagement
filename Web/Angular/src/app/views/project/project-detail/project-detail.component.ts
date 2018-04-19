@@ -9,11 +9,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { Router } from '@angular/router';
 import { Team } from '../../../interfaces/team';
 import { TeamService } from 'app/services/team.service';
-
+import { StoreService } from '../../../services/tree.service';
+import { User } from 'app/interfaces/user';
 @Component({
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
@@ -34,6 +35,9 @@ export class ProjectDetailComponent implements OnInit {
   projectID: number;
   project: Project;
   isPageLoading: boolean;
+  managementMode: boolean;
+  members: User[];
+  foundDepartment: Team;
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -48,7 +52,9 @@ export class ProjectDetailComponent implements OnInit {
     private router: Router,
     private location: Location,
     private modalService: BsModalService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private storeService: StoreService,
+    private route: ActivatedRoute,
   ) {
     this.isLoading = {
       page: true,
@@ -198,4 +204,60 @@ export class ProjectDetailComponent implements OnInit {
         this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
       })
   };
+
+  handleOnAssignMembersBtnClick() {
+    let currentUser = this.storeService.get(['currentUser']) as User;
+    // if(currentUser.isManager){
+    //   this.teamService.getDetail(currentUser.team.id).then(value =>{
+    //     this.foundDepartment = value;
+    //     this.members= this.foundDepartment.users;
+    //     // for(let i=0; i< this.members.length;i++){
+    //     //   console.debug(this.members[i].username);
+    //     // }
+    //   })
+    // }
+    
+    this.teamService.getDetail(currentUser.team.id)
+      .then(value => {
+        const pool = [];
+        this.foundDepartment = value;
+        for (let member of this.foundDepartment.users as User[]) {
+          let removeFlag = false;
+          for (let assignedMember of this.members) {
+            if (assignedMember.id == member.id) {
+              removeFlag = true;
+            }
+          }
+          if (!removeFlag) {
+            pool.push(member);
+          }
+        }
+
+        const onConfirm = (selelectedMembers: User[]) => {
+          let selectedIds = _.map(selelectedMembers, 'id');
+          this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
+            .then(value => {
+              this.members = _.concat(this.members, selectedIds);
+              this.isLoading.openAssignModal = false
+            })
+            .catch(reason => {
+              console.debug("Here");
+              this.showErrorModal('Assign fail');
+              this.isLoading.openAssignModal = false
+            })
+        };
+
+        const initialState = {
+          confirmCallback: onConfirm,
+          cancelCallback: () => {
+          },
+          closeCallback: () => {
+          },
+          userPool: pool,
+          title: `Assign`,
+          confirmButtonText: 'Assign'
+        };
+        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
+      })
+  }
 }

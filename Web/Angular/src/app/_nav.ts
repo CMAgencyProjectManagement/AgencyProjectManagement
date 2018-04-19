@@ -30,7 +30,7 @@ const staff_navigation = [
   },
   {
     name: 'My Profile',
-    url: '/account/detail',
+    url: '/account/profile',
     icon: 'icon-user',
   }
 ];

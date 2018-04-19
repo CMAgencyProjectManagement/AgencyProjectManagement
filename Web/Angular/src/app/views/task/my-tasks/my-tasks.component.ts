@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {StoreService} from '../../../services/tree.service';
-import {User} from '../../../interfaces/user';
-import {Task} from '../../../interfaces/task';
-import {TaskService} from '../../../services/task.service';
-import {Location} from '@angular/common';
-import {BsModalService} from 'ngx-bootstrap/modal';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ErrorModalComponent} from '../../../cmaComponents/modals';
+import { Component, OnInit } from '@angular/core';
+import { StoreService } from '../../../services/tree.service';
+import { User } from '../../../interfaces/user';
+import { Task } from '../../../interfaces/task';
+import { TaskService } from '../../../services/task.service';
+import { Location } from '@angular/common';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ErrorModalComponent } from '../../../cmaComponents/modals';
 
 @Component({
   selector: 'app-my-tasks',
@@ -34,6 +34,7 @@ export class MyTasksComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoading.page = true;
     this.taskService.getMyTask()
       .then(value => {
         this.tasks = value;
@@ -52,6 +53,6 @@ export class MyTasksComponent implements OnInit {
       },
       message: message
     };
-    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
+    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
 }
