@@ -59,7 +59,7 @@
               <dt class="col-3">Status:</dt>
               <dd class="col-9">
                 <!--<span>{{foundTask.statusText}}</span>-->
-                <app-task-status [taskStatusNumber]="foundTask.status" ></app-task-status>
+                <app-task-status [taskStatusNumber]="foundTask.status"></app-task-status>
               </dd>
               <dt class="col-3">Effort:</dt>
               <dd class="col-9">
@@ -180,11 +180,11 @@
             <dl class="row ml-1">
               <dt class="col-12">Predecessor tasks:</dt>
               <dd class="col-12 pl-4">
-
+                <app-tasklist [tasks]="foundTask.predecessors"></app-tasklist>
               </dd>
               <dt class="col-12">Successor tasks:</dt>
               <dd class="col-12 pl-4">
-
+                <app-tasklist [tasks]="foundTask.successors"></app-tasklist>
               </dd>
             </dl>
           </div>
@@ -213,7 +213,7 @@
               <span *ngIf="!foundTask.finishedDate">
                 N/A
               </span>
-              <span *ngIf="foundTask.finishedDate">
+                <span *ngIf="foundTask.finishedDate">
                 {{foundTask.finishedDate | date:'dd/MM/yyyy'}}
               </span>
               </dd>
