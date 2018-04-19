@@ -26,6 +26,16 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    if (!taskService.IsAssigneeOfProject(currentUserId, id))
+                    {
+                        return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Not assignee of project in this task"));
+                    }
+                }
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
                     Task task = taskService.GetTask(id);
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
@@ -155,8 +165,18 @@ namespace Web.Controllers
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
+                    TaskService taskService = new TaskService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
-
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
+                    {
+                        return Content(HttpStatusCode.UnsupportedMediaType,
+                        ResponseHelper.GetExceptionResponse("Dont have assignee of this task"));
+                    }
+                }
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    
                     TaskService taskService = new TaskService(db);
                     var task = taskService.setStatus(taskId, currentUserId, TaskStatus.NeedReview);
 

@@ -165,6 +165,21 @@ namespace Service
             }
             return false;
         }
+        public bool IsAssigneeOfProject(int userId, int taskId)
+        {
+            Task task = GetTask(taskId);
+            if (task == null) { throw new ObjectNotFoundException($"Task with id {taskId} not found"); }
+
+            var listId = db.Tasks.Find(taskId).ListID;
+            var projectId = db.Lists.Find(listId).ProjectID;
+            var staff = db.UserProjects
+                .Where(x => x.ProjectID == projectId && x.UserID == userId).Select(x => x.User).SingleOrDefault();
+            if (staff!=null)
+            {
+                return true;
+            }
+            return false;
+        }
 
 
         public Task setStatus(int taskId, int modifierId, TaskStatus taskStatus)
