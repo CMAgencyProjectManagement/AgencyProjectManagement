@@ -294,7 +294,7 @@ export class ViewComponent implements OnInit {
     const initialState = {
       task: this.foundTask,
       confirmCallback: (newTask) => {
-        this.foundTask.status = newTask.status;
+        this.foundTask = newTask;
       }
     };
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog'});

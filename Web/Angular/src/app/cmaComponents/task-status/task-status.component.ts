@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
 import {ProjectService} from '../../services/project.service';
 import {TaskService} from '../../services/task.service';
 
@@ -7,7 +7,7 @@ import {TaskService} from '../../services/task.service';
   templateUrl: './task-status.component.html',
   styleUrls: ['./task-status.component.scss']
 })
-export class TaskStatusComponent implements OnInit {
+export class TaskStatusComponent implements OnInit, OnChanges {
   @Input() taskStatusNumber: Number;
   badgeClass: any;
   text: any;
@@ -21,16 +21,20 @@ export class TaskStatusComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateComponent(this.taskStatusNumber);
+  }
+
+  updateComponent(statusNumber) {
     this.taskService.getStatuses()
       .then(value => {
         this.taskStatuses = value;
         for (let status of this.taskStatuses) {
-          if (status.key == this.taskStatusNumber) {
+          if (status.key == statusNumber) {
             this.text = status.value;
           }
         }
         let statusClass;
-        switch (this.taskStatusNumber) {
+        switch (statusNumber) {
           case 0: { // NOT DONE
             statusClass = 'badge-secondary';
             break;
@@ -57,6 +61,12 @@ export class TaskStatusComponent implements OnInit {
       .catch(reason => {
         console.debug('TaskStatusComponent - ngOnInit', reason);
       })
+  }
+
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    if (!changes.taskStatusNumber.firstChange) {
+      this.updateComponent(changes.taskStatusNumber.currentValue);
+    }
   }
 
 }

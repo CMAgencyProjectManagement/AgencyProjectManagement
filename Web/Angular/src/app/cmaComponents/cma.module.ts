@@ -30,6 +30,7 @@ import {
   CommentModalComponent,
   SelectStatusModalComponent
 } from './modals';
+import { TasklistComponent } from './tasklist/tasklist.component';
 
 const declare_exports = [
   ProjectCardComponent,
@@ -48,7 +49,8 @@ const declare_exports = [
   TaskTableComponent,
   SelectStatusModalComponent,
   SelectTeamsModalComponent,
-  TaskStatusComponent
+  TaskStatusComponent,
+  TasklistComponent
 ];
 
 
@@ -71,7 +73,7 @@ const declare_exports = [
     ...declare_exports
   ],
   declarations: [
-    ...declare_exports
+    ...declare_exports,
   ]
 })
 export class CmaModule {
