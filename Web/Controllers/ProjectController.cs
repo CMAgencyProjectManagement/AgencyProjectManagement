@@ -47,21 +47,39 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("recentchanged")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult GetAdminDashboard()
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
+                    int userId = Int32.Parse(User.Identity.GetUserId());
                     ProjectService projectService = new ProjectService(db);
-                    var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
-
+                    TaskService taskService = new TaskService(db);
                     JArray dataObject = new JArray();
-                    foreach (var project in projects)
+                    if (db.Users.Find(userId).IsAdmin)
                     {
-                        dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
+                        var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
+
+                        
+                        foreach (var project in projects)
+                        {
+                            dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
+                        }
                     }
+                    if (db.Users.Find(userId).IsManager)
+                    {
+                        TeamService teamService = new TeamService(db);
+                        var teamId = db.Users.Find(userId).TeamID;
+                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                        var tasks = taskService.GetTaskChangeThisWeek(tasksInTeam).OrderByDescending(X=>X.ChangedTime);
+                        foreach (var task in tasks)
+                        {
+                            dataObject.Add(taskService.ParseToJson(task));
+                        }
+                    }
+                    
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
