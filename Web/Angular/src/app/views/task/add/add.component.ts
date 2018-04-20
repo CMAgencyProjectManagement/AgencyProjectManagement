@@ -202,6 +202,7 @@ export class AddComponent implements OnInit {
     this.resetError();
     const values = this.createForm.value;
     let startDate = moment(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
+    let preTaskIds = _.map(this.predecessorTasks, 'id');
     this.taskService.createTask(
       values.name,
       values.description,
@@ -209,7 +210,8 @@ export class AddComponent implements OnInit {
       values.priority,
       startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt,
       values.duration,
-      values.effort
+      values.effort,
+      preTaskIds
     ).then(value => {
       const initialState = {
         message: 'Your task successfully created'

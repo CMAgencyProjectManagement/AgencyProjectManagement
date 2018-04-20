@@ -15,7 +15,7 @@ namespace Service
             this.db = db;
         }
 
-        public bool CheckValidationOfPredecessor(
+        public bool IsPredecessorValid(
             int sourceTaskId,
             DateTime destinationStartdate)
         {

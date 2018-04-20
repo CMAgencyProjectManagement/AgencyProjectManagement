@@ -11,6 +11,7 @@ import {LaddaModule} from 'angular2-ladda';
 import {MyDatePickerModule} from 'mydatepicker';
 import { MyTasksComponent } from './my-tasks/my-tasks.component';
 import {DataTablesModule} from 'angular-datatables';
+import {PopoverModule} from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {DataTablesModule} from 'angular-datatables';
     LaddaModule.forRoot({
       style: 'expand-left'
     }),
+    PopoverModule.forRoot(),
     FormsModule,
     MyDatePickerModule,
     DataTablesModule,

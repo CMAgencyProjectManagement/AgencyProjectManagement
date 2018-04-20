@@ -324,11 +324,12 @@ namespace Web.Controllers
                     foreach (int predecessorTaskId in createTaskModel.Predecessors)
                     {
                         var predecessorTask = taskService.GetTask(predecessorTaskId);
-                        if (dependencyService.CheckValidationOfPredecessor(predecessorTask.ID,
+                        if (!dependencyService.IsPredecessorValid(predecessorTask.ID,
                             createTaskModel.StartDate))
                         {
+                            DateTime deadline = predecessorTask.StartDate.Value.AddDays(predecessorTask.Duration);
                             ModelState.AddModelError("Predecessors",
-                                $"Task {predecessorTask.Name} have deadline come after your start date {createTaskModel.StartDate}");
+                                $"Task \"{predecessorTask.Name}\" have deadline({deadline.ToShortDateString()}) that come after your start date({createTaskModel.StartDate.ToShortDateString()})");
                             flag = false;
                             break;
                         }

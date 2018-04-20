@@ -85,7 +85,7 @@
                 <input type="text" id="duration-input"
                        [ngClass]="{'form-control': true, 'is-invalid': errors.duration}"
                        formControlName="duration">
-                <span class="input-group-addon">day</span>
+                <span class="input-group-addon">day(s)</span>
               </div>
 
               <div class="invalid-feedback" *ngIf="errors.duration">{{errors.duration}}</div>
@@ -101,21 +101,23 @@
                 <input type="text" id="effort-input"
                        [ngClass]="{'form-control': true, 'is-invalid': errors.effort}"
                        formControlName="effort">
-                <span class="input-group-addon">hour</span>
+                <span class="input-group-addon">hour(s)</span>
               </div>
               <div class="invalid-feedback" *ngIf="errors.effort">{{errors.effort}}</div>
             </div>
           </div>
           <div class="form-group row">
             <!--predecessors-->
-            <label class="col-4 col-form-label text-right" for="effort-input">
-              Predecessor
+            <label class="col-4 col-form-label text-right">
+              <i class="fa fa-exclamation-circle"
+                 popover="Tasks that have to finished before this task's start date"
+                 triggers="focus" tabindex="999"></i> Predecessor tasks
             </label>
-            <div class="col-5">
+            <div class="col-8">
               <div>
                 <app-tasklist [tasks]="predecessorTasks"></app-tasklist>
               </div>
-              <div>
+              <div class="mt-2">
                 <button class="btn btn-success" (click)="handleAddDependencyBtnClick()">
                   Select predecessors
                 </button>
