@@ -88,7 +88,8 @@ export class TaskService {
     priority: number,
     startDate: string,
     duration: number,
-    effort: number
+    effort: number,
+    predecessors: number[]
   ): Promise<any> {
     const objData = {
       Name: name,
@@ -97,7 +98,8 @@ export class TaskService {
       Priority: priority,
       StartDate: startDate,
       Duration: duration,
-      Effort: effort
+      Effort: effort,
+      Predecessors: predecessors
     };
     return new Promise<any>((resolve, reject) => {
       request.post(serverPath.createTask)
@@ -124,7 +126,8 @@ export class TaskService {
     priority: number,
     startDate: string,
     duration: number,
-    effort: number
+    effort: number,
+    predecessors: number[]
   ): Promise<any> {
     const objData = {
       Id: taskId,
@@ -134,7 +137,8 @@ export class TaskService {
       Priority: priority,
       StartDate: startDate,
       Duration: duration,
-      Effort: effort
+      Effort: effort,
+      Predecessors: predecessors
     };
     return new Promise<any>((resolve, reject) => {
       request.put(serverPath.editTask)

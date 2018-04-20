@@ -14,8 +14,7 @@
     <div class="form-group row">
       <div class="col-md-9">
         <select id="user-select" name="user-select" class="form-control" (change)="handleOnSelect($event.target.value)">
-          <option value="{{undefined}}">Please select members</option>
-          <!--TODO show deadline-->
+          <option value="{{undefined}}">Please select tasks</option>
           <option value="{{task.id}}" *ngFor="let task of taskPool">{{task.name}}</option>
         </select>
       </div>
