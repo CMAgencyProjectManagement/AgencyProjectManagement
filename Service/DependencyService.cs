@@ -26,17 +26,17 @@ namespace Service
             return sourceTaskDeadline.Date < destinationStartdate.Date;
         }
 
-        public void CreateDependency(
-            int sourceTaskId,
-            int destinationTaskId,
-            int type = 1)
-        {
-            TaskDependency dependency = new TaskDependency
-            {
-                []
-            };
-            db.TaskDependencies.Add()
-        }
+//        public void CreateDependency(
+//            int sourceTaskId,
+//            int destinationTaskId,
+//            int type = 1)
+//        {
+//            TaskDependency dependency = new TaskDependency
+//            {
+//                []
+//            };
+//            db.TaskDependencies.Add()
+//        }
 
         public void UpdateDependency()
         {
