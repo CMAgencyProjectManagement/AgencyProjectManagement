@@ -255,6 +255,7 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     bool flag = true;
+                    int DurationLength = 15;
                     if (taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name, createTaskModel.ListID))
                     {
                         ModelState.AddModelError("Name", "Task name is taken");
@@ -273,10 +274,10 @@ namespace Web.Controllers
                         flag = false;
                     }
 
-                    if (createTaskModel.Duration < 1)
+                    if (createTaskModel.Duration < 1|| createTaskModel.Duration > DurationLength)
                     {
                         ModelState.AddModelError("Duration",
-                            "Duration must be greater than 1 ");
+                            $"Duration must be greater than 1 and smaller than {DurationLength}");
                         flag = false;
                     }
 
@@ -344,6 +345,7 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
+                    int DurationLength = 15;
 
                     if (taskService.IsUserManagerOfTask(currentUserId, updateTaskViewModel.Id))
                     {
@@ -369,10 +371,10 @@ namespace Web.Controllers
                             flag = false;
                         }
 
-                        if (updateTaskViewModel.Duration < 1)
+                        if (updateTaskViewModel.Duration < 1 || updateTaskViewModel.Duration > DurationLength)
                         {
                             ModelState.AddModelError("Duration",
-                                "Duration must be greater than 1 ");
+                                $"Duration must be greater than 1 and smaller than {DurationLength}");
                             flag = false;
                         }
 
