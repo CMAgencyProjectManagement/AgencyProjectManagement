@@ -55,7 +55,7 @@ namespace Web.Controllers
         }
         [HttpGet]
         [Route("late")]
-        [Authorize(Roles = "Admin,Manager,Staff")]
+        [Authorize(Roles = "Manager,Staff")]
         public IHttpActionResult GetStaffDashboard()
         {
             try
@@ -63,15 +63,29 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    TeamService teamService = new TeamService(db);
                     int userId = Int32.Parse(User.Identity.GetUserId());
-                    var tasksLate = taskService.GetLateTaskOfUser(userId);
                     JArray dataObject = new JArray();
-                    foreach (var task in tasksLate)
+                    if (!db.Users.Find(userId).IsManager)
                     {
-                        dataObject.Add(taskService.ParseToJson(task));
+                        var tasksLate = taskService.GetLateTaskOfStaff(userId);
+                        foreach (var task in tasksLate)
+                        {
+                            dataObject.Add(taskService.ParseToJson(task));
+                        }
                     }
-
+                    else
+                    {
+                        var teamId = db.Users.Find(userId).TeamID;
+                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                        var tasksLate = taskService.GetLateActiveTasksOfTaskList(tasksInTeam);
+                        foreach (var task in tasksLate)
+                        {
+                            dataObject.Add(taskService.ParseToJson(task));
+                        }
+                    }
                     return Ok(ResponseHelper.GetResponse(dataObject));
+
                 }
             }
             catch (Exception ex)

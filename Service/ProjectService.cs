@@ -317,7 +317,7 @@ namespace Service
             var userIdsInProject = usersInProject.Select(x => x.ID);
             return userIdsInProject;
         }
-        public List<Task> GetTasksInProject(int projectId)
+        public List<Task> GetTasksOfProject(int projectId)
         {
 
             TaskService taskService = new TaskService(db);
