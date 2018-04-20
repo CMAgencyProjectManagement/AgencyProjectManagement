@@ -1,26 +1,28 @@
-import {Component, OnInit} from '@angular/core';
-import {ProjectService} from '../../../services/project.service';
-import {Project} from '../../../interfaces/project';
-import {Location} from '@angular/common';
-import {BsModalService} from 'ngx-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../interfaces/project';
+import { Location } from '@angular/common';
+import { BsModalService } from 'ngx-bootstrap';
 import {
   CommentModalComponent,
   ConfirmModalComponent,
   ErrorModalComponent,
   SelectUsersModalComponent,
-  SelectTeamsModalComponent
+  SelectTeamsModalComponent,
+  SelectMembersModalComponent
 } from '../../../cmaComponents/modals';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
-import {Team} from '../../../interfaces/team';
-import {TeamService} from 'app/services/team.service';
-import {StoreService} from '../../../services/tree.service';
-import {User} from 'app/interfaces/user';
+import { Team } from '../../../interfaces/team';
+import { TeamService } from 'app/services/team.service';
+import { StoreService } from '../../../services/tree.service';
+import { UserService } from '../../../services/user.service';
+import { User } from 'app/interfaces/user';
 
 @Component({
   templateUrl: './project-detail.component.html',
@@ -42,9 +44,12 @@ export class ProjectDetailComponent implements OnInit {
   projectID: number;
   project: Project;
   isPageLoading: boolean;
+  containmember: boolean;
+  containdepartment: boolean;
   managementMode: boolean;
   members: User[];
   foundDepartment: Team;
+  currentUser: User;
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -57,13 +62,18 @@ export class ProjectDetailComponent implements OnInit {
   };
 
   constructor(private projectService: ProjectService,
-              private router: Router,
-              private location: Location,
-              private modalService: BsModalService,
-              private teamService: TeamService,
-              private storeService: StoreService,
-              private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
+    private modalService: BsModalService,
+    private teamService: TeamService,
+    private storeService: StoreService,
+    private userService: UserService,
+    private route: ActivatedRoute,
   ) {
+    this.currentUser = this.storeService.get(['currentUser']) as User;
+    this.userService.getCurrentUserInfo().then(value =>{
+      this.currentUser = value;
+    })
     this.isLoading = {
       page: true,
       attachmentUpload: false,
@@ -78,16 +88,17 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+
     let id = this.route.snapshot.paramMap.get('id');
     if (Number(id)) {
-        this.projectService.getProject(Number(id))
-          .then(value => {
-            this.isPageLoading = false;
-            this.foundProject = value;
-          })
-          .catch(reason => {
-            this.showErrorModal(reason.Message, true);
-          })
+      this.projectService.getProject(Number(id))
+        .then(value => {
+          this.isPageLoading = false;
+          this.foundProject = value;
+        })
+        .catch(reason => {
+          this.showErrorModal(reason.Message, true);
+        })
     } else {
       this.showErrorModal(`Invalid task id "${id}"`, true);
     }
@@ -142,7 +153,7 @@ export class ProjectDetailComponent implements OnInit {
       message: `Are you sure to close this project?`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {
@@ -154,21 +165,29 @@ export class ProjectDetailComponent implements OnInit {
       },
       message: message
     };
-    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
+    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
 
   handleOnAssignBtnClick() {
     const onConfirm = (selectedTeams: Team[]) => {
       let selectedIds = _.map(selectedTeams, 'id');
-      this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
-        .then(value => {
-          this.foundProject = value;
-          this.isLoading.openAssignModal = false
-        })
-        .catch(reason => {
-          this.showErrorModal('Assign fail');
-          this.isLoading.openAssignModal = false
-        })
+      if (selectedIds.length == 0) {
+        this.containdepartment = true;
+      }
+      if (!this.containdepartment) {
+        this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
+          .then(value => {
+            this.foundProject = value;
+            this.isLoading.openAssignModal = false
+          })
+          .catch(reason => {
+            this.showErrorModal('Assign fail!');
+            this.isLoading.openAssignModal = false
+          })
+      } else {
+        this.showErrorModal('Please select departments!');
+        this.isLoading.openAssignModal = false
+      }
     };
     this.teamService.getAllTeam()
       .then(value => {
@@ -195,7 +214,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog'});
+        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
       })
   };
 
@@ -220,15 +239,23 @@ export class ProjectDetailComponent implements OnInit {
 
         const onConfirm = (selelectedMembers: User[]) => {
           let selectedIds = _.map(selelectedMembers, 'id');
-          this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
-            .then(value => {
-              this.members = _.concat(this.members, selectedIds);
-              this.isLoading.openAssignModal = false
-            })
-            .catch(reason => {
-              this.showErrorModal('Assign fail');
-              this.isLoading.openAssignModal = false
-            })
+          if (selectedIds.length == 0) {
+            this.containmember = true;
+          }
+          if (!this.containmember) {
+            this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
+              .then(value => {
+                this.members = _.concat(this.members, selectedIds);
+                this.isLoading.openAssignModal = false
+              })
+              .catch(reason => {
+                this.showErrorModal('Assign fail');
+                this.isLoading.openAssignModal = false
+              })
+          } else {
+            this.showErrorModal('Please select members!');
+            this.isLoading.openAssignModal = false;
+          }
         };
 
         const initialState = {
@@ -241,7 +268,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog'});
+        this.modalService.show(SelectMembersModalComponent, { initialState, class: 'modal-dialog' });
       })
   }
 }
