@@ -391,28 +391,44 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetProjectByID(int id)
+        [Route("{projectId:int}")]
+        [Authorize]
+        public IHttpActionResult GetProjectByID(int projectId)
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     ProjectService projectService = new ProjectService(db);
-                    var project = projectService.GetProjectByID(id);
+                    UserService userService = new UserService(db);
+                    Project foundProject = projectService.GetProjectByID(projectId);
+                    string userIdString = User.Identity.GetUserId();
+                    User user = userService.GetUser(userIdString);
 
-                    if (project != null)
+                    if (!user.IsAdmin)
+                    {
+                        IEnumerable<Project> projectsOfUser = projectService.GetProjectOfUser(user.ID).ToList();
+                        if (!projectsOfUser.Any(project => project.ID.Equals(projectId)))
+                        {
+                            return Content(HttpStatusCode.Unauthorized,
+                                ResponseHelper.GetExceptionResponse($"You need to be a member of project {foundProject.Name} to view"));
+                        }
+                    }
+
+                    
+
+                    if (foundProject != null)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                            projectService.ParseToJson(project,
+                            projectService.ParseToJson(
+                                foundProject,
                                 avatarPath: AgencyConfig.AvatarPath,
                                 isDetailed: true)
                         ));
                     }
                     else
                     {
-                        return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {id}");
+                        return Content(HttpStatusCode.BadRequest, $"Can't find project with ID {projectId}");
                     }
                 }
             }
