@@ -54,7 +54,21 @@ namespace Service
                 throw new ObjectNotFoundException($"Team with ID{teamId} not found");
             }
         }
+        public List<Task> GetTasksOfTeam(int teamId)
+        {
+            ProjectService projectService = new ProjectService(db);
+            List<Task> tasklist = new List<Task>();
+            var projectIds = db.TeamProjects
+                .Where(x => x.TeamID == teamId)
+                .Select(x => x.ProjectID).ToList();
+            foreach (var projectId in projectIds)
+            {
+                List<Task> list = projectService.GetTasksOfProject(projectId);
+                tasklist.AddRange(list);
+            }
+            return tasklist;
 
+        }
         public Team Updateteam(
             int id,
             string name,

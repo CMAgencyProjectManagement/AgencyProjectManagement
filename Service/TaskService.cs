@@ -85,7 +85,7 @@ namespace Service
             }
         }
 
-        public IEnumerable<Task> GetLateTaskOfUser(int userID)
+        public IEnumerable<Task> GetLateTaskOfStaff(int userID)
         {
             var tasks = GetActiveTasksOfUser(userID);
             var taskList = new List<Task>();
@@ -102,6 +102,31 @@ namespace Service
             }
 
             return taskList;
+        }
+        public List<Task> GetLateActiveTasksOfTaskList(List<Task> taskList)
+        {
+            List<Task> activeTasks = new List<Task>();
+            foreach (var task in taskList)
+            {
+                if (task.Status == (int)TaskStatus.NotDone ||
+                    task.Status == (int)TaskStatus.NeedReview)
+                {
+                    activeTasks.Add(task);
+                }
+            }
+            List<Task> lateActiveTasks = new List<Task>();
+            foreach (var task in activeTasks)
+            {
+                if (task.StartDate != null)
+                {
+                    DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
+                    if (DateTime.Now > deadline)
+                    {
+                        lateActiveTasks.Add(task);
+                    }
+                }
+            }
+            return lateActiveTasks;
         }
 
         public List<Task> GetActiveTasksOfUser(int userId)
@@ -260,7 +285,7 @@ namespace Service
 
             ProjectService projectService = new ProjectService(db);
             var projectId = db.Lists.Find(listId).ProjectID;
-            List<Task> taskWithProjectId = projectService.GetTasksInProject(projectId);
+            List<Task> taskWithProjectId = projectService.GetTasksOfProject(projectId);
             var tasks = taskWithProjectId.Where(task => task.Name.ToLower() == taskName.ToLower()).ToList();
             return tasks.Count > 0;
         }
