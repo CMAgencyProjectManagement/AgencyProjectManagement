@@ -53,6 +53,33 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpGet]
+        [Route("late")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
+        public IHttpActionResult GetStaffDashboard()
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    int userId = Int32.Parse(User.Identity.GetUserId());
+                    var tasksLate = taskService.GetLateTaskOfUser(userId);
+                    JArray dataObject = new JArray();
+                    foreach (var task in tasksLate)
+                    {
+                        dataObject.Add(taskService.ParseToJson(task));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
 
         [HttpGet]
         [Route("user/{id:int}")]
@@ -64,6 +91,8 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+
                     IEnumerable<Task> tasks = taskService.GetActiveTasksOfUser(id);
                     JArray dataObject = new JArray();
                     foreach (var task in tasks)
