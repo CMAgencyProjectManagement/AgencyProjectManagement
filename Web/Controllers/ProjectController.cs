@@ -45,6 +45,34 @@ namespace Web.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("recentchanged")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetAdminDashboard()
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
+
+                    JArray dataObject = new JArray();
+                    foreach (var project in projects)
+                    {
+                        dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
         [HttpPut]
         [Route("setteams")]
         [Authorize]
