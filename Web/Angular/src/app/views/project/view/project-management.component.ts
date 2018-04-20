@@ -35,7 +35,6 @@ export class ProjectManagementComponent implements OnInit {
     this.userService.getCurrentUserInfo().then(value => {
       this.currentUser = value;
       if(this.currentUser.isAdmin){
-        console.debug("In If!");
         this.projectService.getAllProjects()
         .then(data => {
           this.projects = data;
@@ -45,7 +44,6 @@ export class ProjectManagementComponent implements OnInit {
           console.debug('ProjectManagementComponent', reason);
         })
       } else{
-        console.debug("In Else!");
         this.projectService.getMyProjects()
         .then(data => {
           this.projects = data;

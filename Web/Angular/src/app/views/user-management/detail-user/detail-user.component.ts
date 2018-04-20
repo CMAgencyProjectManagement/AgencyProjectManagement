@@ -27,7 +27,6 @@ export class DetailUserComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
   ) {
-    this.foundUser== this.storeService.get(['currentUser']) as User;
     // let currentUser = this.storeService.get(['currentUser']) as User;
     // this.managementMode = currentUser.isManager || currentUser.isAdmin;
   }
@@ -37,7 +36,7 @@ export class DetailUserComponent implements OnInit {
       this.foundUser= this.storeService.get(['currentUser']) as User;
       console.debug(this.foundUser.id);
     } else {
-      this.userID=Number(this.route.snapshot.paramMap.get('id') == undefined);
+      this.userID=Number(this.route.snapshot.paramMap.get('id'));
       this.getAllTeam();
     }
 
