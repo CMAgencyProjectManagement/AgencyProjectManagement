@@ -24,6 +24,36 @@ namespace Service
         {
             return db.Projects.ToList();
         }
+        public IEnumerable<Project> GetProjectChangeThisWeek()
+        {
+            var projects = db.Projects.ToList();
+            List<Project> ProjectChangeThisWeek = new List<Project>();
+            foreach (var project in projects)
+            {
+                if (IsProjectChangeThisWeek(project))
+                {
+                    ProjectChangeThisWeek.Add(project);
+                }
+            }
+            return ProjectChangeThisWeek.ToList();
+        }
+        public bool IsProjectChangeThisWeek(Project project)
+        {
+            DateTime date = DateTime.Now.Date;
+            DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
+            DateTime weekLastDay = weekFirstDay.AddDays(6);
+            if (project.ChangedTime !=null)
+            {
+                
+                if (project.ChangedTime >= weekFirstDay.Date && project.ChangedTime <= weekLastDay.Date)
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+        
 
         public IEnumerable<Project> GetProjectOfUser(int userId)
         {
