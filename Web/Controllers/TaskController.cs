@@ -78,15 +78,15 @@ namespace Web.Controllers
                     else
                     {
                         var teamId = db.Users.Find(userId).TeamID;
-                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                        var tasksInTeam = teamService.GetTasksOfTeam((int) teamId);
                         var tasksLate = taskService.GetLateActiveTasksOfTaskList(tasksInTeam);
                         foreach (var task in tasksLate)
                         {
                             dataObject.Add(taskService.ParseToJson(task));
                         }
                     }
-                    return Ok(ResponseHelper.GetResponse(dataObject));
 
+                    return Ok(ResponseHelper.GetResponse(dataObject));
                 }
             }
             catch (Exception ex)
@@ -377,7 +377,7 @@ namespace Web.Controllers
 
                         foreach (int predecessor in createTaskModel.Predecessors)
                         {
-                            dependencyService.CreateDependency(predecessor, newTask.ID);
+                            dependencyService.CreateDependency(predecessor, newTask.ID, creator.ID);
                         }
 
 
@@ -470,7 +470,8 @@ namespace Web.Controllers
                         }
 
                         IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
-                        DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
+                        DateTime sourceTaskDeadline =
+                            updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
                         foreach (Task successor in taskSuccessors)
                         {
                             if (!dependencyService.IsSuccessorValid(
@@ -490,6 +491,9 @@ namespace Web.Controllers
 
                         if (ModelState.IsValid)
                         {
+                            string loginedUserId = User.Identity.GetUserId();
+                            User creator = userService.GetUser(loginedUserId);
+
                             var updatedTask = taskService.UpdateTask(
                                 updateTaskViewModel.Id,
                                 updateTaskViewModel.Name,
@@ -502,6 +506,13 @@ namespace Web.Controllers
                                 currentUser.ID,
                                 DateTime.Now.Date
                             );
+
+                            dependencyService.SetDependencyForTask(
+                                updatedTask.ID,
+                                updateTaskViewModel.Predecessors,
+                                creator.ID
+                            );
+
                             return Ok(ResponseHelper.GetResponse(
                                 taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
                                     AgencyConfig.AttachmentPath)
@@ -695,13 +706,5 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
-//        [HttpPut]
-//        [Route("addDependency")]
-//        [Authorize(Roles = "Manager")]
-//        public IHttpActionResult AddDependency(ArchiveTaskModel archiveTaskModel)
-//        {
-//            
-//        }
     }
 }
