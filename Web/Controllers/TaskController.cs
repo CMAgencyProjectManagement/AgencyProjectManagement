@@ -358,6 +358,11 @@ namespace Web.Controllers
                             createTaskModel.Effort.Value,
                             creator
                         );
+
+                        foreach (int predecessor in createTaskModel.Predecessors)
+                        {
+                            dependencyService.CreateDependency(predecessor,newTask.ID);
+                        }
                         
                         
                         JObject dataObject = taskService.ParseToJson(newTask);

@@ -1,3 +1,33 @@
-<p>
-  select-tasks-modal works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="!title">Select users</h4>
+  <h4 class="modal-title pull-left" *ngIf="title">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="handleOnClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="col-12" *ngIf="message">
+    {{message}}
+  </div>
+  <div class="col-12">
+    <div class="form-group row">
+      <div class="col-md-9">
+        <select id="user-select" name="user-select" class="form-control" (change)="handleOnSelect($event.target.value)">
+          <option value="{{undefined}}">Please select members</option>
+          <!--TODO show deadline-->
+          <option value="{{task.id}}" *ngFor="let task of taskPool">{{task.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-12" *ngIf="selectedTasks.length > 0">
+    <h3>Selected</h3>
+    <app-tasklist [tasks]="selectedTasks"></app-tasklist>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="handleOnConfirm()">{{confirmButtonText}}</button>
+  <button type="button" class="btn btn-secondary" (click)="handleOnCancel()">Cancel</button>
+</div>

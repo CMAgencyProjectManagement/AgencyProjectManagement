@@ -51,7 +51,7 @@
             <label class="col-4 col-form-label text-right" for="priority-input">
               Priority <span style="color: red"><strong>*</strong></span>
             </label>
-            <div class="col-8">
+            <div class="col-4">
               <select formControlName="priority" id="priority-input"
                       [ngClass]="{'form-control': true, 'is-invalid': errors.list}">
                 <option *ngFor="let priority of priorities" value="{{priority.key}}">{{priority.value}}</option>
@@ -64,7 +64,7 @@
             <label class="col-4 col-form-label text-right" for="startDate-input">
               Start date <span style="color: red"><strong>*</strong></span>
             </label>
-            <div class="col-8 datepicker-group">
+            <div class="col-4 datepicker-group">
               <my-date-picker id="startDate-input" #datepicker
                               [options]="myDatePickerOptions"
                               [ngClass]="{'form-control': false, 'is-invalid': errors.startDate}"
@@ -80,7 +80,7 @@
             <label class="col-4 col-form-label text-right" for="duration-input">
               Duration <span style="color: red"><strong>*</strong></span>
             </label>
-            <div class="col-8">
+            <div class="col-4">
               <div class="input-group">
                 <input type="text" id="duration-input"
                        [ngClass]="{'form-control': true, 'is-invalid': errors.duration}"
@@ -96,7 +96,7 @@
             <label class="col-4 col-form-label text-right" for="effort-input">
               Effort <span style="color: red"><strong>*</strong></span>
             </label>
-            <div class="col-8">
+            <div class="col-4">
               <div class="input-group">
                 <input type="text" id="effort-input"
                        [ngClass]="{'form-control': true, 'is-invalid': errors.effort}"
@@ -106,8 +106,25 @@
               <div class="invalid-feedback" *ngIf="errors.effort">{{errors.effort}}</div>
             </div>
           </div>
+          <div class="form-group row">
+            <!--predecessors-->
+            <label class="col-4 col-form-label text-right" for="effort-input">
+              Predecessor
+            </label>
+            <div class="col-5">
+              <div>
+                <app-tasklist [tasks]="predecessorTasks"></app-tasklist>
+              </div>
+              <div>
+                <button class="btn btn-success" (click)="handleAddDependencyBtnClick()">
+                  Select predecessors
+                </button>
+                <div class="invalid-feedback" *ngIf="errors.predecessors">{{errors.predecessors}}</div>
+              </div>
+            </div>
+          </div>
           <div class="form-actions text-center">
-            <!--BUTTON-->
+            <!--BUTTONS-->
             <div class="col-12">
               <button class="btn btn-primary" (click)="handleCreateTask()" [ladda]="isLoading.create">
                 Create

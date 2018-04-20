@@ -10,11 +10,14 @@ import {IMyDpOptions} from 'mydatepicker';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {
   ErrorModalComponent,
-  SuccessModalComponent
+  SuccessModalComponent,
+  SelectTasksModalComponent
 } from '../../../cmaComponents/modals';
 import {TaskService} from '../../../services/task.service';
 import {Location} from '@angular/common';
 import {Project} from '../../../interfaces/project';
+import {Task} from '../../../interfaces/task';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-add',
@@ -33,7 +36,8 @@ export class AddComponent implements OnInit {
     priority: string,
     startDate: string,
     duration: string,
-    effort: string
+    effort: string,
+    predecessors: string;
   };
   @ViewChild('datepicker') datepicker;
   foundProject: Project;
@@ -46,6 +50,7 @@ export class AddComponent implements OnInit {
     showInputField: true,
     showTodayBtn: true
   };
+  predecessorTasks: Task[];
 
   constructor(private taskService: TaskService,
               private projectService: ProjectService,
@@ -57,6 +62,7 @@ export class AddComponent implements OnInit {
       page: true,
       create: false
     };
+    this.predecessorTasks = [];
     this.resetError();
   }
 
@@ -117,7 +123,8 @@ export class AddComponent implements OnInit {
       priority: '',
       startDate: '',
       duration: '',
-      effort: ''
+      effort: '',
+      predecessors: ''
     };
   }
 
@@ -147,6 +154,9 @@ export class AddComponent implements OnInit {
         case 'Effort':
           this.errors.effort = errorMessage;
           break;
+        case 'Predecessors':
+          this.errors.predecessors = errorMessage;
+          break;
       }
     }
   }
@@ -168,6 +178,23 @@ export class AddComponent implements OnInit {
       duration: '',
       effort: '',
     });
+  }
+
+  handleAddDependencyBtnClick() {
+    let taskPool = [];
+    for (let list of this.foundProject.lists) {
+      for (let task of list.tasks) {
+        taskPool.push(task);
+      }
+    }
+    const initialState = {
+      taskPool: taskPool,
+      title: 'Select predecessor tasks',
+      confirmCallback: (selectedTasks: Task[]) => {
+        this.predecessorTasks = selectedTasks;
+      }
+    };
+    this.modalService.show(SelectTasksModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   handleCreateTask() {

@@ -26,21 +26,32 @@ namespace Service
             return sourceTaskDeadline.Date < destinationStartdate.Date;
         }
 
-//        public void CreateDependency(
-//            int sourceTaskId,
-//            int destinationTaskId,
-//            int type = 1)
-//        {
-//            TaskDependency dependency = new TaskDependency
-//            {
-//                []
-//            };
-//            db.TaskDependencies.Add()
-//        }
-
-        public void UpdateDependency()
+        public TaskDependency CreateDependency(
+            int sourceTaskId,
+            int destinationTaskId,
+            int type = 1)
         {
-            
+            TaskDependency dependency = new TaskDependency
+            {
+                SourceTaskID = sourceTaskId,
+                DestinationTaskID = destinationTaskId,
+                DependencyType = type
+            };
+            db.TaskDependencies.Add(dependency);
+            db.SaveChanges();
+            return dependency;
+        }
+
+        public int DeleteDependency(int dependencyId)
+        {
+            TaskDependency taskDependency = db.TaskDependencies.Find(dependencyId);
+            if (taskDependency == null)
+            {
+                throw new ObjectNotFoundException($"Dependency with id {dependencyId} not found"); 
+            }
+            db.TaskDependencies.Remove(taskDependency);
+            db.SaveChanges();
+            return dependencyId;
         }
 
         public IEnumerable<Task> GetPredecessors(int currentTaskId)

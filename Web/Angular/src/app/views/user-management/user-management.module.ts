@@ -10,7 +10,8 @@ import {MyDatePickerModule} from 'mydatepicker';
 import {DetailUserComponent} from './detail-user/detail-user.component';
 import {DataTablesModule} from 'angular-datatables';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
-import { UpdateMyUserComponent } from './update-my-user/update-my-user.component';
+import {UpdateMyUserComponent} from './update-my-user/update-my-user.component';
+import {CmaModule} from '../../cmaComponents/cma.module';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { UpdateMyUserComponent } from './update-my-user/update-my-user.component
     FormsModule,
     MyDatePickerModule,
     DataTablesModule,
-    SpinnerModule
+    SpinnerModule,
+    CmaModule
   ],
   declarations: [
     CreateUserComponent,
