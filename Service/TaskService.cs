@@ -84,7 +84,23 @@ namespace Service
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
             }
         }
-
+        public IEnumerable<Task> GetLateTaskOfUser(int userID)
+        {
+            var tasks = GetActiveTasksOfUser(userID);
+            var taskList = new List<Task>();
+            foreach (var task in tasks)
+            {
+                if (task.StartDate!=null)
+                {
+                    DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
+                    if (DateTime.Now>deadline)
+                    {
+                        taskList.Add(task);
+                    }
+                }
+            }
+            return taskList;
+        }
         public List<Task> GetActiveTasksOfUser(int userId)
         {
             User user = db.Users.Find(userId);
