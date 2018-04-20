@@ -64,7 +64,32 @@ namespace Service
                 throw new ObjectNotFoundException($"List with ID {listId} not found");
             }
         }
-
+        public IEnumerable<Task> GetTaskChangeThisWeek(List<Task> TaskList)
+        {
+            List<Task> TasksChangeThisWeek = new List<Task>();
+            foreach (var task in TasksChangeThisWeek)
+            {
+                if (IsTaskChangeThisWeek(task))
+                {
+                    TasksChangeThisWeek.Add(task);
+                }
+            }
+            return TasksChangeThisWeek;
+        }
+        public bool IsTaskChangeThisWeek(Task task)
+        {
+            DateTime date = DateTime.Now.Date;
+            DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
+            DateTime weekLastDay = weekFirstDay.AddDays(6);
+            if (task.ChangedTime!=null)
+            {
+                if (task.ChangedTime >= weekFirstDay.Date && task.ChangedTime <= weekLastDay.Date)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public List<Task> GetTasksOfUser(int userId)
         {
             User user = db.Users.Find(userId);
@@ -189,6 +214,7 @@ namespace Service
 
             return false;
         }
+
 
         public bool IsAssigneeOfTask(int userId, int taskId)
         {
