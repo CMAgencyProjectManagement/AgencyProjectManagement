@@ -159,13 +159,13 @@ export class UserService {
     birthdate: string,
     email: string,
     team: number): Promise<User> {
-
+    let momentBirthdate = moment(birthdate, 'DD/MM/YYYY');
     const postDataObject = {
       Username: username,
       Password: password,
       Name: name,
       Phone: phone,
-      Birthdate: birthdate,
+      Birthdate: momentBirthdate.format('YYYY-MM-DD'),
       Email: email,
       Team: team
     };
