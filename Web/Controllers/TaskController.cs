@@ -53,6 +53,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("late")]
         [Authorize(Roles = "Manager,Staff")]
@@ -301,7 +302,7 @@ namespace Web.Controllers
 
                     bool flag = true;
                     int DurationLength = 15;
-                    
+
                     if (taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name,
                         createTaskModel.ListID.Value))
                     {
@@ -321,7 +322,7 @@ namespace Web.Controllers
                         flag = false;
                     }
 
-                    if (createTaskModel.Duration < 1|| createTaskModel.Duration > DurationLength)
+                    if (createTaskModel.Duration < 1 || createTaskModel.Duration > DurationLength)
                     {
                         ModelState.AddModelError("Duration",
                             $"Duration must be greater than 1 and smaller than {DurationLength}");
@@ -376,10 +377,10 @@ namespace Web.Controllers
 
                         foreach (int predecessor in createTaskModel.Predecessors)
                         {
-                            dependencyService.CreateDependency(predecessor,newTask.ID);
+                            dependencyService.CreateDependency(predecessor, newTask.ID);
                         }
-                        
-                        
+
+
                         JObject dataObject = taskService.ParseToJson(newTask);
                         return Ok(ResponseHelper.GetResponse(dataObject));
                     }
@@ -408,6 +409,7 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     UserService userService = new UserService(db);
+                    DependencyService dependencyService = new DependencyService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
                     int DurationLength = 15;
@@ -450,6 +452,36 @@ namespace Web.Controllers
                             ModelState.AddModelError("Effort",
                                 "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
                             flag = false;
+                        }
+
+                        foreach (int predecessorTaskId in updateTaskViewModel.Predecessors)
+                        {
+                            var predecessorTask = taskService.GetTask(predecessorTaskId);
+                            if (!dependencyService.IsPredecessorValid(
+                                predecessorTask.ID,
+                                updateTaskViewModel.StartDate))
+                            {
+                                DateTime deadline = predecessorTask.StartDate.Value.AddDays(predecessorTask.Duration);
+                                ModelState.AddModelError("Predecessors",
+                                    $"Task \"{predecessorTask.Name}\" have deadline({deadline.ToShortDateString()}) that come after your start date({updateTaskViewModel.StartDate.ToShortDateString()})");
+                                flag = false;
+                                break;
+                            }
+                        }
+
+                        IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
+                        DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
+                        foreach (Task successor in taskSuccessors)
+                        {
+                            if (!dependencyService.IsSuccessorValid(
+                                successor.ID,
+                                sourceTaskDeadline))
+                            {
+                                ModelState.AddModelError("Predecessors",
+                                    $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
+                                flag = false;
+                                break;
+                            }
                         }
 
                         if (flag == false)

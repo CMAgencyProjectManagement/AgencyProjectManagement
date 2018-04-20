@@ -23,7 +23,26 @@ namespace Service
             Task sourceTask = taskService.GetTask(sourceTaskId);
 
             DateTime sourceTaskDeadline = sourceTask.StartDate.Value.AddDays(sourceTask.Duration);
-            return sourceTaskDeadline.Date < destinationStartdate.Date;
+            return sourceTaskDeadline.Date <= destinationStartdate.Date;
+        }
+        
+        public bool IsSuccessorValid(
+            int destinationTaskId,
+            DateTime sourceTaskDeadline)
+        {
+            TaskService taskService =  new TaskService(db);
+            Task destinationTask = taskService.GetTask(destinationTaskId);
+
+            DateTime destinationTaskStartDate = destinationTask.StartDate.Value;
+            return destinationTaskStartDate.Date >= sourceTaskDeadline.Date;
+        }
+
+        public void SetDependencyForTask(int taskId, int[] predecessorIds)
+        {
+            TaskService taskService = new TaskService(db);
+            Task task = taskService.GetTask(taskId);
+            List<TaskDependency> dependencyToRemove = new List<TaskDependency>();
+            List<TaskDependency> dependencyToCreate = new List<TaskDependency>();
         }
 
         public TaskDependency CreateDependency(

@@ -106,6 +106,25 @@
               <div class="invalid-feedback" *ngIf="errors.effort">{{errors.effort}}</div>
             </div>
           </div>
+          <div class="form-group row">
+            <!--predecessors-->
+            <label class="col-4 col-form-label text-right">
+              <i class="fa fa-exclamation-circle"
+                 popover="Tasks that have to finished before this task's start date"
+                 triggers="focus" tabindex="999"></i> Predecessor tasks
+            </label>
+            <div class="col-8">
+              <div>
+                <app-tasklist [tasks]="predecessorTasks"></app-tasklist>
+              </div>
+              <div class="mt-2">
+                <button class="btn btn-success" (click)="handleAddDependencyBtnClick()">
+                  Select predecessors
+                </button>
+                <div class="invalid-feedback" *ngIf="errors.predecessors">{{errors.predecessors}}</div>
+              </div>
+            </div>
+          </div>
           <div class="form-actions text-center">
             <!--BUTTON-->
             <div class="col-12">

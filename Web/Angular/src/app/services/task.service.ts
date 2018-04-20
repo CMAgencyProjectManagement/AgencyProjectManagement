@@ -127,7 +127,7 @@ export class TaskService {
     startDate: string,
     duration: number,
     effort: number,
-    predecessors: number[]
+    predecessorsTaskIds: number[]
   ): Promise<any> {
     const objData = {
       Id: taskId,
@@ -138,7 +138,7 @@ export class TaskService {
       StartDate: startDate,
       Duration: duration,
       Effort: effort,
-      Predecessors: predecessors
+      Predecessors: predecessorsTaskIds
     };
     return new Promise<any>((resolve, reject) => {
       request.put(serverPath.editTask)

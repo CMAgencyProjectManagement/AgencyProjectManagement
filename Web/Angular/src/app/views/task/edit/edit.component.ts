@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {TaskService} from '../../../services/task.service';
-import {ErrorModalComponent, SuccessModalComponent} from '../../../cmaComponents/modals';
+import {ErrorModalComponent, SelectTasksModalComponent, SuccessModalComponent} from '../../../cmaComponents/modals';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {Task} from '../../../interfaces/task';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -10,6 +10,8 @@ import {ProjectService} from '../../../services/project.service';
 import {List} from '../../../interfaces/list';
 import {IMyDpOptions} from 'mydatepicker';
 import * as moment from 'moment';
+import * as _ from 'lodash';
+import {Project} from '../../../interfaces/project';
 
 @Component({
   selector: 'app-edit',
@@ -42,6 +44,8 @@ export class EditComponent implements OnInit {
     showInputField: true,
     showTodayBtn: true
   };
+  foundProject: Project;
+  predecessorTasks: Task[];
 
   constructor(private taskService: TaskService,
               private projectService: ProjectService,
@@ -53,6 +57,7 @@ export class EditComponent implements OnInit {
       page: true,
       update: false
     };
+    this.predecessorTasks = [];
     this.resetError();
   }
 
@@ -64,15 +69,16 @@ export class EditComponent implements OnInit {
         .then(value => {
           this.foundTask = value;
           this.updatePageLoadingState();
-          this.projectService.getListOfProject(this.foundTask.project.id)
-            .then(value1 => {
-              this.lists = value1;
+          this.projectService.getProject(this.foundTask.project.id)
+            .then(project => {
+              this.foundProject = project;
+              this.lists = this.foundProject.lists;
               this.setDefaultValue();
               this.updatePageLoadingState();
             })
             .catch(reason => {
               this.showErrorModal(reason.Message);
-            })
+            });
         })
         .catch(reason => {
           this.showErrorModal(reason.Message, true);
@@ -105,6 +111,7 @@ export class EditComponent implements OnInit {
       this.foundTask &&
       this.priorities
     ) {
+      this.predecessorTasks = this.foundTask.predecessors;
       this.isLoading.page = false;
     }
   }
@@ -174,11 +181,29 @@ export class EditComponent implements OnInit {
     });
   }
 
+  handleAddDependencyBtnClick() {
+    let taskPool = [];
+    for (let list of this.foundProject.lists) {
+      for (let task of list.tasks) {
+        taskPool.push(task);
+      }
+    }
+    const initialState = {
+      taskPool: taskPool,
+      title: 'Select predecessor tasks',
+      confirmCallback: (selectedTasks: Task[]) => {
+        this.predecessorTasks = selectedTasks;
+      }
+    };
+    this.modalService.show(SelectTasksModalComponent, {initialState, class: 'modal-dialog'});
+  }
+
   handleUpdateTask() {
     this.isLoading.update = true;
     this.resetError();
     const values = this.updateForm.value;
     let startDate = moment(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
+    let preTaskIds = _.map(this.predecessorTasks, 'id');
     this.taskService.editTask(
       this.foundTask.id,
       values.name,
@@ -187,7 +212,8 @@ export class EditComponent implements OnInit {
       values.priority,
       startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt,
       values.duration,
-      values.effort
+      values.effort,
+      preTaskIds
     ).then(value => {
       this.foundTask = value as Task;
       this.showSuccessModal('Update task successfully');

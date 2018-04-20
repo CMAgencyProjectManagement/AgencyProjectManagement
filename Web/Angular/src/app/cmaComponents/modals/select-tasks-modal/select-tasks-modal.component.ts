@@ -20,13 +20,26 @@ export class SelectTasksModalComponent implements OnInit {
   taskPool: Task[];
 
   constructor(private bsModalRef: BsModalRef) {
-    this.selectedTasks = [];
+    if (!this.selectedTasks) {
+      this.selectedTasks = [];
+    }
     if (!this.confirmButtonText) {
       this.confirmButtonText = 'Confirm';
     }
   }
 
   ngOnInit() {
+    if (this.selectedTasks.length > 0) {
+      this.taskPool = _.filter(this.taskPool, (task: Task) => {
+        let removeFlag = true;
+        for (let selectedTask of this.selectedTasks) {
+          if (task.id == selectedTask.id) {
+            removeFlag = false;
+          }
+        }
+        return removeFlag;
+      });
+    }
   }
 
   handleOnSelect(taskId) {
@@ -34,8 +47,8 @@ export class SelectTasksModalComponent implements OnInit {
       return task.id == taskId;
     }));
 
-    this.taskPool = _.filter(this.taskPool, (user: User) => {
-      return user.id != taskId;
+    this.taskPool = _.filter(this.taskPool, (task: Task) => {
+      return task.id != taskId;
     });
   }
 
