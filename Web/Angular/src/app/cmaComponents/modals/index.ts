@@ -9,3 +9,4 @@ export * from './select-teams-modal/select-teams-modal.component';
 export * from './comment-modal/comment-modal.component';
 export * from './select-status-modal/select-status-modal.component';
 export * from './select-tasks-modal/select-tasks-modal.component';
+export * from './select-members-modal/select-members-modal.component';

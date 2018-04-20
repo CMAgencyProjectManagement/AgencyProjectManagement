@@ -17,70 +17,62 @@
         <div class="dataTable-container hide-search">
           <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
             <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Deadline</th>
-              <th>Start date</th>
-              <th>Status</th>
-              <th>Update</th>
-              <th>Tasks</th>
-              <th>Report</th>
-            </tr>
+              <tr>
+                <th style="text-align: center">Name</th>
+                <th style="text-align: center">Description</th>
+                <th style="text-align: center">Deadline</th>
+                <th style="text-align: center">Start date</th>
+                <th style="text-align: center">Status</th>
+                <th style="text-align: center" *ngIf="currentUser.isAdmin">Action</th>
+              </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let project of projects;let i = index">
-              <td>
-                <a routerLink="/project/{{project.id}}/detail" style="color: blue">
-                  {{project.name | truncatetext:80}}
-                </a>
-              </td>
-              <td>
-                <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
-                <p *ngIf="!project.description">N/A</p>
-              </td>
-              <td>
-                <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
-                <span *ngIf=!project.deadline>N/A</span>
-              </td>
-              <td>
-                <span *ngIf=project.startDate>{{project.startDate | date:'dd/MM/yyyy'}}</span>
-                <span *ngIf=!project.startDate>N/A</span>
-              </td>
-              <td>
-                <span *ngIf="project.status === 0">
-                  Not started
-                </span>
-                <span *ngIf="project.status === 1">
-                  Executing
-                </span>
-                <span *ngIf="project.status === 2">
-                  Closed
-                </span>
-                <span *ngIf="project.status === null">N/A</span>
-              </td>
-              <td>
-                <a routerLink="/project/{{project.id}}/update">
-                  <button type="button" class="btn btn-primary">
-                    Update
-                  </button>
-                </a>
-              </td>
-              <td>
-                <a routerLink="/project/{{project.id}}/task">
-                  <button type="button" class="btn btn-primary">
-                    Tasks
-                  </button>
-                </a>
-              </td>
-              <td>
-                <a routerLink="/project/{{project.id}}/report">
-                  <button type="button" class="btn btn-primary">
-                    Report
-                  </button>
-                </a>
-              </td>
-            </tr>
+              <tr *ngFor="let project of projects;let i = index">
+                <td>
+                  <a routerLink="/project/{{project.id}}/detail" style="color: blue">
+                    {{project.name | truncatetext:80}}
+                  </a>
+                </td>
+                <td>
+                  <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
+                  <p *ngIf="!project.description">N/A</p>
+                </td>
+                <td>
+                  <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
+                  <span *ngIf=!project.deadline>N/A</span>
+                </td>
+                <td>
+                  <span *ngIf=project.startDate>{{project.startDate | date:'dd/MM/yyyy'}}</span>
+                  <span *ngIf=!project.startDate>N/A</span>
+                </td>
+                <td>
+                  <span *ngIf="project.status === 0">
+                    Not started
+                  </span>
+                  <span *ngIf="project.status === 1">
+                    Executing
+                  </span>
+                  <span *ngIf="project.status === 2">
+                    Closed
+                  </span>
+                  <span *ngIf="project.status === null">N/A</span>
+                </td>
+                <td *ngIf="currentUser.isAdmin">
+                  <div class="row">
+                    <div class="btn-group col-12">
+                      <a routerLink="/project/{{project.id}}/update" class="btn btn-primary">
+                        Update
+                      </a>
+                      <a routerLink="/project/{{project.id}}/task" class="btn btn-primary">
+                        Tasks
+                      </a>
+                      <a routerLink="/project/{{project.id}}/report" class="btn btn-primary">
+                        Report
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

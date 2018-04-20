@@ -12,9 +12,9 @@
     </div>
     <div class="col-12">
       <div class="form-group row">
-        <div class="col-md-9">
+        <div class="col-md-10">
           <select id="user-select" name="user-select" class="form-control" (change)="handleOnSelect($event.target.value)">
-            <option value="{{undefined}}">Please select department</option>
+            <option value="{{undefined}}">Please select members from your department</option>
             <option value="{{user.id}}" *ngFor="let user of userPool">{{user.name}}</option>
           </select>
         </div>

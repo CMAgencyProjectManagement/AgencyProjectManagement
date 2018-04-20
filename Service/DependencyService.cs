@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
 using Entity;
@@ -12,6 +13,34 @@ namespace Service
         public DependencyService(CmAgencyEntities db)
         {
             this.db = db;
+        }
+
+        public bool CheckValidationOfPredecessor(
+            int sourceTaskId,
+            DateTime destinationStartdate)
+        {
+            TaskService taskService =  new TaskService(db);
+            Task sourceTask = taskService.GetTask(sourceTaskId);
+
+            DateTime sourceTaskDeadline = sourceTask.StartDate.Value.AddDays(sourceTask.Duration);
+            return sourceTaskDeadline.Date < destinationStartdate.Date;
+        }
+
+//        public void CreateDependency(
+//            int sourceTaskId,
+//            int destinationTaskId,
+//            int type = 1)
+//        {
+//            TaskDependency dependency = new TaskDependency
+//            {
+//                []
+//            };
+//            db.TaskDependencies.Add()
+//        }
+
+        public void UpdateDependency()
+        {
+            
         }
 
         public IEnumerable<Task> GetPredecessors(int currentTaskId)

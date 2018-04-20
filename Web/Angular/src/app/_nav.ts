@@ -19,8 +19,8 @@ const staff_navigation = [
     icon: 'icon-people'
   },
   {
-    name: 'Project',
-    url: '/dashboard',
+    name: 'My Project',
+    url: '/project',
     icon: 'icon-calendar'
   },
   {

@@ -134,7 +134,7 @@ export class UserService {
     })
   }
 
-  private getCurrentUserInfo(): Promise<User> {
+  public getCurrentUserInfo(): Promise<User> {
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();
       get(serverPath.user)

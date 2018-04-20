@@ -29,7 +29,8 @@ import {
   SelectTeamsModalComponent,
   CommentModalComponent,
   SelectStatusModalComponent,
-  SelectTasksModalComponent
+  SelectTasksModalComponent,
+  SelectMembersModalComponent
 } from './modals';
 import { TasklistComponent } from './tasklist/tasklist.component';
 
@@ -54,7 +55,8 @@ const declares_exports = [
   TasklistComponent,
   SelectTasksModalComponent,
   ProjectStatusComponent,
-  TaskPriorityComponent
+  TaskPriorityComponent,
+  SelectMembersModalComponent
 ];
 
 
