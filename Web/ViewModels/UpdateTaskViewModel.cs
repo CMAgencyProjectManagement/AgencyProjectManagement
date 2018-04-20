@@ -26,5 +26,6 @@ namespace Web.ViewModels
         public int Duration { get; set; }
         [Required(ErrorMessage = "Effort must not be empty")]
         public int Effort { get; set; }
+        public int[] Predecessors  { get; set; }
     }
 }

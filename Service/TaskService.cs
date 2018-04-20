@@ -252,8 +252,14 @@ namespace Service
             return lists.Count == 0;
         }
 
-        public Task CreateTask(string name, string description, int listID, int priority,
-            DateTime startDate, int duration, int effort,
+        public Task CreateTask(
+            string name,
+            string description,
+            int listID,
+            int priority,
+            DateTime startDate,
+            int duration,
+            int effort,
             User creator)
         {
             Task newTask = new Task
@@ -266,7 +272,7 @@ namespace Service
                 Duration = duration,
                 Effort = effort,
                 CreatedBy = creator.ID,
-                CreatedTime = DateTime.Now
+                CreatedTime = DateTime.Now,
             };
             db.Tasks.Add(newTask);
             db.SaveChanges();

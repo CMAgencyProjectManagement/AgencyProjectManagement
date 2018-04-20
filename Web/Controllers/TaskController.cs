@@ -29,7 +29,7 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     ProjectService projectService = new ProjectService(db);
-                    
+
                     Task task = taskService.GetTask(id);
                     Project project = projectService.GetProjectOfTask(task.ID);
 
@@ -41,7 +41,7 @@ namespace Web.Controllers
                                 $"You have to be in project {project.Name} to view this task")
                         );
                     }
-                    
+
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
                     ));
@@ -171,13 +171,13 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    
+
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member of task with ID {taskId}"));
-
+                            ResponseHelper.GetExceptionResponse(
+                                $"the person who do this action must be assigned member of task with ID {taskId}"));
                     }
                 }
 
@@ -254,15 +254,19 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    DependencyService dependencyService = new DependencyService(db);
+
                     bool flag = true;
                     int DurationLength = 15;
-                    if (taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name, createTaskModel.ListID))
+                    
+                    if (taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name,
+                        createTaskModel.ListID.Value))
                     {
                         ModelState.AddModelError("Name", "Task name is taken");
                         flag = false;
                     }
 
-                    if (taskService.CheckForListId(createTaskModel.ListID))
+                    if (taskService.CheckForListId(createTaskModel.ListID.Value))
                     {
                         ModelState.AddModelError("ListID", "The System don't have this list");
                         flag = false;
@@ -288,6 +292,19 @@ namespace Web.Controllers
                         flag = false;
                     }
 
+                    foreach (int predecessorTaskId in createTaskModel.Predecessors)
+                    {
+                        var predecessorTask = taskService.GetTask(predecessorTaskId);
+                        if (dependencyService.CheckValidationOfPredecessor(predecessorTask.ID,
+                            createTaskModel.StartDate))
+                        {
+                            ModelState.AddModelError("Predecessors",
+                                $"Task {predecessorTask.Name} have deadline come after your start date {createTaskModel.StartDate}");
+                            flag = false;
+                            break;
+                        }
+                    }
+
                     if (flag == false)
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                 }
@@ -298,23 +315,22 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         UserService userService = new UserService(db);
+                        DependencyService dependencyService = new DependencyService(db);
 
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
-                        DateTime startTime = createTaskModel.StartDate;
-                        int duration = createTaskModel.Duration;
-                        int effort = createTaskModel.Effort;
-                        int priority = createTaskModel.Priority;
                         Task newTask = taskService.CreateTask(
                             createTaskModel.Name,
                             createTaskModel.Description,
-                            createTaskModel.ListID,
-                            priority,
-                            startTime,
-                            duration,
-                            effort,
+                            createTaskModel.ListID.Value,
+                            createTaskModel.Priority.Value,
+                            createTaskModel.StartDate,
+                            createTaskModel.Duration.Value,
+                            createTaskModel.Effort.Value,
                             creator
                         );
+                        
+                        
                         JObject dataObject = taskService.ParseToJson(newTask);
                         return Ok(ResponseHelper.GetResponse(dataObject));
                     }
@@ -352,7 +368,8 @@ namespace Web.Controllers
                         bool flag = true;
                         if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                         {
-                            if (taskService.CheckDuplicatedTasknameAllowDublicateProject(updateTaskViewModel.Name, updateTaskViewModel.ListID))
+                            if (taskService.CheckDuplicatedTasknameAllowDublicateProject(updateTaskViewModel.Name,
+                                updateTaskViewModel.ListID))
                             {
                                 ModelState.AddModelError("Name", "Task name is taken");
                                 flag = false;
@@ -576,7 +593,6 @@ namespace Web.Controllers
                         Task task = db.Tasks.Find(archivedTask);
                         if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
                         {
-                            
                             return Ok(ResponseHelper.GetResponse(
                                 taskService.ParseToJson(task)
                             ));
