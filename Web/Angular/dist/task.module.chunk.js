@@ -3,7 +3,7 @@ webpackJsonp(["task.module"],{
 /***/ "../../../../../src/app/views/task/add/add.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>Create task</strong>\n      </div>\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\n        <div [formGroup]=\"createForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\n          <div class=\"form-group row\">\n            <!--NAME-->\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\n              Name <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"name-input\"\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\n                     formControlName=\"name\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--Description-->\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\n              Description\n            </label>\n            <div class=\"col-8\">\n              <textarea id=\"description-input\"\n                        rows=\"9\"\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\n                        placeholder=\"Description..\"\n                        formControlName=\"description\"></textarea>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--LIST-->\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\n              List <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <select formControlName=\"list\" id=\"list-input\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\n                <option *ngFor=\"let list of foundProject.lists\" value=\"{{list.id}}\">{{list.name}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--priority-->\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\n              Priority <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <select formControlName=\"priority\" id=\"priority-input\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--Start date-->\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\n              Start date <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8 datepicker-group\">\n              <my-date-picker id=\"startDate-input\" #datepicker\n                              [options]=\"myDatePickerOptions\"\n                              formControlName=\"startDate\"\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\n                              required></my-date-picker>\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\n                {{errors.startDate}}\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--DURATION-->\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\n              Duration <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <div class=\"input-group\">\n                <input type=\"text\" id=\"duration-input\"\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\n                       formControlName=\"duration\">\n                <span class=\"input-group-addon\">day</span>\n              </div>\n\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--EFFORT-->\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\n              Effort <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <div class=\"input-group\">\n                <input type=\"text\" id=\"effort-input\"\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\n                       formControlName=\"effort\">\n                <span class=\"input-group-addon\">hour</span>\n              </div>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\n            </div>\n          </div>\n          <div class=\"form-actions text-center\">\n            <!--BUTTON-->\n            <div class=\"col-12\">\n              <button class=\"btn btn-primary\" (click)=\"handleCreateTask()\" [ladda]=\"isLoading.create\">\n                Create\n              </button>\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"setDefaultValue()\">Reset</button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Create task</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\r\n        <div [formGroup]=\"createForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\r\n          <div class=\"form-group row\">\r\n            <!--NAME-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\r\n              Name <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\r\n                     formControlName=\"name\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Description-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\r\n              Description\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <textarea id=\"description-input\"\r\n                        rows=\"9\"\r\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\r\n                        placeholder=\"Description..\"\r\n                        formControlName=\"description\"></textarea>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--LIST-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\r\n              List\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"list\" id=\"list-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let list of foundProject.lists\" value=\"{{list.id}}\">{{list.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--priority-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\r\n              Priority <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"priority\" id=\"priority-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Start date-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\r\n              Start date <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker id=\"startDate-input\" #datepicker\r\n                              [options]=\"myDatePickerOptions\"\r\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\r\n                              formControlName=\"startDate\" required>\r\n              </my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\r\n                {{errors.startDate}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--DURATION-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\r\n              Duration <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"duration-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\r\n                       formControlName=\"duration\">\r\n                <span class=\"input-group-addon\">day</span>\r\n              </div>\r\n\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--EFFORT-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\r\n              Effort <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"effort-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\r\n                       formControlName=\"effort\">\r\n                <span class=\"input-group-addon\">hour</span>\r\n              </div>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <!--BUTTON-->\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreateTask()\" [ladda]=\"isLoading.create\">\r\n                Create\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"handleOnCancelBtnClick()\">Reset</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -121,6 +121,10 @@ var AddComponent = /** @class */ (function () {
             this.isLoading.page = false;
         }
     };
+    AddComponent.prototype.handleOnCancelBtnClick = function () {
+        this.setDefaultValue();
+        this.location.back();
+    };
     AddComponent.prototype.resetError = function () {
         this.errors = {
             name: '',
@@ -173,7 +177,7 @@ var AddComponent = /** @class */ (function () {
                 date: {
                     year: now.year(),
                     month: now.month() + 1,
-                    day: now.day()
+                    day: now.date()
                 }
             },
             duration: '',
@@ -187,6 +191,10 @@ var AddComponent = /** @class */ (function () {
         var values = this.createForm.value;
         var startDate = __WEBPACK_IMPORTED_MODULE_3_moment__(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
         this.taskService.createTask(values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort).then(function (value) {
+            var initialState = {
+                message: 'Your task successfully created'
+            };
+            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["k" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog' });
             _this.isLoading.create = false;
         }).catch(function (reason) {
             _this.setErrors(reason.Data);
@@ -233,7 +241,7 @@ var AddComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/task/edit/edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>Update task</strong>\n      </div>\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\n          <div class=\"form-group row\">\n            <!--NAME-->\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\n              Name <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"name-input\"\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\n                     formControlName=\"name\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--Description-->\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\n              Description\n            </label>\n            <div class=\"col-8\">\n              <textarea id=\"description-input\"\n                        rows=\"9\"\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\n                        placeholder=\"Description..\"\n                        formControlName=\"description\"></textarea>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--LIST-->\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\n              List <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <select formControlName=\"list\" id=\"list-input\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\n                <option *ngFor=\"let list of lists\" value=\"{{list.id}}\">{{list.name}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--priority-->\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\n              Priority <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <select formControlName=\"priority\" id=\"priority-input\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--Start date-->\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\n              Start date <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8 datepicker-group\">\n              <my-date-picker id=\"startDate-input\" #datepicker\n                              [options]=\"myDatePickerOptions\"\n                              formControlName=\"startDate\"\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\n                              required></my-date-picker>\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\n                {{errors.startDate}}\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--DURATION-->\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\n              Duration <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <div class=\"input-group\">\n                <input type=\"text\" id=\"duration-input\"\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\n                       formControlName=\"duration\">\n                <span class=\"input-group-addon\">day</span>\n              </div>\n\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--EFFORT-->\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\n              Effort <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <div class=\"input-group\">\n                <input type=\"text\" id=\"effort-input\"\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\n                       formControlName=\"effort\">\n                <span class=\"input-group-addon\">hour</span>\n              </div>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\n            </div>\n          </div>\n          <div class=\"form-actions text-center\">\n            <!--BUTTON-->\n            <div class=\"col-12\">\n              <button class=\"btn btn-primary\" (click)=\"handleUpdateTask()\" [ladda]=\"isLoading.update\">\n                Save changes\n              </button>\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"setDefaultValue()\">Reset</button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update task</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\r\n          <div class=\"form-group row\">\r\n            <!--NAME-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\r\n              Name <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\r\n                     formControlName=\"name\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Description-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\r\n              Description\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <textarea id=\"description-input\"\r\n                        rows=\"9\"\r\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\r\n                        placeholder=\"Description..\"\r\n                        formControlName=\"description\"></textarea>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--LIST-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\r\n              List\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"list\" id=\"list-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let list of lists\" value=\"{{list.id}}\">{{list.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--priority-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\r\n              Priority\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <select formControlName=\"priority\" id=\"priority-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Start date-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\r\n              Start date <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4 datepicker-group\">\r\n              <my-date-picker id=\"startDate-input\" #datepicker\r\n                              [options]=\"myDatePickerOptions\"\r\n                              formControlName=\"startDate\"\r\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\r\n                              required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\r\n                {{errors.startDate}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--DURATION-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\r\n              Duration <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"duration-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\r\n                       formControlName=\"duration\">\r\n                <span class=\"input-group-addon\">day(s)</span>\r\n              </div>\r\n\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--EFFORT-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\r\n              Effort <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"effort-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\r\n                       formControlName=\"effort\">\r\n                <span class=\"input-group-addon\">hour(s)</span>\r\n              </div>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <!--BUTTON-->\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdateTask()\" [ladda]=\"isLoading.update\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"onCancelBtnClick()\">Cancel</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -400,6 +408,9 @@ var EditComponent = /** @class */ (function () {
             }
         }
     };
+    EditComponent.prototype.onCancelBtnClick = function () {
+        this.location.back();
+    };
     EditComponent.prototype.setDefaultValue = function () {
         var startDate = __WEBPACK_IMPORTED_MODULE_8_moment__(this.foundTask.startDate);
         this.updateForm.patchValue({
@@ -411,7 +422,7 @@ var EditComponent = /** @class */ (function () {
                 date: {
                     year: startDate.year(),
                     month: startDate.month() + 1,
-                    day: startDate.day()
+                    day: startDate.date()
                 }
             },
             duration: this.foundTask.duration,
@@ -425,11 +436,26 @@ var EditComponent = /** @class */ (function () {
         var values = this.updateForm.value;
         var startDate = __WEBPACK_IMPORTED_MODULE_8_moment__(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
         this.taskService.editTask(this.foundTask.id, values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort).then(function (value) {
+            _this.foundTask = value;
+            _this.showSuccessModal('Update task successfully');
             _this.isLoading.update = false;
         }).catch(function (reason) {
             _this.setErrors(reason.Data);
             _this.isLoading.update = false;
         });
+    };
+    EditComponent.prototype.showSuccessModal = function (message, isNavigateBack) {
+        var _this = this;
+        if (isNavigateBack === void 0) { isNavigateBack = false; }
+        var initialState = {
+            closeCallback: function () {
+                if (isNavigateBack) {
+                    _this.location.back();
+                }
+            },
+            message: message
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["k" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog modal-success' });
     };
     EditComponent.prototype.showErrorModal = function (message, isNavigateBack) {
         var _this = this;
@@ -471,7 +497,7 @@ var EditComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/task/my-tasks/my-tasks.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-task-table [tasks]=\"tasks\"></app-task-table>\n"
+module.exports = "<!--<app-task-table [tasks]=\"tasks\"></app-task-table>-->\r\n<div class=\"col-12\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      My tasks\r\n    </div>\r\n    <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n    <div *ngIf=\"!isLoading.page\" class=\"card-body\">\r\n      <div class=\"button-section\">\r\n\r\n      </div>\r\n      <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n        <input class=\"form-control\" type=\"text\" (input)=\"search(searchField.value)\" #searchField>\r\n      </div>\r\n      <div class=\"dataTable-container hide-search mt-3\">\r\n        <table id=\"allProjectsTable\" datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Status</th>\r\n            <th>Priority</th>\r\n            <th>Start date</th>\r\n            <th>Deadline</th>\r\n            <th>Project</th>\r\n          </tr>\r\n          </thead>\r\n          <tbody>\r\n          <tr *ngFor=\"let task of tasks\">\r\n            <td>{{task.name}}</td>\r\n            <td>{{task.statusText}}</td>\r\n            <td>{{task.priorityText}}</td>\r\n            <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>\r\n            <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>\r\n            <td>\r\n              <a routerLink=\"/project/{{task.project.id}}/task\">\r\n                {{task.project.name}}\r\n              </a>\r\n            </td>\r\n          </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -505,6 +531,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -521,6 +548,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MyTasksComponent = /** @class */ (function () {
     function MyTasksComponent(storeService, taskService, modalService, router, route, location) {
         this.storeService = storeService;
@@ -529,17 +557,35 @@ var MyTasksComponent = /** @class */ (function () {
         this.router = router;
         this.route = route;
         this.location = location;
+        this.datatableOptions = {
+            lengthChange: false,
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: [5]
+                }
+            ]
+        };
         this.currentUser = storeService.get(['currentUser']);
         this.tasks = [];
+        this.isLoading = {
+            page: true
+        };
     }
+    MyTasksComponent.prototype.search = function (searchStr) {
+        this.datatableElement.dtInstance.then(function (dtInstance) { return dtInstance.search(searchStr).draw(); });
+    };
     MyTasksComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.taskService.getMyTask()
             .then(function (value) {
             _this.tasks = value;
+            _this.isLoading.page = false;
         })
             .catch(function (reason) {
             _this.showErrorModal(reason.Message);
+            _this.isLoading.page = false;
         });
     };
     MyTasksComponent.prototype.showErrorModal = function (message, isNavigateBack) {
@@ -555,6 +601,10 @@ var MyTasksComponent = /** @class */ (function () {
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_7_angular_datatables__["a" /* DataTableDirective */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_7_angular_datatables__["a" /* DataTableDirective */])
+    ], MyTasksComponent.prototype, "datatableElement", void 0);
     MyTasksComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-my-tasks',
@@ -610,6 +660,13 @@ var routes = [
                     title: 'View'
                 },
                 path: 'view/:id',
+                component: __WEBPACK_IMPORTED_MODULE_2__view_view_component__["a" /* ViewComponent */],
+            },
+            {
+                data: {
+                    title: 'View'
+                },
+                path: 'view',
                 component: __WEBPACK_IMPORTED_MODULE_2__view_view_component__["a" /* ViewComponent */],
             },
             {
@@ -671,12 +728,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angular2_ladda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_angular2_ladda__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__my_tasks_my_tasks_component__ = __webpack_require__("../../../../../src/app/views/task/my-tasks/my-tasks.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -705,6 +764,7 @@ var TaskModule = /** @class */ (function () {
                 }),
                 __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_10_mydatepicker__["MyDatePickerModule"],
+                __WEBPACK_IMPORTED_MODULE_12_angular_datatables__["b" /* DataTablesModule */],
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__view_view_component__["a" /* ViewComponent */],
@@ -724,7 +784,7 @@ var TaskModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/task/view/view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    Task detail\r\n  </div>\r\n  <app-spinner *ngIf=isLoading.page></app-spinner>\r\n  <div *ngIf=!isLoading.page class=\"card-body row\">\r\n    <div class=\"col-12\">\r\n      <h2 class=\"card-title\">{{foundTask.name}}</h2>\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"button-row\">\r\n        <a routerLink=\"/task/edit/{{foundTask.id}}\" class=\"btn btn-secondary bg-light\">\r\n          <i class=\"fa fa-edit\"></i>&nbsp; Edit\r\n        </a>\r\n        <button class=\"btn btn-secondary bg-light\" (click)=\"handleOnCommentBtnClick()\">\r\n          <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\r\n        </button>\r\n        <button class=\"btn btn-secondary bg-light\"\r\n                (click)=\"handleOnAssignBtnClick()\"\r\n                [ladda]=\"isLoading.openAssignModal\">\r\n          <i class=\"fa fa-user-plus\"></i>&nbsp; Assign\r\n        </button>\r\n        <button class=\"btn btn-secondary bg-light\"\r\n                (click)=\"handleOnUnAssignBtnClick()\"\r\n                [ladda]=\"isLoading.openUnAssignModal\">\r\n          <i class=\"fa fa-user-times\"></i>&nbsp; Un-Assign\r\n        </button>\r\n        <button class=\"btn btn-secondary bg-light\"\r\n                [disabled]=\"foundTask.statusText == 'Done'\"\r\n                (click)=\"handleOnDoneBtnClick()\"\r\n                [ladda]=\"isLoading.done\">\r\n          <i class=\"fa fa-check\"></i>&nbsp; Done\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-12 mt-5\">\r\n      <div class=\"row\">\r\n        <div class=\"col-6 left-pane\">\r\n          <div class=\"section\">\r\n            <!--DETAIL SECTION-->\r\n            <h5 class=\"mb-3\">Detail</h5>\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-3\">Project:</dt>\r\n              <dd class=\"col-9\"><a\r\n                href=\"#/project/task?projectID={{foundTask.project.id}}\">{{foundTask.project.name}}</a></dd>\r\n              <dt class=\"col-3\">List:</dt>\r\n              <dd class=\"col-9\">{{foundTask.list.name}}</dd>\r\n              <dt class=\"col-3\">Priority:</dt>\r\n              <dd class=\"col-9\">\r\n                <span>{{foundTask.priorityText}}</span>\r\n              </dd>\r\n              <dt class=\"col-3\">Status:</dt>\r\n              <dd class=\"col-9\">\r\n                <span>{{foundTask.statusText}}</span>\r\n              </dd>\r\n              <dt class=\"col-3\">Effort:</dt>\r\n              <dd class=\"col-9\">\r\n                {{foundTask.effort}}\r\n                <span *ngIf=\"foundTask.effort <= 1\">Hour</span>\r\n                <span *ngIf=\"foundTask.effort > 1\">Hours</span>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--DESCRIPTION-->\r\n            <h5 class=\"mb-3\">Description</h5>\r\n            <dl class=\"row ml-1\">\r\n              <p class=\"col-12\">\r\n                {{foundTask.description}}\r\n              </p>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--ATTACHMENT-->\r\n            <h5 class=\"mb-3\">Attachments</h5>\r\n            <dl class=\"row ml-1\">\r\n              <div class=\"col-12\">\r\n                <div class=\"form-group row\" [formGroup]=\"attachmentForm\">\r\n                  <div class=\"col-9\">\r\n                    <input #attachmentInput\r\n                           id=\"file-input\" name=\"file-input\" type=\"file\"\r\n                           formGroupName=\"attachment\"\r\n                           (change)=\"attachmentFileChange($event)\">\r\n                  </div>\r\n                  <div class=\"col-3\">\r\n                    <button class=\"btn btn-success float-right\"\r\n                            [disabled]=\"!attachmentForm.value.attachment\"\r\n                            [ladda]=\"isLoading.attachmentUpload\"\r\n                            (click)=\"handleUploadAttachmentClick()\">\r\n                      <i class=\"fa fa-plus\"></i>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"col-12\">\r\n                <ul class=\"list-group\">\r\n                  <li class=\"list-group-item\" *ngFor=\"let attachment of attachments\">\r\n                    <div class=\"d-flex align-items-center\">\r\n                      <a href=\"{{attachment.source}}\">\r\n                        <span>{{attachment.name}}</span>\r\n                      </a>\r\n                      <button class=\"btn btn-danger btn-sm ml-auto\"\r\n                              (click)=\"handleDeleteAttachmentClick(attachment.ID)\"\r\n                              [ladda]=\"isLoading.attachmentRemove[attachment.ID]\">\r\n                        <i class=\"fa fa-trash\"></i>\r\n                      </button>\r\n                    </div>\r\n                  </li>\r\n                </ul>\r\n              </div>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--COMMENT-->\r\n            <h5 class=\"mb-3\">Comments</h5>\r\n            <dl class=\"row ml-1\">\r\n              <div class=\"col-12\">\r\n                <div class=\"form-group row\">\r\n                  <div class=\"col-12\">\r\n                    <!--COMMENT BTN + LABEL-->\r\n                    <button class=\"btn btn-secondary bg-light\"\r\n                            *ngIf=\"!openCommentForm\"\r\n                            (click)=\"handleOnCommentBtnClick()\">\r\n                      <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\r\n                    </button>\r\n                    <h4 *ngIf=\"openCommentForm\">Comment</h4>\r\n                  </div>\r\n                  <div class=\"col-12\" *ngIf=\"openCommentForm\">\r\n                    <!--COMMENT TEXT AREA-->\r\n                    <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\"\r\n                              [(ngModel)]=\"commentBoxModel\"\r\n                              placeholder=\"Content..\"></textarea>\r\n                  </div>\r\n                  <div class=\"col-12 mt-3 d-flex justify-content-end\" *ngIf=\"openCommentForm\">\r\n                    <!--ADD COMMENT, CANCEL BTN-->\r\n                    <button class=\"btn btn-success mr-2\" (click)=\"handleAddCommentBtnClick()\">Add</button>\r\n                    <button class=\"btn btn-secondary\" (click)=\"handleCancelCommentBtnClick()\">Cancel</button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <app-comment class=\"col-12\"\r\n                           *ngFor=\"let comment of foundTask.comments\"\r\n                           [comment]=\"comment\"\r\n                           (onEdit)=\"handleEditComment($event)\"></app-comment>\r\n            </dl>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-5 right-pane ml-4\">\r\n          <div class=\"section\">\r\n            <!--MEMBER-->\r\n            <!--<h5 class=\"mb-3\">Members</h5>-->\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-12\">Assignees:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <app-user-list *ngIf=\"foundTask.assignees\" [users]=\"foundTask.assignees\"></app-user-list>\r\n                <span *ngIf=\"!foundTask.assignees || foundTask.assignees.length < 1\">N/A</span>\r\n              </dd>\r\n              <dt class=\"col-12\">Creator:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <app-user-list [user]=\"foundTask.createdBy\"></app-user-list>\r\n                <span *ngIf=\"!foundTask.createdBy\">N/A</span>\r\n              </dd>\r\n              <dt class=\"col-12\">Modifier:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <app-user-list *ngIf=\"foundTask.changedBy\" [user]=\"foundTask.changedBy\"></app-user-list>\r\n                <span *ngIf=\"!foundTask.changedBy\">N/A</span>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--DATE SECTION-->\r\n            <!--<h5 class=\"mb-3\">Date</h5>-->\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-3\">Start date:</dt>\r\n              <dd class=\"col-9\">\r\n                <span *ngIf=\"foundTask.startDate\">\r\n                  {{foundTask.startDate | date:'dd/MM/yyyy'}}\r\n                </span>\r\n              </dd>\r\n              <dt class=\"col-3\">Duration:</dt>\r\n              <dd class=\"col-9\">\r\n                {{foundTask.duration}}\r\n                <span *ngIf=\"foundTask.duration <= 1\">Day</span>\r\n                <span *ngIf=\"foundTask.duration > 1\">Days</span>\r\n              </dd>\r\n              <dt class=\"col-3\">Deadline:</dt>\r\n              <dd class=\"col-9\">\r\n                {{foundTask.deadline | date:'dd/MM/yyyy'}}\r\n              </dd>\r\n              <dt class=\"col-3\">Finished:</dt>\r\n              <dd class=\"col-9\">\r\n              <span *ngIf=\"!foundTask.finishedDate\">\r\n                N/A\r\n              </span>\r\n              </dd>\r\n              <dt class=\"col-3\">Created:</dt>\r\n              <dd class=\"col-9\">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>\r\n              <dt class=\"col-3\">Changed:</dt>\r\n              <dd class=\"col-9\">\r\n                <span *ngIf=\"foundTask.changedDate\">\r\n                  {{foundTask.changedDate | date:'dd/MM/yyyy'}}\r\n                </span>\r\n                <span *ngIf=\"!foundTask.changedDate\">\r\n                  N/A\r\n                </span>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    Task detail\r\n  </div>\r\n  <app-spinner *ngIf=isLoading.page></app-spinner>\r\n  <div *ngIf=!isLoading.page class=\"card-body row\">\r\n    <div class=\"col-12\">\r\n      <h2 class=\"card-title\">{{foundTask.name}}</h2>\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"button-row\">\r\n        <a routerLink=\"/task/edit/{{foundTask.id}}\" class=\"btn btn-secondary bg-light\">\r\n          <i class=\"fa fa-edit\"></i>&nbsp; Edit\r\n        </a>\r\n        <button class=\"btn btn-secondary bg-light\" (click)=\"handleOnCommentBtnClick()\">\r\n          <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\r\n        </button>\r\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}\"\r\n                (click)=\"handleOnAssignBtnClick()\"\r\n                [ladda]=\"isLoading.openAssignModal\">\r\n          <i class=\"fa fa-user-plus\"></i>&nbsp; Assign\r\n        </button>\r\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}\"\r\n                (click)=\"handleOnUnAssignBtnClick()\"\r\n                [ladda]=\"isLoading.openUnAssignModal\">\r\n          <i class=\"fa fa-user-times\"></i>&nbsp; Un-Assign\r\n        </button>\r\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}\"\r\n                *ngIf=\"!managementMode\"\r\n                [disabled]=\"foundTask.statusText == 'Done'\"\r\n                (click)=\"handleOnNeedReviewBtnClick()\"\r\n                [ladda]=\"isLoading.done\">\r\n          <i class=\"fa fa-check\"></i>&nbsp; Need review\r\n        </button>\r\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}\"\r\n                *ngIf=\"managementMode\"\r\n                (click)=\"handleSetStatusBtnClick()\"\r\n                [ladda]=\"isLoading.done\">\r\n          Set status\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-12 mt-5\">\r\n      <div class=\"row\">\r\n        <div class=\"col-6 left-pane\">\r\n          <div class=\"section\">\r\n            <!--DETAIL SECTION-->\r\n            <h5 class=\"mb-3\">Detail</h5>\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-3\">Project:</dt>\r\n              <dd class=\"col-9\"><a\r\n                href=\"/project/{{foundTask.project.id}}/task\">{{foundTask.project.name}}</a></dd>\r\n              <dt class=\"col-3\">List:</dt>\r\n              <dd class=\"col-9\">{{foundTask.list.name}}</dd>\r\n              <dt class=\"col-3\">Priority:</dt>\r\n              <dd class=\"col-9\">\r\n                <span>{{foundTask.priorityText}}</span>\r\n              </dd>\r\n              <dt class=\"col-3\">Status:</dt>\r\n              <dd class=\"col-9\">\r\n                <!--<span>{{foundTask.statusText}}</span>-->\r\n                <app-task-status [taskStatusNumber]=\"foundTask.status\"></app-task-status>\r\n              </dd>\r\n              <dt class=\"col-3\">Effort:</dt>\r\n              <dd class=\"col-9\">\r\n                {{foundTask.effort}}\r\n                <span *ngIf=\"foundTask.effort <= 1\">Hour</span>\r\n                <span *ngIf=\"foundTask.effort > 1\">Hours</span>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--DESCRIPTION-->\r\n            <h5 class=\"mb-3\">Description</h5>\r\n            <dl class=\"row ml-1\">\r\n              <p class=\"col-12\">\r\n                {{foundTask.description}}\r\n              </p>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--ATTACHMENT-->\r\n            <h5 class=\"mb-3\">Attachments</h5>\r\n            <dl class=\"row ml-1\">\r\n              <div class=\"col-12\">\r\n                <div class=\"form-group row\" [formGroup]=\"attachmentForm\">\r\n                  <div class=\"col-9\">\r\n                    <input #attachmentInput\r\n                           id=\"file-input\" name=\"file-input\" type=\"file\"\r\n                           formGroupName=\"attachment\"\r\n                           (change)=\"attachmentFileChange($event)\">\r\n                  </div>\r\n                  <div class=\"col-3\">\r\n                    <button class=\"btn btn-success float-right\"\r\n                            [disabled]=\"!attachmentForm.value.attachment\"\r\n                            [ladda]=\"isLoading.attachmentUpload\"\r\n                            (click)=\"handleUploadAttachmentClick()\">\r\n                      <i class=\"fa fa-plus\"></i>\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"col-12\">\r\n                <ul class=\"list-group\">\r\n                  <li class=\"list-group-item\" *ngFor=\"let attachment of this.foundTask.attachments\">\r\n                    <div class=\"d-flex align-items-center\">\r\n                      <a href=\"{{attachment.source}}\">\r\n                        <span>{{attachment.name}}</span>\r\n                      </a>\r\n                      <button class=\"btn btn-danger btn-sm ml-auto\"\r\n                              (click)=\"handleDeleteAttachmentClick(attachment.ID)\"\r\n                              [ladda]=\"isLoading.attachmentRemove[attachment.ID]\">\r\n                        <i class=\"fa fa-trash\"></i>\r\n                      </button>\r\n                    </div>\r\n                  </li>\r\n                </ul>\r\n              </div>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--COMMENT-->\r\n            <h5 class=\"mb-3\">Comments</h5>\r\n            <dl class=\"row ml-1\">\r\n              <div class=\"col-12\">\r\n                <div class=\"form-group row\">\r\n                  <div class=\"col-12\">\r\n                    <!--COMMENT BTN + LABEL-->\r\n                    <button class=\"btn btn-secondary bg-light\"\r\n                            *ngIf=\"!openCommentForm\"\r\n                            (click)=\"handleOnCommentBtnClick()\">\r\n                      <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\r\n                    </button>\r\n                  </div>\r\n                  <div class=\"col-12\" *ngIf=\"openCommentForm\">\r\n                    <!--COMMENT TEXT AREA-->\r\n                    <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\"\r\n                              [(ngModel)]=\"commentBoxModel\"\r\n                              placeholder=\"Content...\"></textarea>\r\n                  </div>\r\n                  <div class=\"col-12 mt-3 d-flex justify-content-end\" *ngIf=\"openCommentForm\">\r\n                    <!--ADD COMMENT, CANCEL BTN-->\r\n                    <button class=\"btn btn-success mr-2\" (click)=\"handleAddCommentBtnClick()\">Add</button>\r\n                    <button class=\"btn btn-secondary\" (click)=\"handleCancelCommentBtnClick()\">Cancel</button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <app-comment class=\"col-12\"\r\n                           *ngFor=\"let comment of foundTask.comments\"\r\n                           [comment]=\"comment\"\r\n                           (onEdit)=\"handleEditComment($event)\"></app-comment>\r\n            </dl>\r\n          </div>\r\n        </div>\r\n        <div class=\"col-5 right-pane ml-4\">\r\n          <div class=\"section\">\r\n            <!--MEMBER-->\r\n            <!--<h5 class=\"mb-3\">Members</h5>-->\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-12\">Assignees:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <app-user-list *ngIf=\"foundTask.assignees\" [users]=\"foundTask.assignees\"></app-user-list>\r\n                <span *ngIf=\"!foundTask.assignees || foundTask.assignees.length < 1\">N/A</span>\r\n              </dd>\r\n              <dt class=\"col-12\">Creator:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <app-user-list [user]=\"foundTask.createdBy\"></app-user-list>\r\n                <span *ngIf=\"!foundTask.createdBy\">N/A</span>\r\n              </dd>\r\n              <dt class=\"col-12\">Modifier:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <app-user-list *ngIf=\"foundTask.changedBy\" [user]=\"foundTask.changedBy\"></app-user-list>\r\n                <span *ngIf=\"!foundTask.changedBy\">N/A</span>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--TASK DEPENDENCY-->\r\n            <!--<h5 class=\"mb-3\">Members</h5>-->\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-12\">Predecessor tasks:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <span *ngIf=\"foundTask.predecessors.length <= 0\">N/A</span>\r\n                <app-tasklist *ngIf=\"foundTask.predecessors.length > 0\"\r\n                              [tasks]=\"foundTask.predecessors\">\r\n\r\n                </app-tasklist>\r\n              </dd>\r\n              <dt class=\"col-12\">Successor tasks:</dt>\r\n              <dd class=\"col-12 pl-4\">\r\n                <span *ngIf=\"foundTask.successors.length <= 0\">N/A</span>\r\n                <app-tasklist *ngIf=\"foundTask.successors.length > 0\"\r\n                              [tasks]=\"foundTask.successors\">\r\n\r\n                </app-tasklist>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n          <div class=\"section\">\r\n            <!--DATE SECTION-->\r\n            <!--<h5 class=\"mb-3\">Date</h5>-->\r\n            <dl class=\"row ml-1\">\r\n              <dt class=\"col-4\">Start date:</dt>\r\n              <dd class=\"col-8\">\r\n                <span *ngIf=\"foundTask.startDate\">\r\n                  {{foundTask.startDate | date:'dd/MM/yyyy'}}\r\n                </span>\r\n              </dd>\r\n              <dt class=\"col-4\">Duration:</dt>\r\n              <dd class=\"col-8\">\r\n                {{foundTask.duration}}\r\n                <span *ngIf=\"foundTask.duration <= 1\">Day</span>\r\n                <span *ngIf=\"foundTask.duration > 1\">Days</span>\r\n              </dd>\r\n              <dt class=\"col-4\">Deadline date:</dt>\r\n              <dd class=\"col-8\">\r\n                {{foundTask.deadline | date:'dd/MM/yyyy'}}\r\n              </dd>\r\n              <dt class=\"col-4\">Finished date:</dt>\r\n              <dd class=\"col-8\">\r\n              <span *ngIf=\"!foundTask.finishedDate\">\r\n                N/A\r\n              </span>\r\n                <span *ngIf=\"foundTask.finishedDate\">\r\n                {{foundTask.finishedDate | date:'dd/MM/yyyy'}}\r\n              </span>\r\n              </dd>\r\n              <dt class=\"col-4\">Created date:</dt>\r\n              <dd class=\"col-8\">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>\r\n              <dt class=\"col-4\">Changed date:</dt>\r\n              <dd class=\"col-8\">\r\n                <span *ngIf=\"foundTask.changedDate\">\r\n                  {{foundTask.changedDate | date:'dd/MM/yyyy'}}\r\n                </span>\r\n                <span *ngIf=\"!foundTask.changedDate\">\r\n                  N/A\r\n                </span>\r\n              </dd>\r\n            </dl>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -763,6 +823,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_comment_service__ = __webpack_require__("../../../../../src/app/services/comment.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__cmaComponents_modals_select_status_modal_select_status_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-status-modal/select-status-modal.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -783,16 +845,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var ViewComponent = /** @class */ (function () {
-    function ViewComponent(taskService, uploadService, userService, commentService, router, route, location, modalService) {
+    function ViewComponent(taskService, uploadService, userService, commentService, storeService, router, route, location, modalService) {
         this.taskService = taskService;
         this.uploadService = uploadService;
         this.userService = userService;
         this.commentService = commentService;
+        this.storeService = storeService;
         this.router = router;
         this.route = route;
         this.location = location;
         this.modalService = modalService;
+        var currentUser = this.storeService.get(['currentUser']);
+        this.managementMode = currentUser.isManager || currentUser.isAdmin;
         this.isLoading = {
             page: true,
             attachmentUpload: false,
@@ -802,35 +869,43 @@ var ViewComponent = /** @class */ (function () {
             done: false,
             comment: false,
             editComment: true,
+            setStatus: false
         };
-        this.openCommentForm = true;
+        this.openCommentForm = false;
         this.resetErrors();
     }
     ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var id = this.route.snapshot.paramMap.get('id');
-        if (Number(id)) {
-            this.taskService.getTaskDetail(Number(id))
-                .then(function (value) {
-                _this.foundTask = value;
-                _this.attachments = _this.foundTask.attachments;
-                _this.isLoading.page = false;
-            })
-                .catch(function (reason) {
-                console.debug('ViewComponent-onInit', reason);
-                _this.showErrorModal(reason.message);
-                _this.isLoading.page = false;
-            });
-        }
-        else {
-            this.showErrorModal(id + " is not a valid ID");
-        }
+        this.route.params.subscribe(function (params) {
+            _this.loadTask(params['id']);
+        });
         this.attachmentForm = new __WEBPACK_IMPORTED_MODULE_6__angular_forms__["b" /* FormGroup */]({
             attachment: new __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormControl */](undefined),
         });
     };
+    ViewComponent.prototype.loadTask = function (taskId) {
+        var _this = this;
+        if (!taskId) {
+            this.showErrorModal(taskId + " is not a valid ID");
+            return;
+        }
+        if (Number(taskId)) {
+            this.taskService.getTaskDetail(taskId)
+                .then(function (value) {
+                _this.foundTask = value;
+                _this.isLoading.page = false;
+            })
+                .catch(function (reason) {
+                console.debug('ViewComponent-onInit', reason);
+                _this.showErrorModal(reason.Message);
+            });
+        }
+        else {
+            this.showErrorModal(taskId + " is not a valid ID");
+        }
+    };
     ViewComponent.prototype.handleOnCommentBtnClick = function () {
-        this.openCommentForm = true;
+        this.openCommentForm = !this.openCommentForm;
     };
     ViewComponent.prototype.handleAddCommentBtnClick = function () {
         var _this = this;
@@ -895,7 +970,7 @@ var ViewComponent = /** @class */ (function () {
                 title: "Assign",
                 confirmButtonText: 'Assign'
             };
-            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["g" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["j" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
         })
             .catch(function (reason) {
             _this.showErrorModal('An error has occurred while trying to open assign pop-up ');
@@ -931,20 +1006,27 @@ var ViewComponent = /** @class */ (function () {
             title: "Un-assign",
             confirmButtonText: 'Un-assign'
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["g" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["j" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
-    ViewComponent.prototype.handleOnDoneBtnClick = function () {
+    ViewComponent.prototype.handleOnNeedReviewBtnClick = function () {
         var _this = this;
-        this.isLoading.done = true;
-        this.taskService.finishTask(this.foundTask.id)
-            .then(function (value) {
-            _this.foundTask = value;
-            _this.isLoading.done = false;
-        })
-            .catch(function (reason) {
-            _this.showErrorModal('Finish task fail');
-            _this.isLoading.done = false;
-        });
+        var onConfirm = function () {
+            _this.isLoading.done = true;
+            _this.taskService.finishTask(_this.foundTask.id)
+                .then(function (value) {
+                _this.foundTask = value;
+                _this.isLoading.done = false;
+            })
+                .catch(function (reason) {
+                _this.showErrorModal('Finish task fail');
+                _this.isLoading.done = false;
+            });
+        };
+        var initialState = {
+            message: "Are you sure you want to finish this task!",
+            confirmCallback: onConfirm
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["b" /* ConfirmModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ViewComponent.prototype.handleUploadAttachmentClick = function () {
         var _this = this;
@@ -955,7 +1037,7 @@ var ViewComponent = /** @class */ (function () {
             this.uploadService.uploadAttachment(formValue.attachment, this.foundTask.id)
                 .then(function (value) {
                 var attachment = value;
-                _this.attachments.push(attachment);
+                _this.foundTask.attachments.push(attachment);
                 _this.isLoading.attachmentUpload = false;
             })
                 .catch(function (reason) {
@@ -970,19 +1052,26 @@ var ViewComponent = /** @class */ (function () {
     };
     ViewComponent.prototype.handleDeleteAttachmentClick = function (attachmentId) {
         var _this = this;
-        this.isLoading.attachmentRemove[attachmentId] = true;
-        this.uploadService.deleteAttachment(attachmentId)
-            .then(function (value) {
-            var removedItemId = value.id;
-            _this.attachments = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](_this.attachments, function (item) {
-                return item.ID !== removedItemId;
+        var onConfirm = function () {
+            _this.isLoading.attachmentRemove[attachmentId] = true;
+            _this.uploadService.deleteAttachment(attachmentId)
+                .then(function (value) {
+                var removedItemId = value.id;
+                _this.foundTask.attachments = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](_this.foundTask.attachments, function (item) {
+                    return item.ID !== removedItemId;
+                });
+                _this.isLoading.attachmentRemove[attachmentId] = false;
+            })
+                .catch(function (reason) {
+                _this.isLoading.attachmentRemove[attachmentId] = false;
+                _this.showErrorModal(reason.Message);
             });
-            _this.isLoading.attachmentRemove[attachmentId] = false;
-        })
-            .catch(function (reason) {
-            _this.isLoading.attachmentRemove[attachmentId] = false;
-            _this.showErrorModal(reason.Data);
-        });
+        };
+        var initialState = {
+            message: "Are you sure you want to delete attachment ?",
+            confirmCallback: onConfirm
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["b" /* ConfirmModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ViewComponent.prototype.handleEditComment = function (comment) {
         var _this = this;
@@ -1005,6 +1094,24 @@ var ViewComponent = /** @class */ (function () {
             confirmCallback: confirmCallback,
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["a" /* CommentModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+    };
+    ViewComponent.prototype.handleSetStatusBtnClick = function () {
+        var _this = this;
+        this.isLoading.setStatus = true;
+        var initialState = {
+            task: this.foundTask,
+            confirmCallback: function (newTask) {
+                _this.foundTask = newTask;
+                _this.isLoading.setStatus = false;
+            },
+            cancelCallback: function () {
+                _this.isLoading.setStatus = false;
+            },
+            closeCallback: function () {
+                _this.isLoading.setStatus = false;
+            }
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_12__cmaComponents_modals_select_status_modal_select_status_modal_component__["a" /* SelectStatusModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ViewComponent.prototype.attachmentFileChange = function (fileInput) {
         var file = fileInput.target.files[0];
@@ -1042,6 +1149,7 @@ var ViewComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_7__services_upload_service__["a" /* UploadService */],
             __WEBPACK_IMPORTED_MODULE_9__services_user_service__["a" /* UserService */],
             __WEBPACK_IMPORTED_MODULE_10__services_comment_service__["a" /* CommentService */],
+            __WEBPACK_IMPORTED_MODULE_11__services_tree_service__["a" /* StoreService */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_2__angular_common__["f" /* Location */],

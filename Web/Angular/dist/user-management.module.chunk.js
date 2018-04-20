@@ -197,7 +197,7 @@ var CreateUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/detail-user/detail-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <div class=\"card-body\">\r\n    <div id=\"AvaAndDe\" class=\"row\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div id=\"right\" class=\"col-6\">\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase\" class=\"col-8  text-center\">\r\n          <strong>{{foundUser.name}}</strong>\r\n        </div>\r\n        <div id=\"username\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">User name </div>\r\n          <div class=\"col-8\">{{foundUser.username}}</div>\r\n        </div>\r\n\r\n        <div id=\"team\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Department </div>\r\n          <div class=\"col-8\">{{foundUser.team.name}}</div>\r\n        </div>\r\n\r\n        <div id=\"role\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Role </div>\r\n\r\n          <div *ngIf=\"foundUser.isAdmin\" class=\"col-8\">\r\n            <strong>Admin </strong>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\" class=\"col-8\">\r\n            <strong>Manager </strong>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\" class=\"col-8\">\r\n            Staff\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Status </div>\r\n          <div *ngIf=\"foundUser.isActive\" class=\"col-8\">\r\n            Active\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\" class=\"col-8\">\r\n            Banned\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Phone number </div>\r\n          <div class=\"col-8\">{{foundUser.phone}}</div>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Email </div>\r\n          <div class=\"col-8\">{{foundUser.email}}</div>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\" class=\"row\">\r\n            <div class=\"col-4  text-right\">Date of birth </div>\r\n            <div class=\"col-8\">{{foundUser.birthdate |date:'dd/MM/yyyy'}}</div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <div class=\"card-body\" *ngIf=\"foundUser\">\r\n    <div id=\"AvaAndDe\" class=\"row\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div id=\"right\" class=\"col-6\">\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase\" class=\"col-8  text-center\">\r\n          <strong>{{foundUser.name}}</strong> \r\n        </div>\r\n        <div id=\"username\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">User name </div>\r\n          <div class=\"col-8\">{{foundUser.username}}</div>\r\n        </div>\r\n\r\n        <div id=\"team\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Department </div>\r\n          <div class=\"col-8\">{{foundUser.team.name}}</div>\r\n        </div>\r\n\r\n        <div id=\"role\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Role </div>\r\n\r\n          <div *ngIf=\"foundUser.isAdmin\" class=\"col-8\">\r\n            <strong>Admin </strong>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\" class=\"col-8\">\r\n            <strong>Manager </strong>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\" class=\"col-8\">\r\n            Staff\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Status </div>\r\n          <div *ngIf=\"foundUser.isActive\" class=\"col-8\">\r\n            Active\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\" class=\"col-8\">\r\n            Banned\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Phone number </div>\r\n          <div class=\"col-8\">{{foundUser.phone}}</div>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Email </div>\r\n          <div class=\"col-8\">{{foundUser.email}}</div>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\" class=\"row\">\r\n            <div class=\"col-4  text-right\">Date of birth </div>\r\n            <div class=\"col-8\">{{foundUser.birthdate |date:'dd/MM/yyyy'}}</div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -227,6 +227,9 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_team_service__ = __webpack_require__("../../../../../src/app/services/team.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -239,17 +242,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
 var DetailUserComponent = /** @class */ (function () {
-    function DetailUserComponent(teamService, userService) {
+    function DetailUserComponent(teamService, userService, storeService, router, route, location) {
         this.teamService = teamService;
         this.userService = userService;
+        this.storeService = storeService;
+        this.router = router;
+        this.route = route;
+        this.location = location;
         this.selectedUser = [];
+        this.foundUser == this.storeService.get(['currentUser']);
+        // let currentUser = this.storeService.get(['currentUser']) as User;
+        // this.managementMode = currentUser.isManager || currentUser.isAdmin;
     }
     DetailUserComponent.prototype.ngOnInit = function () {
         this.entity = {};
-        this.userID = Number(this.GetURLParameter('id'));
-        this.users = [];
-        this.getAllTeam();
+        if (this.route.snapshot.paramMap.get('id') == undefined) {
+            this.foundUser = this.storeService.get(['currentUser']);
+            console.debug(this.foundUser.id);
+        }
+        else {
+            this.userID = Number(this.route.snapshot.paramMap.get('id') == undefined);
+            this.getAllTeam();
+        }
     };
     DetailUserComponent.prototype.getAllTeam = function () {
         var _this = this;
@@ -278,8 +296,13 @@ var DetailUserComponent = /** @class */ (function () {
     };
     DetailUserComponent.prototype.GetURLParameter = function (sParam) {
         var sPageURL = window.location.href;
-        var sURLVariables = sPageURL.split('?');
-        var sTeam = sURLVariables[1].split('=');
+        if (sPageURL.indexOf('?') > 0) {
+            var sURLVariables = sPageURL.split('?');
+            var sTeam = sURLVariables[1].split('=');
+        }
+        else {
+            return 0;
+        }
         return sTeam[1];
     };
     DetailUserComponent.prototype.onItemSelect = function (item) {
@@ -305,7 +328,11 @@ var DetailUserComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/views/user-management/detail-user/detail-user.component.scss")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_team_service__["a" /* TeamService */],
-            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */]])
+            __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_3__services_tree_service__["a" /* StoreService */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_common__["f" /* Location */]])
     ], DetailUserComponent);
     return DetailUserComponent;
 }());
@@ -661,7 +688,14 @@ var routes = [
                 component: __WEBPACK_IMPORTED_MODULE_3__view_user_view_user_component__["a" /* ViewUserComponent */],
             },
             {
-                path: 'detail',
+                path: 'detail/:id',
+                component: __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__["a" /* DetailUserComponent */],
+                data: {
+                    title: 'Account Detail'
+                }
+            },
+            {
+                path: 'profile',
                 component: __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__["a" /* DetailUserComponent */],
                 data: {
                     title: 'Account Detail'
@@ -782,7 +816,7 @@ var UserManagementModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/view-user/view-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>All accounts</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=!isPageLoading class=\"card-body animated fadeIn\" >\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchUsername.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (input)=\"search(searchUsername.value)\" #searchUsername>\r\n        </div>\r\n        <div class=\"dataTable-container hide-search\">\r\n          <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n            <thead>\r\n            <tr>\r\n              <th>Avatar</th>\r\n              <th>Username</th>\r\n              <th>Full Name</th>\r\n              <th>Birthdate</th>\r\n              <th>Department</th>\r\n              <th>Role</th>\r\n              <th>Status</th>\r\n              <th>Action</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr *ngFor=\"let user of users;let i = index\">\r\n              <td class=\"text-center\">\r\n                <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n                <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar avatar-lg\">\r\n              </td>\r\n              <td>\r\n                <a href=\"#/account/detail?id={{user.id}}\">{{user.username}}</a>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.name\">{{user.name}}</p>\r\n                <p *ngIf=\"!user.name\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</p>\r\n                <p *ngIf=\"!user.birthdate\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"!user.team\">N/A</p>\r\n                <p *ngIf=\"user.team\">{{user.team.name}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <strong>\r\n                  <p *ngIf=\"user.isAdmin\">Admin</p>\r\n                </strong>\r\n                <strong>\r\n                  <p *ngIf=\"!user.isAdmin && user.isManager\">Manager</p>\r\n                </strong>\r\n                <p *ngIf=\"!user.isAdmin && !user.isManager\">Staff</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <p *ngIf=\"user.isActive\">\r\n                  Active\r\n                </p>\r\n                <p *ngIf=\"!user.isActive\">\r\n                  Banned\r\n                </p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/account/update?id={{user.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>All accounts</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=!isPageLoading class=\"card-body animated fadeIn\" >\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchUsername.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (input)=\"search(searchUsername.value)\" #searchUsername>\r\n        </div>\r\n        <div class=\"dataTable-container hide-search\">\r\n          <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n            <thead>\r\n            <tr>\r\n              <th>Avatar</th>\r\n              <th>Username</th>\r\n              <th>Full Name</th>\r\n              <th>Birthdate</th>\r\n              <th>Department</th>\r\n              <th>Role</th>\r\n              <th>Status</th>\r\n              <th>Action</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr *ngFor=\"let user of users;let i = index\">\r\n              <td class=\"text-center\">\r\n                <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n                <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar avatar-lg\">\r\n              </td>\r\n              <td>\r\n                <a href=\"#/account/detail/{{user.id}}\">{{user.username}}</a>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.name\">{{user.name}}</p>\r\n                <p *ngIf=\"!user.name\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</p>\r\n                <p *ngIf=\"!user.birthdate\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"!user.team\">N/A</p>\r\n                <p *ngIf=\"user.team\">{{user.team.name}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <strong>\r\n                  <p *ngIf=\"user.isAdmin\">Admin</p>\r\n                </strong>\r\n                <strong>\r\n                  <p *ngIf=\"!user.isAdmin && user.isManager\">Manager</p>\r\n                </strong>\r\n                <p *ngIf=\"!user.isAdmin && !user.isManager\">Staff</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <p *ngIf=\"user.isActive\">\r\n                  Active\r\n                </p>\r\n                <p *ngIf=\"!user.isActive\">\r\n                  Banned\r\n                </p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/account/update?id={{user.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -812,6 +846,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -824,8 +860,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var ViewUserComponent = /** @class */ (function () {
-    function ViewUserComponent(userService) {
+    function ViewUserComponent(router, route, location, userService) {
+        this.router = router;
+        this.route = route;
+        this.location = location;
         this.userService = userService;
         this.datatableOptions = {
             searching: true,
@@ -845,6 +886,7 @@ var ViewUserComponent = /** @class */ (function () {
     }
     ViewUserComponent.prototype.ngOnInit = function () {
         var _this = this;
+        var id = this.route.snapshot.paramMap.get('id');
         this.userService.getAllUser()
             .then(function (value) {
             _this.users = value;
@@ -917,7 +959,10 @@ var ViewUserComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/user-management/view-user/view-user.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */],
+            __WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */]])
     ], ViewUserComponent);
     return ViewUserComponent;
 }());
