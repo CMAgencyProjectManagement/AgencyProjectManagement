@@ -28,7 +28,7 @@
         Found tasks:
         <ul class="list-group" *ngFor="let task of foundTasks;let i=index">
           <li class="list-group-item" style="background-color: #f0f3f5">
-            <a routerLink="/task/view/{{task.id}}" style="font-size: 17px;color: black">
+            <a routerLink="/task/{{task.id}}/view" style="font-size: 17px;color: black">
               {{task.name}}
             </a>
           </li>
@@ -67,7 +67,7 @@
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
                   id="task">
-                  <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color: black">
+                  <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
                     </div>
@@ -75,7 +75,7 @@
                   <div class="card-footer" style="height: 30px;padding-top: 5px;
 
                   padding-right: 5px;">
-                    <a routerLink="/task/view/{{task.id}}" style="text-decoration: none; color:white">
+                    <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color:white">
                       <span class="badge badge-warning float-right" style="color: white" *ngIf="task.status==0">Not Done</span>
                       <span class="badge badge-primary float-right" *ngIf="task.status==1">Need Review</span>
                       <span class="badge badge-success float-right" *ngIf="task.status==2">Done</span>

@@ -35,8 +35,8 @@ namespace Web.Controllers
                     if (db.Users.Find(currentUserId).IsAdmin)
                     {
                         return Ok(ResponseHelper.GetResponse(
-                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
-                    ));
+                            taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                        ));
                     }
                     else if (!taskService.IsAssigneeOfProject(currentUserId, id))
                     {
@@ -46,7 +46,7 @@ namespace Web.Controllers
                                 $"You have to be in project {project.Name} to view this task")
                         );
                     }
-                    
+
 
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
@@ -84,7 +84,7 @@ namespace Web.Controllers
                     else
                     {
                         var teamId = db.Users.Find(userId).TeamID;
-                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                        var tasksInTeam = teamService.GetTasksOfTeam((int) teamId);
                         var tasksLate = taskService.GetLateActiveTasksOfTaskList(tasksInTeam);
                         foreach (var task in tasksLate)
                         {
@@ -101,6 +101,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("recentchanged")]
         [Authorize(Roles = "Manager")]
@@ -117,14 +118,13 @@ namespace Web.Controllers
 
                     TeamService teamService = new TeamService(db);
                     var teamId = db.Users.Find(userId).TeamID;
-                    var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                    var tasksInTeam = teamService.GetTasksOfTeam((int) teamId);
                     var tasks = taskService.GetTaskChangeThisWeek(tasksInTeam);
-                        tasks.OrderByDescending(X => X.ChangedTime);
+                    tasks.OrderByDescending(X => X.ChangedTime);
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));
                     }
-
 
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -260,9 +260,8 @@ namespace Web.Controllers
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
-                        return Content(HttpStatusCode.UnsupportedMediaType,
-                            ResponseHelper.GetExceptionResponse(
-                                $"the person who do this action must be assigned member of task with ID {taskId}"));
+                        return Content(HttpStatusCode.Unauthorized, ResponseHelper.GetExceptionResponse(
+                            $"the person who do this action must be assigned member of task with ID {taskId}"));
                     }
                 }
 
@@ -312,7 +311,7 @@ namespace Web.Controllers
                     Task task = taskService.setStatus(
                         setStatusViewModel.TaskId.Value,
                         currentUserId,
-                        (TaskStatus)setStatusViewModel.TaskStatus);
+                        (TaskStatus) setStatusViewModel.TaskStatus);
                     task.ChangedBy = currentUserId;
                     task.ChangedTime = DateTime.Now;
                     return Ok(ResponseHelper.GetResponse(
@@ -364,33 +363,32 @@ namespace Web.Controllers
                         int projectId = db.Lists.Find(createTaskModel.ListID.Value).ProjectID;
                         var teamIdsOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
                             .Select(x => x.TeamID);
-                        if (teamIdsOfList.Count()!=0)
+                        if (teamIdsOfList.Count() != 0)
                         {
                             int countCheck = 0;
                             foreach (var teamIdOfList in teamIdsOfList)
                             {
-                                
-                                if ((int)teamId == (int)teamIdOfList)
+                                if ((int) teamId == (int) teamIdOfList)
                                 {
                                     countCheck = 1;
                                     break;
                                 }
                             }
-                            if (countCheck==0)
-                            {
-                                ModelState.AddModelError("ListID", $"The Department {db.Teams.Find(teamId).Name} don't have this list");
-                                ; flag = false;
-                            }
 
-                            
-                           
+                            if (countCheck == 0)
+                            {
+                                ModelState.AddModelError("ListID",
+                                    $"The Department {db.Teams.Find(teamId).Name} don't have this list");
+                                ;
+                                flag = false;
+                            }
                         }
                         else
                         {
-                            ModelState.AddModelError("ListID", $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
+                            ModelState.AddModelError("ListID",
+                                $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
                             flag = false;
                         }
-
                     }
 
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
@@ -561,7 +559,8 @@ namespace Web.Controllers
                         if (updateTaskViewModel.Predecessors != null)
                         {
                             IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
-                            DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
+                            DateTime sourceTaskDeadline =
+                                updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
                             foreach (Task successor in taskSuccessors)
                             {
                                 if (!dependencyService.IsSuccessorValid(
@@ -585,17 +584,18 @@ namespace Web.Controllers
                     if (ModelState.IsValid)
                     {
                         string loginedUserId = User.Identity.GetUserId();
-                        User creator = userService.GetUser(loginedUserId); var updatedTask = taskService.UpdateTask(
-                             updateTaskViewModel.Id,
-                             updateTaskViewModel.Name,
-                             updateTaskViewModel.Description,
-                             updateTaskViewModel.ListID,
-                             updateTaskViewModel.Priority,
-                             updateTaskViewModel.StartDate,
-                             updateTaskViewModel.Duration,
-                             updateTaskViewModel.Effort,
-                             currentUser.ID,
-                             DateTime.Now.Date);
+                        User creator = userService.GetUser(loginedUserId);
+                        var updatedTask = taskService.UpdateTask(
+                            updateTaskViewModel.Id,
+                            updateTaskViewModel.Name,
+                            updateTaskViewModel.Description,
+                            updateTaskViewModel.ListID,
+                            updateTaskViewModel.Priority,
+                            updateTaskViewModel.StartDate,
+                            updateTaskViewModel.Duration,
+                            updateTaskViewModel.Effort,
+                            currentUser.ID,
+                            DateTime.Now.Date);
 
                         dependencyService.SetDependencyForTask(
                             updatedTask.ID,
@@ -612,7 +612,6 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest,
                             ResponseHelper.GetExceptionResponse(ModelState));
-
                     }
                 }
             }

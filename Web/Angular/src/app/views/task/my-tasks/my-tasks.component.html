@@ -31,7 +31,11 @@
           </thead>
           <tbody>
           <tr *ngFor="let task of tasks">
-            <td>{{task.name}}</td>
+            <td>
+              <a routerLink="/task/{{task.project.id}}/detail">
+                {{task.name}}
+              </a>
+            </td>
             <td>{{task.statusText}}</td>
             <td>{{task.priorityText}}</td>
             <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>

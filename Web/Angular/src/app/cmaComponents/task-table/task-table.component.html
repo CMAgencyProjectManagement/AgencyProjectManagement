@@ -12,7 +12,7 @@
   <tbody>
   <tr *ngFor="let task of tasks;let i = index">
     <td>
-      <a routerLink="/task/view/{{team.id}}">{{task.name}}</a>
+      <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
     </td>
     <td>
       <span>{{task.statusText}}</span>

@@ -680,6 +680,7 @@ namespace Service
             string attachmentPath = null)
         {
             UserService userService = new UserService(db);
+            ProjectService projectService = new ProjectService(db);
             User creator = userService.GetUser(task.CreatedBy);
             JObject result = new JObject
             {
@@ -719,16 +720,15 @@ namespace Service
 
             TaskPriority taskPriority = (TaskPriority) task.Priority;
             result["priorityText"] = DisplayCamelCaseString(taskPriority.ToString());
+            
+            var project = projectService.GetProjectOfTask(task.ID);
+            result["project"] = projectService.ParseToJson(project);
 
             if (isDetailed)
             {
-                ProjectService projectService = new ProjectService(db);
                 CommentService commentService = new CommentService(db);
                 DependencyService dependencyService = new DependencyService(db);
-                AttachmentService attachmentService = new AttachmentService(db);
-
-                var project = projectService.GetProjectOfTask(task.ID);
-                result["project"] = projectService.ParseToJson(project);
+                AttachmentService attachmentService = new AttachmentService(db);                
 
                 ListService listService = new ListService(db);
                 var list = listService.GetListOfTask(task.ID);
