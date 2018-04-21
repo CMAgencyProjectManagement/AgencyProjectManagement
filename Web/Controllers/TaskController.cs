@@ -356,6 +356,31 @@ namespace Web.Controllers
                         ModelState.AddModelError("ListID", "The System don't have this list");
                         flag = false;
                     }
+                    else
+                    {
+                        TeamService teamService = new TeamService(db);
+                        int userId = Int32.Parse(User.Identity.GetUserId());
+                        var teamId = db.Users.Find(userId).TeamID;
+                        int projectId = db.Lists.Find(createTaskModel.ListID.Value).ProjectID;
+                        int teamIdOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
+                            .Select(x => x.TeamID).Count();
+                        if (teamIdOfList!=0)
+                        {
+                            var teamIdOfList2 = db.TeamProjects.Where(x => x.ProjectID == projectId)
+                            .Select(x => x.TeamID).SingleOrDefault();
+                            if ((int)teamId != (int)teamIdOfList2)
+                            {
+                                ModelState.AddModelError("ListID", $"The Department {db.Teams.Find(teamId).Name} don't have this list");
+                                flag = false;
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("ListID", $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
+                            flag = false;
+                        }
+
+                    }
 
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                     {
