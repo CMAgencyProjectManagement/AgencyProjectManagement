@@ -32,8 +32,13 @@ namespace Web.Controllers
 
                     Task task = taskService.GetTask(id);
                     Project project = projectService.GetProjectOfTask(task.ID);
-
-                    if (!taskService.IsAssigneeOfProject(currentUserId, id))
+                    if (db.Users.Find(currentUserId).IsAdmin)
+                    {
+                        return Ok(ResponseHelper.GetResponse(
+                        taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
+                    ));
+                    }
+                    else if (!taskService.IsAssigneeOfProject(currentUserId, id))
                     {
                         return Content(
                             HttpStatusCode.UnsupportedMediaType,
@@ -41,6 +46,7 @@ namespace Web.Controllers
                                 $"You have to be in project {project.Name} to view this task")
                         );
                     }
+                    
 
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
@@ -78,7 +84,7 @@ namespace Web.Controllers
                     else
                     {
                         var teamId = db.Users.Find(userId).TeamID;
-                        var tasksInTeam = teamService.GetTasksOfTeam((int) teamId);
+                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
                         var tasksLate = taskService.GetLateActiveTasksOfTaskList(tasksInTeam);
                         foreach (var task in tasksLate)
                         {
@@ -271,7 +277,7 @@ namespace Web.Controllers
                     Task task = taskService.setStatus(
                         setStatusViewModel.TaskId.Value,
                         currentUserId,
-                        (TaskStatus) setStatusViewModel.TaskStatus);
+                        (TaskStatus)setStatusViewModel.TaskStatus);
                     task.ChangedBy = currentUserId;
                     task.ChangedTime = DateTime.Now;
                     return Ok(ResponseHelper.GetResponse(
@@ -482,18 +488,20 @@ namespace Web.Controllers
                         }
 
                         if (updateTaskViewModel.Predecessors != null)
-                        {IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
-                        DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
-                        foreach (Task successor in taskSuccessors)
                         {
-                            if (!dependencyService.IsSuccessorValid(
-                                successor.ID,
-                                sourceTaskDeadline))
+                            IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
+                            DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
+                            foreach (Task successor in taskSuccessors)
                             {
-                                ModelState.AddModelError("Predecessors",
-                                    $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
-                                flag = false;
-                                break;}
+                                if (!dependencyService.IsSuccessorValid(
+                                    successor.ID,
+                                    sourceTaskDeadline))
+                                {
+                                    ModelState.AddModelError("Predecessors",
+                                        $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
+                                    flag = false;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -503,37 +511,37 @@ namespace Web.Controllers
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
 
-                        if (ModelState.IsValid)
-                        {
-                            string loginedUserId = User.Identity.GetUserId();
-                            User creator = userService.GetUser(loginedUserId);var updatedTask = taskService.UpdateTask(
-                                updateTaskViewModel.Id,
-                                updateTaskViewModel.Name,
-                                updateTaskViewModel.Description,
-                                updateTaskViewModel.ListID,
-                                updateTaskViewModel.Priority,
-                                updateTaskViewModel.StartDate,
-                                updateTaskViewModel.Duration,
-                                updateTaskViewModel.Effort,
-                                currentUser.ID,
-                                DateTime.Now.Date);
+                    if (ModelState.IsValid)
+                    {
+                        string loginedUserId = User.Identity.GetUserId();
+                        User creator = userService.GetUser(loginedUserId); var updatedTask = taskService.UpdateTask(
+                             updateTaskViewModel.Id,
+                             updateTaskViewModel.Name,
+                             updateTaskViewModel.Description,
+                             updateTaskViewModel.ListID,
+                             updateTaskViewModel.Priority,
+                             updateTaskViewModel.StartDate,
+                             updateTaskViewModel.Duration,
+                             updateTaskViewModel.Effort,
+                             currentUser.ID,
+                             DateTime.Now.Date);
 
-                            dependencyService.SetDependencyForTask(
-                                updatedTask.ID,
-                                updateTaskViewModel.Predecessors,
-                                creator.ID
-                            );
-                            
-                            return Ok(ResponseHelper.GetResponse(
-                                taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
-                                    AgencyConfig.AttachmentPath)
-                            ));
-                        }
-                        else
-                        {
-                            return Content(HttpStatusCode.BadRequest,
-                                ResponseHelper.GetExceptionResponse(ModelState));
-                        
+                        dependencyService.SetDependencyForTask(
+                            updatedTask.ID,
+                            updateTaskViewModel.Predecessors,
+                            creator.ID
+                        );
+
+                        return Ok(ResponseHelper.GetResponse(
+                            taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
+                                AgencyConfig.AttachmentPath)
+                        ));
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest,
+                            ResponseHelper.GetExceptionResponse(ModelState));
+
                     }
                 }
             }
