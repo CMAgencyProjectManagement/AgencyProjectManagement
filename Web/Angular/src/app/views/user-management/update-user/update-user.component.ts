@@ -1,17 +1,19 @@
-import {Component, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
-import {UserService} from '../../../services/user.service';
-import {User} from 'app/interfaces/user';
+import { Component, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { UserService } from '../../../services/user.service';
+import { User } from 'app/interfaces/user';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {Cursor, StoreService} from '../../../services/tree.service';
-import {TeamService} from '../../../services/team.service';
-import {Team} from '../../../interfaces/team';
-import {BsModalService, BsModalRef} from 'ngx-bootstrap/modal';
-import {ConfirmModalComponent} from '../../../cmaComponents/modals/confirm-modal/confirm-modal.component';
-
+import * as moment from 'moment';
+import { Cursor, StoreService } from '../../../services/tree.service';
+import { TeamService } from '../../../services/team.service';
+import { Team } from '../../../interfaces/team';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ConfirmModalComponent } from '../../../cmaComponents/modals/confirm-modal/confirm-modal.component';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-update-user',
   templateUrl: './update-user.component.html',
@@ -42,9 +44,12 @@ export class UpdateUserComponent implements OnInit {
   };
 
   constructor(private userService: UserService,
-              private storeService: StoreService,
-              private teamService: TeamService,
-              private modalService: BsModalService) {
+    private storeService: StoreService,
+    private teamService: TeamService,
+    private modalService: BsModalService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location, ) {
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
     this.isSavingChange = false;
@@ -52,14 +57,33 @@ export class UpdateUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userID = Number(this.GetURLParameter());
-    this.teamService.getAllTeam()
-      .then(value => {
-        this.teams = value;
-        this.updateLoadingState();
-      });
-    this.userService.getAllUser()
-      .then(value => {
+    if (this.route.snapshot.paramMap.get('id') == undefined) {
+      this.foundUser = this.storeService.get(['currentUser']) as User;
+      this.teamService.getDetail(this.foundUser.team.id)
+        .then(value => {
+          this.teams = value;
+          this.updateLoadingState();
+        });
+      this.updateForm = new FormGroup({
+        email: new FormControl(undefined),
+        phone: new FormControl(undefined),
+        team: new FormControl(undefined),
+        isActive: new FormControl(undefined),
+        fullname: new FormControl(undefined),
+        birthdate: new FormControl(undefined),
+        password: new FormControl(undefined),
+      })
+      this.setDefaultValue(this.foundUser);
+      this.updateLoadingState();
+    } else {
+      this.userID = Number(this.route.snapshot.paramMap.get('id'));
+      this.teamService.getAllTeam()
+        .then(value => {
+          this.teams = value;
+          this.updateLoadingState();
+        });
+      this.userService.getAllUser()
+        .then(value => {
           this.users = value;
           for (let i = 0; i < this.users.length; i++) {
             if (this.users[i].id === this.userID) {
@@ -68,14 +92,18 @@ export class UpdateUserComponent implements OnInit {
               this.updateLoadingState();
             }
           }
+          this.updateForm = new FormGroup({
+            email: new FormControl(undefined),
+            phone: new FormControl(undefined),
+            team: new FormControl(undefined),
+            isActive: new FormControl(undefined),
+            fullname: new FormControl(undefined),
+            birthdate: new FormControl(undefined),
+            password: new FormControl(undefined),
+          })
         }
-      );
-    this.updateForm = new FormGroup({
-      email: new FormControl(undefined),
-      phone: new FormControl(undefined),
-      team: new FormControl(undefined),
-      isActive: new FormControl(undefined),
-    })
+        );
+    }
   }
 
   updateLoadingState() {
@@ -85,6 +113,17 @@ export class UpdateUserComponent implements OnInit {
   }
 
   setDefaultValue(user: User) {
+    let birthdate = moment(user.birthdate);
+    this.updateForm.patchValue({
+      birthdate:{
+        date: {
+          year: birthdate.year(),
+          month: birthdate.month() + 1,
+          day: birthdate.date()
+        }
+      }
+    })
+    this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
     if (user.team) {
@@ -102,7 +141,7 @@ export class UpdateUserComponent implements OnInit {
       },
       message: `You are about to reset ${this.foundUser.name}'s password`
     };
-    this.modalService.show(ConfirmModalComponent, {initialState});
+    this.modalService.show(ConfirmModalComponent, { initialState });
   }
 
   resetPassword() {

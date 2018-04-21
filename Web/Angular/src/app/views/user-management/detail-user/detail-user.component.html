@@ -9,44 +9,57 @@
         <img id="img" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
       </div>
       <div class="col-4">
+        <div class="button-row">
+          <a href="#/account/update" class="btn btn-secondary bg-light" style="font-size: 20px">
+            <i class="fa fa-edit"></i>&nbsp; Update
+          </a>
+        </div>
         <div id="name" *ngIf="foundUser" style="text-transform: uppercase; font-size: 40px; color: #3960A4">
-          <strong>{{foundUser.name}}</strong> 
+          <strong>{{foundUser.name}}</strong>
         </div>
         <div id="team" *ngIf="foundUser" style="font-size: 30px">
           <a href="#/department/{{foundUser.team.id}}/detail">{{foundUser.team.name}}</a>
         </div>
         <br/>
-        <div id="role" *ngIf="foundUser" >
-          <div *ngIf="foundUser.isAdmin" >
-            <i class="fa fa-user-circle-o fa-lg"></i><span style="font-size: 20px">  &nbsp;&nbsp;&nbsp;Admin</span>
+        <div id="role" *ngIf="foundUser">
+          <div *ngIf="foundUser.isAdmin">
+            <i class="fa fa-user-circle-o fa-lg"></i>
+            <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;Admin</span>
           </div>
           <div *ngIf="!foundUser.isAdmin && foundUser.isManager">
-            <i class="fa fa-user-circle-o fa-lg"></i><span style="font-size: 20px">  &nbsp;&nbsp;&nbsp;Manager</span>
+            <i class="fa fa-user-circle-o fa-lg"></i>
+            <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;Manager</span>
           </div>
           <div *ngIf="!foundUser.isAdmin && !foundUser.isManager">
-            <i class="fa fa-user-circle-o fa-lg"></i><span style="font-size: 20px">  &nbsp;&nbsp;&nbsp;Staff</span>
+            <i class="fa fa-user-circle-o fa-lg"></i>
+            <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;Staff</span>
           </div>
         </div>
 
         <div id="ban" *ngIf="foundUser">
           <div *ngIf="foundUser.isActive">
-            <i class="fa fa-check fa-lg"></i><span style="font-size: 20px;color: #3AA65B">  &nbsp;&nbsp;&nbsp;Active</span>
+            <i class="fa fa-check fa-lg"></i>
+            <span style="font-size: 20px;color: #3AA65B"> &nbsp;&nbsp;&nbsp;Active</span>
           </div>
           <div *ngIf="!foundUser.isActive">
-            <i class="fa fa-close fa-lg"></i><span style="font-size: 20px;color: #CB0A0E">  &nbsp;&nbsp;&nbsp;Banned</span>
+            <i class="fa fa-close fa-lg"></i>
+            <span style="font-size: 20px;color: #CB0A0E"> &nbsp;&nbsp;&nbsp;Banned</span>
           </div>
 
         </div>
 
         <div id="phone" *ngIf="foundUser">
-            <i class="fa fa-phone fa-lg"></i><span style="font-size: 20px">  &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>
+          <i class="fa fa-phone fa-lg"></i>
+          <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>
         </div>
         <div id="email" *ngIf="foundUser">
-            <i class="fa fa-envelope-o fa-lg"></i><span style="font-size: 20px">  &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>
+          <i class="fa fa-envelope-o fa-lg"></i>
+          <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>
         </div>
         <div>
           <div id="birthdate" *ngIf="foundUser">
-              <i class="fa fa-birthday-cake fa-lg"></i><span style="font-size: 20px">  &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>
+            <i class="fa fa-birthday-cake fa-lg"></i>
+            <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>
           </div>
         </div>
       </div>

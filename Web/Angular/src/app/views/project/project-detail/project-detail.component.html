@@ -21,8 +21,9 @@
                     <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)" *ngIf="currentUser.isAdmin">
                       <i class="fa fa-close"></i>&nbsp; Close project
                     </a>
-                    <a class="btn btn-secondary bg-light" (click)="handleOnAssignBtnClick()" *ngIf="currentUser.isAdmin">
-                      <i class="fa fa-users"></i>&nbsp; Assign department
+                    <a class="btn btn-secondary bg-light" [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
+                      [ladda]="isLoading.openAssignModal" (click)="handleOnAssignBtnClick()" *ngIf="currentUser.isAdmin">
+                      <i class="fa fa-users" ModFocus></i>&nbsp; Assign department
                     </a>
                     <a class="btn btn-secondary bg-light" (click)="handleOnAssignMembersBtnClick()" *ngIf="currentUser.isManager">
                       <i class="fa fa-user-plus"></i>&nbsp; Assign members

@@ -16,8 +16,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CmaModule} from '../../cmaComponents/cma.module';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
 import {ReportComponent} from './report/report.component';
-
-
+import {LaddaModule} from 'angular2-ladda';
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -30,7 +29,10 @@ import {ReportComponent} from './report/report.component';
     DataTablesModule,
     SpinnerModule,
     BsDropdownModule,
-    CmaModule
+    CmaModule,
+    LaddaModule.forRoot({
+      style: 'expand-left'
+    }),
   ],
   declarations: [
     ProjectManagementComponent,

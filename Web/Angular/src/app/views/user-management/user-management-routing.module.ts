@@ -51,8 +51,8 @@ const routes: Routes = [
         data: {
           title: 'Update'
         },
-        path: 'profile/update/:id',
-        component: UpdateMyUserComponent
+        path: 'update/:id',
+        component: UpdateUserComponent
       },
     ]
   }
