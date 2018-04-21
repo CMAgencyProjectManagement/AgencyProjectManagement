@@ -1,1 +1,10 @@
-<div class="animated fadeIn" #gantt_here style='width: 100%; height: 100%;'></div>
+<div class="card">
+  <div class="card-header">
+    Project scheduling view
+  </div>
+  <div class="card-body row">
+    <app-spinner *ngIf=isLoading.page class="col-12"></app-spinner>
+    <div class="animated fadeIn" #gantt_here style='width: 100%; height: 100%;'></div>
+  </div>
+</div>
+

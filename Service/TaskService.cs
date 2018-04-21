@@ -64,6 +64,7 @@ namespace Service
                 throw new ObjectNotFoundException($"List with ID {listId} not found");
             }
         }
+
         public IEnumerable<Task> GetTaskChangeThisWeek(List<Task> TaskList)
         {
             List<Task> TasksChangeThisWeek = new List<Task>();
@@ -74,22 +75,26 @@ namespace Service
                     TasksChangeThisWeek.Add(task);
                 }
             }
+
             return TasksChangeThisWeek;
         }
+
         public bool IsTaskChangeThisWeek(Task task)
         {
             DateTime date = DateTime.Now.Date;
             DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
             DateTime weekLastDay = weekFirstDay.AddDays(6);
-            if (task.ChangedTime!=null)
+            if (task.ChangedTime != null)
             {
                 if (task.ChangedTime >= weekFirstDay.Date && task.ChangedTime <= weekLastDay.Date)
                 {
                     return true;
                 }
             }
+
             return false;
         }
+
         public List<Task> GetTasksOfUser(int userId)
         {
             User user = db.Users.Find(userId);
@@ -128,17 +133,19 @@ namespace Service
 
             return taskList;
         }
+
         public List<Task> GetLateActiveTasksOfTaskList(List<Task> taskList)
         {
             List<Task> activeTasks = new List<Task>();
             foreach (var task in taskList)
             {
-                if (task.Status == (int)TaskStatus.NotDone ||
-                    task.Status == (int)TaskStatus.NeedReview)
+                if (task.Status == (int) TaskStatus.NotDone ||
+                    task.Status == (int) TaskStatus.NeedReview)
                 {
                     activeTasks.Add(task);
                 }
             }
+
             List<Task> lateActiveTasks = new List<Task>();
             foreach (var task in activeTasks)
             {
@@ -151,6 +158,7 @@ namespace Service
                     }
                 }
             }
+
             return lateActiveTasks;
         }
 
@@ -195,7 +203,11 @@ namespace Service
             List<User> users = new List<User>();
             foreach (var teamProject in task.List.Project.TeamProjects)
             {
-                users.Add(teamService.GetManager(teamProject.TeamID));
+                User manager = teamService.GetManager(teamProject.TeamID);
+                if (manager != null)
+                {
+                    users.Add(manager);
+                }
             }
 
             return users;
@@ -630,7 +642,7 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"Task with id {taskId} not found");
             }
-            
+
             if (task.Status == (int) TaskStatus.Done)
             {
                 return false;

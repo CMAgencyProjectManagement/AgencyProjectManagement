@@ -17,7 +17,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'schedule',
+    path: ':id/schedule',
     component: ProjectSchedulingComponent,
     data: {
       title: 'Scheduling'

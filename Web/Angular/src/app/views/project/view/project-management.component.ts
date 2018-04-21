@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProjectService } from '../../../services/project.service';
-import { Project } from '../../../interfaces/project';
-import { User } from '../../../interfaces/user';
-import { DataTableDirective } from 'angular-datatables';
-import { UserService } from '../../../services/user.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ProjectService} from '../../../services/project.service';
+import {Project} from '../../../interfaces/project';
+import {User} from '../../../interfaces/user';
+import {DataTableDirective} from 'angular-datatables';
+import {UserService} from '../../../services/user.service';
+
 @Component({
   selector: 'app-project-management',
   templateUrl: './project-management.component.html',
@@ -31,34 +32,34 @@ export class ProjectManagementComponent implements OnInit {
   };
 
   constructor(private projectService: ProjectService,
-    private userService: UserService) {
+              private userService: UserService) {
     this.userService.getCurrentUserInfo().then(value => {
       this.currentUser = value;
-      if(this.currentUser.isAdmin){
+      if (this.currentUser.isAdmin) {
         this.projectService.getAllProjects()
-        .then(data => {
-          this.projects = data;
-          this.isPageLoading = false;
-        })
-        .catch(reason => {
-          console.debug('ProjectManagementComponent', reason);
-        })
-      } else{
+          .then(data => {
+            this.projects = data;
+            this.isPageLoading = false;
+          })
+          .catch(reason => {
+            console.debug('ProjectManagementComponent', reason);
+          })
+      } else {
         this.projectService.getMyProjects()
-        .then(data => {
-          this.projects = data;
-          this.isPageLoading = false;
-        })
-        .catch(reason => {
-          console.debug('ProjectManagementComponent', reason);
-        })
+          .then(data => {
+            this.projects = data;
+            this.isPageLoading = false;
+          })
+          .catch(reason => {
+            console.debug('ProjectManagementComponent', reason);
+          })
       }
     })
     this.isPageLoading = true;
   }
 
   ngOnInit() {
-    
+
   }
 
   search(searchStr: string) {

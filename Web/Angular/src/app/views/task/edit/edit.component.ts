@@ -30,7 +30,8 @@ export class EditComponent implements OnInit {
     priority: string,
     startDate: string,
     duration: string,
-    effort: string
+    effort: string,
+    predecessors: string
   };
   @ViewChild('datepicker') datepicker;
   taskId: number;
@@ -124,7 +125,8 @@ export class EditComponent implements OnInit {
       priority: '',
       startDate: '',
       duration: '',
-      effort: ''
+      effort: '',
+      predecessors: ''
     };
   }
 
@@ -153,6 +155,9 @@ export class EditComponent implements OnInit {
           break;
         case 'Effort':
           this.errors.effort = errorMessage;
+          break;
+        case 'Predecessors':
+          this.errors.predecessors = errorMessage;
           break;
       }
     }

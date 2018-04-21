@@ -17,11 +17,13 @@
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
                 (click)="handleOnAssignBtnClick()"
+                [disabled]="isLoading.openAssignModal"
                 [ladda]="isLoading.openAssignModal">
           <i class="fa fa-user-plus"></i>&nbsp; Assign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}"
                 (click)="handleOnUnAssignBtnClick()"
+                [disabled]="isLoading.openUnAssignModal"
                 [ladda]="isLoading.openUnAssignModal">
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>

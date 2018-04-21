@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../../../services/project.service';
-import { Project } from '../../../interfaces/project';
-import { Location } from '@angular/common';
-import { BsModalService } from 'ngx-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from '../../../services/project.service';
+import {Project} from '../../../interfaces/project';
+import {Location} from '@angular/common';
+import {BsModalService} from 'ngx-bootstrap';
 import {
   CommentModalComponent,
   ConfirmModalComponent,
@@ -16,14 +16,15 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as _ from 'lodash';
-import { Team } from '../../../interfaces/team';
-import { TeamService } from 'app/services/team.service';
-import { StoreService } from '../../../services/tree.service';
-import { UserService } from '../../../services/user.service';
-import { User } from 'app/interfaces/user';
-import { Directive, ElementRef, Renderer} from "@angular/core";
+import {Team} from '../../../interfaces/team';
+import {TeamService} from 'app/services/team.service';
+import {StoreService} from '../../../services/tree.service';
+import {UserService} from '../../../services/user.service';
+import {User} from 'app/interfaces/user';
+import {Directive, ElementRef, Renderer} from '@angular/core';
+
 @Component({
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
@@ -62,16 +63,15 @@ export class ProjectDetailComponent implements OnInit {
   };
 
   constructor(private projectService: ProjectService,
-    private router: Router,
-    private location: Location,
-    private modalService: BsModalService,
-    private teamService: TeamService,
-    private storeService: StoreService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-  ) {
+              private router: Router,
+              private location: Location,
+              private modalService: BsModalService,
+              private teamService: TeamService,
+              private storeService: StoreService,
+              private userService: UserService,
+              private route: ActivatedRoute) {
     this.currentUser = this.storeService.get(['currentUser']) as User;
-    this.userService.getCurrentUserInfo().then(value =>{
+    this.userService.getCurrentUserInfo().then(value => {
       this.currentUser = value;
     })
     this.isLoading = {
@@ -88,7 +88,6 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-
     let id = this.route.snapshot.paramMap.get('id');
     if (Number(id)) {
       this.projectService.getProject(Number(id))
@@ -102,7 +101,7 @@ export class ProjectDetailComponent implements OnInit {
     } else {
       this.showErrorModal(`Invalid task id "${id}"`, true);
     }
-    
+
     this.viewForm = new FormGroup({
       projectname: new FormControl(undefined, Validators.required),
       customername: new FormControl(undefined, Validators.required),
@@ -153,7 +152,7 @@ export class ProjectDetailComponent implements OnInit {
       message: `Are you sure to close this project?`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
+    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {
@@ -165,7 +164,7 @@ export class ProjectDetailComponent implements OnInit {
       },
       message: message
     };
-    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
 
   handleOnAssignBtnClick() {
@@ -183,7 +182,7 @@ export class ProjectDetailComponent implements OnInit {
           .catch(reason => {
             this.showErrorModal('Assign fail!');
             this.isLoading.openAssignModal = false;
-          })  
+          })
       } else {
         this.showErrorModal('Please select departments!');
         this.isLoading.openAssignModal = false
@@ -217,7 +216,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
+        this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
   };
 
@@ -271,7 +270,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectMembersModalComponent, { initialState, class: 'modal-dialog' });
+        this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog'});
       })
   }
 }
