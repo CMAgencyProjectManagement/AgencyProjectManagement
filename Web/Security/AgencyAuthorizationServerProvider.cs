@@ -25,7 +25,7 @@ namespace Web.Security
                         User user = userService.GetUser(username, password);
                         if (user != null)
                         {
-                            if (!user.IsActive)
+                            if (user.IsActive)
                             {
                                 userIdString = user.ID.ToString();
                                 context.Validated(userIdString);
