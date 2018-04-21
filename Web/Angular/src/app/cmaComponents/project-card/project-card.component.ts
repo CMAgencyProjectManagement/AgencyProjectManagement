@@ -81,7 +81,7 @@ export class ProjectCardComponent implements OnInit {
         ).then(value => {
           this.refresh.emit();
         }).catch(reason => {
-          this.showErrorModal("This list still contain tasks. Please remove all tasks before removing list!");
+          this.showErrorModal(reason.Message);
         })
       }
     };

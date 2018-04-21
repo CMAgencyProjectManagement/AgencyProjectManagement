@@ -51,7 +51,7 @@
                       </button>
                       <ul *dropdownMenu class="dropdown-menu" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" style="cursor: pointer" href="#/task/create?projectID={{project.id}}&listID={{lists.id}}">Add task</a>
+                          <a class="dropdown-item" style="cursor: pointer" href="#/task/create?project={{project.id}}&list={{lists.id}}">Add task</a>
                         </li>
                         <li role="menuitem">
                           <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>

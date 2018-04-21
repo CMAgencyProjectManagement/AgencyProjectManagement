@@ -67,8 +67,8 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit() {
-    let projectId = this.route.snapshot.queryParamMap.get('projectID');
-    let listId = this.route.snapshot.queryParamMap.get('listID');
+    let projectId = this.route.snapshot.queryParamMap.get('project');
+    let listId = this.route.snapshot.queryParamMap.get('list');
 
     if (Number(projectId) && Number(listId)) {
       this.listId = Number(listId);

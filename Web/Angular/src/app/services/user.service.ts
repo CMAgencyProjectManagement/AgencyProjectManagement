@@ -224,11 +224,11 @@ export class UserService {
     const dataObject = {
       Name: fullname,
       Birthdate: birthdate,
-      Email: password,
+      Password: password,
     };
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();
-      post(serverPath.updateUser)
+      put(serverPath.updateProfile)
         .set('token', token)
         .send(dataObject)
         .type('form')

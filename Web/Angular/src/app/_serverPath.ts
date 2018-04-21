@@ -5,6 +5,7 @@ const serverPath = {
   allUser: '/api/user/all',
   createUser: '/api/user',
   updateUser: '/api/user/update',
+  updateProfile: '/api/user/update/profile',
   leaderBoard: '/api/user/leaderboard',
   getUserOfProject: (projectId) => `/api/user/project/${projectId}`,
   getUserOfTeam: (teamId) => `/api/user/team/${teamId}`,
