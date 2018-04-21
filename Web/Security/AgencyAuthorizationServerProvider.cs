@@ -25,19 +25,24 @@ namespace Web.Security
                         User user = userService.GetUser(username, password);
                         if (user != null)
                         {
-                            userIdString = user.ID.ToString();
+                            if (!user.IsActive)
+                            {
+                                userIdString = user.ID.ToString();
+                                context.Validated(userIdString);
+                            }
+                            else
+                            {
+                                context.Rejected();
+                                context.SetError("Invalid user", "User has been banned");
+                            }
                         }
+                        else
+                        {
+                            context.Rejected();
+                            context.SetError("Invalid user", "Invalid username or password");
+                        }
+                        
                     }
-                }
-
-                if (!String.IsNullOrEmpty(userIdString))
-                {
-                    context.Validated(userIdString);
-                }
-                else
-                {
-                    context.Rejected();
-                    context.SetError("Invalid user", "Invalid username or password");
                 }
             }
             catch (Exception ex)

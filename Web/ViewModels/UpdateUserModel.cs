@@ -13,6 +13,7 @@ namespace Web.ViewModels
         [MaxLength(255)]
         public string Phone { get; set; }
         [EmailAddress]
+        [MaxLength(255)]
         public string Email { get; set; }
         public DateTime? Birthdate { get; set; }
         public bool? IsActive { get; set; }
