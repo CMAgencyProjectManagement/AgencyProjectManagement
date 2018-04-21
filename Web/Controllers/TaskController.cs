@@ -383,7 +383,7 @@ namespace Web.Controllers
                         {
                             foreach (int predecessor in createTaskModel.Predecessors)
                             {
-                                dependencyService.CreateDependency(predecessor, newTask.ID);
+                                dependencyService.CreateDependency(predecessor, newTask.ID, creator.ID);
                             }
                         }
 
@@ -482,21 +482,18 @@ namespace Web.Controllers
                         }
 
                         if (updateTaskViewModel.Predecessors != null)
+                        {IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
+                        DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
+                        foreach (Task successor in taskSuccessors)
                         {
-                            IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
-                            DateTime sourceTaskDeadline =
-                                updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
-                            foreach (Task successor in taskSuccessors)
+                            if (!dependencyService.IsSuccessorValid(
+                                successor.ID,
+                                sourceTaskDeadline))
                             {
-                                if (!dependencyService.IsSuccessorValid(
-                                    successor.ID,
-                                    sourceTaskDeadline))
-                                {
-                                    ModelState.AddModelError("Predecessors",
-                                        $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
-                                    flag = false;
-                                    break;
-                                }
+                                ModelState.AddModelError("Predecessors",
+                                    $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
+                                flag = false;
+                                break;}
                             }
                         }
                     }
@@ -506,29 +503,37 @@ namespace Web.Controllers
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
 
-                    if (ModelState.IsValid)
-                    {
-                        var updatedTask = taskService.UpdateTask(
-                            updateTaskViewModel.Id,
-                            updateTaskViewModel.Name,
-                            updateTaskViewModel.Description,
-                            updateTaskViewModel.ListID,
-                            updateTaskViewModel.Priority,
-                            updateTaskViewModel.StartDate,
-                            updateTaskViewModel.Duration,
-                            updateTaskViewModel.Effort,
-                            currentUser.ID,
-                            DateTime.Now.Date
-                        );
-                        return Ok(ResponseHelper.GetResponse(
-                            taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
-                                AgencyConfig.AttachmentPath)
-                        ));
-                    }
-                    else
-                    {
-                        return Content(HttpStatusCode.BadRequest,
-                            ResponseHelper.GetExceptionResponse(ModelState));
+                        if (ModelState.IsValid)
+                        {
+                            string loginedUserId = User.Identity.GetUserId();
+                            User creator = userService.GetUser(loginedUserId);var updatedTask = taskService.UpdateTask(
+                                updateTaskViewModel.Id,
+                                updateTaskViewModel.Name,
+                                updateTaskViewModel.Description,
+                                updateTaskViewModel.ListID,
+                                updateTaskViewModel.Priority,
+                                updateTaskViewModel.StartDate,
+                                updateTaskViewModel.Duration,
+                                updateTaskViewModel.Effort,
+                                currentUser.ID,
+                                DateTime.Now.Date);
+
+                            dependencyService.SetDependencyForTask(
+                                updatedTask.ID,
+                                updateTaskViewModel.Predecessors,
+                                creator.ID
+                            );
+                            
+                            return Ok(ResponseHelper.GetResponse(
+                                taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
+                                    AgencyConfig.AttachmentPath)
+                            ));
+                        }
+                        else
+                        {
+                            return Content(HttpStatusCode.BadRequest,
+                                ResponseHelper.GetExceptionResponse(ModelState));
+                        
                     }
                 }
             }
@@ -709,13 +714,5 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
-//        [HttpPut]
-//        [Route("addDependency")]
-//        [Authorize(Roles = "Manager")]
-//        public IHttpActionResult AddDependency(ArchiveTaskModel archiveTaskModel)
-//        {
-//            
-//        }
     }
 }

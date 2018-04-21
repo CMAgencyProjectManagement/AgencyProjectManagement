@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
@@ -37,24 +38,46 @@ namespace Service
             return destinationTaskStartDate.Date >= sourceTaskDeadline.Date;
         }
 
-        public void SetDependencyForTask(int taskId, int[] predecessorIds)
+        public void SetDependencyForTask(int taskId, int[] newPredecessorIds, int creatorId)
         {
             TaskService taskService = new TaskService(db);
             Task task = taskService.GetTask(taskId);
-            List<TaskDependency> dependencyToRemove = new List<TaskDependency>();
-            List<TaskDependency> dependencyToCreate = new List<TaskDependency>();
+            int[] oldPredecessorIds = GetPredecessors(taskId).Select(taskEl => taskEl.ID).ToArray();
+
+            IEnumerable<int> predecessorToRemove = oldPredecessorIds.Except(newPredecessorIds);
+            IEnumerable<int> predecessorToCreate = newPredecessorIds.Except(oldPredecessorIds);
+
+            IEnumerable<TaskDependency> dependencyToAdd = predecessorToCreate
+                .Select(predecessorId => new TaskDependency
+                {
+                    SourceTaskID = predecessorId,
+                    DestinationTaskID = task.ID,
+                    DependencyType = 1,
+                    CreatedBy = creatorId,
+                    CreatedTime = DateTime.Today
+                });
+
+            IEnumerable<TaskDependency> dependencyToRemove = db.TaskDependencies
+                .Where(dependency => predecessorToRemove.Contains(dependency.SourceTaskID));
+                
+
+            db.TaskDependencies.AddRange(dependencyToAdd);
+            db.TaskDependencies.RemoveRange(dependencyToRemove);
         }
 
         public TaskDependency CreateDependency(
             int sourceTaskId,
             int destinationTaskId,
+            int creatorId,
             int type = 1)
         {
             TaskDependency dependency = new TaskDependency
             {
                 SourceTaskID = sourceTaskId,
                 DestinationTaskID = destinationTaskId,
-                DependencyType = type
+                DependencyType = type,
+                CreatedBy = creatorId,
+                CreatedTime = DateTime.Today
             };
             db.TaskDependencies.Add(dependency);
             db.SaveChanges();
