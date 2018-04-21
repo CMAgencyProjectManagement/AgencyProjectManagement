@@ -37,6 +37,7 @@ namespace Service
             }
             return ProjectChangeThisWeek.ToList();
         }
+        
         public bool IsProjectChangeThisWeek(Project project)
         {
             DateTime date = DateTime.Now.Date;
@@ -44,16 +45,13 @@ namespace Service
             DateTime weekLastDay = weekFirstDay.AddDays(6);
             if (project.ChangedTime !=null)
             {
-                
                 if (project.ChangedTime >= weekFirstDay.Date && project.ChangedTime <= weekLastDay.Date)
                 {
                     return true;
                 }
             }
             return false;
-
         }
-        
 
         public IEnumerable<Project> GetProjectOfUser(int userId)
         {
@@ -281,29 +279,39 @@ namespace Service
         }
 
 
-        public Project SetProjectToTeams(int projectId, int[] teamIds, int modifierId)
+        public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
         {
+            TeamService teamService = new TeamService(db);
+            
             Project project = GetProjectByID(projectId);
             if (project == null)
             {
-                throw new ObjectNotFoundException($"Project with id ${projectId} not found");
+                throw new ObjectNotFoundException($"Project with id {projectId} not found");
             }
 
-            foreach (int teamId in teamIds)
+            IEnumerable<int> oldTeamIds = db.TeamProjects
+                .Where(teamProject => teamProject.ProjectID == projectId)
+                .Select(teamProject => teamProject.ID);
+ 
+            IEnumerable<int> teamProjectIdsToRemove = oldTeamIds.Except(newTeamIds);
+            IEnumerable<int> teamProjectIdsToAdd = newTeamIds.Except(oldTeamIds);
+
+            IEnumerable<TeamProject> teamProjectToRemove = db.TeamProjects
+                .Where(teamProject => teamProjectIdsToRemove.Contains(teamProject.ID));
+            IEnumerable<TeamProject> teamProjectToAdd = db.TeamProjects
+                .Where(teamProject => teamProjectIdsToAdd.Contains(teamProject.ID));
+
+            foreach (var teamProject in teamProjectToAdd)
             {
-                Team team = db.Teams.Find(teamId);
-                if (team == null)
-                {
-                    throw new ObjectNotFoundException($"Team with id ${teamId} not found");
-                }
-
-                TeamProject teamProject = new TeamProject
-                {
-                    ProjectID = project.ID,
-                    TeamID = team.ID
-                };
                 db.TeamProjects.Add(teamProject);
+                User manager = teamService.GetManager(teamProject.TeamID);
+                if (manager != null)
+                {
+                    AssignProject(manager.ID, teamProject.ProjectID); 
+                }
+                
             }
+            db.TeamProjects.RemoveRange(teamProjectToRemove);
 
             project.ChangedBy = modifierId;
             project.ChangedTime = DateTime.Today;
