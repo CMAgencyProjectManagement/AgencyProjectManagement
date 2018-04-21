@@ -366,6 +366,7 @@ namespace Web.Controllers
                             .Select(x => x.TeamID).Count();
                         if (teamIdOfList!=0)
                         {
+
                             var teamIdOfList2 = db.TeamProjects.Where(x => x.ProjectID == projectId)
                             .Select(x => x.TeamID).SingleOrDefault();
                             if ((int)teamId != (int)teamIdOfList2)
@@ -373,6 +374,7 @@ namespace Web.Controllers
                                 ModelState.AddModelError("ListID", $"The Department {db.Teams.Find(teamId).Name} don't have this list");
                                 flag = false;
                             }
+                           
                         }
                         else
                         {
