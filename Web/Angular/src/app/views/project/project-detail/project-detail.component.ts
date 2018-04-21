@@ -23,7 +23,7 @@ import { TeamService } from 'app/services/team.service';
 import { StoreService } from '../../../services/tree.service';
 import { UserService } from '../../../services/user.service';
 import { User } from 'app/interfaces/user';
-
+import { Directive, ElementRef, Renderer} from "@angular/core";
 @Component({
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
@@ -102,7 +102,7 @@ export class ProjectDetailComponent implements OnInit {
     } else {
       this.showErrorModal(`Invalid task id "${id}"`, true);
     }
-
+    
     this.viewForm = new FormGroup({
       projectname: new FormControl(undefined, Validators.required),
       customername: new FormControl(undefined, Validators.required),
@@ -182,13 +182,14 @@ export class ProjectDetailComponent implements OnInit {
           })
           .catch(reason => {
             this.showErrorModal('Assign fail!');
-            this.isLoading.openAssignModal = false
-          })
+            this.isLoading.openAssignModal = false;
+          })  
       } else {
         this.showErrorModal('Please select departments!');
         this.isLoading.openAssignModal = false
       }
     };
+    this.isLoading.openAssignModal = true;
     this.teamService.getAllTeam()
       .then(value => {
         const pool = [];
@@ -207,14 +208,16 @@ export class ProjectDetailComponent implements OnInit {
         const initialState = {
           confirmCallback: onConfirm,
           cancelCallback: () => {
+            this.isLoading.openAssignModal = false;
           },
           closeCallback: () => {
+            this.isLoading.openAssignModal = false;
           },
           userPool: pool,
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog' });
+        this.modalService.show(SelectTeamsModalComponent, { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
       })
   };
 
