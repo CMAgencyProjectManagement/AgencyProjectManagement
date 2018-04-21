@@ -78,15 +78,15 @@ namespace Web.Controllers
                     else
                     {
                         var teamId = db.Users.Find(userId).TeamID;
-                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                        var tasksInTeam = teamService.GetTasksOfTeam((int) teamId);
                         var tasksLate = taskService.GetLateActiveTasksOfTaskList(tasksInTeam);
                         foreach (var task in tasksLate)
                         {
                             dataObject.Add(taskService.ParseToJson(task));
                         }
                     }
-                    return Ok(ResponseHelper.GetResponse(dataObject));
 
+                    return Ok(ResponseHelper.GetResponse(dataObject));
                 }
             }
             catch (Exception ex)
@@ -290,7 +290,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult CreateTask(CreateTaskModel createTaskModel)
         {
             try
@@ -336,19 +336,23 @@ namespace Web.Controllers
                         flag = false;
                     }
 
-                    foreach (int predecessorTaskId in createTaskModel.Predecessors)
+                    if (createTaskModel.Predecessors != null)
                     {
-                        var predecessorTask = taskService.GetTask(predecessorTaskId);
-                        if (!dependencyService.IsPredecessorValid(predecessorTask.ID,
-                            createTaskModel.StartDate))
+                        foreach (int predecessorTaskId in createTaskModel.Predecessors)
                         {
-                            DateTime deadline = predecessorTask.StartDate.Value.AddDays(predecessorTask.Duration);
-                            ModelState.AddModelError("Predecessors",
-                                $"Task \"{predecessorTask.Name}\" have deadline({deadline.ToShortDateString()}) that come after your start date({createTaskModel.StartDate.ToShortDateString()})");
-                            flag = false;
-                            break;
+                            var predecessorTask = taskService.GetTask(predecessorTaskId);
+                            if (!dependencyService.IsPredecessorValid(predecessorTask.ID,
+                                createTaskModel.StartDate))
+                            {
+                                DateTime deadline = predecessorTask.StartDate.Value.AddDays(predecessorTask.Duration);
+                                ModelState.AddModelError("Predecessors",
+                                    $"Task \"{predecessorTask.Name}\" have deadline({deadline.ToShortDateString()}) that come after your start date({createTaskModel.StartDate.ToShortDateString()})");
+                                flag = false;
+                                break;
+                            }
                         }
                     }
+
 
                     if (flag == false)
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
@@ -375,9 +379,12 @@ namespace Web.Controllers
                             creator
                         );
 
-                        foreach (int predecessor in createTaskModel.Predecessors)
+                        if (createTaskModel.Predecessors != null)
                         {
-                            dependencyService.CreateDependency(predecessor, newTask.ID);
+                            foreach (int predecessor in createTaskModel.Predecessors)
+                            {
+                                dependencyService.CreateDependency(predecessor, newTask.ID);
+                            }
                         }
 
 
@@ -400,7 +407,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("")]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult UpdateTask(UpdateTaskViewModel updateTaskViewModel)
         {
             try
@@ -414,46 +421,50 @@ namespace Web.Controllers
                     User currentUser = userService.GetUser(currentUserId);
                     int DurationLength = 15;
 
-                    if (taskService.IsUserManagerOfTask(currentUserId, updateTaskViewModel.Id))
+                    if (!taskService.IsUserManagerOfTask(currentUserId, updateTaskViewModel.Id))
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                            "User have to be manager of this task to edit task "));
+
+                    bool flag = true;
+                    if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
                     {
-                        bool flag = true;
-                        if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
+                        if (taskService.CheckDuplicatedTasknameAllowDublicateProject(updateTaskViewModel.Name,
+                            updateTaskViewModel.ListID))
                         {
-                            if (taskService.CheckDuplicatedTasknameAllowDublicateProject(updateTaskViewModel.Name,
-                                updateTaskViewModel.ListID))
-                            {
-                                ModelState.AddModelError("Name", "Task name is taken");
-                                flag = false;
-                            }
-                        }
-
-                        if (taskService.CheckForListId(updateTaskViewModel.ListID))
-                        {
-                            ModelState.AddModelError("ListID", "The System don't have this list");
+                            ModelState.AddModelError("Name", "Task name is taken");
                             flag = false;
                         }
+                    }
 
-                        if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
-                        {
-                            ModelState.AddModelError("Priority", "Invalid Priority ");
-                            flag = false;
-                        }
+                    if (taskService.CheckForListId(updateTaskViewModel.ListID))
+                    {
+                        ModelState.AddModelError("ListID", "The System don't have this list");
+                        flag = false;
+                    }
 
-                        if (updateTaskViewModel.Duration < 1 || updateTaskViewModel.Duration > DurationLength)
-                        {
-                            ModelState.AddModelError("Duration",
-                                $"Duration must be greater than 1 and smaller than {DurationLength}");
-                            flag = false;
-                        }
+                    if (updateTaskViewModel.Priority < 0 || updateTaskViewModel.Priority > 3)
+                    {
+                        ModelState.AddModelError("Priority", "Invalid Priority ");
+                        flag = false;
+                    }
 
-                        if (updateTaskViewModel.Effort < 1 ||
-                            updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
-                        {
-                            ModelState.AddModelError("Effort",
-                                "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
-                            flag = false;
-                        }
+                    if (updateTaskViewModel.Duration < 1 || updateTaskViewModel.Duration > DurationLength)
+                    {
+                        ModelState.AddModelError("Duration",
+                            $"Duration must be greater than 1 and smaller than {DurationLength}");
+                        flag = false;
+                    }
 
+                    if (updateTaskViewModel.Effort < 1 ||
+                        updateTaskViewModel.Effort > (updateTaskViewModel.Duration * 24))
+                    {
+                        ModelState.AddModelError("Effort",
+                            "Effort(hours) must be greater than 1 and smaller than the Duration(days)");
+                        flag = false;
+                    }
+
+                    if (updateTaskViewModel.Predecessors != null)
+                    {
                         foreach (int predecessorTaskId in updateTaskViewModel.Predecessors)
                         {
                             var predecessorTask = taskService.GetTask(predecessorTaskId);
@@ -461,7 +472,8 @@ namespace Web.Controllers
                                 predecessorTask.ID,
                                 updateTaskViewModel.StartDate))
                             {
-                                DateTime deadline = predecessorTask.StartDate.Value.AddDays(predecessorTask.Duration);
+                                DateTime deadline =
+                                    predecessorTask.StartDate.Value.AddDays(predecessorTask.Duration);
                                 ModelState.AddModelError("Predecessors",
                                     $"Task \"{predecessorTask.Name}\" have deadline({deadline.ToShortDateString()}) that come after your start date({updateTaskViewModel.StartDate.ToShortDateString()})");
                                 flag = false;
@@ -469,53 +481,55 @@ namespace Web.Controllers
                             }
                         }
 
-                        IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
-                        DateTime sourceTaskDeadline = updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
-                        foreach (Task successor in taskSuccessors)
+                        if (updateTaskViewModel.Predecessors != null)
                         {
-                            if (!dependencyService.IsSuccessorValid(
-                                successor.ID,
-                                sourceTaskDeadline))
+                            IEnumerable<Task> taskSuccessors = dependencyService.GetSuccessors(updateTaskViewModel.Id);
+                            DateTime sourceTaskDeadline =
+                                updateTaskViewModel.StartDate.AddDays(updateTaskViewModel.Duration);
+                            foreach (Task successor in taskSuccessors)
                             {
-                                ModelState.AddModelError("Predecessors",
-                                    $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
-                                flag = false;
-                                break;
+                                if (!dependencyService.IsSuccessorValid(
+                                    successor.ID,
+                                    sourceTaskDeadline))
+                                {
+                                    ModelState.AddModelError("Predecessors",
+                                        $"Your task have deadline({sourceTaskDeadline.ToShortDateString()}) that come after it's successor task's start date({updateTaskViewModel.StartDate.ToShortDateString()})");
+                                    flag = false;
+                                    break;
+                                }
                             }
-                        }
-
-                        if (flag == false)
-                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-
-
-                        if (ModelState.IsValid)
-                        {
-                            var updatedTask = taskService.UpdateTask(
-                                updateTaskViewModel.Id,
-                                updateTaskViewModel.Name,
-                                updateTaskViewModel.Description,
-                                updateTaskViewModel.ListID,
-                                updateTaskViewModel.Priority,
-                                updateTaskViewModel.StartDate,
-                                updateTaskViewModel.Duration,
-                                updateTaskViewModel.Effort,
-                                currentUser.ID,
-                                DateTime.Now.Date
-                            );
-                            return Ok(ResponseHelper.GetResponse(
-                                taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
-                                    AgencyConfig.AttachmentPath)
-                            ));
-                        }
-                        else
-                        {
-                            return Content(HttpStatusCode.BadRequest,
-                                ResponseHelper.GetExceptionResponse(ModelState));
                         }
                     }
 
-                    return Ok(ResponseHelper.GetExceptionResponse(
-                        "User have to be manager of this task to edit task "));
+
+                    if (flag == false)
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+
+                    if (ModelState.IsValid)
+                    {
+                        var updatedTask = taskService.UpdateTask(
+                            updateTaskViewModel.Id,
+                            updateTaskViewModel.Name,
+                            updateTaskViewModel.Description,
+                            updateTaskViewModel.ListID,
+                            updateTaskViewModel.Priority,
+                            updateTaskViewModel.StartDate,
+                            updateTaskViewModel.Duration,
+                            updateTaskViewModel.Effort,
+                            currentUser.ID,
+                            DateTime.Now.Date
+                        );
+                        return Ok(ResponseHelper.GetResponse(
+                            taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
+                                AgencyConfig.AttachmentPath)
+                        ));
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest,
+                            ResponseHelper.GetExceptionResponse(ModelState));
+                    }
                 }
             }
             catch (Exception ex)

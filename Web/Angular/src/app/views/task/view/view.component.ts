@@ -80,8 +80,7 @@ export class ViewComponent implements OnInit {
         })
         .catch(reason => {
           console.debug('ViewComponent-onInit', reason);
-          this.showErrorModal(reason.message);
-          this.isLoading.page = false;
+          this.showErrorModal(reason.Message);
         })
     } else {
       this.showErrorModal(`${id} is not a valid ID`);
