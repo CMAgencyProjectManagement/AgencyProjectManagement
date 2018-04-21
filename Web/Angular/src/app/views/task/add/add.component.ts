@@ -194,7 +194,7 @@ export class AddComponent implements OnInit {
         this.predecessorTasks = selectedTasks;
       }
     };
-    this.modalService.show(SelectTasksModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(SelectTasksModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
   handleCreateTask() {

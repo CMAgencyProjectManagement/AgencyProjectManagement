@@ -159,7 +159,8 @@ export class ViewComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
+        this.modalService.show(SelectUsersModalComponent,
+          {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
       .catch(reason => {
         this.showErrorModal('An error has occurred while trying to open assign pop-up ');
@@ -195,7 +196,7 @@ export class ViewComponent implements OnInit {
       title: `Un-assign`,
       confirmButtonText: 'Un-assign'
     };
-    this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
   handleOnNeedReviewBtnClick() {
@@ -216,7 +217,7 @@ export class ViewComponent implements OnInit {
       message: `Are you sure you want to finish this task!`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
   handleUploadAttachmentClick() {
@@ -286,7 +287,7 @@ export class ViewComponent implements OnInit {
   }
 
   handleSetStatusBtnClick() {
-    this.modalService.show(SelectStatusModalComponent, {class: 'modal-dialog'});
+    this.modalService.show(SelectStatusModalComponent, {class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
   attachmentFileChange(fileInput: any) {

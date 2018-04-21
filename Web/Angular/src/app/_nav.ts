@@ -38,7 +38,7 @@ const staff_navigation = [
 /**
  * home page (manager)
  * my department
- * my department's active projects
+ * my projects
  * my account (profile)
  * update profile
  */
@@ -47,6 +47,21 @@ const manager_navigation = [
     name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer'
+  },
+  {
+    name: 'Department',
+    url: '/department/my',
+    icon: 'icon-people'
+  },
+  {
+    name: 'Projects',
+    url: '/project',
+    icon: 'icon-calendar'
+  },
+  {
+    name: 'My profile',
+    url: '/account/profile',
+    icon: 'icon-user',
   }
 ];
 
