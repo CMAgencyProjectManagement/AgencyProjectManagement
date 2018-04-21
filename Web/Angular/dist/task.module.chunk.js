@@ -3,7 +3,7 @@ webpackJsonp(["task.module"],{
 /***/ "../../../../../src/app/views/task/add/add.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Create task</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\r\n        <div [formGroup]=\"createForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\r\n          <div class=\"form-group row\">\r\n            <!--NAME-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\r\n              Name <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\r\n                     formControlName=\"name\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Description-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\r\n              Description\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <textarea id=\"description-input\"\r\n                        rows=\"9\"\r\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\r\n                        placeholder=\"Description..\"\r\n                        formControlName=\"description\"></textarea>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--LIST-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\r\n              List\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"list\" id=\"list-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let list of foundProject.lists\" value=\"{{list.id}}\">{{list.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--priority-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\r\n              Priority <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"priority\" id=\"priority-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Start date-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\r\n              Start date <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker id=\"startDate-input\" #datepicker\r\n                              [options]=\"myDatePickerOptions\"\r\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\r\n                              formControlName=\"startDate\" required>\r\n              </my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\r\n                {{errors.startDate}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--DURATION-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\r\n              Duration <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"duration-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\r\n                       formControlName=\"duration\">\r\n                <span class=\"input-group-addon\">day</span>\r\n              </div>\r\n\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--EFFORT-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\r\n              Effort <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"effort-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\r\n                       formControlName=\"effort\">\r\n                <span class=\"input-group-addon\">hour</span>\r\n              </div>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <!--BUTTON-->\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreateTask()\" [ladda]=\"isLoading.create\">\r\n                Create\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"handleOnCancelBtnClick()\">Reset</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>Create task</strong>\n      </div>\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\n        <div [formGroup]=\"createForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\n          <div class=\"form-group row\">\n            <!--NAME-->\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\n              Name <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-8\">\n              <input type=\"text\" id=\"name-input\"\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\n                     formControlName=\"name\">\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--Description-->\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\n              Description\n            </label>\n            <div class=\"col-8\">\n              <textarea id=\"description-input\"\n                        rows=\"9\"\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\n                        placeholder=\"Description..\"\n                        formControlName=\"description\"></textarea>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--LIST-->\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\n              List\n            </label>\n            <div class=\"col-8\">\n              <select formControlName=\"list\" id=\"list-input\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\n                <option *ngFor=\"let list of foundProject.lists\" value=\"{{list.id}}\">{{list.name}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--priority-->\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\n              Priority <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-4\">\n              <select formControlName=\"priority\" id=\"priority-input\"\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\n              </select>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--Start date-->\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\n              Start date <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-4 datepicker-group\">\n              <my-date-picker id=\"startDate-input\" #datepicker\n                              [options]=\"myDatePickerOptions\"\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\n                              formControlName=\"startDate\" required>\n              </my-date-picker>\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\n                {{errors.startDate}}\n              </div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--DURATION-->\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\n              Duration <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-4\">\n              <div class=\"input-group\">\n                <input type=\"text\" id=\"duration-input\"\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\n                       formControlName=\"duration\">\n                <span class=\"input-group-addon\">day(s)</span>\n              </div>\n\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--EFFORT-->\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\n              Effort <span style=\"color: red\"><strong>*</strong></span>\n            </label>\n            <div class=\"col-4\">\n              <div class=\"input-group\">\n                <input type=\"text\" id=\"effort-input\"\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\n                       formControlName=\"effort\">\n                <span class=\"input-group-addon\">hour(s)</span>\n              </div>\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <!--predecessors-->\n            <label class=\"col-4 col-form-label text-right\">\n              <i class=\"fa fa-exclamation-circle\"\n                 popover=\"Tasks that have to finished before this task's start date\"\n                 triggers=\"focus\" tabindex=\"999\"></i> Predecessor tasks\n            </label>\n            <div class=\"col-8\">\n              <div>\n                <app-tasklist [tasks]=\"predecessorTasks\"></app-tasklist>\n              </div>\n              <div class=\"mt-2\">\n                <button class=\"btn btn-success\" (click)=\"handleAddDependencyBtnClick()\">\n                  Select predecessors\n                </button>\n                <div class=\"invalid-feedback\" *ngIf=\"errors.predecessors\">{{errors.predecessors}}</div>\n              </div>\n            </div>\n          </div>\n          <div class=\"form-actions text-center\">\n            <!--BUTTONS-->\n            <div class=\"col-12\">\n              <button class=\"btn btn-primary\" (click)=\"handleCreateTask()\" [ladda]=\"isLoading.create\">\n                Create\n              </button>\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"handleOnCancelBtnClick()\">Reset</button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -15,7 +15,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".invalid-feedback {\n  display: block; }\n", ""]);
+exports.push([module.i, ".invalid-feedback {\n  display: block; }\n\n.fa-exclamation-circle {\n  cursor: pointer; }\n", ""]);
 
 // exports
 
@@ -40,6 +40,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -49,6 +51,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -76,12 +79,13 @@ var AddComponent = /** @class */ (function () {
             page: true,
             create: false
         };
+        this.predecessorTasks = [];
         this.resetError();
     }
     AddComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var projectId = this.route.snapshot.queryParamMap.get('projectID');
-        var listId = this.route.snapshot.queryParamMap.get('listID');
+        var projectId = this.route.snapshot.queryParamMap.get('project');
+        var listId = this.route.snapshot.queryParamMap.get('list');
         if (Number(projectId) && Number(listId)) {
             this.listId = Number(listId);
             this.projectService.getProject(Number(projectId))
@@ -133,7 +137,8 @@ var AddComponent = /** @class */ (function () {
             priority: '',
             startDate: '',
             duration: '',
-            effort: ''
+            effort: '',
+            predecessors: ''
         };
     };
     AddComponent.prototype.setErrors = function (errors) {
@@ -163,6 +168,9 @@ var AddComponent = /** @class */ (function () {
                 case 'Effort':
                     this.errors.effort = errorMessage;
                     break;
+                case 'Predecessors':
+                    this.errors.predecessors = errorMessage;
+                    break;
             }
         }
     };
@@ -184,17 +192,37 @@ var AddComponent = /** @class */ (function () {
             effort: '',
         });
     };
+    AddComponent.prototype.handleAddDependencyBtnClick = function () {
+        var _this = this;
+        var taskPool = [];
+        for (var _i = 0, _a = this.foundProject.lists; _i < _a.length; _i++) {
+            var list = _a[_i];
+            for (var _b = 0, _c = list.tasks; _b < _c.length; _b++) {
+                var task = _c[_b];
+                taskPool.push(task);
+            }
+        }
+        var initialState = {
+            taskPool: taskPool,
+            title: 'Select predecessor tasks',
+            confirmCallback: function (selectedTasks) {
+                _this.predecessorTasks = selectedTasks;
+            }
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["i" /* SelectTasksModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+    };
     AddComponent.prototype.handleCreateTask = function () {
         var _this = this;
         this.isLoading.create = true;
         this.resetError();
         var values = this.createForm.value;
         var startDate = __WEBPACK_IMPORTED_MODULE_3_moment__(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
-        this.taskService.createTask(values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort).then(function (value) {
+        var preTaskIds = __WEBPACK_IMPORTED_MODULE_9_lodash__["map"](this.predecessorTasks, 'id');
+        this.taskService.createTask(values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort, preTaskIds).then(function (value) {
             var initialState = {
                 message: 'Your task successfully created'
             };
-            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["k" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["l" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog' });
             _this.isLoading.create = false;
         }).catch(function (reason) {
             _this.setErrors(reason.Data);
@@ -241,7 +269,7 @@ var AddComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/task/edit/edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update task</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\r\n          <div class=\"form-group row\">\r\n            <!--NAME-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\r\n              Name <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\r\n                     formControlName=\"name\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Description-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\r\n              Description\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <textarea id=\"description-input\"\r\n                        rows=\"9\"\r\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\r\n                        placeholder=\"Description..\"\r\n                        formControlName=\"description\"></textarea>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--LIST-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\r\n              List\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"list\" id=\"list-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let list of lists\" value=\"{{list.id}}\">{{list.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--priority-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\r\n              Priority\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <select formControlName=\"priority\" id=\"priority-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Start date-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\r\n              Start date <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4 datepicker-group\">\r\n              <my-date-picker id=\"startDate-input\" #datepicker\r\n                              [options]=\"myDatePickerOptions\"\r\n                              formControlName=\"startDate\"\r\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\r\n                              required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\r\n                {{errors.startDate}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--DURATION-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\r\n              Duration <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"duration-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\r\n                       formControlName=\"duration\">\r\n                <span class=\"input-group-addon\">day(s)</span>\r\n              </div>\r\n\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--EFFORT-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\r\n              Effort <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"effort-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\r\n                       formControlName=\"effort\">\r\n                <span class=\"input-group-addon\">hour(s)</span>\r\n              </div>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <!--BUTTON-->\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdateTask()\" [ladda]=\"isLoading.update\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"onCancelBtnClick()\">Cancel</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update task</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div *ngIf=\"!isLoading.page\" class=\"card-body row\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-lg-8 col-md-10 col-sm-12\">\r\n          <div class=\"form-group row\">\r\n            <!--NAME-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">\r\n              Name <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\"\r\n                     [ngClass]=\"{'form-control': true, 'is-invalid': errors.name}\"\r\n                     formControlName=\"name\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.name\">{{errors.name}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Description-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"description-input\">\r\n              Description\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <textarea id=\"description-input\"\r\n                        rows=\"9\"\r\n                        [ngClass]=\"{'form-control': true, 'is-invalid': errors.description}\"\r\n                        placeholder=\"Description..\"\r\n                        formControlName=\"description\"></textarea>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.description\">{{errors.description}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--LIST-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"list-input\">\r\n              List\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"list\" id=\"list-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let list of lists\" value=\"{{list.id}}\">{{list.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.list\">{{errors.list}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--priority-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"priority-input\">\r\n              Priority\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <select formControlName=\"priority\" id=\"priority-input\"\r\n                      [ngClass]=\"{'form-control': true, 'is-invalid': errors.list}\">\r\n                <option *ngFor=\"let priority of priorities\" value=\"{{priority.key}}\">{{priority.value}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.priority\">{{errors.priority}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--Start date-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"startDate-input\">\r\n              Start date <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4 datepicker-group\">\r\n              <my-date-picker id=\"startDate-input\" #datepicker\r\n                              [options]=\"myDatePickerOptions\"\r\n                              formControlName=\"startDate\"\r\n                              [ngClass]=\"{'form-control': false, 'is-invalid': errors.startDate}\"\r\n                              required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.startDate\">\r\n                {{errors.startDate}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--DURATION-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"duration-input\">\r\n              Duration <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"duration-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.duration}\"\r\n                       formControlName=\"duration\">\r\n                <span class=\"input-group-addon\">day(s)</span>\r\n              </div>\r\n\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.duration\">{{errors.duration}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--EFFORT-->\r\n            <label class=\"col-4 col-form-label text-right\" for=\"effort-input\">\r\n              Effort <span style=\"color: red\"><strong>*</strong></span>\r\n            </label>\r\n            <div class=\"col-4\">\r\n              <div class=\"input-group\">\r\n                <input type=\"text\" id=\"effort-input\"\r\n                       [ngClass]=\"{'form-control': true, 'is-invalid': errors.effort}\"\r\n                       formControlName=\"effort\">\r\n                <span class=\"input-group-addon\">hour(s)</span>\r\n              </div>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.effort\">{{errors.effort}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <!--predecessors-->\r\n            <label class=\"col-4 col-form-label text-right\">\r\n              <i class=\"fa fa-exclamation-circle\"\r\n                 popover=\"Tasks that have to finished before this task's start date\"\r\n                 triggers=\"focus\" tabindex=\"999\"></i> Predecessor tasks\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <div>\r\n                <app-tasklist [tasks]=\"predecessorTasks\"></app-tasklist>\r\n              </div>\r\n              <div class=\"mt-2\">\r\n                <button class=\"btn btn-success\" (click)=\"handleAddDependencyBtnClick()\">\r\n                  Select predecessors\r\n                </button>\r\n                <div class=\"invalid-feedback\" *ngIf=\"errors.predecessors\">{{errors.predecessors}}</div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <!--BUTTON-->\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdateTask()\" [ladda]=\"isLoading.update\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"onCancelBtnClick()\">Cancel</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -278,6 +306,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_moment__ = __webpack_require__("../../../../moment/moment.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -287,6 +317,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -314,6 +345,7 @@ var EditComponent = /** @class */ (function () {
             page: true,
             update: false
         };
+        this.predecessorTasks = [];
         this.resetError();
     }
     EditComponent.prototype.ngOnInit = function () {
@@ -325,9 +357,10 @@ var EditComponent = /** @class */ (function () {
                 .then(function (value) {
                 _this.foundTask = value;
                 _this.updatePageLoadingState();
-                _this.projectService.getListOfProject(_this.foundTask.project.id)
-                    .then(function (value1) {
-                    _this.lists = value1;
+                _this.projectService.getProject(_this.foundTask.project.id)
+                    .then(function (project) {
+                    _this.foundProject = project;
+                    _this.lists = _this.foundProject.lists;
                     _this.setDefaultValue();
                     _this.updatePageLoadingState();
                 })
@@ -364,6 +397,7 @@ var EditComponent = /** @class */ (function () {
         if (this.lists &&
             this.foundTask &&
             this.priorities) {
+            this.predecessorTasks = this.foundTask.predecessors;
             this.isLoading.page = false;
         }
     };
@@ -429,13 +463,33 @@ var EditComponent = /** @class */ (function () {
             effort: this.foundTask.effort,
         });
     };
+    EditComponent.prototype.handleAddDependencyBtnClick = function () {
+        var _this = this;
+        var taskPool = [];
+        for (var _i = 0, _a = this.foundProject.lists; _i < _a.length; _i++) {
+            var list = _a[_i];
+            for (var _b = 0, _c = list.tasks; _b < _c.length; _b++) {
+                var task = _c[_b];
+                taskPool.push(task);
+            }
+        }
+        var initialState = {
+            taskPool: taskPool,
+            title: 'Select predecessor tasks',
+            confirmCallback: function (selectedTasks) {
+                _this.predecessorTasks = selectedTasks;
+            }
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["i" /* SelectTasksModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+    };
     EditComponent.prototype.handleUpdateTask = function () {
         var _this = this;
         this.isLoading.update = true;
         this.resetError();
         var values = this.updateForm.value;
         var startDate = __WEBPACK_IMPORTED_MODULE_8_moment__(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
-        this.taskService.editTask(this.foundTask.id, values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort).then(function (value) {
+        var preTaskIds = __WEBPACK_IMPORTED_MODULE_9_lodash__["map"](this.predecessorTasks, 'id');
+        this.taskService.editTask(this.foundTask.id, values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort, preTaskIds).then(function (value) {
             _this.foundTask = value;
             _this.showSuccessModal('Update task successfully');
             _this.isLoading.update = false;
@@ -455,7 +509,7 @@ var EditComponent = /** @class */ (function () {
             },
             message: message
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["k" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog modal-success' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["l" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog modal-success' });
     };
     EditComponent.prototype.showErrorModal = function (message, isNavigateBack) {
         var _this = this;
@@ -729,12 +783,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__my_tasks_my_tasks_component__ = __webpack_require__("../../../../../src/app/views/task/my-tasks/my-tasks.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -762,6 +818,7 @@ var TaskModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_9_angular2_ladda__["LaddaModule"].forRoot({
                     style: 'expand-left'
                 }),
+                __WEBPACK_IMPORTED_MODULE_13_ngx_bootstrap__["d" /* PopoverModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_10_mydatepicker__["MyDatePickerModule"],
                 __WEBPACK_IMPORTED_MODULE_12_angular_datatables__["b" /* DataTablesModule */],
@@ -869,43 +926,33 @@ var ViewComponent = /** @class */ (function () {
             done: false,
             comment: false,
             editComment: true,
-            setStatus: false
         };
         this.openCommentForm = false;
         this.resetErrors();
     }
     ViewComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.route.params.subscribe(function (params) {
-            _this.loadTask(params['id']);
-        });
-        this.attachmentForm = new __WEBPACK_IMPORTED_MODULE_6__angular_forms__["b" /* FormGroup */]({
-            attachment: new __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormControl */](undefined),
-        });
-    };
-    ViewComponent.prototype.loadTask = function (taskId) {
-        var _this = this;
-        if (!taskId) {
-            this.showErrorModal(taskId + " is not a valid ID");
-            return;
-        }
-        if (Number(taskId)) {
-            this.taskService.getTaskDetail(taskId)
+        var id = this.route.snapshot.paramMap.get('id');
+        if (Number(id)) {
+            this.taskService.getTaskDetail(Number(id))
                 .then(function (value) {
                 _this.foundTask = value;
                 _this.isLoading.page = false;
             })
                 .catch(function (reason) {
                 console.debug('ViewComponent-onInit', reason);
-                _this.showErrorModal(reason.Message);
+                _this.showErrorModal(reason.Message, true);
             });
         }
         else {
-            this.showErrorModal(taskId + " is not a valid ID");
+            this.showErrorModal(id + " is not a valid ID", true);
         }
+        this.attachmentForm = new __WEBPACK_IMPORTED_MODULE_6__angular_forms__["b" /* FormGroup */]({
+            attachment: new __WEBPACK_IMPORTED_MODULE_6__angular_forms__["a" /* FormControl */](undefined),
+        });
     };
     ViewComponent.prototype.handleOnCommentBtnClick = function () {
-        this.openCommentForm = !this.openCommentForm;
+        this.openCommentForm = true;
     };
     ViewComponent.prototype.handleAddCommentBtnClick = function () {
         var _this = this;
@@ -970,7 +1017,7 @@ var ViewComponent = /** @class */ (function () {
                 title: "Assign",
                 confirmButtonText: 'Assign'
             };
-            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["j" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["k" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
         })
             .catch(function (reason) {
             _this.showErrorModal('An error has occurred while trying to open assign pop-up ');
@@ -1006,7 +1053,7 @@ var ViewComponent = /** @class */ (function () {
             title: "Un-assign",
             confirmButtonText: 'Un-assign'
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["j" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["k" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ViewComponent.prototype.handleOnNeedReviewBtnClick = function () {
         var _this = this;
@@ -1096,22 +1143,7 @@ var ViewComponent = /** @class */ (function () {
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["a" /* CommentModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ViewComponent.prototype.handleSetStatusBtnClick = function () {
-        var _this = this;
-        this.isLoading.setStatus = true;
-        var initialState = {
-            task: this.foundTask,
-            confirmCallback: function (newTask) {
-                _this.foundTask = newTask;
-                _this.isLoading.setStatus = false;
-            },
-            cancelCallback: function () {
-                _this.isLoading.setStatus = false;
-            },
-            closeCallback: function () {
-                _this.isLoading.setStatus = false;
-            }
-        };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_12__cmaComponents_modals_select_status_modal_select_status_modal_component__["a" /* SelectStatusModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_12__cmaComponents_modals_select_status_modal_select_status_modal_component__["a" /* SelectStatusModalComponent */], { class: 'modal-dialog' });
     };
     ViewComponent.prototype.attachmentFileChange = function (fileInput) {
         var file = fileInput.target.files[0];

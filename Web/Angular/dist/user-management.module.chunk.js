@@ -197,7 +197,7 @@ var CreateUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/detail-user/detail-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <div class=\"card-body\" *ngIf=\"foundUser\">\r\n    <div id=\"AvaAndDe\" class=\"row\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div id=\"right\" class=\"col-6\">\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase\" class=\"col-8  text-center\">\r\n          <strong>{{foundUser.name}}</strong> \r\n        </div>\r\n        <div id=\"username\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">User name </div>\r\n          <div class=\"col-8\">{{foundUser.username}}</div>\r\n        </div>\r\n\r\n        <div id=\"team\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Department </div>\r\n          <div class=\"col-8\">{{foundUser.team.name}}</div>\r\n        </div>\r\n\r\n        <div id=\"role\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Role </div>\r\n\r\n          <div *ngIf=\"foundUser.isAdmin\" class=\"col-8\">\r\n            <strong>Admin </strong>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\" class=\"col-8\">\r\n            <strong>Manager </strong>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\" class=\"col-8\">\r\n            Staff\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Status </div>\r\n          <div *ngIf=\"foundUser.isActive\" class=\"col-8\">\r\n            Active\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\" class=\"col-8\">\r\n            Banned\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Phone number </div>\r\n          <div class=\"col-8\">{{foundUser.phone}}</div>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\" class=\"row\">\r\n          <div class=\"col-4  text-right\">Email </div>\r\n          <div class=\"col-8\">{{foundUser.email}}</div>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\" class=\"row\">\r\n            <div class=\"col-4  text-right\">Date of birth </div>\r\n            <div class=\"col-8\">{{foundUser.birthdate |date:'dd/MM/yyyy'}}</div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <div class=\"card-body\" *ngIf=\"foundUser\">\r\n    <div id=\"AvaAndDe\" class=\"row\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div class=\"col-4\">\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase; font-size: 40px; color: #3960A4\">\r\n          <strong>{{foundUser.name}}</strong> \r\n        </div>\r\n        <div id=\"team\" *ngIf=\"foundUser\" style=\"font-size: 30px\">\r\n          <a href=\"#/department/{{foundUser.team.id}}/detail\">{{foundUser.team.name}}</a>\r\n        </div>\r\n        <br/>\r\n        <div id=\"role\" *ngIf=\"foundUser\" >\r\n          <div *ngIf=\"foundUser.isAdmin\" >\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i><span style=\"font-size: 20px\">  &nbsp;&nbsp;&nbsp;Admin</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i><span style=\"font-size: 20px\">  &nbsp;&nbsp;&nbsp;Manager</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i><span style=\"font-size: 20px\">  &nbsp;&nbsp;&nbsp;Staff</span>\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isActive\">\r\n            <i class=\"fa fa-check fa-lg\"></i><span style=\"font-size: 20px;color: #3AA65B\">  &nbsp;&nbsp;&nbsp;Active</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\">\r\n            <i class=\"fa fa-close fa-lg\"></i><span style=\"font-size: 20px;color: #CB0A0E\">  &nbsp;&nbsp;&nbsp;Banned</span>\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\">\r\n            <i class=\"fa fa-phone fa-lg\"></i><span style=\"font-size: 20px\">  &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\">\r\n            <i class=\"fa fa-envelope-o fa-lg\"></i><span style=\"font-size: 20px\">  &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\">\r\n              <i class=\"fa fa-birthday-cake fa-lg\"></i><span style=\"font-size: 20px\">  &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -209,7 +209,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".fa-lg {\n  font-size: 2em;\n  vertical-align: -15%; }\n", ""]);
 
 // exports
 
@@ -254,7 +254,6 @@ var DetailUserComponent = /** @class */ (function () {
         this.route = route;
         this.location = location;
         this.selectedUser = [];
-        this.foundUser == this.storeService.get(['currentUser']);
         // let currentUser = this.storeService.get(['currentUser']) as User;
         // this.managementMode = currentUser.isManager || currentUser.isAdmin;
     }
@@ -265,7 +264,7 @@ var DetailUserComponent = /** @class */ (function () {
             console.debug(this.foundUser.id);
         }
         else {
-            this.userID = Number(this.route.snapshot.paramMap.get('id') == undefined);
+            this.userID = Number(this.route.snapshot.paramMap.get('id'));
             this.getAllTeam();
         }
     };
@@ -761,12 +760,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angular_datatables__ = __webpack_require__("../../../../angular-datatables/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_spinner_spinner_module__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__update_my_user_update_my_user_component__ = __webpack_require__("../../../../../src/app/views/user-management/update-my-user/update-my-user.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -795,7 +796,8 @@ var UserManagementModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8_mydatepicker__["MyDatePickerModule"],
                 __WEBPACK_IMPORTED_MODULE_10_angular_datatables__["b" /* DataTablesModule */],
-                __WEBPACK_IMPORTED_MODULE_11__components_spinner_spinner_module__["a" /* SpinnerModule */]
+                __WEBPACK_IMPORTED_MODULE_11__components_spinner_spinner_module__["a" /* SpinnerModule */],
+                __WEBPACK_IMPORTED_MODULE_13__cmaComponents_cma_module__["a" /* CmaModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_3__create_user_create_user_component__["a" /* CreateUserComponent */],

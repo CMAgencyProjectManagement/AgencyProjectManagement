@@ -72,8 +72,8 @@ var staff_navigation = [
         icon: 'icon-people'
     },
     {
-        name: 'Project',
-        url: '/dashboard',
+        name: 'My Project',
+        url: '/project',
         icon: 'icon-calendar'
     },
     {
@@ -172,6 +172,7 @@ var serverPath = {
     allUser: '/api/user/all',
     createUser: '/api/user',
     updateUser: '/api/user/update',
+    updateProfile: '/api/user/update/profile',
     leaderBoard: '/api/user/leaderboard',
     getUserOfProject: function (projectId) { return "/api/user/project/" + projectId; },
     getUserOfTeam: function (teamId) { return "/api/user/team/" + teamId; },
@@ -346,7 +347,7 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -419,16 +420,18 @@ var SERVICES = [
 // Import modal
 
 var MODALS = [
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["i" /* SelectTeamsModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["k" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["j" /* SelectTeamsModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["l" /* SuccessModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* ErrorModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["c" /* CreateListModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["b" /* ConfirmModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["e" /* RemoveListModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["f" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["j" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["k" /* SelectUsersModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* CommentModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* SelectStatusModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["h" /* SelectStatusModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* SelectMembersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["i" /* SelectTasksModalComponent */]
 ];
 // Import 3rd party components
 
@@ -452,7 +455,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_24_ng2_charts_ng2_charts__["ChartsModule"],
                 __WEBPACK_IMPORTED_MODULE_25_mydatepicker__["MyDatePickerModule"],
                 __WEBPACK_IMPORTED_MODULE_26_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_27_ngx_bootstrap__["d" /* ModalModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_27_ngx_bootstrap_modal__["c" /* ModalModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_28__cmaComponents_cma_module__["a" /* CmaModule */]
             ],
             declarations: [
@@ -746,18 +749,19 @@ var declares_exports = [
     __WEBPACK_IMPORTED_MODULE_18__modals__["d" /* ErrorModalComponent */],
     __WEBPACK_IMPORTED_MODULE_18__modals__["c" /* CreateListModalComponent */],
     __WEBPACK_IMPORTED_MODULE_18__modals__["e" /* RemoveListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["k" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["l" /* SuccessModalComponent */],
     __WEBPACK_IMPORTED_MODULE_18__modals__["f" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["j" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["k" /* SelectUsersModalComponent */],
     __WEBPACK_IMPORTED_MODULE_18__modals__["a" /* CommentModalComponent */],
     __WEBPACK_IMPORTED_MODULE_14__task_table_task_table_component__["a" /* TaskTableComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["g" /* SelectStatusModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["i" /* SelectTeamsModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["h" /* SelectStatusModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["j" /* SelectTeamsModalComponent */],
     __WEBPACK_IMPORTED_MODULE_15__task_status_task_status_component__["a" /* TaskStatusComponent */],
     __WEBPACK_IMPORTED_MODULE_19__tasklist_tasklist_component__["a" /* TasklistComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["h" /* SelectTasksModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["i" /* SelectTasksModalComponent */],
     __WEBPACK_IMPORTED_MODULE_16__project_status_project_status_component__["a" /* ProjectStatusComponent */],
-    __WEBPACK_IMPORTED_MODULE_17__task_priority_task_priority_component__["a" /* TaskPriorityComponent */]
+    __WEBPACK_IMPORTED_MODULE_17__task_priority_task_priority_component__["a" /* TaskPriorityComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["g" /* SelectMembersModalComponent */]
 ];
 var CmaModule = /** @class */ (function () {
     function CmaModule() {
@@ -1349,21 +1353,24 @@ var ErrorModalComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/success-modal/success-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__select_teams_modal_select_teams_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-teams-modal/select-teams-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_7__select_teams_modal_select_teams_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_7__select_teams_modal_select_teams_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__comment_modal_comment_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_8__comment_modal_comment_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__select_status_modal_select_status_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-status-modal/select-status-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_9__select_status_modal_select_status_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_9__select_status_modal_select_status_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__select_tasks_modal_select_tasks_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-tasks-modal/select-tasks-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_10__select_tasks_modal_select_tasks_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_10__select_tasks_modal_select_tasks_modal_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__select_members_modal_select_members_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_11__select_members_modal_select_members_modal_component__["a"]; });
+
 
 
 
@@ -1551,6 +1558,103 @@ var RenameListModalComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select Teams</h4>\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  \r\n  <div class=\"modal-body\">\r\n    <div class=\"col-12\" *ngIf=\"message\">\r\n      {{message}}\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"form-group row\">\r\n        <div class=\"col-md-10\">\r\n          <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\r\n            <option value=\"{{undefined}}\">Please select members from your department</option>\r\n            <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\r\n          </select>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-12\" *ngIf=\"selectedUsers.length > 0\">\r\n      <h3>Selected</h3>\r\n      <app-user-list [users]=\"selectedUsers\"></app-user-list>\r\n    </div>\r\n  \r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n  </div>\r\n  "
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectMembersModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SelectMembersModalComponent = /** @class */ (function () {
+    function SelectMembersModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+        if (!this.confirmButtonText) {
+            this.confirmButtonText = 'Confirm';
+        }
+    }
+    SelectMembersModalComponent.prototype.ngOnInit = function () {
+        this.selectedUsers = [];
+    };
+    SelectMembersModalComponent.prototype.handleOnSelect = function (userId) {
+        this.selectedUsers = __WEBPACK_IMPORTED_MODULE_2_lodash__["concat"](this.selectedUsers, __WEBPACK_IMPORTED_MODULE_2_lodash__["find"](this.userPool, function (user) {
+            return user.id == userId;
+        }));
+        this.userPool = __WEBPACK_IMPORTED_MODULE_2_lodash__["filter"](this.userPool, function (user) {
+            return user.id != userId;
+        });
+    };
+    SelectMembersModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            this.confirmCallback(this.selectedUsers);
+        }
+        this.bsModalRef.hide();
+    };
+    SelectMembersModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    SelectMembersModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    SelectMembersModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-select-members-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], SelectMembersModalComponent);
+    return SelectMembersModalComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/cmaComponents/modals/select-status-modal/select-status-modal.component.html":
 /***/ (function(module, exports) {
 
@@ -1663,7 +1767,7 @@ var SelectStatusModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/select-tasks-modal/select-tasks-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  select-tasks-modal works!\r\n</p>\r\n"
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select users</h4>\n  <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"col-12\" *ngIf=\"message\">\n    {{message}}\n  </div>\n  <div class=\"col-12\">\n    <div class=\"form-group row\">\n      <div class=\"col-md-9\">\n        <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\n          <option value=\"{{undefined}}\">Please select tasks</option>\n          <option value=\"{{task.id}}\" *ngFor=\"let task of taskPool\">{{task.name}}</option>\n        </select>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-12\" *ngIf=\"selectedTasks.length > 0\">\n    <h3>Selected</h3>\n    <app-tasklist [tasks]=\"selectedTasks\"></app-tasklist>\n  </div>\n\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
 
 /***/ }),
 
@@ -1691,6 +1795,9 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectTasksModalComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1701,10 +1808,58 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var SelectTasksModalComponent = /** @class */ (function () {
-    function SelectTasksModalComponent() {
+    function SelectTasksModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+        if (!this.selectedTasks) {
+            this.selectedTasks = [];
+        }
+        if (!this.confirmButtonText) {
+            this.confirmButtonText = 'Confirm';
+        }
     }
     SelectTasksModalComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.selectedTasks.length > 0) {
+            this.taskPool = __WEBPACK_IMPORTED_MODULE_2_lodash__["filter"](this.taskPool, function (task) {
+                var removeFlag = true;
+                for (var _i = 0, _a = _this.selectedTasks; _i < _a.length; _i++) {
+                    var selectedTask = _a[_i];
+                    if (task.id == selectedTask.id) {
+                        removeFlag = false;
+                    }
+                }
+                return removeFlag;
+            });
+        }
+    };
+    SelectTasksModalComponent.prototype.handleOnSelect = function (taskId) {
+        this.selectedTasks = __WEBPACK_IMPORTED_MODULE_2_lodash__["concat"](this.selectedTasks, __WEBPACK_IMPORTED_MODULE_2_lodash__["find"](this.taskPool, function (task) {
+            return task.id == taskId;
+        }));
+        this.taskPool = __WEBPACK_IMPORTED_MODULE_2_lodash__["filter"](this.taskPool, function (task) {
+            return task.id != taskId;
+        });
+    };
+    SelectTasksModalComponent.prototype.handleOnConfirm = function () {
+        if (this.confirmCallback) {
+            this.confirmCallback(this.selectedTasks);
+        }
+        this.bsModalRef.hide();
+    };
+    SelectTasksModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    SelectTasksModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
     };
     SelectTasksModalComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1712,7 +1867,7 @@ var SelectTasksModalComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/cmaComponents/modals/select-tasks-modal/select-tasks-modal.component.html"),
             styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/select-tasks-modal/select-tasks-modal.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
     ], SelectTasksModalComponent);
     return SelectTasksModalComponent;
 }());
@@ -1724,7 +1879,7 @@ var SelectTasksModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/select-teams-modal/select-teams-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select Teams</h4>\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  \r\n  <div class=\"modal-body\">\r\n    <div class=\"col-12\" *ngIf=\"message\">\r\n      {{message}}\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"form-group row\">\r\n        <div class=\"col-md-9\">\r\n          <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\r\n            <option value=\"{{undefined}}\">Please select teams</option>\r\n            <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\r\n          </select>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-12\" *ngIf=\"selectedUsers.length > 0\">\r\n      <h3>Selected</h3>\r\n      <app-user-list [users]=\"selectedUsers\"></app-user-list>\r\n    </div>\r\n  \r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n  </div>\r\n  "
+module.exports = "<div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select Teams</h4>\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  \r\n  <div class=\"modal-body\">\r\n    <div class=\"col-12\" *ngIf=\"message\">\r\n      {{message}}\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"form-group row\">\r\n        <div class=\"col-md-9\">\r\n          <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\r\n            <option value=\"{{undefined}}\">Please select department</option>\r\n            <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\r\n          </select>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-12\" *ngIf=\"selectedUsers.length > 0\">\r\n      <h3>Selected</h3>\r\n      <app-user-list [users]=\"selectedUsers\"></app-user-list>\r\n    </div>\r\n  \r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n  </div>\r\n  "
 
 /***/ }),
 
@@ -1988,7 +2143,7 @@ var SuccessModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <app-spinner *ngIf=!project></app-spinner>\r\n  <div *ngIf=project>\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\r\n        Found tasks:\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\r\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px;color: black\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\r\n                <div class=\"form-group row\">\r\n                  <div class=\"col-9\">\r\n                    {{lists.name}}\r\n                  </div>\r\n                  <div class=\"col-3\">\r\n                    <div class=\"btn-group\" dropdown>\r\n                      <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\r\n                        <span class=\"caret\"></span>\r\n                      </button>\r\n                      <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" href=\"#/task/create?projectID={{project.id}}&listID={{lists.id}}\">Add task</a>\r\n                        </li>\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\r\n                        </li>\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove list</a>\r\n                        </li>\r\n                      </ul>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\r\n\r\n                  padding-right: 5px;\">\r\n                    <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color:white\">\r\n                      <span class=\"badge badge-warning float-right\" style=\"color: white\" *ngIf=\"task.status==0\">Not Done</span>\r\n                      <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Need Review</span>\r\n                      <span class=\"badge badge-success float-right\" *ngIf=\"task.status==2\">Done</span>\r\n                    </a>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container>\r\n            <div style=\"margin-left: 15px;\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\r\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\r\n                <b>Add List</b>\r\n              </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Tasks</strong>\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\n        View full\n      </button>\n    </a>\n  </div>\n  <app-spinner *ngIf=!project></app-spinner>\n  <div *ngIf=project>\n    <div class=\"card-body\" *ngIf=\"project\">\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\n        <div class=\"input-group col-12\">\n          <span class=\"input-group-btn\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\n              <i class=\"fa fa-search\"></i> Search\n            </button>\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\n              <i class=\"fa fa-times\"></i>\n            </button>\n          </span>\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\n        Found tasks:\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px;color: black\">\n              {{task.name}}\n            </a>\n          </li>\n        </ul>\n      </div>\n      <!-- -->\n      <div class=\"row task-row\">\n        <div>\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\n                <div class=\"form-group row\">\n                  <div class=\"col-9\">\n                    {{lists.name}}\n                  </div>\n                  <div class=\"col-3\">\n                    <div class=\"btn-group\" dropdown>\n                      <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\n                        <span class=\"caret\"></span>\n                      </button>\n                      <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" href=\"#/task/create?project={{project.id}}&list={{lists.id}}\">Add task</a>\n                        </li>\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\n                        </li>\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove list</a>\n                        </li>\n                      </ul>\n                    </div>\n                  </div>\n                </div>\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\n                  id=\"task\">\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\n                    <div class=\"card-body\">\n                      {{task.name}}\n                    </div>\n                  </a>\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\n\n                  padding-right: 5px;\">\n                    <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color:white\">\n                      <span class=\"badge badge-warning float-right\" style=\"color: white\" *ngIf=\"task.status==0\">Not Done</span>\n                      <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Need Review</span>\n                      <span class=\"badge badge-success float-right\" *ngIf=\"task.status==2\">Done</span>\n                    </a>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </ng-container>\n          <ng-container>\n            <div style=\"margin-left: 15px;\">\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\n                <b>Add List</b>\n              </button>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -2095,7 +2250,7 @@ var ProjectCardComponent = /** @class */ (function () {
                 _this.listService.removeList(listid).then(function (value) {
                     _this.refresh.emit();
                 }).catch(function (reason) {
-                    _this.showErrorModal("This list still contain tasks. Please remove all tasks before removing list!");
+                    _this.showErrorModal(reason.Message);
                 });
             }
         };
@@ -2494,7 +2649,7 @@ var TaskTableComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/tasklist/tasklist.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul>\n  <li *ngFor=\"let task of tasks\">\n    <a routerLink=\"/task/view/{{task.id}}\">{{task.name}}</a>\n  </li>\n</ul>\n"
+module.exports = "<div class=\"list-group\">\n  <a *ngFor=\"let task of tasks\" routerLink=\"/task/view/{{task.id}}\" class=\"list-group-item list-group-item-action\">\n    {{task.name}}\n  </a>\n</div>\n"
 
 /***/ }),
 
@@ -2559,7 +2714,7 @@ var TasklistComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/detail?id={{user.id}}\">\n          {{user.name}}\n        </a>\n      </div>\n      <small>{{user.email}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
+module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/detail?id={{user.id}}\">\n          {{user.name}}\n        </a>\n      </div>\n      <small>{{user.email}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
 
 /***/ }),
 
@@ -4695,7 +4850,7 @@ var TaskService = /** @class */ (function () {
                 .catch(function (reason) { return reject(reason.response.body); });
         });
     };
-    TaskService.prototype.createTask = function (name, description, listId, priority, startDate, duration, effort) {
+    TaskService.prototype.createTask = function (name, description, listId, priority, startDate, duration, effort, predecessorTaskIds) {
         var _this = this;
         var objData = {
             Name: name,
@@ -4704,7 +4859,8 @@ var TaskService = /** @class */ (function () {
             Priority: priority,
             StartDate: startDate,
             Duration: duration,
-            Effort: effort
+            Effort: effort,
+            Predecessors: predecessorTaskIds
         };
         return new Promise(function (resolve, reject) {
             __WEBPACK_IMPORTED_MODULE_1_superagent__["post"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createTask)
@@ -4723,7 +4879,7 @@ var TaskService = /** @class */ (function () {
                 .catch(function (reason) { return reject(reason.response.body); });
         });
     };
-    TaskService.prototype.editTask = function (taskId, name, description, listId, priority, startDate, duration, effort) {
+    TaskService.prototype.editTask = function (taskId, name, description, listId, priority, startDate, duration, effort, predecessorsTaskIds) {
         var _this = this;
         var objData = {
             Id: taskId,
@@ -4733,7 +4889,8 @@ var TaskService = /** @class */ (function () {
             Priority: priority,
             StartDate: startDate,
             Duration: duration,
-            Effort: effort
+            Effort: effort,
+            Predecessors: predecessorsTaskIds
         };
         return new Promise(function (resolve, reject) {
             __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].editTask)
@@ -5329,12 +5486,13 @@ var UserService = /** @class */ (function () {
     };
     UserService.prototype.createUser = function (username, password, name, phone, birthdate, email, team) {
         var _this = this;
+        var momentBirthdate = __WEBPACK_IMPORTED_MODULE_4_moment__(birthdate, 'DD/MM/YYYY');
         var postDataObject = {
             Username: username,
             Password: password,
             Name: name,
             Phone: phone,
-            Birthdate: birthdate,
+            Birthdate: momentBirthdate.format('YYYY-MM-DD'),
             Email: email,
             Team: team
         };
@@ -5370,6 +5528,31 @@ var UserService = /** @class */ (function () {
             Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["post"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateUser)
                 .set('token', token)
                 .send(postDataObject)
+                .type('form')
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    UserService.prototype.updateProfile = function (fullname, birthdate, password) {
+        var _this = this;
+        var dataObject = {
+            Name: fullname,
+            Birthdate: birthdate,
+            Password: password,
+        };
+        return new Promise(function (resolve, reject) {
+            var token = _this.tokenCursor.get();
+            Object(__WEBPACK_IMPORTED_MODULE_3_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].updateProfile)
+                .set('token', token)
+                .send(dataObject)
                 .type('form')
                 .then(function (res) {
                 var content = res.body;
