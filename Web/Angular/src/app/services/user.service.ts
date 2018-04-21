@@ -220,6 +220,30 @@ export class UserService {
     });
   }
 
+  public updateProfile(fullname, birthdate, password): Promise<User> {
+    const dataObject = {
+      Name: fullname,
+      Birthdate: birthdate,
+      Email: password,
+    };
+    return new Promise<User>((resolve, reject) => {
+      const token = this.tokenCursor.get();
+      post(serverPath.updateUser)
+        .set('token', token)
+        .send(dataObject)
+        .type('form')
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
   public resetPassword(id: number): Promise<any> {
     const postDataObject = {
       id: id,
