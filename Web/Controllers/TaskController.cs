@@ -362,18 +362,27 @@ namespace Web.Controllers
                         int userId = Int32.Parse(User.Identity.GetUserId());
                         var teamId = db.Users.Find(userId).TeamID;
                         int projectId = db.Lists.Find(createTaskModel.ListID.Value).ProjectID;
-                        int teamIdOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
-                            .Select(x => x.TeamID).Count();
-                        if (teamIdOfList!=0)
+                        var teamIdsOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
+                            .Select(x => x.TeamID);
+                        if (teamIdsOfList.Count()!=0)
                         {
-
-                            var teamIdOfList2 = db.TeamProjects.Where(x => x.ProjectID == projectId)
-                            .Select(x => x.TeamID).SingleOrDefault();
-                            if ((int)teamId != (int)teamIdOfList2)
+                            int countCheck = 0;
+                            foreach (var teamIdOfList in teamIdsOfList)
+                            {
+                                
+                                if ((int)teamId == (int)teamIdOfList)
+                                {
+                                    countCheck = 1;
+                                    break;
+                                }
+                            }
+                            if (countCheck==0)
                             {
                                 ModelState.AddModelError("ListID", $"The Department {db.Teams.Find(teamId).Name} don't have this list");
-                                flag = false;
+                                ; flag = false;
                             }
+
+                            
                            
                         }
                         else
