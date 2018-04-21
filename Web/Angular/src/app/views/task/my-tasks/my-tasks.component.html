@@ -32,18 +32,14 @@
           <tbody>
           <tr *ngFor="let task of tasks">
             <td>
-              <a routerLink="/task/{{task.project.id}}/detail">
-                {{task.name}}
-              </a>
+              <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
             </td>
             <td>{{task.statusText}}</td>
             <td>{{task.priorityText}}</td>
             <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
             <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
             <td>
-              <a routerLink="/project/{{task.project.id}}/task">
-                {{task.project.name}}
-              </a>
+              <a routerLink="/project/{{task.project.id}}/detail"> {{task.project.name}} </a>
             </td>
           </tr>
           </tbody>

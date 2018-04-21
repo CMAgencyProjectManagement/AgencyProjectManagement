@@ -9,19 +9,23 @@
     </div>
     <div class="col-12">
       <div class="button-row">
-        <a routerLink="/task/edit/{{foundTask.id}}" class="btn btn-secondary bg-light">
+        <a routerLink="/task/edit/{{foundTask.id}}"
+           *ngIf="managementMode"
+           class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
         </a>
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
+                *ngIf="managementMode"
                 (click)="handleOnAssignBtnClick()"
                 [disabled]="isLoading.openAssignModal"
                 [ladda]="isLoading.openAssignModal">
           <i class="fa fa-user-plus"></i>&nbsp; Assign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}"
+                *ngIf="managementMode"
                 (click)="handleOnUnAssignBtnClick()"
                 [disabled]="isLoading.openUnAssignModal"
                 [ladda]="isLoading.openUnAssignModal">

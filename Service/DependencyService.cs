@@ -99,31 +99,35 @@ namespace Service
         public IEnumerable<Task> GetPredecessors(int currentTaskId)
         {
             TaskService taskService = new TaskService(db);
-            Task task = taskService.GetTask(currentTaskId);
+            Task currentTask = taskService.GetTask(currentTaskId);
             
-            if (task == null)
+            if (currentTask == null)
             {
                 throw new ObjectNotFoundException($"Task with id {currentTaskId} not found");
             }
 
-            return db.TaskDependencies
-                .Where(dependency => dependency.DestinationTaskID == task.ID)
-                .Select(dependency => dependency.Task);
+            IEnumerable<int> predecessorIds = db.TaskDependencies
+                .Where(dependency => dependency.DestinationTaskID == currentTask.ID)
+                .Select(dependency => dependency.SourceTaskID);
+
+            return db.Tasks.Where(task => predecessorIds.Contains(task.ID));
         }
 
         public IEnumerable<Task> GetSuccessors(int currentTaskId)
         {
             TaskService taskService = new TaskService(db);
-            Task task = taskService.GetTask(currentTaskId);
+            Task currentTask = taskService.GetTask(currentTaskId);
             
-            if (task == null)
+            if (currentTask == null)
             {
                 throw new ObjectNotFoundException($"Task with id {currentTaskId} not found");
             }
 
-            return db.TaskDependencies
-                .Where(dependency => dependency.SourceTaskID == task.ID)
-                .Select(dependency => dependency.Task);
+            IEnumerable<int> successorIds = db.TaskDependencies
+                .Where(dependency => dependency.SourceTaskID == currentTask.ID)
+                .Select(dependency => dependency.DestinationTaskID);
+            
+            return db.Tasks.Where(task => successorIds.Contains(task.ID));
         }
     }
 }

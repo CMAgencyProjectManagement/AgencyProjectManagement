@@ -71,25 +71,31 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-    if (Number(id)) {
-      this.taskService.getTaskDetail(Number(id))
-        .then(value => {
-          this.foundTask = value as Task;
-          this.isLoading.page = false;
-        })
-        .catch(reason => {
-          console.debug('ViewComponent-onInit', reason);
-          this.showErrorModal(reason.Message, true);
-        })
-    } else {
-      this.showErrorModal(`${id} is not a valid ID`, true);
-    }
-
+    this.route.params.subscribe(params => {
+      let taskId = params['id'];
+      if (Number(taskId)) {
+        this.isLoading.page = true;
+        this.loadData(taskId);
+      } else {
+        this.showErrorModal(`${taskId} is not a valid ID`, true);
+      }
+    });
     this.attachmentForm = new FormGroup({
       attachment: new FormControl(undefined),
     });
+  }
 
+  loadData(taskId) {
+    console.debug('loadData');
+    this.taskService.getTaskDetail(taskId)
+      .then(value => {
+        this.foundTask = value as Task;
+        this.isLoading.page = false;
+      })
+      .catch(reason => {
+        console.debug('ViewComponent-onInit', reason);
+        this.showErrorModal(reason.Message, true);
+      })
   }
 
   handleOnCommentBtnClick() {
