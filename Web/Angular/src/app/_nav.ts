@@ -102,6 +102,11 @@ const admin_navigation = [
         url: '/account/create',
         icon: 'icon-user',
       },
+      {
+        name: 'My Profile',
+        url: '/account/profile',
+        icon: 'icon-user',
+      }
     ]
   }
 ];

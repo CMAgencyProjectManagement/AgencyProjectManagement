@@ -1,3 +1,30 @@
-<p>
-  update-my-user works!, user id is {{userId}}
-</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>Update account</strong>
+      </div>
+      <app-spinner *ngIf="isPageLoading"></app-spinner>
+      <div class="card-body animated fadeIn" *ngIf="!isPageLoading">
+        <div class="form-group row">
+          <label class="col-4 col-form-label text-right">Password </label>
+          <div class="col-8">
+            <button type="button" class="btn btn-secondary" (click)="openConfirmResetPassword()" [ladda]="isResetPasswordLoading">
+              Reset Password</button>
+            <div *ngIf="newpassword" class="alert alert-success" role="alert">
+              New password: {{newpassword}}
+            </div>
+          </div>
+        </div>
+        <div class="form-actions text-center">
+          <div class="col-12">
+            <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isSavingChange">
+              Save changes
+            </button>
+            <button class="btn btn-secondary" type="button" (click)="setDefaultValue(foundUser)">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
