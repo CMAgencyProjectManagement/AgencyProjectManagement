@@ -67,7 +67,7 @@ namespace Service
         public IEnumerable<Task> GetTaskChangeThisWeek(List<Task> TaskList)
         {
             List<Task> TasksChangeThisWeek = new List<Task>();
-            foreach (var task in TasksChangeThisWeek)
+            foreach (var task in TaskList)
             {
                 if (IsTaskChangeThisWeek(task))
                 {

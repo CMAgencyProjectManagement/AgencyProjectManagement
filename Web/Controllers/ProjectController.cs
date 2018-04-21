@@ -47,7 +47,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("recentchanged")]
-        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetAdminDashboard()
         {
             try
@@ -62,24 +62,24 @@ namespace Web.Controllers
                     {
                         var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
 
-                        
+
                         foreach (var project in projects)
                         {
                             dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
                         }
                     }
-                    if (db.Users.Find(userId).IsManager)
-                    {
-                        TeamService teamService = new TeamService(db);
-                        var teamId = db.Users.Find(userId).TeamID;
-                        var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
-                        var tasks = taskService.GetTaskChangeThisWeek(tasksInTeam).OrderByDescending(X=>X.ChangedTime);
-                        foreach (var task in tasks)
-                        {
-                            dataObject.Add(taskService.ParseToJson(task));
-                        }
-                    }
-                    
+                    //if (db.Users.Find(userId).IsManager)
+                    //{
+                    //    TeamService teamService = new TeamService(db);
+                    //    var teamId = db.Users.Find(userId).TeamID;
+                    //    var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
+                    //    var tasks = taskService.GetTaskChangeThisWeek(tasksInTeam).OrderByDescending(X=>X.ChangedTime);
+                    //    foreach (var task in tasks)
+                    //    {
+                    //        dataObject.Add(taskService.ParseToJson(task));
+                    //    }
+                    //}
+
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
@@ -90,7 +90,6 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
         [HttpPut]
         [Route("setteams")]
         [Authorize]
