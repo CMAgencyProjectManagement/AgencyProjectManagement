@@ -344,8 +344,8 @@ namespace Web.Controllers
         
         [HttpPost]
         [Route("profile/update")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult UpdateProfile(UpdateUserModel updateUserModel)
+        [Authorize]
+        public IHttpActionResult UpdateProfile(UpdateCurrentUserModel updateCurrentUserModel)
         {
             try
             {
@@ -354,30 +354,12 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         UserService userService = new UserService(db);
-
+                        int userId = Int32.Parse(User.Identity.GetUserId());
                         Boolean flag = true;
-
-                        if (db.Users.Find(updateUserModel.ID).Phone != updateUserModel.Phone)
+                        
+                        if (updateCurrentUserModel.Birthdate != null)
                         {
-                            if (userService.CheckDuplicatePhone(updateUserModel.Phone) && updateUserModel.Phone != null)
-                            {
-                                ModelState.AddModelError("Phone", "Phone is taken");
-                                flag = false;
-                            }
-                        }
-
-                        if (db.Users.Find(updateUserModel.ID).Email != updateUserModel.Email)
-                        {
-                            if (userService.CheckDuplicateEmail(updateUserModel.Email))
-                            {
-                                ModelState.AddModelError("Email", "Email is taken");
-                                flag = false;
-                            }
-                        }
-
-                        if (updateUserModel.Birthdate != null)
-                        {
-                            if (updateUserModel.Birthdate > DateTime.Now)
+                            if (updateCurrentUserModel.Birthdate > DateTime.Now)
                             {
                                 ModelState.AddModelError("Birthdate",
                                     "Birthdate must be smaller than the current time ");
@@ -385,7 +367,7 @@ namespace Web.Controllers
                                 flag = false;
                             }
 
-                            string UpdatedTime = updateUserModel.Birthdate.ToString();
+                            string UpdatedTime = updateCurrentUserModel.Birthdate.ToString();
                             DateTime DoB = DateTime.Parse(UpdatedTime);
                             if ((DateTime.Today.Year - DoB.Year) < 18)
                             {
@@ -399,14 +381,11 @@ namespace Web.Controllers
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
 
-                        User updatedUser = userService.Updateuser(
-                            updateUserModel.ID,
-                            updateUserModel.Name,
-                            updateUserModel.Phone,
-                            updateUserModel.Birthdate,
-                            updateUserModel.Email,
-                            updateUserModel.Team,
-                            updateUserModel.IsActive
+                        User updatedUser = userService.UpdateCurrentUser(
+                            userId,
+                            updateCurrentUserModel.Name,
+                            updateCurrentUserModel.Password,
+                            updateCurrentUserModel.Birthdate
                         );
                         return Ok(ResponseHelper.GetResponse(userService.ParseToJson(updatedUser)));
                     }
@@ -423,6 +402,85 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+        //public IHttpActionResult UpdateProfile(UpdateUserModel updateUserModel)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            using (CmAgencyEntities db = new CmAgencyEntities())
+        //            {
+        //                UserService userService = new UserService(db);
+
+        //                Boolean flag = true;
+
+        //                if (db.Users.Find(updateUserModel.ID).Phone != updateUserModel.Phone)
+        //                {
+        //                    if (userService.CheckDuplicatePhone(updateUserModel.Phone) && updateUserModel.Phone != null)
+        //                    {
+        //                        ModelState.AddModelError("Phone", "Phone is taken");
+        //                        flag = false;
+        //                    }
+        //                }
+
+        //                if (db.Users.Find(updateUserModel.ID).Email != updateUserModel.Email)
+        //                {
+        //                    if (userService.CheckDuplicateEmail(updateUserModel.Email))
+        //                    {
+        //                        ModelState.AddModelError("Email", "Email is taken");
+        //                        flag = false;
+        //                    }
+        //                }
+
+        //                if (updateUserModel.Birthdate != null)
+        //                {
+        //                    if (updateUserModel.Birthdate > DateTime.Now)
+        //                    {
+        //                        ModelState.AddModelError("Birthdate",
+        //                            "Birthdate must be smaller than the current time ");
+        //                        // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
+        //                        flag = false;
+        //                    }
+
+        //                    string UpdatedTime = updateUserModel.Birthdate.ToString();
+        //                    DateTime DoB = DateTime.Parse(UpdatedTime);
+        //                    if ((DateTime.Today.Year - DoB.Year) < 18)
+        //                    {
+        //                        ModelState.AddModelError("Birthdate",
+        //                            "Age must be greater than 18 ");
+        //                        flag = false;
+        //                    }
+        //                }
+
+        //                if (flag == false)
+        //                    return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+
+        //                User updatedUser = userService.Updateuser(
+        //                    updateUserModel.ID,
+        //                    updateUserModel.Name,
+        //                    updateUserModel.Phone,
+        //                    updateUserModel.Birthdate,
+        //                    updateUserModel.Email,
+        //                    updateUserModel.Team,
+        //                    updateUserModel.IsActive
+        //                );
+        //                return Ok(ResponseHelper.GetResponse(userService.ParseToJson(updatedUser)));
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return Content(HttpStatusCode.BadRequest,
+        //                ResponseHelper.GetExceptionResponse(ModelState));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content(HttpStatusCode.InternalServerError,
+        //            ResponseHelper.GetExceptionResponse(ex));
+        //    }
+        //}
 
         [HttpPost]
         [Route("{id:int}/resetpassword")]
