@@ -6,6 +6,8 @@ import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {ProjectService} from '../../../services/project.service';
 import {Task} from '../../../interfaces/task';
 import * as moment from 'moment';
+import {forEach} from '@angular/router/src/utils/collection';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-report',
@@ -19,6 +21,11 @@ export class ReportComponent implements OnInit {
     page: boolean
   };
   pieChart: {
+    labels,
+    data,
+    type
+  };
+  lineChart: {
     labels,
     data,
     type
@@ -44,6 +51,7 @@ export class ReportComponent implements OnInit {
         .then((value: Report) => {
           this.report = value;
           this.setupPieChart();
+          this.setupLineChart();
           this.isLoading.page = false;
         })
         .catch(reason => {
@@ -66,12 +74,35 @@ export class ReportComponent implements OnInit {
   }
 
   setupLineChart() {
-    let lables = [];
-    let now = moment();
-    for (let i = 0; i < 7; i++) {
-      let previousDate = now.subtract(i, 'day');
-
+    let tmpArray: {
+      key: moment.Moment,
+      value: Task[]
+    }[] = [];
+    let resultObj = _.groupBy(this.report.taskExpireThisWeek, 'deadline');
+    for (let key in resultObj) {
+      if (resultObj.hasOwnProperty(key)) {
+        tmpArray.push({
+          key: moment(key),
+          value: resultObj[key]
+        })
+      }
     }
+    tmpArray.sort((left, right) => {
+      if (left.key.isSame(right.key)) {
+        return 0;
+      }
+
+      if (left.key.isAfter(right.key)) {
+        return 1;
+      }
+
+      return -1;
+    });
+    this.lineChart = {
+      labels: tmpArray.map(el => el.key.format('DD/MM')),
+      data: tmpArray.map(el => el.value.length),
+      type: 'line'
+    };
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {

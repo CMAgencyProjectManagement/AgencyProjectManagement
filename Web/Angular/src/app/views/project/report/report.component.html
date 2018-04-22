@@ -41,14 +41,15 @@
         </div>
         <div class="section col-6">
           <!--DETAIL SECTION-->
-          <h5 class="mb-3">Task status</h5>
+          <h5 class="mb-3">Number of task deadline this week</h5>
           <dl class="row ml-1">
-            <dt class="col-4">Task count:</dt>
+            <!--<dt class="col-4">Task count:</dt>-->
             <dd class="col-12">
               <canvas baseChart
-                      [data]="pieChart.data"
-                      [labels]="pieChart.labels"
-                      [chartType]="pieChart.type">
+                      [data]="lineChart.data"
+                      [labels]="lineChart.labels"
+                      [chartType]="lineChart.type"
+                      [legend]="false">
 
               </canvas>
             </dd>
