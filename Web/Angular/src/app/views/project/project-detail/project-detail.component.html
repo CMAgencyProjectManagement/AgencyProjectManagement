@@ -23,7 +23,7 @@
                     </a>
                     <a class="btn btn-secondary bg-light" [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
                       [ladda]="isLoading.openAssignModal" (click)="handleOnAssignBtnClick()" *ngIf="currentUser.isAdmin">
-                      <i class="fa fa-users"></i>&nbsp; Assign department
+                      <i class="fa fa-users"></i>&nbsp; Set department
                     </a>
                     <a class="btn btn-secondary bg-light" (click)="handleOnAssignMembersBtnClick()" *ngIf="currentUser.isManager">
                       <i class="fa fa-user-plus"></i>&nbsp; Assign members

@@ -177,7 +177,7 @@ namespace Web.Controllers
         }
         
         [HttpPut]
-        [Route("{teamId:int}assign/manager/{userId:int}")]
+        [Route("{teamId:int}/assign/manager/{userId:int}")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult AssignManager(int teamId, int userId)
         {

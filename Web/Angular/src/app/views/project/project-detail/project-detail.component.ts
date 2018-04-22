@@ -191,18 +191,6 @@ export class ProjectDetailComponent implements OnInit {
     this.isLoading.openAssignModal = true;
     this.teamService.getAllTeam()
       .then(value => {
-        // const pool = [];
-        // for (let team of value as Team[]) {
-        //   let removeFlag = false;
-        //   for (let assignedTeam of this.foundProject.teams) {
-        //     if (assignedTeam.id == team.id) {
-        //       removeFlag = true;
-        //     }
-        //   }
-        //   if (!removeFlag) {
-        //     pool.push(team);
-        //   }
-        // }
         let pool = value;
         const initialState = {
           confirmCallback: onConfirm,

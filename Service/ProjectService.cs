@@ -24,6 +24,7 @@ namespace Service
         {
             return db.Projects.ToList();
         }
+
         public IEnumerable<Project> GetProjectChangeThisWeek()
         {
             var projects = db.Projects.ToList();
@@ -35,21 +36,23 @@ namespace Service
                     ProjectChangeThisWeek.Add(project);
                 }
             }
+
             return ProjectChangeThisWeek.ToList();
         }
-        
+
         public bool IsProjectChangeThisWeek(Project project)
         {
             DateTime date = DateTime.Now.Date;
             DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
             DateTime weekLastDay = weekFirstDay.AddDays(6);
-            if (project.ChangedTime !=null)
+            if (project.ChangedTime != null)
             {
                 if (project.ChangedTime >= weekFirstDay.Date && project.ChangedTime <= weekLastDay.Date)
                 {
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -161,7 +164,7 @@ namespace Service
         {
             return db.Projects.Find(id);
         }
-        
+
         public IEnumerable<KeyValuePair<string, string>> getStatuses()
         {
             List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
@@ -174,7 +177,7 @@ namespace Service
 
             return result;
         }
-        
+
         public string DisplayCamelCaseString(string camelCase)
         {
             List<char> chars = new List<char> {camelCase[0]};
@@ -282,7 +285,6 @@ namespace Service
         public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
         {
             TeamService teamService = new TeamService(db);
-            
             Project project = GetProjectByID(projectId);
             if (project == null)
             {
@@ -291,43 +293,40 @@ namespace Service
 
             IEnumerable<int> oldTeamIds = db.TeamProjects
                 .Where(teamProject => teamProject.ProjectID == projectId)
-                .Select(teamProject => teamProject.ID);
- 
-            IEnumerable<int> teamProjectIdsToRemove = oldTeamIds.Except(newTeamIds);
-            IEnumerable<int> teamProjectIdsToAdd = newTeamIds.Except(oldTeamIds);
+                .Select(teamProject => teamProject.TeamID);
+
+            IEnumerable<int> teamIdsToRemove = oldTeamIds.Except(newTeamIds).ToList();
+            IEnumerable<int> teamIdsToAdd = newTeamIds.Except(oldTeamIds).ToList();
 
             IEnumerable<TeamProject> teamProjectToRemove = db.TeamProjects
-                .Where(teamProject => teamProjectIdsToRemove.Contains(teamProject.ID));
-            IEnumerable<TeamProject> teamProjectToAdd = db.TeamProjects
-                .Where(teamProject => teamProjectIdsToAdd.Contains(teamProject.ID));
-
-            foreach (var teamProject in teamProjectToAdd)
-            {
-                db.TeamProjects.Add(teamProject);
-                User manager = teamService.GetManager(teamProject.TeamID);
-                if (manager != null)
+                .Where(teamProject => teamIdsToRemove.Contains(teamProject.TeamID))
+                .ToList();
+            IEnumerable<TeamProject> teamProjectToAdd = teamIdsToAdd
+                .Select(teamIdToAdd => new TeamProject
                 {
-                    AssignProject(manager.ID, teamProject.ProjectID); 
-                }
-                
-            }
+                    ProjectID = projectId,
+                    TeamID = teamIdToAdd
+                });
+
+            db.TeamProjects.AddRange(teamProjectToAdd);
             db.TeamProjects.RemoveRange(teamProjectToRemove);
 
             project.ChangedBy = modifierId;
             project.ChangedTime = DateTime.Today;
-
             db.SaveChanges();
+
             return project;
         }
+
         public IQueryable<int> GetUsersInProject(int projectId)
         {
             var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
             var userIdsInProject = usersInProject.Select(x => x.ID);
             return userIdsInProject;
         }
+
         public List<Task> GetTasksOfProject(int projectId)
         {
-
             TaskService taskService = new TaskService(db);
             List<Task> tasksInProject = new List<Task>();
             var listIdsWithProjectID = db.Lists.Where(x => x.ProjectID == projectId).Select(x => x.ID).ToList();
@@ -339,10 +338,11 @@ namespace Service
                     tasksInProject.Add(taskInList);
                 }
             }
+
             return tasksInProject;
         }
 
-        public List<User>  GetNoTaskUsersInProject(int projectId)
+        public List<User> GetNoTaskUsersInProject(int projectId)
         {
             var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
             var userIdsInProject = usersInProject.Select(x => x.ID);
@@ -353,8 +353,10 @@ namespace Service
                     .ToList();
                 noTaskUser.AddRange(users);
             }
+
             return noTaskUser;
         }
+
         public JArray GetTaskExpireThisWeek(int projectId)
         {
             TaskService taskService = new TaskService(db);
@@ -383,8 +385,10 @@ namespace Service
             {
                 tasksJArray.Add(taskService.ParseToJson(task));
             }
+
             return tasksJArray;
         }
+
         public JObject ParseToJsonProjectReport(Project project, bool isIncludeTask = false)
         {
             var result = new JObject
@@ -401,6 +405,7 @@ namespace Service
 
             return result;
         }
+
         public JObject ParseToJsonTotalReport(Project project, bool isIncludeTask = false)
         {
             List<Task> tasks = new List<Task>();
@@ -420,11 +425,11 @@ namespace Service
             List<JObject> calculatedResult = new List<JObject>();
             foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
             {
-                int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                int taskStatusCount = tasks.Where(x => x.Status == (int) status).Count();
                 calculatedResult.Add(new JObject
                 {
                     ["key"] = status.ToString(),
-                    ["value"] = (decimal)(taskStatusCount * 100) / taskNumber
+                    ["value"] = (decimal) (taskStatusCount * 100) / taskNumber
                 });
             }
 
@@ -497,7 +502,10 @@ namespace Service
                 JArray teamsJson = new JArray();
                 foreach (TeamProject teamProject in project.TeamProjects)
                 {
-                    teamsJson.Add(teamservice.ParseToJson(teamProject.Team, false, avatarPath: avatarPath));
+                    if (teamProject.Team != null)
+                    {
+                        teamsJson.Add(teamservice.ParseToJson(teamProject.Team, avatarPath: avatarPath));
+                    }
                 }
 
                 result["teams"] = teamsJson;
