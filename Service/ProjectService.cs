@@ -503,7 +503,7 @@ namespace Service
                 {
                     if (teamProject.Team != null)
                     {
-                        teamsJson.Add(teamservice.ParseToJson(teamProject.Team, avatarPath: avatarPath));
+                        teamsJson.Add(teamservice.ParseToJson(teamProject.Team, avatarPath: avatarPath, includeUsers: true));
                     }
                 }
 

@@ -40,6 +40,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
         [HttpGet]
         [Route("freestaff")]
         [Authorize(Roles = "Admin")]

@@ -184,8 +184,32 @@ namespace Service
 
             return newUser;
         }
+        public User UpdateCurrentUser(int id, string name, string password, DateTime? birthdate)
+        {
+            User user = db.Users.Find(id);
+            if (user != null)
+            {
+                if (name != null)
+                {
+                    user.Name = name;
+                }
+                if (password != null)
+                {
+                    user.Password = password;
+                }
+                if (birthdate.HasValue)
+                {
+                    user.Birthdate = birthdate;
+                }
 
-
+                db.SaveChanges();
+                return user;
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"User with ID{id} not found");
+            }
+        }
         public User Updateuser(
             int id,
             string name,
