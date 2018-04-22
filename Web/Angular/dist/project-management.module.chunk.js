@@ -3,7 +3,7 @@ webpackJsonp(["project-management.module"],{
 /***/ "../../../../../src/app/views/project/add-project/add-project.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>New project</strong>\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <div class=\"card-body\">\r\n          <div [formGroup]=\"ProjectForm\" class=\"form-horizontal\">\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\" for=\"projectName-input\">Project Name <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n              <div class=\"col-md-6\">\r\n                <input type=\"text\" id=\"projectName-input\" name=\"projectName-input\" class=\"form-control\"\r\n                       formControlName=\"projectName\" placeholder=\"Please enter the project's name\">\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\" for=\"projectDescription-input\">Description</label>\r\n              <div class=\"col-md-6\">\r\n                <textarea id=\"projectDescription-input\" name=\"projectDescription-input\" rows=\"5\" class=\"form-control\"\r\n                          formControlName=\"projectDescription\" placeholder=\"About project...\"></textarea>\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\" for=\"projectStartDate-input\">Start Date </label>\r\n              <div class=\"col-md-6\">\r\n                <my-date-picker name=\"projectStartDate-input\"\r\n                                [options]=\"myDatePickerOptions\" class=\"form-control-mydatepicker\"\r\n                                formControlName=\"projectStartDate\"></my-date-picker>\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-3 col-form-label\">Deadline </label>\r\n              <div class=\"col-md-6\">\r\n                <my-date-picker name=\"projectDeadline-input\" [options]=\"myDatePickerOptions\"\r\n                                class=\"form-control-mydatepicker\" formControlName=\"projectDeadline\" disable=\"true\"></my-date-picker>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-4 text-right\">\r\n                <button type=\"button\" class=\"btn btn-success btn-bw \" data-toggle=\"modal\"\r\n                        (click)=\"successModal.show()\">Add</button>\r\n              </div>\r\n              <div class=\"col-4 offset-1 text-left\">\r\n                <button type=\"button\" class=\"btn btn-success btn-bw\" data-toggle=\"modal\"\r\n                        onclick=\"location.href='#/project'\">Cancel</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div bsModal #successModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\"\r\n     aria-hidden=\"true\">\r\n  <div class=\"modal-dialog modal-success\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\" style=\"color: black;\r\n            background-color: white;\">\r\n        <h4 class=\"modal-title\">Confirmation message!</h4>\r\n        <button type=\"button\" class=\"close\" (click)=\"successModal.hide()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <p>Are you sure to add a new project?</p>\r\n      </div>\r\n      <div class=\"modal-footer\" style=\"padding: 1rem 2.5rem;\">\r\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"successModal.hide()\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black;\">No\r\n        </button>\r\n        <button type=\"button\" class=\"btn btn-success\" (click)=\"handleCreate()\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black;\">Yes\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <!-- /.modal-content -->\r\n  </div>\r\n  <!-- /.modal-dialog -->\r\n</div>\r\n<!-- /.modal -->\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>New project</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body\" *ngIf=\"!isLoadingPage\">\r\n        <div class=\"card-body\">\r\n          <div [formGroup]=\"projectForm\" class=\"form-horizontal\">\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-md-1.2 col-form-label\" for=\"name-input\">Project Name\r\n                <span style=\"color: #ee0d0d\">\r\n                  <strong>*</strong>\r\n                </span>\r\n              </label>\r\n              <div class=\"col-md-6\">\r\n                <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" formControlName=\"name\" placeholder=\"Please enter the project's name\">\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-form-label\" for=\"description-input\">Description</label>\r\n              <div class=\"col-md-6\">\r\n                <textarea id=\"description-input\" name=\"description-input\" rows=\"5\" class=\"form-control\" formControlName=\"description\" placeholder=\"About project...\"\r\n                  style=\"margin-left: 23px;\"></textarea>\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-form-label\" for=\"startDate-input\">Start Date\r\n                <span style=\"color: #ee0d0d\">\r\n                  <strong>*</strong>\r\n                </span>\r\n              </label>\r\n              <div class=\"col-md-6\" style=\"margin-left: 30px;\">\r\n                <my-date-picker name=\"startDate-input\" [options]=\"myDatePickerOptions\" class=\"form-control-mydatepicker\" formControlName=\"startDate\"></my-date-picker>\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group row\">\r\n              <label class=\"col-form-label\">Deadline\r\n                <span style=\"color: #ee0d0d\">\r\n                  <strong>*</strong>\r\n                </span>\r\n              </label>\r\n              <div class=\"col-md-6\" style=\"margin-left: 35px;\">\r\n                <my-date-picker name=\"deadline-input\" [options]=\"myDatePickerOptions\" class=\"form-control-mydatepicker\" formControlName=\"deadline\"\r\n                  disable=\"true\"></my-date-picker>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-4 text-right\">\r\n                <button class=\"btn btn-primary\" (click)=\"successModal.show()\" [ladda]=\"isLoading\">\r\n                  Add\r\n                </button>\r\n                <!-- <button type=\"button\" class=\"btn btn-success btn-bw \" data-toggle=\"modal\" (click)=\"successModal.show()\">Add</button> -->\r\n              </div>\r\n              <div class=\"col-4 offset-1 text-left\">\r\n                <button type=\"button\" class=\"btn btn-secondary btn-bw\" data-toggle=\"modal\" onclick=\"location.href='#/project'\">Cancel</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div bsModal #successModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n  <div class=\"modal-dialog modal-success\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header\" style=\"color: black;\r\n            background-color: white;\">\r\n        <h4 class=\"modal-title\">Confirmation message!</h4>\r\n        <button type=\"button\" class=\"close\" (click)=\"successModal.hide()\" aria-label=\"Close\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <p>Are you sure to add a new project?</p>\r\n      </div>\r\n      <div class=\"modal-footer\" style=\"padding: 1rem 2.5rem;\">\r\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"successModal.hide()\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black;\">No\r\n        </button>\r\n        <button type=\"button\" class=\"btn btn-success\" (click)=\"handleCreate()\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black;\">Yes\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <!-- /.modal-content -->\r\n  </div>\r\n  <!-- /.modal-dialog -->\r\n</div>\r\n<!-- /.modal -->\r\n"
 
 /***/ }),
 
@@ -55,19 +55,23 @@ var AddProjectComponent = /** @class */ (function () {
             showInputField: true,
             dateFormat: 'dd/mm/yyyy',
         };
+        this.projectForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
+            name: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
+            description: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
+            startDate: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
+            deadline: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
+        });
+        this.isLoading = false;
+        this.isLoadingPage = true;
+        this.setErrorsNull();
     }
     AddProjectComponent.prototype.ngOnInit = function () {
-        this.ProjectForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
-            projectName: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
-            projectDescription: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
-            projectStartDate: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
-            projectDeadline: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["h" /* Validators */].required),
-        });
+        this.isLoadingPage = false;
     };
     AddProjectComponent.prototype.handleCreate = function () {
         var _this = this;
-        if (this.ProjectForm.valid) {
-            var formValue = this.ProjectForm.value;
+        if (this.projectForm.valid) {
+            var formValue = this.projectForm.value;
             this.isLoading = true;
             console.debug('here');
             this.projectService.createProject(formValue.projectName, formValue.projectDescription, formValue.projectStartDate.formatted, formValue.projectDeadline.formatted).then(function (value) {
@@ -88,6 +92,14 @@ var AddProjectComponent = /** @class */ (function () {
             console.debug('handleCreateProjectError', fieldName, errorMessage);
         }
     };
+    AddProjectComponent.prototype.setErrorsNull = function () {
+        this.errors = {
+            name: '',
+            description: '',
+            startDate: '',
+            deadline: '',
+        };
+    };
     AddProjectComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-add-project',
@@ -107,7 +119,7 @@ var AddProjectComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/project-detail/project-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n          <strong>Project Detail</strong>\r\n        </div>\r\n        <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n        <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n          <div class=\"card-body\" [formGroup]=\"viewForm\" *ngIf=\"foundProject\">\r\n            <div class=\"row\">\r\n              <div class=\"col-7\">\r\n                <div class=\"form-horizontal\">\r\n                  <div style=\"font-size: 20px\">\r\n                    <h2 class=\"card-title\">{{foundProject.name}}</h2>\r\n                  </div>\r\n                  <div class=\"button-row\" style=\"margin-bottom: 5px;margin-top: 4px;\">\r\n                    <a routerLink=\"/project/{{foundProject.id}}/update\" class=\"btn btn-secondary bg-light\" *ngIf=\"currentUser.isAdmin\">\r\n                      <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n                    </a>\r\n                    <a class=\"btn btn-secondary bg-light\" (click)=\"handleCloseProject(foundProject.id)\" *ngIf=\"currentUser.isAdmin\">\r\n                      <i class=\"fa fa-close\"></i>&nbsp; Close project\r\n                    </a>\r\n                    <a class=\"btn btn-secondary bg-light\" (click)=\"handleOnAssignBtnClick()\" *ngIf=\"currentUser.isAdmin\">\r\n                      <i class=\"fa fa-users\"></i>&nbsp; Assign department\r\n                    </a>\r\n                    <a class=\"btn btn-secondary bg-light\" (click)=\"handleOnAssignMembersBtnClick()\" *ngIf=\"currentUser.isManager\">\r\n                      <i class=\"fa fa-user-plus\"></i>&nbsp; Assign members\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"section mt-4\">\r\n                    <!--DESCRIPTION-->\r\n                    <h5 class=\"mb-3\">Description</h5>\r\n                    <dl class=\"row ml-1\">\r\n                      <p class=\"col-12\">\r\n                        {{foundProject.description}}\r\n                      </p>\r\n                    </dl>\r\n                  </div>\r\n                  <div class=\"section\">\r\n                    <!--Created Date-->\r\n                    <h5 class=\"mb-3\">Created Date: {{foundProject.createdTime | date:'d/M/y'}}</h5>\r\n                  </div>\r\n                  <div class=\"section\">\r\n                    <!--Start Date-->\r\n                    <h5 class=\"mb-3\">Start Date: {{foundProject.startDate | date:'d/M/y'}}</h5>\r\n                  </div>\r\n                  <div class=\"section\">\r\n                    <!--Deadline-->\r\n                    <h5 class=\"mb-3\">Deadline: {{foundProject.deadline | date:'d/M/y'}}</h5>\r\n                  </div>\r\n                  <!--<div class=\"form-group row\" >-->\r\n                  <!--Changed By: <input *ngIf=\"foundProject.changedBy\" value=\"{{foundProject.changedBy.fullname}}\"/>-->\r\n                  <!--</div>-->\r\n                  <!--<div class=\"form-group row\">-->\r\n                  <!--Changed Time: <input *ngIf=\"foundProject.changedTime\" value=\"{{foundProject.changedTime | date:'d/M/y'}}\"/>-->\r\n                  <!--</div>-->\r\n                </div>\r\n              </div>\r\n              <div class=\"col-5\">\r\n                <div class=\"section\" style=\"font-size: 16px\">\r\n                  <!-- <dt class=\"col-12\">Assignees:</dt>\r\n                    <dd class=\"col-12 pl-4\">\r\n                      <app-user-list *ngIf=\"foundTask.assignees\" [users]=\"foundTask.assignees\"></app-user-list>\r\n                      <span *ngIf=\"!foundTask.assignees || foundTask.assignees.length < 1\">N/A</span>\r\n                    </dd> -->\r\n                  <dt class=\"col-12\">Creator:</dt>\r\n                  <dd class=\"col-12 pl-4\">\r\n                    <app-user-list [user]=\"foundProject.createdBy\"></app-user-list>\r\n                    <span *ngIf=\"!foundProject.createdBy\">N/A</span>\r\n                  </dd>\r\n                  <br/>\r\n                  <dt class=\"col-12\">Members:</dt>\r\n                  <dd class=\"col-12 pl-4\">\r\n                    <app-user-list *ngIf=\"foundProject.assignees\" [users]=\"foundProject.assignees\"></app-user-list>\r\n                    <span *ngIf=\"!foundProject.assignees || foundProject.assignees.length < 1\">N/A</span>\r\n                  </dd>\r\n                  <br/>\r\n                  <dt class=\"col-12\">Departments</dt>\r\n                  <dd class=\"col-12 pl-4\" *ngIf=\"foundProject.teams\">\r\n                    <span *ngFor=\"let team of foundProject.teams\">\r\n                      <a href=\"#/department/{{team.id}}/detail\">{{team.name}}</a>\r\n                      <br/>\r\n                    </span>\r\n                  </dd>\r\n                  <dd>\r\n\r\n                  </dd>\r\n                  <br/>\r\n                  <!-- <dt class=\"col-12\">Modifier:</dt>\r\n                    <dd class=\"col-12 pl-4\">\r\n                      <app-user-list *ngIf=\"foundTask.changedBy\" [user]=\"foundTask.changedBy\"></app-user-list>\r\n                      <span *ngIf=\"!foundTask.changedBy\">N/A</span>\r\n                    </dd> -->\r\n                  <dt class=\"col-12\">\r\n                  </dt>\r\n                  <dd class=\"col-12 pl-4\">\r\n                    <a routerLink=\"/project/{{foundProject.id}}/task\" style=\"text-decoration-color: blue\">\r\n                      View all tasks...\r\n                    </a>\r\n                  </dd>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!--<button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"margin-left: 600px;color: black;-->\r\n            <!--background-color: white;-->\r\n            <!--border-color: black;\">Update</button>-->\r\n            <!--<button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"margin-left: 50px;color: black;-->\r\n            <!--background-color: white;-->\r\n            <!--border-color: black;\">Close</button>-->\r\n            <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n              <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n                <div class=\"modal-content\" style=\"border-color: black;\">\r\n                  <div class=\"modal-header\" style=\"color: black;\r\n                      background-color: white;\">\r\n                    <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                    <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                      <span aria-hidden=\"true\">&times;</span>\r\n                    </button>\r\n                  </div>\r\n                  <div class=\"modal-body\">\r\n                    <p>Are you sure to close this project?</p>\r\n                  </div>\r\n                  <div class=\"modal-footer\">\r\n                    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">No\r\n                    </button>\r\n                    <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(foundProject.id)\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">Yes\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n          <strong>Project Detail</strong>\r\n        </div>\r\n        <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n        <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n          <div class=\"card-body\" [formGroup]=\"viewForm\" *ngIf=\"foundProject\">\r\n            <div class=\"row\">\r\n              <div class=\"col-7\">\r\n                <div class=\"form-horizontal\">\r\n                  <div style=\"font-size: 20px\">\r\n                    <h2 class=\"card-title\">{{foundProject.name}}</h2>\r\n                  </div>\r\n                  <div class=\"button-row\" style=\"margin-bottom: 5px;margin-top: 4px;\">\r\n                    <a routerLink=\"/project/{{foundProject.id}}/update\" class=\"btn btn-secondary bg-light\" *ngIf=\"currentUser.isAdmin\">\r\n                      <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n                    </a>  \r\n                    <a class=\"btn btn-secondary bg-light\" (click)=\"handleCloseProject(foundProject.id)\" *ngIf=\"currentUser.isAdmin\">\r\n                      <i class=\"fa fa-close\"></i>&nbsp; Close project\r\n                    </a>\r\n                    <a class=\"btn btn-secondary bg-light\" [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}\"\r\n                      [ladda]=\"isLoading.openAssignModal\" (click)=\"handleOnAssignBtnClick()\" *ngIf=\"currentUser.isAdmin\">\r\n                      <i class=\"fa fa-users\"></i>&nbsp; Set department\r\n                    </a>\r\n                    <a class=\"btn btn-secondary bg-light\" (click)=\"handleOnAssignMembersBtnClick()\" *ngIf=\"currentUser.isManager\">\r\n                      <i class=\"fa fa-user-plus\"></i>&nbsp; Assign members\r\n                    </a>\r\n                  </div>\r\n                  <div class=\"section mt-4\">\r\n                    <!--DESCRIPTION-->\r\n                    <h5 class=\"mb-3\">Description</h5>\r\n                    <dl class=\"row ml-1\">\r\n                      <p class=\"col-12\">\r\n                        {{foundProject.description}}\r\n                      </p>\r\n                    </dl>\r\n                  </div>\r\n                  <div class=\"section\">\r\n                    <!--Created Date-->\r\n                    <h5 class=\"mb-3\">Created Date: {{foundProject.createdTime | date:'d/M/y'}}</h5>\r\n                  </div>\r\n                  <div class=\"section\">\r\n                    <!--Start Date-->\r\n                    <h5 class=\"mb-3\">Start Date: {{foundProject.startDate | date:'d/M/y'}}</h5>\r\n                  </div>\r\n                  <div class=\"section\">\r\n                    <!--Deadline-->\r\n                    <h5 class=\"mb-3\">Deadline: {{foundProject.deadline | date:'d/M/y'}}</h5>\r\n                  </div>\r\n                  <!--<div class=\"form-group row\" >-->\r\n                  <!--Changed By: <input *ngIf=\"foundProject.changedBy\" value=\"{{foundProject.changedBy.fullname}}\"/>-->\r\n                  <!--</div>-->\r\n                  <!--<div class=\"form-group row\">-->\r\n                  <!--Changed Time: <input *ngIf=\"foundProject.changedTime\" value=\"{{foundProject.changedTime | date:'d/M/y'}}\"/>-->\r\n                  <!--</div>-->\r\n                </div>\r\n              </div>\r\n              <div class=\"col-5\">\r\n                <div class=\"section\" style=\"font-size: 16px\">\r\n                  <!-- <dt class=\"col-12\">Assignees:</dt>\r\n                    <dd class=\"col-12 pl-4\">\r\n                      <app-user-list *ngIf=\"foundTask.assignees\" [users]=\"foundTask.assignees\"></app-user-list>\r\n                      <span *ngIf=\"!foundTask.assignees || foundTask.assignees.length < 1\">N/A</span>\r\n                    </dd> -->\r\n                  <dt class=\"col-12\">Creator:</dt>\r\n                  <dd class=\"col-12 pl-4\">\r\n                    <app-user-list [user]=\"foundProject.createdBy\"></app-user-list>\r\n                    <span *ngIf=\"!foundProject.createdBy\">N/A</span>\r\n                  </dd>\r\n                  <br/>\r\n                  <dt class=\"col-12\">Members:</dt>\r\n                  <dd class=\"col-12 pl-4\">\r\n                    <app-user-list *ngIf=\"foundProject.assignees\" [users]=\"foundProject.assignees\"></app-user-list>\r\n                    <span *ngIf=\"!foundProject.assignees || foundProject.assignees.length < 1\">N/A</span>\r\n                  </dd>\r\n                  <br/>\r\n                  <dt class=\"col-12\">Departments</dt>\r\n                  <dd class=\"col-12 pl-4\" *ngIf=\"foundProject.teams\">\r\n                    <span *ngFor=\"let team of foundProject.teams\">\r\n                      <a href=\"#/department/{{team.id}}/detail\">{{team.name}}</a>\r\n                      <br/>\r\n                    </span>\r\n                  </dd>\r\n                  <dd>\r\n\r\n                  </dd>\r\n                  <br/>\r\n                  <!-- <dt class=\"col-12\">Modifier:</dt>\r\n                    <dd class=\"col-12 pl-4\">\r\n                      <app-user-list *ngIf=\"foundTask.changedBy\" [user]=\"foundTask.changedBy\"></app-user-list>\r\n                      <span *ngIf=\"!foundTask.changedBy\">N/A</span>\r\n                    </dd> -->\r\n                  <dt class=\"col-12\">\r\n                  </dt>\r\n                  <dd class=\"col-12 pl-4\">\r\n                    <a routerLink=\"/project/{{foundProject.id}}/task\" style=\"text-decoration-color: blue\">\r\n                      View all tasks...\r\n                    </a>\r\n                  </dd>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <!--<button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"margin-left: 600px;color: black;-->\r\n            <!--background-color: white;-->\r\n            <!--border-color: black;\">Update</button>-->\r\n            <!--<button type=\"button\" class=\"btn btn-danger btn-lg\" data-toggle=\"modal\" (click)=\"dangerModal.show()\" style=\"margin-left: 50px;color: black;-->\r\n            <!--background-color: white;-->\r\n            <!--border-color: black;\">Close</button>-->\r\n            <div bsModal #dangerModal=\"bs-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\r\n              <div class=\"modal-dialog modal-danger\" role=\"document\">\r\n                <div class=\"modal-content\" style=\"border-color: black;\">\r\n                  <div class=\"modal-header\" style=\"color: black;\r\n                      background-color: white;\">\r\n                    <h4 class=\"modal-title\">Confirmation message!</h4>\r\n                    <button type=\"button\" class=\"close\" (click)=\"dangerModal.hide()\" aria-label=\"Close\">\r\n                      <span aria-hidden=\"true\">&times;</span>\r\n                    </button>\r\n                  </div>\r\n                  <div class=\"modal-body\">\r\n                    <p>Are you sure to close this project?</p>\r\n                  </div>\r\n                  <div class=\"modal-footer\">\r\n                    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"dangerModal.hide()\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">No\r\n                    </button>\r\n                    <button type=\"button\" class=\"btn btn-danger\" (click)=\"handleClose(foundProject.id)\" style=\"color: black;\r\n                          background-color: white;\r\n                          border-color: black;\">Yes\r\n                    </button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -293,33 +305,23 @@ var ProjectDetailComponent = /** @class */ (function () {
                 _this.isLoading.openAssignModal = false;
             }
         };
+        this.isLoading.openAssignModal = true;
         this.teamService.getAllTeam()
             .then(function (value) {
-            var pool = [];
-            for (var _i = 0, _a = value; _i < _a.length; _i++) {
-                var team = _a[_i];
-                var removeFlag = false;
-                for (var _b = 0, _c = _this.foundProject.teams; _b < _c.length; _b++) {
-                    var assignedTeam = _c[_b];
-                    if (assignedTeam.id == team.id) {
-                        removeFlag = true;
-                    }
-                }
-                if (!removeFlag) {
-                    pool.push(team);
-                }
-            }
+            var pool = value;
             var initialState = {
                 confirmCallback: onConfirm,
                 cancelCallback: function () {
+                    _this.isLoading.openAssignModal = false;
                 },
                 closeCallback: function () {
+                    _this.isLoading.openAssignModal = false;
                 },
                 userPool: pool,
                 title: "Assign",
                 confirmButtonText: 'Assign'
             };
-            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["j" /* SelectTeamsModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["j" /* SelectTeamsModalComponent */], { initialState: initialState, class: 'modal-dialog', ignoreBackdropClick: true });
         });
     };
     ;
@@ -436,7 +438,7 @@ var routes = [
         }
     },
     {
-        path: 'schedule',
+        path: ':id/schedule',
         component: __WEBPACK_IMPORTED_MODULE_3__project_scheduling_project_scheduling_component__["a" /* ProjectSchedulingComponent */],
         data: {
             title: 'Scheduling'
@@ -474,7 +476,7 @@ var routes = [
         path: ':id/report',
         component: __WEBPACK_IMPORTED_MODULE_8__report_report_component__["a" /* ReportComponent */],
         data: {
-            title: 'report'
+            title: 'Report'
         }
     },
 ];
@@ -518,12 +520,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_spinner_spinner_module__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__report_report_component__ = __webpack_require__("../../../../../src/app/views/project/report/report.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_angular2_ladda__ = __webpack_require__("../../../../angular2-ladda/module/module.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_angular2_ladda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_angular2_ladda__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -558,7 +566,11 @@ var ProjectManagementModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_12_angular_datatables__["b" /* DataTablesModule */],
                 __WEBPACK_IMPORTED_MODULE_16__components_spinner_spinner_module__["a" /* SpinnerModule */],
                 __WEBPACK_IMPORTED_MODULE_14_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */],
-                __WEBPACK_IMPORTED_MODULE_15__cmaComponents_cma_module__["a" /* CmaModule */]
+                __WEBPACK_IMPORTED_MODULE_15__cmaComponents_cma_module__["a" /* CmaModule */],
+                __WEBPACK_IMPORTED_MODULE_18_angular2_ladda__["LaddaModule"].forRoot({
+                    style: 'expand-left'
+                }),
+                __WEBPACK_IMPORTED_MODULE_19_ng2_charts_ng2_charts__["ChartsModule"]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__view_project_management_component__["a" /* ProjectManagementComponent */],
@@ -582,7 +594,7 @@ var ProjectManagementModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/project-scheduling/project-scheduling.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\" #gantt_here style='width: 100%; height: 100%;'></div>\r\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    Project scheduling view\r\n  </div>\r\n  <div class=\"card-body row\">\r\n    <app-spinner *ngIf=isLoading.page class=\"col-12\"></app-spinner>\r\n    <div class=\"animated fadeIn\" #gantt_here style='width: 100%; height: 100%;'></div>\r\n  </div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -614,6 +626,11 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_dependency_service__ = __webpack_require__("../../../../../src/app/services/dependency.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_dhtmlx_gantt__ = __webpack_require__("../../../../dhtmlx-gantt/codebase/dhtmlxgantt.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_dhtmlx_gantt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_dhtmlx_gantt__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -627,18 +644,124 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
+
+
 var ProjectSchedulingComponent = /** @class */ (function () {
-    function ProjectSchedulingComponent(taskService, dependencyService) {
+    function ProjectSchedulingComponent(taskService, projectService, dependencyService, route, router, location, modalService) {
         this.taskService = taskService;
+        this.projectService = projectService;
         this.dependencyService = dependencyService;
+        this.route = route;
+        this.router = router;
+        this.location = location;
+        this.modalService = modalService;
+        this.projectTasks = [];
+        this.isLoading = {
+            page: true
+        };
     }
     ProjectSchedulingComponent.prototype.ngOnInit = function () {
-        // gantt.config.xml_date = '%Y-%m-%d %H:%i';
-        // gantt.init(this.ganttContainer.nativeElement);
-        // Promise.all([this.taskService.get(), this.dependencyService.get()])
-        //   .then(([data, links]) => {
-        //     gantt.parse({data, links});
-        //   });
+        var _this = this;
+        var id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.projectService.getProject(Number(id))
+                .then(function (value) {
+                for (var _i = 0, _a = value.lists; _i < _a.length; _i++) {
+                    var list = _a[_i];
+                    for (var _b = 0, _c = list.tasks; _b < _c.length; _b++) {
+                        var task = _c[_b];
+                        _this.projectTasks.push(task);
+                    }
+                }
+                _this.updatePageLoadingState();
+            })
+                .catch(function (reason) {
+                console.debug('ProjectSchedulingComponent - ngOnInit', reason);
+                _this.showErrorModal(reason.Message, true);
+            });
+            this.dependencyService.getDependencyOfProject(id)
+                .then(function (value) {
+                _this.projectDependencies = value;
+                _this.updatePageLoadingState();
+            })
+                .catch(function (reason) {
+                console.debug('ProjectSchedulingComponent - ngOnInit', reason);
+                _this.showErrorModal(reason.Message, true);
+            });
+        }
+        else {
+            this.showErrorModal("Invalid id " + id, true);
+        }
+    };
+    ProjectSchedulingComponent.prototype.updatePageLoadingState = function () {
+        if (this.projectTasks &&
+            this.projectTasks.length > 0 &&
+            this.projectDependencies) {
+            this.initGratt();
+            this.isLoading.page = false;
+        }
+    };
+    ProjectSchedulingComponent.prototype.formatTasks = function (tasks) {
+        var formattedTasks = [];
+        for (var _i = 0, tasks_1 = tasks; _i < tasks_1.length; _i++) {
+            var task = tasks_1[_i];
+            var formattedTask = {
+                id: task.id,
+                text: task.name,
+                start_date: task.startDate,
+                duration: task.duration,
+                progress: 1,
+                statusText: task.statusText,
+                priorityText: task.priorityText
+            };
+            formattedTasks.push(formattedTask);
+        }
+        return formattedTasks;
+    };
+    ProjectSchedulingComponent.prototype.formatDependencies = function (dependencies) {
+        // {id: 1, source: 1, target: 2, type: "0"}
+        var formattedDependencies = [];
+        for (var _i = 0, dependencies_1 = dependencies; _i < dependencies_1.length; _i++) {
+            var dependency = dependencies_1[_i];
+            var formattedDependency = {
+                id: dependency.id,
+                source: dependency.sourceTaskID,
+                target: dependency.destinationTaskID,
+                type: 0,
+            };
+            formattedDependencies.push(formattedDependency);
+        }
+        return formattedDependencies;
+    };
+    ProjectSchedulingComponent.prototype.initGratt = function () {
+        gantt.config.columns = [
+            { name: 'text', label: 'Task name', width: '*', tree: true },
+            { name: 'start_date', label: 'Start date', align: 'center' },
+            { name: 'duration', label: 'Duration', align: 'center' },
+        ];
+        gantt.config.xml_date = '%Y/%m/%d';
+        gantt.config.readonly = true;
+        gantt.init(this.ganttContainer.nativeElement);
+        gantt.parse({
+            data: this.formatTasks(this.projectTasks),
+            links: this.formatDependencies(this.projectDependencies),
+        });
+    };
+    ProjectSchedulingComponent.prototype.showErrorModal = function (message, isNavigateBack) {
+        var _this = this;
+        if (isNavigateBack === void 0) { isNavigateBack = false; }
+        var initialState = {
+            closeCallback: function () {
+                if (isNavigateBack) {
+                    _this.location.back();
+                }
+            },
+            message: message
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_8__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('gantt_here'),
@@ -650,7 +773,13 @@ var ProjectSchedulingComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.html"),
             styles: [__webpack_require__("../../../../../src/app/views/project/project-scheduling/project-scheduling.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_task_service__["a" /* TaskService */], __WEBPACK_IMPORTED_MODULE_2__services_dependency_service__["a" /* DependencyService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_task_service__["a" /* TaskService */],
+            __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */],
+            __WEBPACK_IMPORTED_MODULE_2__services_dependency_service__["a" /* DependencyService */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_7__angular_common__["f" /* Location */],
+            __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap__["b" /* BsModalService */]])
     ], ProjectSchedulingComponent);
     return ProjectSchedulingComponent;
 }());
@@ -777,7 +906,7 @@ var ProjectTaskComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/project-update/project-update.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>Update project</strong>\n      </div>\n      <app-spinner *ngIf=\"isLoading\"></app-spinner>\n      <div *ngIf=\"!isLoading\" class=\"card-body\">\n        <div class=\"form-horizontal col-6\" style=\"margin-top: 30px;\" id=\"update\">\n          <div class=\"form-group row\">\n            <label class=\"col-5 col-form-label text-right\" for=\"name-input\">Project Name<span\n              style=\"color: #ee0d0d\"><strong>*</strong></span></label>\n            <div class=\"col-7\">\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label class=\"col-5 col-form-label text-right\" for=\"name-input\">Project Description</label>\n            <div class=\"col-7\">\n              <textarea rows=\"3\"></textarea>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label class=\"col-5 col-form-label text-right\">Close</label>\n            <div class=\"col-7\">\n\n              <label class=\"switch switch-lg switch-3d switch-primary\">\n                <input type=\"checkbox\" class=\"switch-input\" checked=\"\">\n                <span class=\"switch-label\"></span>\n                <span class=\"switch-handle\"></span>\n              </label>\n            </div>\n          </div>\n\n\n          <div class=\"form-actions text-center\">\n            <div class=\"col-12\">\n              <button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"color: black;\n                                background-color: white;\n                                border-color: black;margin-left: 40px;\">Save changes\n              </button>\n              <button type=\"button\" class=\"btn btn-secondary btn-lg\" style=\"color: black;\n                background-color: white;\n                border-color: black; margin-left: 70px;\">Reset\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update project</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading\"></app-spinner>\r\n      <div *ngIf=\"!isLoading\" class=\"card-body\">\r\n        <div class=\"form-horizontal col-6\" style=\"margin-top: 30px;\" id=\"update\">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-5 col-form-label text-right\" for=\"name-input\">Project Name<span\r\n              style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-7\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\">\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-5 col-form-label text-right\" for=\"name-input\">Project Description</label>\r\n            <div class=\"col-7\">\r\n              <textarea rows=\"3\"></textarea>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-5 col-form-label text-right\">Close</label>\r\n            <div class=\"col-7\">\r\n\r\n              <label class=\"switch switch-lg switch-3d switch-primary\">\r\n                <input type=\"checkbox\" class=\"switch-input\" checked=\"\">\r\n                <span class=\"switch-label\"></span>\r\n                <span class=\"switch-handle\"></span>\r\n              </label>\r\n            </div>\r\n          </div>\r\n\r\n\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button type=\"button\" class=\"btn btn-primary btn-lg\" style=\"color: black;\r\n                                background-color: white;\r\n                                border-color: black;margin-left: 40px;\">Save changes\r\n              </button>\r\n              <button type=\"button\" class=\"btn btn-secondary btn-lg\" style=\"color: black;\r\n                background-color: white;\r\n                border-color: black; margin-left: 70px;\">Reset\r\n              </button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -910,7 +1039,7 @@ var ProjectUpdateComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/project/report/report.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  report works!, Project id is {{projectId}}\n</p>\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    Project report\r\n  </div>\r\n  <app-spinner *ngIf=isLoading.page class=\"col-12\"></app-spinner>\r\n  <div class=\"card-body row\" *ngIf=!isLoading.page>\r\n    <div class=\"col-12\">\r\n      <a routerLink=\"/project/{{report.id}}/detail\">\r\n        <h2 class=\"card-title\">{{report.name}}</h2>\r\n      </a>\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"row\">\r\n        <div class=\"section col-6\">\r\n          <!--DETAIL SECTION-->\r\n          <h5 class=\"mb-3\">Detail</h5>\r\n          <dl class=\"row ml-1\">\r\n            <dt class=\"col-5\">Task count:</dt>\r\n            <dd class=\"col-7\">\r\n              {{report.taskCount}}\r\n            </dd>\r\n          </dl>\r\n          <dl class=\"row ml-1\">\r\n            <dt class=\"col-5\">Task deadline this week:</dt>\r\n            <dd class=\"col-7\">\r\n              {{report.taskExpireThisWeek.length}}\r\n            </dd>\r\n          </dl>\r\n          <dl class=\"row ml-1\">\r\n            <dt class=\"col-5\">Number of user:</dt>\r\n            <dd class=\"col-7\">\r\n              {{report.userNumberInProject}}\r\n            </dd>\r\n          </dl>\r\n          <dl class=\"row ml-1\">\r\n            <dt class=\"col-5\">Number of free user:</dt>\r\n            <dd class=\"col-7\">\r\n              {{report.userNumberNotInTask}}\r\n            </dd>\r\n          </dl>\r\n        </div>\r\n        <div class=\"section col-6\">\r\n          <!--DETAIL SECTION-->\r\n          <h5 class=\"mb-3\">Task status</h5>\r\n          <dl class=\"row ml-1\">\r\n            <dt class=\"col-4\">Task count:</dt>\r\n            <dd class=\"col-12\">\r\n              <canvas baseChart\r\n                      [data]=\"pieChart.data\"\r\n                      [labels]=\"pieChart.labels\"\r\n                      [chartType]=\"pieChart.type\">\r\n\r\n              </canvas>\r\n            </dd>\r\n          </dl>\r\n        </div>\r\n        <div class=\"section col-12\">\r\n          <!--DETAIL SECTION-->\r\n          <h5 class=\"mb-3\">Task status</h5>\r\n          <dl class=\"row ml-1\">\r\n            <!--<dt class=\"col-4\">Task count:</dt>-->\r\n            <dd class=\"col-12\">\r\n              <canvas baseChart\r\n                      [data]=\"pieChart.data\"\r\n                      [labels]=\"pieChart.labels\"\r\n                      [chartType]=\"pieChart.type\">\r\n\r\n              </canvas>\r\n            </dd>\r\n          </dl>\r\n        </div>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -922,7 +1051,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".section dt {\n  font-weight: 600; }\n\n.section .icons-list img.avatar {\n  width: 35px;\n  height: 35px; }\n\n.separator-v {\n  border: 0;\n  width: 1px;\n  height: 100%;\n  background-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(rgba(0, 0, 0, 0.75)), to(transparent));\n  background-image: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.75), transparent); }\n\n.hidden-field {\n  position: absolute;\n  top: -5000px;\n  left: -5000px; }\n\n.list-group-item:hover {\n  cursor: pointer; }\n", ""]);
 
 // exports
 
@@ -942,6 +1071,9 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__("../../../../moment/moment.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -956,20 +1088,52 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var ReportComponent = /** @class */ (function () {
-    function ReportComponent(router, route, location, modalService) {
+    function ReportComponent(router, route, location, modalService, projectService) {
         this.router = router;
         this.route = route;
         this.location = location;
         this.modalService = modalService;
+        this.projectService = projectService;
+        this.isLoading = {
+            page: true
+        };
     }
     ReportComponent.prototype.ngOnInit = function () {
+        var _this = this;
         var id = this.route.snapshot.paramMap.get('id');
         if (Number(id)) {
             this.projectId = Number(id);
+            this.projectService.getReport(id)
+                .then(function (value) {
+                _this.report = value;
+                _this.setupPieChart();
+                _this.isLoading.page = false;
+            })
+                .catch(function (reason) {
+                _this.showErrorModal(reason.Message);
+            });
         }
         else {
             this.showErrorModal(id + " is not a valid ID");
+        }
+    };
+    ReportComponent.prototype.setupPieChart = function () {
+        var labels = this.report.taskStatusReport.map(function (value) { return value.key; });
+        var data = this.report.taskStatusReport.map(function (value) { return value.value; });
+        this.pieChart = {
+            labels: labels,
+            data: data,
+            type: 'pie'
+        };
+    };
+    ReportComponent.prototype.setupLineChart = function () {
+        var lables = [];
+        var now = __WEBPACK_IMPORTED_MODULE_6_moment__();
+        for (var i = 0; i < 7; i++) {
+            var previousDate = now.subtract(i, 'day');
         }
     };
     ReportComponent.prototype.showErrorModal = function (message, isNavigateBack) {
@@ -994,7 +1158,8 @@ var ReportComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_2__angular_common__["f" /* Location */],
-            __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["b" /* BsModalService */]])
+            __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["b" /* BsModalService */],
+            __WEBPACK_IMPORTED_MODULE_5__services_project_service__["a" /* ProjectService */]])
     ], ReportComponent);
     return ReportComponent;
 }());

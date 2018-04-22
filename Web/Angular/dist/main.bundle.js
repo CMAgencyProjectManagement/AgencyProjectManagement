@@ -72,17 +72,17 @@ var staff_navigation = [
         icon: 'icon-people'
     },
     {
-        name: 'My Project',
+        name: 'Projects',
         url: '/project',
         icon: 'icon-calendar'
     },
     {
-        name: 'Task',
+        name: 'Tasks',
         url: '/task/mytasks',
         icon: 'icon-briefcase'
     },
     {
-        name: 'My Profile',
+        name: 'Profile',
         url: '/account/profile',
         icon: 'icon-user',
     }
@@ -90,7 +90,7 @@ var staff_navigation = [
 /**
  * home page (manager)
  * my department
- * my department's active projects
+ * my projects
  * my account (profile)
  * update profile
  */
@@ -99,6 +99,21 @@ var manager_navigation = [
         name: 'Dashboard',
         url: '/dashboard',
         icon: 'icon-speedometer'
+    },
+    {
+        name: 'Department',
+        url: '/department/my',
+        icon: 'icon-people'
+    },
+    {
+        name: 'Projects',
+        url: '/project',
+        icon: 'icon-calendar'
+    },
+    {
+        name: 'Profile',
+        url: '/account/profile',
+        icon: 'icon-user',
     }
 ];
 /**
@@ -152,6 +167,11 @@ var admin_navigation = [
                 url: '/account/create',
                 icon: 'icon-user',
             },
+            {
+                name: 'My Profile',
+                url: '/account/profile',
+                icon: 'icon-user',
+            }
         ]
     }
 ];
@@ -189,6 +209,7 @@ var serverPath = {
     getProjectStatus: '/api/project/statuses',
     assignUsersToProject: '/api/project/assign',
     unAssignUsersFromProject: '/api/project/Unassign',
+    getReport: function (projectid) { return "/api/project/" + projectid + "/report"; },
     // List
     createList: '/api/list',
     updateList: '/api/list/update',
@@ -211,6 +232,8 @@ var serverPath = {
     assignTask: '/api/task/assign',
     unassignTask: "/api/task/unassign",
     finishTask: function (taskID) { return "/api/task/" + taskID + "/finishTask"; },
+    // Dependency
+    getDependenciesOfProject: function (projectId) { return "/api/project/" + projectId + "/dependency"; },
     // Comment
     createComment: '/api/comment/create',
     updateComment: 'api/comment/update',
@@ -571,7 +594,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/assignMember-card/assignMembers-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-12 text-center margin-down\">\r\n  <h1>{{title }}</h1>\r\n</div>\r\n<div class=\"col-12\">\r\n  <table class=\"table\">\r\n    <thead>\r\n    <tr>\r\n      <th class=\"text-center\">\r\n        <h5>{{leftTableName}}</h5>\r\n      </th>\r\n      <th></th>\r\n      <th class=\"text-center\">\r\n        <h5>{{rightTableName}}</h5>\r\n      </th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr>\r\n      <td colspan=\"3\">\r\n        <div class=\"row\" style=\"margin-top: 1em\">\r\n          <div class=\"col-5\">\r\n            <app-mini-users-table\r\n              [users]=\"leftUser\"\r\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\r\n              [showRole]=\"false\"></app-mini-users-table>\r\n          </div>\r\n          <div class=\"col-1 center-section\">\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"unAssign()\"\r\n                    [ladda]=\"unAssignLoading\">\r\n              <i class=\"fa fa-angle-double-left\"></i>\r\n            </button>\r\n            <button class=\"btn btn-primary btn-block\"\r\n                    (click)=\"assign()\"\r\n                    [ladda]=\"assignLoading\">\r\n              <i class=\"fa fa-angle-double-right\"></i>\r\n            </button>\r\n          </div>\r\n          <div class=\"col-6\">\r\n            <app-mini-users-table\r\n              [users]=\"rightUser\"\r\n              [showRole]=\"true\"\r\n              [changeRoleable]=\"false\"\r\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\r\n              (onRoleChange)=\"setRole($event)\">\r\n            </app-mini-users-table>\r\n          </div>\r\n        </div>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div class=\"col-12 text-center margin-down\">\n  <h1>{{title }}</h1>\n</div>\n<div class=\"col-12\">\n  <table class=\"table\">\n    <thead>\n    <tr>\n      <th class=\"text-center\">\n        <h5>{{leftTableName}}</h5>\n      </th>\n      <th></th>\n      <th class=\"text-center\">\n        <h5>{{rightTableName}}</h5>\n      </th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n      <td colspan=\"3\">\n        <div class=\"row\" style=\"margin-top: 1em\">\n          <div class=\"col-5\">\n            <app-mini-users-table\n              [users]=\"leftUser\"\n              (onSelectedChange)=\"handleLeftTableSelect($event)\"\n              [showRole]=\"false\"></app-mini-users-table>\n          </div>\n          <div class=\"col-1 center-section\">\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"unAssign()\"\n                    [ladda]=\"unAssignLoading\">\n              <i class=\"fa fa-angle-double-left\"></i>\n            </button>\n            <button class=\"btn btn-primary btn-block\"\n                    (click)=\"assign()\"\n                    [ladda]=\"assignLoading\">\n              <i class=\"fa fa-angle-double-right\"></i>\n            </button>\n          </div>\n          <div class=\"col-6\">\n            <app-mini-users-table\n              [users]=\"rightUser\"\n              [showRole]=\"true\"\n              [changeRoleable]=\"false\"\n              (onSelectedChange)=\"handleRightTableSelect($event)\"\n              (onRoleChange)=\"setRole($event)\">\n            </app-mini-users-table>\n          </div>\n        </div>\n      </td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
@@ -796,7 +819,7 @@ var CmaModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/comment/comment.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\r\n  <div class=\"col-1 left-section text-center\">\r\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\r\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\r\n  </div>\r\n  <div class=\"col-11 right-section\">\r\n    <div class=\"row\">\r\n      <div class=\"col-11\">\r\n        <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\r\n        <a href=\"#/account/detail?id={{comment.createdBy.id}}\">\r\n          {{comment.createdBy.name}}\r\n        </a>\r\n      </div>\r\n      <div class=\"col-1 btn-edit\" (click)=\"handleEditBtnClick($event)\">\r\n        <i class=\"fa fa-pencil-square-o\"></i>\r\n      </div>\r\n      <div class=\"col-12 mt-3\" *ngIf=\"!isCollapsed\">\r\n        <p>{{comment.body}}</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\n  <div class=\"col-1 left-section text-center\">\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\n  </div>\n  <div class=\"col-11 right-section\">\n    <div class=\"row\">\n      <div class=\"col-11\">\n        <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\n        <a href=\"#/account/detail?id={{comment.createdBy.id}}\">\n          {{comment.createdBy.name}}\n        </a>\n      </div>\n      <div class=\"col-1 btn-edit\" (click)=\"handleEditBtnClick($event)\">\n        <i class=\"fa fa-pencil-square-o\"></i>\n      </div>\n      <div class=\"col-12 mt-3\" *ngIf=\"!isCollapsed\">\n        <p>{{comment.body}}</p>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1004,14 +1027,14 @@ var MiniUsersTableComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/miniUsers-table/mini-users-table.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\r\n  <thead>\r\n  <tr>\r\n    <th>ID</th>\r\n    <th>Avatar</th>\r\n    <th>Name</th>\r\n    <th>Birthdate</th>\r\n    <th *ngIf=\"showRole\">Manager</th>\r\n  </tr>\r\n  </thead>\r\n  <tbody>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.id}}</td>\r\n    <td class=text-center>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\r\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.name\">{{user.name}}</span>\r\n      <span *ngIf=\"!user.name\">N/A</span>\r\n    </td>\r\n    <td>\r\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\r\n      <span *ngIf=\"!user.birthdate\">N/A</span>\r\n    </td>\r\n    <td *ngIf=\"showRole\">\r\n      <label class=\"switch switch-icon switch-info switch-sm\"\r\n             (click)=\"roleSwitch(user.id,user.isManager)\">\r\n        <input class=\"switch-input\"\r\n               [checked]=\"user.isManager\"\r\n               [disabled]=\"!changeRoleable\"\r\n               type=\"checkbox\">\r\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\r\n        <span class=\"switch-handle\"></span>\r\n      </label>\r\n    </td>\r\n  </tr>\r\n  </tbody>\r\n</table>\r\n"
+module.exports = "<table datatable [dtOptions]=\"smallUsersTableOpt\" class=\"display compact\">\n  <thead>\n  <tr>\n    <th>ID</th>\n    <th>Avatar</th>\n    <th>Name</th>\n    <th>Birthdate</th>\n    <th *ngIf=\"showRole\">Manager</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let user of users\">\n    <td>{{user.id}}</td>\n    <td class=text-center>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-sm\">\n      <img *ngIf=\"!user.avatar\" src=\"https://www.placehold.it/100x100?text=avatar\" class=\"avatar\">\n    </td>\n    <td>\n      <span *ngIf=\"user.name\">{{user.name}}</span>\n      <span *ngIf=\"!user.name\">N/A</span>\n    </td>\n    <td>\n      <span *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</span>\n      <span *ngIf=\"!user.birthdate\">N/A</span>\n    </td>\n    <td *ngIf=\"showRole\">\n      <label class=\"switch switch-icon switch-info switch-sm\"\n             (click)=\"roleSwitch(user.id,user.isManager)\">\n        <input class=\"switch-input\"\n               [checked]=\"user.isManager\"\n               [disabled]=\"!changeRoleable\"\n               type=\"checkbox\">\n        <span class=\"switch-label\" data-on=\"\" data-off=\"\"></span>\n        <span class=\"switch-handle\"></span>\n      </label>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
 /***/ "../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">{{title}}</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\">\r\n  <div class=\"form-group row\">\r\n    <div class=\"col-12\">\r\n      <!--COMMENT TEXT AREA-->\r\n      <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\"\r\n                [(ngModel)]=\"commentBoxModel\"\r\n                placeholder=\"Content..\"></textarea>\r\n    </div>\r\n  </div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button class=\"btn btn-success\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n  <button class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">{{title}}</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <div class=\"form-group row\">\n    <div class=\"col-12\">\n      <!--COMMENT TEXT AREA-->\n      <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\"\n                [(ngModel)]=\"commentBoxModel\"\n                placeholder=\"Content..\"></textarea>\n    </div>\n  </div>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-success\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\n  <button class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
 
 /***/ }),
 
@@ -1275,7 +1298,7 @@ var CreateListModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\">Error</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <p>{{message}}</p>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnClose()\">Close</button>\n</div>\n\n"
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Error</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\">\r\n  <p>{{message}}</p>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnClose()\">Close</button>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -1767,7 +1790,7 @@ var SelectStatusModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/select-tasks-modal/select-tasks-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select users</h4>\n  <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n\n<div class=\"modal-body\">\n  <div class=\"col-12\" *ngIf=\"message\">\n    {{message}}\n  </div>\n  <div class=\"col-12\">\n    <div class=\"form-group row\">\n      <div class=\"col-md-9\">\n        <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\n          <option value=\"{{undefined}}\">Please select tasks</option>\n          <option value=\"{{task.id}}\" *ngFor=\"let task of taskPool\">{{task.name}}</option>\n        </select>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-12\" *ngIf=\"selectedTasks.length > 0\">\n    <h3>Selected</h3>\n    <app-tasklist [tasks]=\"selectedTasks\"></app-tasklist>\n  </div>\n\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n</div>\n"
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select users</h4>\r\n  <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n\r\n<div class=\"modal-body\">\r\n  <div class=\"col-12\" *ngIf=\"message\">\r\n    {{message}}\r\n  </div>\r\n  <div class=\"col-12\">\r\n    <div class=\"form-group row\">\r\n      <div class=\"col-md-9\">\r\n        <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\r\n          <option value=\"{{undefined}}\">Please select tasks</option>\r\n          <option value=\"{{task.id}}\" *ngFor=\"let task of taskPool\">{{task.name}}</option>\r\n        </select>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"col-12\" *ngIf=\"selectedTasks.length > 0\">\r\n    <h3>Selected</h3>\r\n    <app-tasklist [tasks]=\"selectedTasks\"></app-tasklist>\r\n  </div>\r\n\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2143,7 +2166,7 @@ var SuccessModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Tasks</strong>\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\n        View full\n      </button>\n    </a>\n  </div>\n  <app-spinner *ngIf=!project></app-spinner>\n  <div *ngIf=project>\n    <div class=\"card-body\" *ngIf=\"project\">\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\n        <div class=\"input-group col-12\">\n          <span class=\"input-group-btn\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\n              <i class=\"fa fa-search\"></i> Search\n            </button>\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\n              <i class=\"fa fa-times\"></i>\n            </button>\n          </span>\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\n        Found tasks:\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\n            <a routerLink=\"/task/view/{{task.id}}\" style=\"font-size: 17px;color: black\">\n              {{task.name}}\n            </a>\n          </li>\n        </ul>\n      </div>\n      <!-- -->\n      <div class=\"row task-row\">\n        <div>\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\n                <div class=\"form-group row\">\n                  <div class=\"col-9\">\n                    {{lists.name}}\n                  </div>\n                  <div class=\"col-3\">\n                    <div class=\"btn-group\" dropdown>\n                      <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\n                        <span class=\"caret\"></span>\n                      </button>\n                      <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" href=\"#/task/create?project={{project.id}}&list={{lists.id}}\">Add task</a>\n                        </li>\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\n                        </li>\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove list</a>\n                        </li>\n                      </ul>\n                    </div>\n                  </div>\n                </div>\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\n                  id=\"task\">\n                  <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color: black\">\n                    <div class=\"card-body\">\n                      {{task.name}}\n                    </div>\n                  </a>\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\n\n                  padding-right: 5px;\">\n                    <a routerLink=\"/task/view/{{task.id}}\" style=\"text-decoration: none; color:white\">\n                      <span class=\"badge badge-warning float-right\" style=\"color: white\" *ngIf=\"task.status==0\">Not Done</span>\n                      <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Need Review</span>\n                      <span class=\"badge badge-success float-right\" *ngIf=\"task.status==2\">Done</span>\n                    </a>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </ng-container>\n          <ng-container>\n            <div style=\"margin-left: 15px;\">\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\n                <b>Add List</b>\n              </button>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <app-spinner *ngIf=!project></app-spinner>\r\n  <div *ngIf=project>\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\r\n        Found tasks:\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\r\n            <a routerLink=\"/task/{{task.id}}/view\" style=\"font-size: 17px;color: black\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\r\n                <div class=\"form-group row\">\r\n                  <div class=\"col-9\">\r\n                    {{lists.name}}\r\n                  </div>\r\n                  <div class=\"col-3\" *ngIf=\"currentUser.isManager\">\r\n                    <div class=\"btn-group\" dropdown>\r\n                      <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\r\n                        <span class=\"caret\"></span>\r\n                      </button>\r\n                      <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" href=\"#/task/create?project={{project.id}}&list={{lists.id}}\">Add task</a>\r\n                        </li>\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\r\n                        </li>\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove list</a>\r\n                        </li>\r\n                      </ul>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\" data-toggle=\"modal\"\r\n                  id=\"task\">\r\n                  <a routerLink=\"/task/{{task.id}}/view\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                  </a>\r\n                  <div class=\"card-footer\" style=\"height: 30px;padding-top: 5px;\r\n\r\n                  padding-right: 5px;\">\r\n                    <a routerLink=\"/task/{{task.id}}/view\" style=\"text-decoration: none; color:white\">\r\n                      <span class=\"badge badge-warning float-right\" style=\"color: white\" *ngIf=\"task.status==0\">Not Done</span>\r\n                      <span class=\"badge badge-primary float-right\" *ngIf=\"task.status==1\">Need Review</span>\r\n                      <span class=\"badge badge-success float-right\" *ngIf=\"task.status==2\">Done</span>\r\n                    </a>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container *ngIf=\"currentUser.isManager\">\r\n            <div style=\"margin-left: 15px;\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\r\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\r\n                <b>Add List</b>\r\n              </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2180,6 +2203,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2199,14 +2223,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectCardComponent = /** @class */ (function () {
-    function ProjectCardComponent(listService, taskService, projectService, modalService, router, route, location) {
+    function ProjectCardComponent(listService, taskService, projectService, modalService, router, route, storeService, location) {
         this.listService = listService;
         this.taskService = taskService;
         this.projectService = projectService;
         this.modalService = modalService;
         this.router = router;
         this.route = route;
+        this.storeService = storeService;
         this.location = location;
         this.refresh = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.max = 200;
@@ -2217,6 +2243,7 @@ var ProjectCardComponent = /** @class */ (function () {
         this.isPageLoading = true;
         this.foundTasks = [];
         this.isCollapsed = true;
+        this.currentUser = this.storeService.get(['currentUser']);
     }
     ProjectCardComponent.prototype.ngOnInit = function () {
     };
@@ -2326,6 +2353,7 @@ var ProjectCardComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["b" /* BsModalService */],
             __WEBPACK_IMPORTED_MODULE_5__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_5__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_10__services_tree_service__["a" /* StoreService */],
             __WEBPACK_IMPORTED_MODULE_6__angular_common__["f" /* Location */]])
     ], ProjectCardComponent);
     return ProjectCardComponent;
@@ -2338,7 +2366,7 @@ var ProjectCardComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-status/project-status.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<span [ngClass]=\"badgeClass\">{{text}}</span>\n"
+module.exports = "\r\n<span [ngClass]=\"badgeClass\">{{text}}</span>\r\n"
 
 /***/ }),
 
@@ -2399,7 +2427,7 @@ var ProjectStatusComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/task-priority/task-priority.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  task-priority works!\n</p>\n"
+module.exports = "<p>\r\n  task-priority works!\r\n</p>\r\n"
 
 /***/ }),
 
@@ -2578,7 +2606,7 @@ var TaskStatusComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/task-table/task-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\n  <thead>\n  <tr>\n    <th>Name</th>\n    <th>Status</th>\n    <th>priority</th>\n    <th>Deadline</th>\n    <th>Project</th>\n    <th>List</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let task of tasks;let i = index\">\n    <td>\n      <a routerLink=\"/task/view/{{team.id}}\">{{task.name}}</a>\n    </td>\n    <td>\n      <span>{{task.statusText}}</span>\n    </td>\n    <td>\n      <span>{{task.priorityText}}</span>\n    </td>\n    <td>\n      <span>{{task.deadline}}</span>\n    </td>\n    <td>\n      <span>{{task.project.name}}</span>\n    </td>\n    <td>\n      <span>{{task.list.name}}</span>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\n  <thead>\n  <tr>\n    <th>Name</th>\n    <th>Status</th>\n    <th>priority</th>\n    <th>Deadline</th>\n    <th>Project</th>\n    <th>List</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let task of tasks;let i = index\">\n    <td>\n      <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\n    </td>\n    <td>\n      <span>{{task.statusText}}</span>\n    </td>\n    <td>\n      <span>{{task.priorityText}}</span>\n    </td>\n    <td>\n      <span>{{task.deadline}}</span>\n    </td>\n    <td>\n      <span>{{task.project.name}}</span>\n    </td>\n    <td>\n      <span>{{task.list.name}}</span>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -2649,7 +2677,7 @@ var TaskTableComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/tasklist/tasklist.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"list-group\">\n  <a *ngFor=\"let task of tasks\" routerLink=\"/task/view/{{task.id}}\" class=\"list-group-item list-group-item-action\">\n    {{task.name}}\n  </a>\n</div>\n"
+module.exports = "<div class=\"list-group\">\n  <a *ngFor=\"let task of tasks\" routerLink=\"/task/{{task.id}}/view\" class=\"list-group-item list-group-item-action\">\n    {{task.name}}\n  </a>\n</div>\n"
 
 /***/ }),
 
@@ -2714,7 +2742,7 @@ var TasklistComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/detail?id={{user.id}}\">\n          {{user.name}}\n        </a>\n      </div>\n      <small>{{user.email}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
+module.exports = "<ul class=\"icons-list\">\r\n  <li *ngFor=\"let user of users\">\r\n    <i>\r\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\r\n      <img *ngIf=\"!user.avatar\" src=\"assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\r\n    </i>\r\n    <div class=\"desc\">\r\n      <div class=\"title\">\r\n        <a href=\"#/account/detail?id={{user.id}}\">\r\n          {{user.name}}\r\n        </a>\r\n      </div>\r\n      <small>{{user.email}}</small>\r\n    </div>\r\n    <div class=\"value\">\r\n      <small>{{user.phone}}</small>\r\n    </div>\r\n    <div class=\"actions\">\r\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\r\n    </div>\r\n  </li>\r\n</ul>\r\n"
 
 /***/ }),
 
@@ -2958,7 +2986,7 @@ var AppFooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-header/app-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\r\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <a class=\"navbar-brand\" href=\"#\"></a>\r\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\r\n    <form class=\"form-inline my-lg-0 my-lg-5\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\r\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\r\n    </form>\r\n  </a> -->\r\n  <ul class=\"nav navbar-nav ml-auto\">\r\n    <li class=\"nav-item dropdown\" dropdown>\r\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\r\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\r\n        <span class=\"d-md-down-none\">{{user.name}}</span>\r\n\r\n      </a>\r\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Account</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\r\n        <a class=\"dropdown-item\" href=\"#\">\r\n          <i class=\"fa fa-file\"></i> Projects</a>\r\n\r\n        <div class=\"dropdown-header text-center\">\r\n          <strong>Settings</strong>\r\n        </div>\r\n        <a class=\"dropdown-item\" href=\"#/account/detail?id={{user.id}}\" >\r\n          <i class=\"fa fa-user\"></i> Profile</a>\r\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\r\n          <i class=\"fa fa-lock\"></i> Logout</a>\r\n      </div>\r\n    </li>\r\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\r\n      <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n  </ul>\r\n</header>\r\n"
+module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\"></a>\n  <button class=\"navbar-toggler d-md-down-none mr-auto\" type=\"button\" appSidebarToggler>\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <!-- <a href=\"#\" style=\"right:180px;top:-40px;position:absolute\">\n    <form class=\"form-inline my-lg-0 my-lg-5\">\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"\" aria-label=\"Search\">\n      <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fa fa-search fa-lg mt-1.9\"></i>&nbsp; Search</button>\n    </form>\n  </a> -->\n  <ul class=\"nav navbar-nav ml-auto\">\n    <li class=\"nav-item dropdown\" dropdown>\n      <a href class=\"nav-link dropdown-toggle\" dropdownToggle (click)=\"false\">\n        <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"img-avatar\">\n        <span class=\"d-md-down-none\">{{user.name}}</span>\n\n      </a>\n      <div class=\"dropdown-menu dropdown-menu-right\" *dropdownMenu aria-labelledby=\"simple-dropdown\">\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Account</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-bell-o\"></i> Updates</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-tasks\"></i> Tasks</a>\n        <a class=\"dropdown-item\" href=\"#\">\n          <i class=\"fa fa-file\"></i> Projects</a>\n\n        <div class=\"dropdown-header text-center\">\n          <strong>Settings</strong>\n        </div>\n        <a class=\"dropdown-item\" href=\"#/account/detail?id={{user.id}}\" >\n          <i class=\"fa fa-user\"></i> Profile</a>\n        <a class=\"dropdown-item\" href=\"#\" (click)=\"logout($event)\">\n          <i class=\"fa fa-lock\"></i> Logout</a>\n      </div>\n    </li>\n    <button class=\"navbar-toggler d-md-down-none\" type=\"button\" appAsideMenuToggler>\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  </ul>\n</header>\n"
 
 /***/ }),
 
@@ -3495,7 +3523,7 @@ var AppSidebarComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/spinner/spinner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sk-folding-cube\">\r\n  <div class=\"sk-cube1 sk-cube\"></div>\r\n  <div class=\"sk-cube2 sk-cube\"></div>\r\n  <div class=\"sk-cube4 sk-cube\"></div>\r\n  <div class=\"sk-cube3 sk-cube\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"sk-folding-cube\">\n  <div class=\"sk-cube1 sk-cube\"></div>\n  <div class=\"sk-cube2 sk-cube\"></div>\n  <div class=\"sk-cube4 sk-cube\"></div>\n  <div class=\"sk-cube3 sk-cube\"></div>\n</div>\n"
 
 /***/ }),
 
@@ -4291,23 +4319,48 @@ var CommentService = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DependencyService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_superagent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
 
 var DependencyService = /** @class */ (function () {
-    function DependencyService() {
+    function DependencyService(store) {
+        this.store = store;
+        this.tokenCursor = this.store.select(['token', 'access_token']);
     }
-    DependencyService.prototype.get = function () {
-        return Promise.resolve([
-            { id: 1, source: 1, target: 2, type: '0' }
-        ]);
+    DependencyService.prototype.getDependencyOfProject = function (projectId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_2_superagent__["get"](__WEBPACK_IMPORTED_MODULE_1__serverPath__["a" /* serverPath */].getDependenciesOfProject(projectId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
     };
     DependencyService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__tree_service__["a" /* StoreService */]])
     ], DependencyService);
     return DependencyService;
 }());
@@ -4572,6 +4625,23 @@ var ProjectService = /** @class */ (function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getProjectList(projectId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ProjectService.prototype.getReport = function (projectId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getReport(projectId))
                 .set('token', _this.tokenCursor.get())
                 .then(function (res) {
                 var content = res.body;

@@ -64,6 +64,8 @@ namespace Service
 
             db.TaskDependencies.AddRange(dependencyToAdd);
             db.TaskDependencies.RemoveRange(dependencyToRemove);
+
+            db.SaveChanges();
         }
 
         public TaskDependency CreateDependency(
