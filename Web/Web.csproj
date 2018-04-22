@@ -477,6 +477,7 @@
   <ItemGroup>
     <Compile Include="AgencyConfig.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\DependencyController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\TaskController.cs" />

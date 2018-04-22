@@ -44,6 +44,8 @@ const serverPath = {
   assignTask: '/api/task/assign',
   unassignTask:  `/api/task/unassign`,
   finishTask: taskID => `/api/task/${taskID}/finishTask`,
+  // Dependency
+  getDependenciesOfProject: projectId => `/api/project/${projectId}/dependency`,
   // Comment
   createComment: '/api/comment/create', // POST
   updateComment: 'api/comment/update', // PUT
