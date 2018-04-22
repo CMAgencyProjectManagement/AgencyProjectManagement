@@ -295,12 +295,11 @@ namespace Service
                 .Where(teamProject => teamProject.ProjectID == projectId)
                 .Select(teamProject => teamProject.TeamID);
 
-            IEnumerable<int> teamIdsToRemove = oldTeamIds.Except(newTeamIds).ToList();
-            IEnumerable<int> teamIdsToAdd = newTeamIds.Except(oldTeamIds).ToList();
+            IEnumerable<int> teamIdsToRemove = oldTeamIds.Except(newTeamIds);
+            IEnumerable<int> teamIdsToAdd = newTeamIds.Except(oldTeamIds);
 
             IEnumerable<TeamProject> teamProjectToRemove = db.TeamProjects
-                .Where(teamProject => teamIdsToRemove.Contains(teamProject.TeamID))
-                .ToList();
+                .Where(teamProject => teamIdsToRemove.Contains(teamProject.TeamID));
             IEnumerable<TeamProject> teamProjectToAdd = teamIdsToAdd
                 .Select(teamIdToAdd => new TeamProject
                 {

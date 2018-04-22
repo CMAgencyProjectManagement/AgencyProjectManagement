@@ -1,6 +1,10 @@
+import {User} from './user';
+
 export class Dependency {
   id: number;
-  source: number;
-  target: number;
-  type: string;
+  sourceTaskID: number;
+  destinationTaskID: number;
+  createdBy: User;
+  createdByID: User;
+  createdTime: string;
 }

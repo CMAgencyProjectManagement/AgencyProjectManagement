@@ -11,6 +11,7 @@ import {BsModalService} from 'ngx-bootstrap';
 import {Location} from '@angular/common';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {Project} from '../../../interfaces/project';
+import {Dependency} from '../../../interfaces/dependency';
 
 @Component({
   selector: 'app-project-scheduling',
@@ -20,6 +21,7 @@ import {Project} from '../../../interfaces/project';
 export class ProjectSchedulingComponent implements OnInit {
   @ViewChild('gantt_here') ganttContainer: ElementRef;
   projectTasks: Task[];
+  projectDependencies: Dependency[];
   isLoading: {
     page: boolean
   };
@@ -47,8 +49,17 @@ export class ProjectSchedulingComponent implements OnInit {
               this.projectTasks.push(task);
             }
           }
-          this.initGratt();
-          this.isLoading.page = false;
+          this.updatePageLoadingState();
+        })
+        .catch(reason => {
+          console.debug('ProjectSchedulingComponent - ngOnInit', reason);
+          this.showErrorModal(reason.Message, true)
+        });
+
+      this.dependencyService.getDependencyOfProject(id)
+        .then((value) => {
+          this.projectDependencies = value;
+          this.updatePageLoadingState();
         })
         .catch(reason => {
           console.debug('ProjectSchedulingComponent - ngOnInit', reason);
@@ -59,8 +70,16 @@ export class ProjectSchedulingComponent implements OnInit {
     }
   }
 
+  updatePageLoadingState() {
+    if (this.projectTasks &&
+      this.projectTasks.length > 0 &&
+      this.projectDependencies) {
+      this.initGratt();
+      this.isLoading.page = false;
+    }
+  }
+
   formatTasks(tasks: Task[]): any[] {
-    // {id: 1, text: "Task #1", start_date: "2017-04-15 00:00", duration: 3, progress: 0.6},
     let formattedTasks = [];
     for (let task of tasks) {
       let formattedTask = {
@@ -77,13 +96,26 @@ export class ProjectSchedulingComponent implements OnInit {
     return formattedTasks;
   }
 
+  formatDependencies(dependencies: Dependency[]): any[] {
+    // {id: 1, source: 1, target: 2, type: "0"}
+    let formattedDependencies = [];
+    for (let dependency of dependencies) {
+      let formattedDependency = {
+        id: dependency.id,
+        source: dependency.sourceTaskID,
+        target: dependency.destinationTaskID,
+        type: 0,
+      };
+      formattedDependencies.push(formattedDependency);
+    }
+    return formattedDependencies;
+  }
+
   initGratt() {
     gantt.config.columns = [
       {name: 'text', label: 'Task name', width: '*', tree: true},
       {name: 'start_date', label: 'Start date', align: 'center'},
       {name: 'duration', label: 'Duration', align: 'center'},
-      {name: 'statusText', label: 'Status', align: 'center'},
-      {name: 'priorityText', label: 'Priority', align: 'center'},
     ];
 
     gantt.config.xml_date = '%Y/%m/%d';
@@ -92,7 +124,7 @@ export class ProjectSchedulingComponent implements OnInit {
     gantt.init(this.ganttContainer.nativeElement);
     gantt.parse({
       data: this.formatTasks(this.projectTasks),
-      links: []
+      links: this.formatDependencies(this.projectDependencies),
     });
   }
 

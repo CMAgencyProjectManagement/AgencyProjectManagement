@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
 using Entity;
+using Newtonsoft.Json.Linq;
 
 namespace Service
 {
@@ -128,6 +129,28 @@ namespace Service
                 .Select(dependency => dependency.DestinationTaskID);
             
             return db.Tasks.Where(task => successorIds.Contains(task.ID));
+        }
+
+        public IEnumerable<TaskDependency> GeTaskDependenciesOfProject(Project project)
+        {
+            return db.TaskDependencies
+                .Where(dependency => dependency.Task.List.Project.ID == project.ID);
+        }
+
+        public JObject ParseToJson(TaskDependency taskDependency)
+        {
+            UserService userService = new UserService(db);
+            JObject result = new JObject
+            {
+                ["id"] =  taskDependency.ID,
+                ["sourceTaskID"] =  taskDependency.SourceTaskID,
+                ["destinationTaskID"] =  taskDependency.DestinationTaskID,
+                ["createdTime"] =  taskDependency.CreatedTime,
+                ["createdByID"] =  taskDependency.CreatedBy,
+            };
+            
+
+            return result;
         }
     }
 }
