@@ -17,7 +17,7 @@
                   <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;">
                     <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light" *ngIf="currentUser.isAdmin">
                       <i class="fa fa-edit"></i>&nbsp; Update
-                    </a>
+                    </a>  
                     <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)" *ngIf="currentUser.isAdmin">
                       <i class="fa fa-close"></i>&nbsp; Close project
                     </a>

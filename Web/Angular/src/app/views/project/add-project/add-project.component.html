@@ -4,46 +4,57 @@
       <div class="card-header">
         <strong>New project</strong>
       </div>
-      <div class="card-body">
+      <app-spinner *ngIf="isLoadingPage"></app-spinner>
+      <div class="card-body" *ngIf="!isLoadingPage">
         <div class="card-body">
-          <div [formGroup]="ProjectForm" class="form-horizontal">
+          <div [formGroup]="projectForm" class="form-horizontal">
             <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="projectName-input">Project Name <span style="color: #ee0d0d"><strong>*</strong></span></label>
+              <label class="col-md-1.2 col-form-label" for="name-input">Project Name
+                <span style="color: #ee0d0d">
+                  <strong>*</strong>
+                </span>
+              </label>
               <div class="col-md-6">
-                <input type="text" id="projectName-input" name="projectName-input" class="form-control"
-                       formControlName="projectName" placeholder="Please enter the project's name">
+                <input type="text" id="name-input" name="name-input" class="form-control" formControlName="name" placeholder="Please enter the project's name">
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="projectDescription-input">Description</label>
+              <label class="col-form-label" for="description-input">Description</label>
               <div class="col-md-6">
-                <textarea id="projectDescription-input" name="projectDescription-input" rows="5" class="form-control"
-                          formControlName="projectDescription" placeholder="About project..."></textarea>
+                <textarea id="description-input" name="description-input" rows="5" class="form-control" formControlName="description" placeholder="About project..."
+                  style="margin-left: 23px;"></textarea>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="projectStartDate-input">Start Date </label>
-              <div class="col-md-6">
-                <my-date-picker name="projectStartDate-input"
-                                [options]="myDatePickerOptions" class="form-control-mydatepicker"
-                                formControlName="projectStartDate"></my-date-picker>
+              <label class="col-form-label" for="startDate-input">Start Date
+                <span style="color: #ee0d0d">
+                  <strong>*</strong>
+                </span>
+              </label>
+              <div class="col-md-6" style="margin-left: 30px;">
+                <my-date-picker name="startDate-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="startDate"></my-date-picker>
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-3 col-form-label">Deadline </label>
-              <div class="col-md-6">
-                <my-date-picker name="projectDeadline-input" [options]="myDatePickerOptions"
-                                class="form-control-mydatepicker" formControlName="projectDeadline" disable="true"></my-date-picker>
+              <label class="col-form-label">Deadline
+                <span style="color: #ee0d0d">
+                  <strong>*</strong>
+                </span>
+              </label>
+              <div class="col-md-6" style="margin-left: 35px;">
+                <my-date-picker name="deadline-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="deadline"
+                  disable="true"></my-date-picker>
               </div>
             </div>
             <div class="row">
               <div class="col-4 text-right">
-                <button type="button" class="btn btn-success btn-bw " data-toggle="modal"
-                        (click)="successModal.show()">Add</button>
+                <button class="btn btn-primary" (click)="successModal.show()" [ladda]="isLoading">
+                  Add
+                </button>
+                <!-- <button type="button" class="btn btn-success btn-bw " data-toggle="modal" (click)="successModal.show()">Add</button> -->
               </div>
               <div class="col-4 offset-1 text-left">
-                <button type="button" class="btn btn-success btn-bw" data-toggle="modal"
-                        onclick="location.href='#/project'">Cancel</button>
+                <button type="button" class="btn btn-secondary btn-bw" data-toggle="modal" onclick="location.href='#/project'">Cancel</button>
               </div>
             </div>
           </div>
@@ -53,8 +64,7 @@
   </div>
 </div>
 
-<div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
+<div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-success" role="document">
     <div class="modal-content">
       <div class="modal-header" style="color: black;

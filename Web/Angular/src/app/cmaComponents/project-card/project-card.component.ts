@@ -10,6 +10,8 @@ import { Location } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { ProjectService } from '../../services/project.service';
 import { ErrorModalComponent } from '../../cmaComponents/modals';
+import { StoreService } from '../../services/tree.service';
+import {User} from 'app/interfaces/user';
 @Component({
   selector: 'app-project-card',
   templateUrl: './project-card.component.html',
@@ -26,6 +28,7 @@ export class ProjectCardComponent implements OnInit {
   isPageLoading: boolean;
   dynamic: number;
   type: string;
+  currentUser: User;
   isLoading: boolean;
   errors: {
     removelistwithtask: string;
@@ -35,10 +38,12 @@ export class ProjectCardComponent implements OnInit {
     private modalService: BsModalService,
     private router: Router,
     private route: ActivatedRoute,
+    private storeService: StoreService,
     private location: Location) {
     this.isPageLoading = true;
     this.foundTasks = [];
     this.isCollapsed = true;
+    this.currentUser = this.storeService.get(['currentUser']) as User;
   }
 
   ngOnInit() {
