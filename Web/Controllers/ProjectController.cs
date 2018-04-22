@@ -536,9 +536,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{id:int}/reportapi")]
-        [Authorize(Roles = "Admin")]
+        
         public IHttpActionResult GetReport(int id)
         {
             try
