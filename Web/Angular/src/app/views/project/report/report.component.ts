@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {ProjectService} from '../../../services/project.service';
 import {Task} from '../../../interfaces/task';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-report',
@@ -61,6 +62,15 @@ export class ReportComponent implements OnInit {
       labels: labels,
       data: data,
       type: 'pie'
+    }
+  }
+
+  setupLineChart() {
+    let lables =
+    let now = moment();
+    for (let i = 0; i < 7; i++) {
+      let previousDate = now.subtract(i, 'day');
+
     }
   }
 

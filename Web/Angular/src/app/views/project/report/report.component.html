@@ -4,10 +4,74 @@
   </div>
   <app-spinner *ngIf=isLoading.page class="col-12"></app-spinner>
   <div class="card-body row" *ngIf=!isLoading.page>
-    <canvas baseChart
-            [data]="pieChart.data"
-            [labels]="pieChart.labels"
-            [chartType]="pieChart.type"></canvas>
+    <div class="col-12">
+      <a routerLink="/project/{{report.id}}/detail">
+        <h2 class="card-title">{{report.name}}</h2>
+      </a>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="section col-6">
+          <!--DETAIL SECTION-->
+          <h5 class="mb-3">Detail</h5>
+          <dl class="row ml-1">
+            <dt class="col-5">Task count:</dt>
+            <dd class="col-7">
+              {{report.taskCount}}
+            </dd>
+          </dl>
+          <dl class="row ml-1">
+            <dt class="col-5">Task deadline this week:</dt>
+            <dd class="col-7">
+              {{report.taskExpireThisWeek.length}}
+            </dd>
+          </dl>
+          <dl class="row ml-1">
+            <dt class="col-5">Number of user:</dt>
+            <dd class="col-7">
+              {{report.userNumberInProject}}
+            </dd>
+          </dl>
+          <dl class="row ml-1">
+            <dt class="col-5">Number of free user:</dt>
+            <dd class="col-7">
+              {{report.userNumberNotInTask}}
+            </dd>
+          </dl>
+        </div>
+        <div class="section col-6">
+          <!--DETAIL SECTION-->
+          <h5 class="mb-3">Task status</h5>
+          <dl class="row ml-1">
+            <dt class="col-4">Task count:</dt>
+            <dd class="col-12">
+              <canvas baseChart
+                      [data]="pieChart.data"
+                      [labels]="pieChart.labels"
+                      [chartType]="pieChart.type">
+
+              </canvas>
+            </dd>
+          </dl>
+        </div>
+        <div class="section col-12">
+          <!--DETAIL SECTION-->
+          <h5 class="mb-3">Task status</h5>
+          <dl class="row ml-1">
+            <!--<dt class="col-4">Task count:</dt>-->
+            <dd class="col-12">
+              <canvas baseChart
+                      [data]="pieChart.data"
+                      [labels]="pieChart.labels"
+                      [chartType]="pieChart.type">
+
+              </canvas>
+            </dd>
+          </dl>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 

@@ -243,7 +243,6 @@ export class ViewComponent implements OnInit {
         })
     } else {
       this.resetErrors();
-      // show some form of success message here
     }
   }
 
