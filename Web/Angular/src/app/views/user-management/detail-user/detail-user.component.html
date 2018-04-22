@@ -18,7 +18,8 @@
           <strong>{{foundUser.name}}</strong>
         </div>
         <div id="team" *ngIf="foundUser" style="font-size: 30px">
-          <a href="#/department/{{foundUser.team.id}}/detail">{{foundUser.team.name}}</a>
+          <a href="#/department/{{foundUser.team.id}}/detail" *ngIf="foundUser.team">{{foundUser.team.name}}</a>
+          <span *ngIf="!foundUser.team">N/A</span>
         </div>
         <br/>
         <div id="role" *ngIf="foundUser">

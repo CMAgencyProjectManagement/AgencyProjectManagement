@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ProjectService} from '../../../services/project.service';
-import {Cursor, StoreService} from '../../../services/tree.service';
+import { Component, OnInit } from '@angular/core';
+import { ProjectService } from '../../../services/project.service';
+import { Cursor, StoreService } from '../../../services/tree.service';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {Router} from '@angular/router';
-import {IMyDpOptions} from 'mydatepicker';
+import { Router } from '@angular/router';
+import { IMyDpOptions } from 'mydatepicker';
 
 @Component({
   selector: 'app-add-project',
@@ -23,25 +23,35 @@ export class AddProjectComponent implements OnInit {
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
-  ProjectForm: FormGroup;
-
+  projectForm: FormGroup;
+  isLoadingPage: boolean;
+  errors: {
+    name: string,
+    description: string,
+    startDate: string,
+    deadline: string,
+  };
   constructor(private projectService: ProjectService,
-              private router: Router) {
+    private router: Router) {
+    this.projectForm = new FormGroup({
+      name: new FormControl(undefined, Validators.required),
+      description: new FormControl(undefined, Validators.required),
+      startDate: new FormControl(undefined, Validators.required),
+      deadline: new FormControl(undefined, Validators.required),
+    });
+    this.isLoading = false;
+    this.isLoadingPage = true;
+    this.setErrorsNull();
   }
 
   ngOnInit() {
-    this.ProjectForm = new FormGroup({
-      projectName: new FormControl(undefined, Validators.required),
-      projectDexscription: new FormControl(undefined, Validators.required),
-      projectStartDate: new FormControl(undefined, Validators.required),
-      projectDeadline: new FormControl(undefined, Validators.required),
-    });
+    this.isLoadingPage = false;
   }
 
   handleCreate() {
-    if (this.ProjectForm.valid) {
+    if (this.projectForm.valid) {
 
-      const formValue = this.ProjectForm.value;
+      const formValue = this.projectForm.value;
       this.isLoading = true;
       console.debug('here');
       this.projectService.createProject(
@@ -66,5 +76,14 @@ export class AddProjectComponent implements OnInit {
       const errorMessage = error.message;
       console.debug('handleCreateProjectError', fieldName, errorMessage);
     }
+  }
+
+  setErrorsNull(): void {
+    this.errors = {
+      name: '',
+      description: '',
+      startDate: '',
+      deadline: '',
+    };
   }
 }
