@@ -66,7 +66,7 @@ export class ReportComponent implements OnInit {
   }
 
   setupLineChart() {
-    let lables =
+    let lables = [];
     let now = moment();
     for (let i = 0; i < 7; i++) {
       let previousDate = now.subtract(i, 'day');
