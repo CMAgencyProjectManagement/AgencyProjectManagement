@@ -17,6 +17,9 @@ import {CmaModule} from '../../cmaComponents/cma.module';
 import {SpinnerModule} from '../../components/spinner/spinner.module';
 import {ReportComponent} from './report/report.component';
 import {LaddaModule} from 'angular2-ladda';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+
+
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -33,6 +36,7 @@ import {LaddaModule} from 'angular2-ladda';
     LaddaModule.forRoot({
       style: 'expand-left'
     }),
+    ChartsModule
   ],
   declarations: [
     ProjectManagementComponent,

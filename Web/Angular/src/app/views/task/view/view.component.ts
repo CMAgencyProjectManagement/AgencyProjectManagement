@@ -293,7 +293,13 @@ export class ViewComponent implements OnInit {
   }
 
   handleSetStatusBtnClick() {
-    this.modalService.show(SelectStatusModalComponent, {class: 'modal-dialog', ignoreBackdropClick: true});
+    const initialState = {
+      task: this.foundTask,
+      confirmCallback: (task) => {
+        this.foundTask = task;
+      }
+    };
+    this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
   attachmentFileChange(fileInput: any) {

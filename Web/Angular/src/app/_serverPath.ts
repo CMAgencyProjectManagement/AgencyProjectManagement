@@ -22,6 +22,7 @@ const serverPath = {
   getProjectStatus: '/api/project/statuses',
   assignUsersToProject: '/api/project/assign',
   unAssignUsersFromProject: '/api/project/Unassign',
+  getReport: (projectid) => `/api/project/${projectid}/report`,
   // List
   createList: '/api/list',
   updateList: '/api/list/update',

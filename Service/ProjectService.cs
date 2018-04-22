@@ -427,7 +427,7 @@ namespace Service
                 int taskStatusCount = tasks.Where(x => x.Status == (int) status).Count();
                 calculatedResult.Add(new JObject
                 {
-                    ["key"] = status.ToString(),
+                    ["key"] = DisplayCamelCaseString(status.ToString()),
                     ["value"] = (decimal) (taskStatusCount * 100) / taskNumber
                 });
             }
