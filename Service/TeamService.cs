@@ -220,6 +220,33 @@ namespace Service
 
             return result;
         }
+        public bool IsManagerOfTeam(int userId, IQueryable<int> teamIds)
+        {
+            var user = db.Users.Find(userId);
+            if (!user.IsManager)
+            {
+                throw new ObjectNotFoundException($"User {userId} is not a manager");
+
+            }
+            if (teamIds.Count() != 0)
+            {
+                foreach (var teamId in teamIds)
+                {
+                    if (user.TeamID==teamId)
+                    {
+                        
+                        return true;
+                    }
+                }
+                throw new ObjectNotFoundException($"User {userId} is not a manager has assigned this project");
+                
+            }
+            //if (userTeamId==teamId&&db.Users.Find(userId).IsManager==true)
+            //{
+            //    return true;
+            //}
+            return false;
+        }
 
         public JObject ParseToJsonVer2(Team team, bool includeManager = true,
             bool includeUsers = false,
