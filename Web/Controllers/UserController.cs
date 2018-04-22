@@ -27,7 +27,6 @@ namespace Web.Controllers
                     //Dont expose password
                     User user = userService.GetUser(id);
                     string avatarPath = AgencyConfig.AvatarPath;
-
                     return Ok(ResponseHelper.GetResponse(userService.ParseToJson(user, avatarPath, includeTeam: true)));
                 }
             }

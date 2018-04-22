@@ -86,7 +86,7 @@ namespace Service
         public IEnumerable<User> GetUsersOfTeam(int teamId, bool includeBanned = false)
         {
             IEnumerable<User> users =
-                db.Users.Where(user => user.Teams.Any(team => team.ID == teamId));
+                db.Users.Where(user => user.Teams.Any(team => team.ID == teamId) && user.IsManager == false);
             
             if (!includeBanned)
             {
@@ -127,7 +127,7 @@ namespace Service
             Team team = db.Teams.Find(teamId);
             if (team != null)
             {
-                return team.Users.ToList();
+                return team.Users.Where(x=> x.IsManager == false).ToList();
             }
             else
             {

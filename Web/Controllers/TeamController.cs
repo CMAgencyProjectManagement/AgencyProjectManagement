@@ -40,7 +40,35 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpGet]
+        [Route("freestaff")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetFreeUser()
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TeamService teamService = new TeamService(db);
+                    UserService userService = new UserService(db);
+                    var freeUsers = teamService.GetFreeUsers();
+                    JArray dataObject = new JArray();
+                    foreach (var user in freeUsers)
+                    {
+                        string avatarPath = AgencyConfig.AvatarPath;
 
+                        dataObject.Add(userService.ParseToJson(user, avatarPath));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
         [HttpGet]
         [Route("{id:int}")]
         [Authorize]

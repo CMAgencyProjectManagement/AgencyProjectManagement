@@ -23,7 +23,12 @@ namespace Service
         {
             return db.Teams.ToList();
         }
-
+        public List<User> GetFreeUsers()
+        {
+            var freeUsers = db.Users
+                .Where(x => x.TeamID == null && x.IsAdmin == false).ToList();
+            return freeUsers;
+        }
         public Team GetTeamById(int id)
         {
             return db.Teams.Find(id);
@@ -241,10 +246,7 @@ namespace Service
                 throw new ObjectNotFoundException($"User {userId} is not a manager has assigned this project");
                 
             }
-            //if (userTeamId==teamId&&db.Users.Find(userId).IsManager==true)
-            //{
-            //    return true;
-            //}
+           
             return false;
         }
 
@@ -252,6 +254,7 @@ namespace Service
             bool includeUsers = false,
             bool isDetailedUsers = false,
             bool isDetailedProjects = false,
+            bool isDetailedAssignees = false,
             string avatarPath = null)
         {
             UserService userService = new UserService(db);
@@ -301,7 +304,7 @@ namespace Service
                     listArray.Add(userService.ParseToJson(user, avatarPath));
                 }
 
-                result["users"] = listArray;
+                result["usersbonus"] = listArray;
             }
 
             if (isDetailedProjects)

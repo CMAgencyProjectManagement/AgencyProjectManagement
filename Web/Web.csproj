@@ -512,6 +512,7 @@
     <Compile Include="ViewModels\UnassignTaskModel.cs" />
     <Compile Include="ViewModels\UnAssignTeamModel.cs" />
     <Compile Include="ViewModels\UpdateCommentModel.cs" />
+    <Compile Include="ViewModels\UpdateCurrentUserModel.cs" />
     <Compile Include="ViewModels\UpdateListModel.cs" />
     <Compile Include="ViewModels\UpdateProjectViewModel.cs" />
     <Compile Include="ViewModels\UpdateTaskViewModel.cs" />
@@ -539,7 +540,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59521</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
