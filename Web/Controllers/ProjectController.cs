@@ -44,6 +44,55 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpGet]
+        [Route("{id:int}/taskarchive")]
+        [Authorize(Roles = "Admin,Manager")]
+        public IHttpActionResult GetProjectById(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    TaskService taskService = new TaskService(db);
+                    TeamService teamService = new TeamService(db);
+                    int userId = Int32.Parse(User.Identity.GetUserId());
+                    IQueryable<int> teamIds = db.TeamProjects.Where(x => x.ProjectID == id).Select(x => x.TeamID);
+                    int tc = teamIds.Count();
+                    if (db.Users.Find(userId).IsAdmin||teamService.IsManagerOfTeam(userId,teamIds))
+                    {
+                        var tasks = projectService.GetTasksOfProject(id);
+                        var ArchiveTasks = tasks.Where(x => x.IsArchived == true);
+                        var UnArchiveTasks = tasks.Where(x => x.IsArchived == false);
+                        JArray dataObject1 = new JArray();
+                        foreach (var task in ArchiveTasks)
+                        {
+                            dataObject1.Add(taskService.ParseToJson(task));
+                        }
+                        JArray dataObject2 = new JArray();
+                        foreach (var task in UnArchiveTasks)
+                        {
+                            dataObject2.Add(taskService.ParseToJson(task));
+                        }
+
+                        JObject mainObject = new JObject
+                        {
+                            ["archiveTasks"] = dataObject1,
+                            ["unArchiveTasks"] = dataObject2
+                        };
+                        return Ok(ResponseHelper.GetResponse(mainObject));
+                    }
+                    return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
 
         [HttpGet]
         [Route("recentchanged")]
