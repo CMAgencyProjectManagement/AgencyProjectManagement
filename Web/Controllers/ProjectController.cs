@@ -508,7 +508,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/report")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult GetProjectTotalReport(int id)
         {
             try

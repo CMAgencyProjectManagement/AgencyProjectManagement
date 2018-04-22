@@ -55,7 +55,7 @@ const routes: Routes = [
     path: ':id/report',
     component: ReportComponent,
     data: {
-      title: 'report'
+      title: 'Report'
     }
   },
 ];
