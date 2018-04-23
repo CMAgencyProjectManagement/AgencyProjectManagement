@@ -64,7 +64,7 @@ var CreateTeamComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/detail-team/detail-team.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n    <div class=\"card-header\">\r\n      <strong>Department's detail</strong>\r\n    </div>\r\n    <div class=\"card-body\" *ngIf=\"foundTeam\">\r\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n        <div class=\"col-12 text-center\" *ngIf=\"foundTeam\" style=\" text-transform: uppercase\">\r\n          <h1>\r\n            {{foundTeam.name}}\r\n          </h1>\r\n        </div>\r\n        <div>\r\n          <table class=\"table table-bordered\">\r\n            <thead>\r\n            <tr>\r\n              <th>User</th>\r\n              <th>Role</th>\r\n              <th *ngIf=\"managementMode\">Status</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody *ngIf=\"foundTeam.users.length !== 0\">\r\n            <tr *ngFor=\"let user of foundTeam.users\">\r\n              <td>\r\n                <a href=\"#/account/detail?id={{user.id}}\"\r\n                   *ngIf=\"managementMode\">\r\n                  {{user.username}}\r\n                </a>\r\n                <span *ngIf=\"!managementMode\">{{user.username}}</span>\r\n              </td>\r\n              <td>\r\n                <div *ngIf=\"user.isAdmin\">\r\n                  <strong>Admin </strong>\r\n                </div>\r\n                <div *ngIf=\"!user.isAdmin && user.isManager\">\r\n                  <strong>Manager </strong>\r\n                </div>\r\n                <div *ngIf=\"!user.isAdmin && !user.isManager\">\r\n                  Staff\r\n                </div>\r\n\r\n              </td>\r\n              <td *ngIf=\"managementMode\">\r\n                <div *ngIf=\"user.isActive\">Active</div>\r\n                <div *ngIf=\"!user.isActive\">Banned</div>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n    <div class=\"card-header\">\r\n      <strong>Department's detail</strong>\r\n    </div>\r\n    <div class=\"card-body\" *ngIf=\"foundTeam\">\r\n      <form action=\"\" method=\"post\" enctype=\"multipart/form-data\" class=\"form-horizontal\">\r\n        <div class=\"col-12 text-center\" *ngIf=\"foundTeam\" style=\" text-transform: uppercase\">\r\n          <h1>\r\n            {{foundTeam.name}}\r\n          </h1>\r\n        </div>\r\n        <div>\r\n          <table class=\"table table-bordered\">\r\n            <thead>\r\n            <tr>\r\n              <th>User</th>\r\n              <th>Role</th>\r\n              <th *ngIf=\"managementMode\">Status</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody *ngIf=\"foundTeam.users.length !== 0 || foundTeam.manager\">\r\n            <!--MANAGER-->\r\n            <tr>\r\n              <td>\r\n                <a href=\"#/account/detail?id={{foundTeam.manager.id}}\"\r\n                   *ngIf=\"managementMode\">\r\n                  {{foundTeam.manager.name}}\r\n                </a>\r\n                <span *ngIf=\"!managementMode\">{{foundTeam.manager.name}}</span>\r\n              </td>\r\n              <td>\r\n                <strong>Manager</strong>\r\n              </td>\r\n              <td *ngIf=\"managementMode\">\r\n                <div *ngIf=\"foundTeam.manager.isActive\">Active</div>\r\n                <div *ngIf=\"!foundTeam.manager.isActive\">Banned</div>\r\n              </td>\r\n            </tr>\r\n            <!--NORMAL USER-->\r\n            <tr *ngFor=\"let user of foundTeam.users\">\r\n              <td>\r\n                <a href=\"#/account/detail?id={{user.id}}\"\r\n                   *ngIf=\"managementMode\">\r\n                  {{user.username}}\r\n                </a>\r\n                <span *ngIf=\"!managementMode\">{{user.username}}</span>\r\n              </td>\r\n              <td>\r\n                <div *ngIf=\"user.isAdmin\">\r\n                  <strong>Admin</strong>\r\n                </div>\r\n                <div *ngIf=\"!user.isAdmin && user.isManager\">\r\n                  <strong>Manager</strong>\r\n                </div>\r\n                <div *ngIf=\"!user.isAdmin && !user.isManager\">\r\n                  Staff\r\n                </div>\r\n              </td>\r\n              <td *ngIf=\"managementMode\">\r\n                <div *ngIf=\"user.isActive\">Active</div>\r\n                <div *ngIf=\"!user.isActive\">Banned</div>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -172,7 +172,7 @@ var DetailTeamComponent = /** @class */ (function () {
             },
             message: message
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["e" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     DetailTeamComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -548,6 +548,7 @@ var UpdateTeamComponent = /** @class */ (function () {
             _this.loading.unAssign = false;
         })
             .catch(function (reason) {
+            _this.showErrorModal(reason.Message);
             console.debug('unAssign team fail', reason);
             _this.loading.unAssign = false;
         });
@@ -563,7 +564,7 @@ var UpdateTeamComponent = /** @class */ (function () {
             },
             message: message
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["e" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     UpdateTeamComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({

@@ -221,6 +221,7 @@ var serverPath = {
     unAssignTeam: '/api/team/unassign',
     setTeamRole: '/api/team/assign/role',
     getTeamDetail: function (teamId) { return "/api/team/" + teamId; },
+    getAssignableUser: function (projecId) { return "/api/project/" + projecId + "/members/assignable"; },
     // Task
     getTask: function (taskId) { return "/api/task/" + taskId; },
     createTask: '/api/task',
@@ -443,18 +444,19 @@ var SERVICES = [
 // Import modal
 
 var MODALS = [
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["j" /* SelectTeamsModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["l" /* SuccessModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* ErrorModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["k" /* SelectTeamsModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["m" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["e" /* ErrorModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["c" /* CreateListModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["b" /* ConfirmModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["e" /* RemoveListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["f" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["k" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["f" /* RemoveListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* RenameListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["l" /* SelectUsersModalComponent */],
     __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["a" /* CommentModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["h" /* SelectStatusModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["g" /* SelectMembersModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["i" /* SelectTasksModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["i" /* SelectStatusModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["h" /* SelectMembersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["j" /* SelectTasksModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__cmaComponents_modals__["d" /* CreateProjectModalComponent */]
 ];
 // Import 3rd party components
 
@@ -769,22 +771,23 @@ var declares_exports = [
     __WEBPACK_IMPORTED_MODULE_18__modals__["b" /* ConfirmModalComponent */],
     __WEBPACK_IMPORTED_MODULE_7__user_list_user_list_component__["a" /* UserListComponent */],
     __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["d" /* ErrorModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["e" /* ErrorModalComponent */],
     __WEBPACK_IMPORTED_MODULE_18__modals__["c" /* CreateListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["e" /* RemoveListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["l" /* SuccessModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["f" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["k" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["f" /* RemoveListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["m" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["g" /* RenameListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["l" /* SelectUsersModalComponent */],
     __WEBPACK_IMPORTED_MODULE_18__modals__["a" /* CommentModalComponent */],
     __WEBPACK_IMPORTED_MODULE_14__task_table_task_table_component__["a" /* TaskTableComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["h" /* SelectStatusModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["j" /* SelectTeamsModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["i" /* SelectStatusModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["k" /* SelectTeamsModalComponent */],
     __WEBPACK_IMPORTED_MODULE_15__task_status_task_status_component__["a" /* TaskStatusComponent */],
     __WEBPACK_IMPORTED_MODULE_19__tasklist_tasklist_component__["a" /* TasklistComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["i" /* SelectTasksModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["j" /* SelectTasksModalComponent */],
     __WEBPACK_IMPORTED_MODULE_16__project_status_project_status_component__["a" /* ProjectStatusComponent */],
     __WEBPACK_IMPORTED_MODULE_17__task_priority_task_priority_component__["a" /* TaskPriorityComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["g" /* SelectMembersModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_18__modals__["h" /* SelectMembersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__modals__["d" /* CreateProjectModalComponent */],
 ];
 var CmaModule = /** @class */ (function () {
     function CmaModule() {
@@ -1295,6 +1298,84 @@ var CreateListModalComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cmaComponents/modals/create-project-modal/create-project-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\r\n  <h4 class=\"modal-title pull-left\">Add list</h4>\r\n  <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n    <span aria-hidden=\"true\">&times;</span>\r\n  </button>\r\n</div>\r\n<div class=\"modal-body\" id=\"listname\">\r\n  <div class=\"col-sm-9\">\r\n    <span>Are you sure to create this project?</span>\r\n  </div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">Confirm</button>\r\n  <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/create-project-modal/create-project-modal.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/modals/create-project-modal/create-project-modal.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CreateProjectModalComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__ = __webpack_require__("../../../../ngx-bootstrap/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CreateProjectModalComponent = /** @class */ (function () {
+    function CreateProjectModalComponent(bsModalRef) {
+        this.bsModalRef = bsModalRef;
+    }
+    CreateProjectModalComponent.prototype.ngOnInit = function () {
+    };
+    CreateProjectModalComponent.prototype.handleOnConfirm = function () {
+    };
+    CreateProjectModalComponent.prototype.handleOnCancel = function () {
+        if (this.cancelCallback) {
+            this.cancelCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    CreateProjectModalComponent.prototype.handleOnClose = function () {
+        if (this.closeCallback) {
+            this.closeCallback();
+        }
+        this.bsModalRef.hide();
+    };
+    CreateProjectModalComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-create-project-modal',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/modals/create-project-modal/create-project-modal.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/modals/create-project-modal/create-project-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ngx_bootstrap__["a" /* BsModalRef */]])
+    ], CreateProjectModalComponent);
+    return CreateProjectModalComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.html":
 /***/ (function(module, exports) {
 
@@ -1374,25 +1455,28 @@ var ErrorModalComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__create_list_modal_create_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/create-list-modal/create-list-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__create_list_modal_create_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/error-modal/error-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_2__error_modal_error_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/success-modal/success-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_3__success_modal_success_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/remove-list-modal/remove-list-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_4__remove_list_modal_remove_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/rename-list-modal/rename-list-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_5__rename_list_modal_rename_list_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-users-modal/select-users-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_6__select_users_modal_select_users_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__select_teams_modal_select_teams_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-teams-modal/select-teams-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_7__select_teams_modal_select_teams_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_7__select_teams_modal_select_teams_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__comment_modal_comment_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/comment-modal/comment-modal.component.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_8__comment_modal_comment_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__select_status_modal_select_status_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-status-modal/select-status-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_9__select_status_modal_select_status_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_9__select_status_modal_select_status_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__select_tasks_modal_select_tasks_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-tasks-modal/select-tasks-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_10__select_tasks_modal_select_tasks_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_10__select_tasks_modal_select_tasks_modal_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__select_members_modal_select_members_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_11__select_members_modal_select_members_modal_component__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_11__select_members_modal_select_members_modal_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__create_project_modal_create_project_modal_component__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/create-project-modal/create-project-modal.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_12__create_project_modal_create_project_modal_component__["a"]; });
+
 
 
 
@@ -1584,7 +1668,7 @@ var RenameListModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/modals/select-members-modal/select-members-modal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select Teams</h4>\r\n    <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\r\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  \r\n  <div class=\"modal-body\">\r\n    <div class=\"col-12\" *ngIf=\"message\">\r\n      {{message}}\r\n    </div>\r\n    <div class=\"col-12\">\r\n      <div class=\"form-group row\">\r\n        <div class=\"col-md-10\">\r\n          <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\r\n            <option value=\"{{undefined}}\">Please select members from your department</option>\r\n            <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\r\n          </select>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-12\" *ngIf=\"selectedUsers.length > 0\">\r\n      <h3>Selected</h3>\r\n      <app-user-list [users]=\"selectedUsers\"></app-user-list>\r\n    </div>\r\n  \r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\r\n  </div>\r\n  "
+module.exports = "<div class=\"modal-header\">\n    <h4 class=\"modal-title pull-left\" *ngIf=\"!title\">Select Teams</h4>\n    <h4 class=\"modal-title pull-left\" *ngIf=\"title\">{{title}}</h4>\n    <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"handleOnClose()\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n\n  <div class=\"modal-body\">\n    <div class=\"col-12\" *ngIf=\"message\">\n      {{message}}\n    </div>\n    <div class=\"col-12\">\n      <div class=\"form-group row\">\n        <div class=\"col-md-10\">\n          <select id=\"user-select\" name=\"user-select\" class=\"form-control\" (change)=\"handleOnSelect($event.target.value)\">\n            <option value=\"{{undefined}}\">Please select members</option>\n            <option value=\"{{user.id}}\" *ngFor=\"let user of userPool\">{{user.name}}</option>\n          </select>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-12\" *ngIf=\"selectedUsers.length > 0\">\n      <h3>Selected</h3>\n      <app-user-list [users]=\"selectedUsers\"></app-user-list>\n    </div>\n\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"handleOnConfirm()\">{{confirmButtonText}}</button>\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"handleOnCancel()\">Cancel</button>\n  </div>\n"
 
 /***/ }),
 
@@ -2268,7 +2352,7 @@ var ProjectCardComponent = /** @class */ (function () {
             },
             defaultlistname: defaultlistname
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["f" /* RenameListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["g" /* RenameListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ProjectCardComponent.prototype.handleOnRemoveListClick = function (listid) {
         var _this = this;
@@ -2281,7 +2365,7 @@ var ProjectCardComponent = /** @class */ (function () {
                 });
             }
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["e" /* RemoveListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4_app_cmaComponents_modals__["f" /* RemoveListModalComponent */], { initialState: initialState, class: 'modal-dialog' });
     };
     ProjectCardComponent.prototype.search = function (searchStr) {
         this.foundTasks = [];
@@ -2328,7 +2412,7 @@ var ProjectCardComponent = /** @class */ (function () {
             },
             message: message
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_9__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_9__cmaComponents_modals__["e" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -2939,7 +3023,7 @@ var AppBreadcrumbsComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/components/app-footer/app-footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<footer class=\"app-footer\">\r\n  <span><a>C&M Team</a> &copy; 2017 </span>\r\n  <span class=\"ml-auto\">Powered by <a></a></span>\r\n</footer>\r\n"
+module.exports = "<footer class=\"app-footer\">\n  <span><a>CMA Team</a> &copy; 2017 </span>\n  <span class=\"ml-auto\"><a></a></span>\n</footer>\n"
 
 /***/ }),
 
@@ -3506,6 +3590,9 @@ var AppSidebarComponent = /** @class */ (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_8__app_sidebar_minimizer__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__ = __webpack_require__("../../../../../src/app/components/app-sidebar-nav/index.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_9__app_sidebar_nav__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_module__ = __webpack_require__("../../../../../src/app/components/spinner/spinner.module.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_10__spinner_spinner_module__["a"]; });
+
 
 
 
@@ -4775,6 +4862,23 @@ var ProjectService = /** @class */ (function () {
             Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getProject(projectId))
                 .set('token', _this.tokenCursor.get())
                 .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ProjectService.prototype.getAssignableUser = function (projectId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getAssignableUser(projectId))
+                .set('token', _this.tokenCursor.get())
                 .then(function (res) {
                 var content = res.body;
                 if (content.IsSuccess) {

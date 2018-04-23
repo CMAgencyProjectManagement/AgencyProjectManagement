@@ -197,7 +197,7 @@ var CreateUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/detail-user/detail-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <div class=\"card-body\" *ngIf=\"foundUser\">\r\n    <div id=\"AvaAndDe\" class=\"row\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div class=\"col-4\">\r\n        <div class=\"button-row\">\r\n          <a href=\"#/account/update\" class=\"btn btn-secondary bg-light\" style=\"font-size: 20px\">\r\n            <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n          </a>\r\n        </div>\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase; font-size: 40px; color: #3960A4\">\r\n          <strong>{{foundUser.name}}</strong>\r\n        </div>\r\n        <div id=\"team\" *ngIf=\"foundUser\" style=\"font-size: 30px\">\r\n          <a href=\"#/department/{{foundUser.team.id}}/detail\" *ngIf=\"foundUser.team\">{{foundUser.team.name}}</a>\r\n          <span *ngIf=\"!foundUser.team\">N/A</span>\r\n        </div>\r\n        <br/>\r\n        <div id=\"role\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isAdmin\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Admin</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Manager</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Staff</span>\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isActive\">\r\n            <i class=\"fa fa-check fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #3AA65B\"> &nbsp;&nbsp;&nbsp;Active</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\">\r\n            <i class=\"fa fa-close fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #CB0A0E\"> &nbsp;&nbsp;&nbsp;Banned</span>\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-phone fa-lg\"></i>\r\n          <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-envelope-o fa-lg\"></i>\r\n          <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\">\r\n            <i class=\"fa fa-birthday-cake fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n  <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n    <div id=\"AvaAndDe\" class=\"row\" *ngIf=\"foundUser\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div class=\"col-4\">\r\n        <div class=\"button-row\">\r\n          <a href=\"#/account/update\" class=\"btn btn-secondary bg-light\" style=\"font-size: 20px\">\r\n            <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n          </a>\r\n        </div>\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase; font-size: 40px; color: #3960A4\">\r\n          <strong>{{foundUser.name}}</strong>\r\n        </div>\r\n        <div id=\"team\" *ngIf=\"foundUser\" style=\"font-size: 30px\">\r\n          <a href=\"#/department/{{foundUser.team.id}}/detail\" *ngIf=\"foundUser.team\">{{foundUser.team.name}}</a>\r\n          <span *ngIf=\"!foundUser.team\" style=\"font-size: 25px\">Not Update</span>\r\n        </div>\r\n        <br/>\r\n        <div id=\"role\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isAdmin\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Admin</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Manager</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Staff</span>\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isActive\">\r\n            <i class=\"fa fa-check fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #3AA65B\"> &nbsp;&nbsp;&nbsp;Active</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\">\r\n            <i class=\"fa fa-close fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #CB0A0E\"> &nbsp;&nbsp;&nbsp;Banned</span>\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-phone fa-lg\"></i>\r\n          <span style=\"font-size: 20px\" *ngIf=\"foundUser.phone\"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>\r\n          <span style=\"font-size: 20px\" *ngIf=\"!foundUser.phone\"> &nbsp;&nbsp;&nbsp;&nbsp;Not Update</span>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-envelope-o fa-lg\" ></i>\r\n          <span style=\"font-size: 20px\" *ngIf=\"foundUser.email\"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>\r\n          <span style=\"font-size: 20px\" *ngIf=\"!foundUser.email\"> &nbsp;&nbsp;&nbsp;Not Update</span>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\">\r\n            <i class=\"fa fa-birthday-cake fa-lg\"></i>\r\n            <span style=\"font-size: 20px\" *ngIf=\"foundUser.birthdate\"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>\r\n            <span style=\"font-size: 20px\" *ngIf=\"!foundUser.birthdate\"> &nbsp;&nbsp;&nbsp;Not Update</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -254,6 +254,7 @@ var DetailUserComponent = /** @class */ (function () {
         this.route = route;
         this.location = location;
         this.selectedUser = [];
+        this.isLoadingPage = true;
         // let currentUser = this.storeService.get(['currentUser']) as User;
         // this.managementMode = currentUser.isManager || currentUser.isAdmin;
     }
@@ -261,7 +262,7 @@ var DetailUserComponent = /** @class */ (function () {
         this.entity = {};
         if (this.route.snapshot.paramMap.get('id') == undefined) {
             this.foundUser = this.storeService.get(['currentUser']);
-            console.debug(this.foundUser.id);
+            this.isLoadingPage = false;
         }
         else {
             this.userID = Number(this.route.snapshot.paramMap.get('id'));
@@ -291,6 +292,7 @@ var DetailUserComponent = /** @class */ (function () {
                     });
                 }
             }
+            _this.isLoadingPage = false;
         });
     };
     DetailUserComponent.prototype.GetURLParameter = function (sParam) {
@@ -436,7 +438,7 @@ var UpdateMyUserComponent = /** @class */ (function () {
             },
             message: message
         };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["d" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_4__cmaComponents_modals__["e" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
     UpdateMyUserComponent.prototype.handleUpdate = function () {
         var _this = this;
@@ -566,11 +568,17 @@ var UpdateUserComponent = /** @class */ (function () {
         var _this = this;
         if (this.route.snapshot.paramMap.get('id') == undefined) {
             this.foundUser = this.storeService.get(['currentUser']);
-            this.teamService.getDetail(this.foundUser.team.id)
-                .then(function (value) {
-                _this.teams = value;
-                _this.updateLoadingState();
-            });
+            if (this.foundUser.team) {
+                this.teamService.getDetail(this.foundUser.team.id)
+                    .then(function (value) {
+                    _this.teams = value;
+                    _this.updateLoadingState();
+                });
+            }
+            else {
+                this.teams = null;
+                this.updateLoadingState();
+            }
             this.updateForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
                 email: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
                 phone: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
@@ -631,8 +639,11 @@ var UpdateUserComponent = /** @class */ (function () {
         this.updateForm.controls['fullname'].setValue(user.name);
         this.updateForm.controls['email'].setValue(user.email);
         this.updateForm.controls['phone'].setValue(user.phone);
-        if (user.team) {
+        if (user.team != null) {
             this.updateForm.controls['team'].setValue(user.team.id);
+        }
+        else {
+            this.updateForm.controls['team'].setValue(0);
         }
         this.updateForm.controls['isActive'].setValue(user.isActive);
     };
