@@ -133,7 +133,7 @@ namespace Web.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetAssignableMember()
         {
-            
+            return null;
         }
         
         [HttpPut]
