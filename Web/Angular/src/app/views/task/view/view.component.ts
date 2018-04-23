@@ -33,6 +33,7 @@ export class ViewComponent implements OnInit {
     openAssignModal: boolean
     openUnAssignModal: boolean
     done: boolean,
+    setStatus: boolean,
     comment: boolean,
     editComment: boolean
   };
@@ -64,7 +65,8 @@ export class ViewComponent implements OnInit {
       openUnAssignModal: false,
       done: false,
       comment: false,
-      editComment: true,
+      editComment: false,
+      setStatus: false
     };
     this.openCommentForm = false;
     this.resetErrors();
@@ -292,10 +294,18 @@ export class ViewComponent implements OnInit {
   }
 
   handleSetStatusBtnClick() {
+    this.isLoading.setStatus = true;
     const initialState = {
       task: this.foundTask,
       confirmCallback: (task) => {
         this.foundTask = task;
+        this.isLoading.setStatus = false;
+      },
+      cancelCallback: () => {
+        this.isLoading.setStatus = false;
+      },
+      closeCallback: () => {
+        this.isLoading.setStatus = false;
       }
     };
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});

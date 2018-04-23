@@ -34,6 +34,7 @@ export class ProjectSchedulingComponent implements OnInit {
               private location: Location,
               private modalService: BsModalService) {
     this.projectTasks = [];
+    this.projectDependencies = [];
     this.isLoading = {
       page: true
     };
@@ -97,7 +98,6 @@ export class ProjectSchedulingComponent implements OnInit {
   }
 
   formatDependencies(dependencies: Dependency[]): any[] {
-    // {id: 1, source: 1, target: 2, type: "0"}
     let formattedDependencies = [];
     for (let dependency of dependencies) {
       let formattedDependency = {

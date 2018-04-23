@@ -33,15 +33,16 @@
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
                 *ngIf="!managementMode"
-                [disabled]="foundTask.statusText == 'Done'"
+                [disabled]="foundTask.status == 1 || isLoading.done"
                 (click)="handleOnNeedReviewBtnClick()"
                 [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}"
                 *ngIf="managementMode"
+                [disabled]="isLoading.setStatus"
                 (click)="handleSetStatusBtnClick()"
-                [ladda]="isLoading.done">
+                [ladda]="isLoading.setStatus">
           Set status
         </button>
       </div>
@@ -98,7 +99,8 @@
                   </div>
                   <div class="col-3">
                     <button class="btn btn-success float-right"
-                            [disabled]="!attachmentForm.value.attachment"
+                            [disabled]="!attachmentForm.value.attachment || isLoading.attachmentUpload"
+                            [hidden]="!attachmentForm.value.attachment"
                             [ladda]="isLoading.attachmentUpload"
                             (click)="handleUploadAttachmentClick()">
                       <i class="fa fa-plus"></i>

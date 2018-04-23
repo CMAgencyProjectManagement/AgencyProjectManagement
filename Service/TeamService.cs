@@ -34,6 +34,15 @@ namespace Service
             return db.Teams.Find(id);
         }
 
+        public IEnumerable<Team> GetTeamsOfProject(int projectId)
+        {
+            Project project = db.Projects.Find(projectId);
+            if (project == null) throw new ObjectNotFoundException($"Project with id {projectId} not found ");
+            IEnumerable<Team> teams = project.TeamProjects
+                .Select(teamProject => GetTeamById(teamProject.TeamID)); 
+            return teams;
+        }
+
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);
@@ -195,7 +204,7 @@ namespace Service
                 ["createdBy"] = userService.ParseToJson(creator),
                 ["createdDate"] = team.CreatedDate.ToShortDateString()
             };
-
+            
             if (includeManager)
             {
                 var manager = GetManager(team.ID);
@@ -284,7 +293,7 @@ namespace Service
 
             if (includeUsers)
             {
-                var users = userService.GetUsersOfTeam(team.ID);
+                var users = userService.GetUsersOfTeamVer2(team.ID);
                 var jArray = new JArray();
 
                 foreach (User user in users)
@@ -293,18 +302,6 @@ namespace Service
                 }
 
                 result["users"] = jArray;
-            }
-
-            if (isDetailedUsers)
-            {
-                IEnumerable<User> users = userService.GetUsersOfTeamVer2(team.ID);
-                JArray listArray = new JArray();
-                foreach (var user in users)
-                {
-                    listArray.Add(userService.ParseToJson(user, avatarPath));
-                }
-
-                result["usersbonus"] = listArray;
             }
 
             if (isDetailedProjects)

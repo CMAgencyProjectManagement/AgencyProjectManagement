@@ -284,7 +284,6 @@ namespace Service
 
         public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
         {
-            TeamService teamService = new TeamService(db);
             Project project = GetProjectByID(projectId);
             if (project == null)
             {
@@ -313,7 +312,6 @@ namespace Service
             project.ChangedBy = modifierId;
             project.ChangedTime = DateTime.Today;
             db.SaveChanges();
-
             return project;
         }
 
@@ -326,7 +324,6 @@ namespace Service
 
         public List<Task> GetTasksOfProject(int projectId)
         {
-            TaskService taskService = new TaskService(db);
             List<Task> tasksInProject = new List<Task>();
             var listIdsWithProjectID = db.Lists.Where(x => x.ProjectID == projectId).Select(x => x.ID).ToList();
             foreach (var listId in listIdsWithProjectID)
@@ -499,15 +496,11 @@ namespace Service
                 result["assignees"] = jArray;
 
                 JArray teamsJson = new JArray();
-                foreach (TeamProject teamProject in project.TeamProjects)
-                {
-                    if (teamProject.Team != null)
-                    {
-                        teamsJson.Add(teamservice.ParseToJson(teamProject.Team, avatarPath: avatarPath, includeUsers: true));
-                    }
-                }
+                IEnumerable<Team> teams = teamservice.GetTeamsOfProject(project.ID);
+                IEnumerable<JObject> teamJson = teams
+                    .Select(team => teamservice.ParseToJson(team, avatarPath: avatarPath, includeUsers: true));
 
-                result["teams"] = teamsJson;
+                result["teams"] = new JArray(teamJson);
             }
 
             return result;

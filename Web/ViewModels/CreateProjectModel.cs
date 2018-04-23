@@ -12,10 +12,12 @@ namespace Web.ViewModels
         
         public string Description { get; set; }
         
+        [Required]
         [AgencyDateValidation(ErrorMessage = "Invalid time format")]
-        public string Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
         
+        [Required]
         [AgencyDateValidation(ErrorMessage = "Invalid time format")]
-        public string StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
     }
 }

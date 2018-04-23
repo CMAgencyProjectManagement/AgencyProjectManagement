@@ -162,20 +162,28 @@ namespace Service
             return lateActiveTasks;
         }
 
-        public List<Task> GetActiveTasksOfUser(int userId)
+        public List<Task> GetActiveTasksOfUser(int userId,bool includeInactiveTasks = false)
         {
             User user = db.Users.Find(userId);
             if (user != null)
             {
                 var taskList = new List<Task>();
-
                 foreach (var userTask in user.UserTasks)
                 {
-                    if (userTask.Task.Status == (int) TaskStatus.NotDone ||
-                        userTask.Task.Status == (int) TaskStatus.NeedReview)
+                    if (!includeInactiveTasks)
+                    {
+                        if ((userTask.Task.Status == (int) TaskStatus.NotDone ||
+                            userTask.Task.Status == (int) TaskStatus.NeedReview) &&
+                            !userTask.Task.IsArchived)
+                        {
+                            taskList.Add(userTask.Task);
+                        }
+                    }
+                    else
                     {
                         taskList.Add(userTask.Task);
                     }
+                    
                 }
 
                 return taskList;
