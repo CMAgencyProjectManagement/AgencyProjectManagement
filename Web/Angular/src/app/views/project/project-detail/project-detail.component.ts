@@ -173,20 +173,17 @@ export class ProjectDetailComponent implements OnInit {
       if (selectedIds.length == 0) {
         this.containdepartment = true;
       }
-      if (!this.containdepartment) {
-        this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
-          .then(value => {
-            this.foundProject = value;
-            this.isLoading.openAssignModal = false
-          })
-          .catch(reason => {
-            this.showErrorModal('Assign fail!');
-            this.isLoading.openAssignModal = false;
-          })
-      } else {
-        this.showErrorModal('Please select departments!');
-        this.isLoading.openAssignModal = false
-      }
+
+      this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
+        .then(value => {
+          this.foundProject = value;
+          this.isLoading.openAssignModal = false
+        })
+        .catch(reason => {
+          this.showErrorModal(reason.Message);
+          this.isLoading.openAssignModal = false;
+        })
+
     };
     this.isLoading.openAssignModal = true;
     this.teamService.getAllTeam()
@@ -201,8 +198,8 @@ export class ProjectDetailComponent implements OnInit {
             this.isLoading.openAssignModal = false;
           },
           userPool: pool,
-          title: `Assign`,
-          confirmButtonText: 'Assign'
+          title: `Assign team to project "${this.foundProject.name}"`,
+          // confirmButtonText: 'Assign'
         };
         this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
@@ -239,7 +236,7 @@ export class ProjectDetailComponent implements OnInit {
                 this.isLoading.openAssignModal = false
               })
               .catch(reason => {
-                this.showErrorModal('Assign fail');
+                this.showErrorModal(reason.Message);
                 this.isLoading.openAssignModal = false
               })
           } else {

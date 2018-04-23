@@ -114,6 +114,7 @@ export class UpdateTeamComponent implements OnInit {
         this.loading.unAssign = false;
       })
       .catch(reason => {
+        this.showErrorModal(reason.Message);
         console.debug('unAssign team fail', reason);
         this.loading.unAssign = false;
       })

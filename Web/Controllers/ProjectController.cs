@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -117,19 +118,6 @@ namespace Web.Controllers
                             dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
                         }
                     }
-                    //if (db.Users.Find(userId).IsManager)
-                    //{
-                    //    TeamService teamService = new TeamService(db);
-                    //    var teamId = db.Users.Find(userId).TeamID;
-                    //    var tasksInTeam = teamService.GetTasksOfTeam((int)teamId);
-                    //    var tasks = taskService.GetTaskChangeThisWeek(tasksInTeam).OrderByDescending(X=>X.ChangedTime);
-                    //    foreach (var task in tasks)
-                    //    {
-                    //        dataObject.Add(taskService.ParseToJson(task));
-                    //    }
-                    //}
-
-
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
             }
@@ -139,6 +127,15 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
+        [HttpGet]
+        [Route("{projecId:int}/members/assignable")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetAssignableMember()
+        {
+            
+        }
+        
         [HttpPut]
         [Route("setteams")]
         [Authorize]
@@ -344,13 +341,6 @@ namespace Web.Controllers
                     {
                         ProjectService projectService = new ProjectService(db);
                         Boolean flag = true;
-                        //if (projectService.CheckDuplicatedNameOfProject(updateProjectViewModel.name))
-                        //{
-                        //    ModelState.AddModelError("Name", "Project name is taken");
-                        //    flag = false;
-                        //    //return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
-                        //}
-
 
                         if (updateProjectViewModel.startdate != null && updateProjectViewModel.deadline != null)
                         {
@@ -359,7 +349,6 @@ namespace Web.Controllers
                             {
                                 ModelState.AddModelError("StartDate", "StartDate must be smaller than the deadline");
                                 flag = false;
-                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
 
 
@@ -368,18 +357,8 @@ namespace Web.Controllers
                             {
                                 ModelState.AddModelError("Deadline", "Deadline must be greater than the StartDate");
                                 flag = false;
-                                //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                             }
                         }
-                        //if (updateProjectViewModel.startdate != null)
-                        //{
-                        //    if (DateTime.Parse(updateProjectViewModel.startdate) > DateTime.Now)
-                        //    {
-                        //        ModelState.AddModelError("StartDate", "StartDate must be smaller than the current time ");
-                        //        flag = false;
-                        //        //return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-                        //    }
-                        //}
 
 
                         if (flag == false)

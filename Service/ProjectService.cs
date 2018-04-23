@@ -97,10 +97,8 @@ namespace Service
                 CreatedTime = DateTime.Now
             };
 
-
             db.Projects.Add(newProject);
             db.SaveChanges();
-
 
             return newProject;
         }
