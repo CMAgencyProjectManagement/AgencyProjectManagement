@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web.Caching;
 using System.Web.Http;
 using Entity;
 using Microsoft.AspNet.Identity;
@@ -546,7 +547,7 @@ namespace Web.Controllers
                     }
 
                     result.Sort(compareUsersWithScore);
-                    return Ok(ResponseHelper.GetResponse(new JArray(result)));
+                    return Ok(ResponseHelper.GetResponse(new JArray(result.Take(10))));
                 }
             }
             catch (Exception ex)
