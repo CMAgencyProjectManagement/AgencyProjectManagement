@@ -2,8 +2,9 @@
   <div class="card-header">
     <strong>Account's detail</strong>
   </div>
-  <div class="card-body" *ngIf="foundUser">
-    <div id="AvaAndDe" class="row">
+  <app-spinner *ngIf="isLoadingPage"></app-spinner>
+  <div class="card-body animated fadeIn" *ngIf="!isLoadingPage">
+    <div id="AvaAndDe" class="row" *ngIf="foundUser">
 
       <div id="left" class="col-4">
         <img id="img" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
@@ -19,7 +20,7 @@
         </div>
         <div id="team" *ngIf="foundUser" style="font-size: 30px">
           <a href="#/department/{{foundUser.team.id}}/detail" *ngIf="foundUser.team">{{foundUser.team.name}}</a>
-          <span *ngIf="!foundUser.team">N/A</span>
+          <span *ngIf="!foundUser.team" style="font-size: 25px">Not Update</span>
         </div>
         <br/>
         <div id="role" *ngIf="foundUser">
@@ -51,16 +52,19 @@
 
         <div id="phone" *ngIf="foundUser">
           <i class="fa fa-phone fa-lg"></i>
-          <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>
+          <span style="font-size: 20px" *ngIf="foundUser.phone"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>
+          <span style="font-size: 20px" *ngIf="!foundUser.phone"> &nbsp;&nbsp;&nbsp;&nbsp;Not Update</span>
         </div>
         <div id="email" *ngIf="foundUser">
-          <i class="fa fa-envelope-o fa-lg"></i>
-          <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>
+          <i class="fa fa-envelope-o fa-lg" ></i>
+          <span style="font-size: 20px" *ngIf="foundUser.email"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>
+          <span style="font-size: 20px" *ngIf="!foundUser.email"> &nbsp;&nbsp;&nbsp;Not Update</span>
         </div>
         <div>
           <div id="birthdate" *ngIf="foundUser">
             <i class="fa fa-birthday-cake fa-lg"></i>
-            <span style="font-size: 20px"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>
+            <span style="font-size: 20px" *ngIf="foundUser.birthdate"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>
+            <span style="font-size: 20px" *ngIf="!foundUser.birthdate"> &nbsp;&nbsp;&nbsp;Not Update</span>
           </div>
         </div>
       </div>

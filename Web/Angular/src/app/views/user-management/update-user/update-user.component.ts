@@ -59,11 +59,16 @@ export class UpdateUserComponent implements OnInit {
   ngOnInit() {
     if (this.route.snapshot.paramMap.get('id') == undefined) {
       this.foundUser = this.storeService.get(['currentUser']) as User;
-      this.teamService.getDetail(this.foundUser.team.id)
+      if(this.foundUser.team){
+        this.teamService.getDetail(this.foundUser.team.id)
         .then(value => {
           this.teams = value;
           this.updateLoadingState();
         });
+      } else{
+        this.teams = null;
+        this.updateLoadingState();
+      }
       this.updateForm = new FormGroup({
         email: new FormControl(undefined),
         phone: new FormControl(undefined),
@@ -126,8 +131,10 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
-    if (user.team) {
+    if (user.team!=null) {
       this.updateForm.controls['team'].setValue(user.team.id);
+    } else{
+      this.updateForm.controls['team'].setValue(0);
     }
     this.updateForm.controls['isActive'].setValue(user.isActive);
   }

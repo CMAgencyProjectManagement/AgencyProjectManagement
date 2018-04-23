@@ -10,3 +10,4 @@ export * from './comment-modal/comment-modal.component';
 export * from './select-status-modal/select-status-modal.component';
 export * from './select-tasks-modal/select-tasks-modal.component';
 export * from './select-members-modal/select-members-modal.component';
+export * from './create-project-modal/create-project-modal.component';

@@ -104,7 +104,8 @@ import {
   SelectStatusModalComponent,
   SelectTeamsModalComponent,
   SelectMembersModalComponent,
-  SelectTasksModalComponent
+  SelectTasksModalComponent,
+  CreateProjectModalComponent
 } from './cmaComponents/modals';
 
 const MODALS = [
@@ -119,7 +120,8 @@ const MODALS = [
   CommentModalComponent,
   SelectStatusModalComponent,
   SelectMembersModalComponent,
-  SelectTasksModalComponent
+  SelectTasksModalComponent,
+  CreateProjectModalComponent
 ];
 
 // Import 3rd party components

@@ -16,8 +16,10 @@
               </label>
               <div class="col-md-6">
                 <input type="text" id="name-input" name="name-input" class="form-control" formControlName="name" placeholder="Please enter the project's name">
+                <div class="invalid-feedback" *ngIf="errors.name">{{errors.name}}</div>
               </div>
             </div>
+          
             <div class="form-group row">
               <label class="col-form-label" for="description-input">Description</label>
               <div class="col-md-6">
@@ -31,8 +33,10 @@
                   <strong>*</strong>
                 </span>
               </label>
-              <div class="col-md-6" style="margin-left: 30px;">
-                <my-date-picker name="startDate-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="startDate"></my-date-picker>
+              <div class="col-md-6" style="margin-left: 21px;">
+                <my-date-picker #startDatePicker name="startDate-input" [options]="myDatePickerOptions" class="form-control-mydatepicker"
+                  formControlName="startDate"></my-date-picker>
+                  <div class="invalid-feedback" *ngIf="errors.startDate">{{errors.startDate}}</div>
               </div>
             </div>
             <div class="form-group row">
@@ -41,20 +45,21 @@
                   <strong>*</strong>
                 </span>
               </label>
-              <div class="col-md-6" style="margin-left: 35px;">
-                <my-date-picker name="deadline-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="deadline"
+              <div class="col-md-6" style="margin-left: 27px;">
+                <my-date-picker #deadlinePicker name="deadline-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="deadline"
                   disable="true"></my-date-picker>
+                  <div class="invalid-feedback" *ngIf="errors.deadline">{{errors.deadline}}</div>
               </div>
             </div>
             <div class="row">
-              <div class="col-4 text-right">
-                <button class="btn btn-primary" (click)="successModal.show()" [ladda]="isLoading">
+              <div style="margin-left: 200px;">
+                <button class="btn btn-primary" (click)="handleCreate()" [ladda]="isLoading" style="font-size: 20px; width: 100px">
                   Add
                 </button>
                 <!-- <button type="button" class="btn btn-success btn-bw " data-toggle="modal" (click)="successModal.show()">Add</button> -->
               </div>
-              <div class="col-4 offset-1 text-left">
-                <button type="button" class="btn btn-secondary btn-bw" data-toggle="modal" onclick="location.href='#/project'">Cancel</button>
+              <div style="margin-left: 100px;">
+                <button class="btn btn-secondary" style="font-size: 20px; width: 100px" data-toggle="modal" onclick="location.href='#/project'">Cancel</button>
               </div>
             </div>
           </div>
@@ -63,33 +68,3 @@
     </div>
   </div>
 </div>
-
-<div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-success" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="color: black;
-            background-color: white;">
-        <h4 class="modal-title">Confirmation message!</h4>
-        <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure to add a new project?</p>
-      </div>
-      <div class="modal-footer" style="padding: 1rem 2.5rem;">
-        <button type="button" class="btn btn-secondary" (click)="successModal.hide()" style="color: black;
-                background-color: white;
-                border-color: black;">No
-        </button>
-        <button type="button" class="btn btn-success" (click)="handleCreate()" style="color: black;
-                background-color: white;
-                border-color: black;">Yes
-        </button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->

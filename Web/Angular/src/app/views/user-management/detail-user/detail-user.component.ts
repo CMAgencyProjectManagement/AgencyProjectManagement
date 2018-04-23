@@ -18,7 +18,7 @@ export class DetailUserComponent implements OnInit {
   users: User[];
   foundUser: User;
   selectedUser = [];
-
+  isLoadingPage: boolean;
   constructor(
     private teamService: TeamService,
     private userService: UserService,
@@ -27,16 +27,17 @@ export class DetailUserComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
   ) {
+    this.isLoadingPage = true;
     // let currentUser = this.storeService.get(['currentUser']) as User;
     // this.managementMode = currentUser.isManager || currentUser.isAdmin;
   }
   ngOnInit() {
     this.entity = {};
     if (this.route.snapshot.paramMap.get('id') == undefined) {
-      this.foundUser= this.storeService.get(['currentUser']) as User;
-      console.debug(this.foundUser.id);
+      this.foundUser = this.storeService.get(['currentUser']) as User;
+      this.isLoadingPage = false;
     } else {
-      this.userID=Number(this.route.snapshot.paramMap.get('id'));
+      this.userID = Number(this.route.snapshot.paramMap.get('id'));
       this.getAllTeam();
     }
 
@@ -64,6 +65,7 @@ export class DetailUserComponent implements OnInit {
             });
           }
         }
+        this.isLoadingPage = false;
       })
   }
 

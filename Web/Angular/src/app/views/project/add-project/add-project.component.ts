@@ -1,14 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { ProjectService } from '../../../services/project.service';
 import { Cursor, StoreService } from '../../../services/tree.service';
+import { Location } from '@angular/common';
+import * as moment from 'moment';
 import {
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import {
+  CommentModalComponent,
+  ConfirmModalComponent,
+  ErrorModalComponent,
+  SelectUsersModalComponent,
+  SelectTeamsModalComponent,
+  SelectMembersModalComponent
+} from '../../../cmaComponents/modals';
 import { Router } from '@angular/router';
 import { IMyDpOptions } from 'mydatepicker';
-
+import { BsModalService } from 'ngx-bootstrap';
 @Component({
   selector: 'app-add-project',
   templateUrl: './add-project.component.html',
@@ -19,7 +29,8 @@ export class AddProjectComponent implements OnInit {
     showInputField: true,
     dateFormat: 'dd/mm/yyyy',
   };
-
+  @ViewChild('startDatePicker') startDatePicker;
+  @ViewChild('deadlinePicker') deadlinePicker;
   tokenCursor: Cursor;
   isLoading: boolean;
   errorMessage: string;
@@ -27,12 +38,13 @@ export class AddProjectComponent implements OnInit {
   isLoadingPage: boolean;
   errors: {
     name: string,
-    description: string,
     startDate: string,
     deadline: string,
   };
   constructor(private projectService: ProjectService,
-    private router: Router) {
+    private router: Router,
+    private modalService: BsModalService,
+    private location: Location, ) {
     this.projectForm = new FormGroup({
       name: new FormControl(undefined, Validators.required),
       description: new FormControl(undefined, Validators.required),
@@ -49,41 +61,69 @@ export class AddProjectComponent implements OnInit {
   }
 
   handleCreate() {
-    if (this.projectForm.valid) {
-
+    this.setErrorsNull();
+    const onConfirm = () => {
       const formValue = this.projectForm.value;
+      let startDate = moment(this.startDatePicker.selectionDayTxt, 'DD/MM/YYYY');
+      let deadline = moment(this.deadlinePicker.selectionDayTxt, 'DD/MM/YYYY');
       this.isLoading = true;
-      console.debug('here');
       this.projectService.createProject(
-        formValue.projectName,
-        formValue.projectDescription,
-        formValue.projectStartDate.formatted,
-        formValue.projectDeadline.formatted,
-      ).then(value => {
-        this.isLoading = false;
-        this.router.navigate(['project'])
-      }).catch(reason => {
-        this.isLoading = false;
-        console.debug(reason);
-        this.handleCreateError(reason.Data);
-      })
-    }
+        formValue.name,
+        formValue.description,
+        startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.startDatePicker.selectionDayTxt,
+        deadline.isValid() ? deadline.format('YYYY-MM-DD') : this.deadlinePicker.selectionDayTxt,
+      )
+        .then(value => {
+          this.isLoading = false;
+          this.router.navigate(['project']);
+        })
+        .catch(reason => {
+          this.isLoading = false;
+          this.setErrors(reason.Data);
+        })
+    };
+    const initialState = {
+      message: `Are you sure to create this project?`,
+      confirmCallback: onConfirm
+    };
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
   }
 
-  handleCreateError(errors: any[]) {
-    for (let error of errors) {
-      const fieldName = error.key;
-      const errorMessage = error.message;
-      console.debug('handleCreateProjectError', fieldName, errorMessage);
-    }
+  private showErrorModal(message: string, isNavigateBack: boolean = false) {
+    const initialState = {
+      closeCallback: () => {
+        if (isNavigateBack) {
+          this.location.back();
+        }
+      },
+      message: message
+    };
+    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
 
   setErrorsNull(): void {
     this.errors = {
       name: '',
-      description: '',
       startDate: '',
       deadline: '',
     };
   }
+  setErrors(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      switch (fieldName) {
+        case 'Name':
+          this.errors.name = errorMessage;
+          break;
+        case 'Deadline':
+          this.errors.deadline = errorMessage;
+          break;
+        case 'StartDate':
+          this.errors.startDate = errorMessage;
+          break;
+      }
+    }
+  }
+
 }
