@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using Entity;
@@ -45,6 +46,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+
         [HttpGet]
         [Route("{id:int}/taskarchive")]
         [Authorize(Roles = "Admin,Manager")]
@@ -60,7 +62,7 @@ namespace Web.Controllers
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     IQueryable<int> teamIds = db.TeamProjects.Where(x => x.ProjectID == id).Select(x => x.TeamID);
                     int tc = teamIds.Count();
-                    if (db.Users.Find(userId).IsAdmin||teamService.IsManagerOfTeam(userId,teamIds))
+                    if (db.Users.Find(userId).IsAdmin || teamService.IsManagerOfTeam(userId, teamIds))
                     {
                         var tasks = projectService.GetTasksOfProject(id);
                         var ArchiveTasks = tasks.Where(x => x.IsArchived == true);
@@ -70,6 +72,7 @@ namespace Web.Controllers
                         {
                             dataObject1.Add(taskService.ParseToJson(task));
                         }
+
                         JArray dataObject2 = new JArray();
                         foreach (var task in UnArchiveTasks)
                         {
@@ -83,9 +86,8 @@ namespace Web.Controllers
                         };
                         return Ok(ResponseHelper.GetResponse(mainObject));
                     }
+
                     return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-
-
                 }
             }
             catch (Exception ex)
@@ -118,6 +120,7 @@ namespace Web.Controllers
                             dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
                         }
                     }
+
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
             }
@@ -131,11 +134,36 @@ namespace Web.Controllers
         [HttpGet]
         [Route("{projecId:int}/members/assignable")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetAssignableMember()
+        public IHttpActionResult GetAssignableMember(int projecId)
         {
-            return null;
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TeamService teamService = new TeamService(db);
+                    UserService userService = new UserService(db);
+                    IEnumerable<Team> teamsOfProject = teamService.GetTeamsOfProject(projecId);
+
+                    List<User> userList = new List<User>();
+//                    userList.AddRange(userService.GetAllManager());
+                    foreach (Team team in teamsOfProject)
+                    {
+                        IEnumerable<User> users = userService.GetUsersOfTeam(team.ID, excludeManager: false);
+                        userList.AddRange(users);
+                    }
+
+                    IEnumerable<JObject> usersJson = userList.Select(user => userService.ParseToJson(user));
+
+                    return Ok(ResponseHelper.GetResponse(new JArray(usersJson)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
         }
-        
+
         [HttpPut]
         [Route("setteams")]
         [Authorize]
@@ -155,7 +183,8 @@ namespace Web.Controllers
                         projectToTeamsViewModel.TeamIDs,
                         currentUser.ID);
 
-                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true, AgencyConfig.AvatarPath)));
+                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true,
+                        AgencyConfig.AvatarPath)));
                 }
             }
             catch (Exception ex)
@@ -429,11 +458,11 @@ namespace Web.Controllers
                         if (!projectsOfUser.Any(project => project.ID.Equals(projectId)))
                         {
                             return Content(HttpStatusCode.Unauthorized,
-                                ResponseHelper.GetExceptionResponse($"You need to be a member of project {foundProject.Name} to view"));
+                                ResponseHelper.GetExceptionResponse(
+                                    $"You need to be a member of project {foundProject.Name} to view"));
                         }
                     }
 
-                    
 
                     if (foundProject != null)
                     {
@@ -488,7 +517,7 @@ namespace Web.Controllers
             }
         }
 
-        
+
         public IHttpActionResult GetReport(int id)
         {
             try

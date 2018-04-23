@@ -56,10 +56,11 @@ export class ProjectDetailComponent implements OnInit {
     attachmentUpload: boolean
     attachmentRemove: boolean[]
     openAssignModal: boolean
+    openAssignMembersModal: boolean
     openUnAssignModal: boolean
     done: boolean,
     comment: boolean,
-    editComment: boolean
+    editComment: boolean,
   };
 
   constructor(private projectService: ProjectService,
@@ -73,13 +74,14 @@ export class ProjectDetailComponent implements OnInit {
     this.currentUser = this.storeService.get(['currentUser']) as User;
     this.userService.getCurrentUserInfo().then(value => {
       this.currentUser = value;
-    })
+    });
     this.isLoading = {
       page: true,
       attachmentUpload: false,
       attachmentRemove: [],
       openAssignModal: false,
       openUnAssignModal: false,
+      openAssignMembersModal: false,
       done: false,
       comment: false,
       editComment: true,
@@ -173,7 +175,6 @@ export class ProjectDetailComponent implements OnInit {
       if (selectedIds.length == 0) {
         this.containdepartment = true;
       }
-
       this.projectService.setTeamToProject(this.foundProject.id, selectedIds)
         .then(value => {
           this.foundProject = value;
@@ -182,9 +183,9 @@ export class ProjectDetailComponent implements OnInit {
         .catch(reason => {
           this.showErrorModal(reason.Message);
           this.isLoading.openAssignModal = false;
-        })
-
+        });
     };
+
     this.isLoading.openAssignModal = true;
     this.teamService.getAllTeam()
       .then(value => {
@@ -206,23 +207,10 @@ export class ProjectDetailComponent implements OnInit {
   };
 
   handleOnAssignMembersBtnClick() {
-    let currentUser = this.storeService.get(['currentUser']) as User;
-
-    this.teamService.getDetail(currentUser.team.id)
-      .then(value => {
-        const pool = [];
-        this.foundDepartment = value;
-        for (let member of this.foundDepartment.users as User[]) {
-          let removeFlag = false;
-          for (let assignedMember of this.foundProject.assignees as User[]) {
-            if (assignedMember.id == member.id) {
-              removeFlag = true;
-            }
-          }
-          if (!removeFlag) {
-            pool.push(member);
-          }
-        }
+    this.isLoading.openAssignMembersModal = true;
+    this.projectService.getAssignableUser(this.foundProject.id)
+      .then(users => {
+        const pool = users;
 
         const onConfirm = (selelectedMembers: User[]) => {
           let selectedIds = _.map(selelectedMembers, 'id');
@@ -233,29 +221,85 @@ export class ProjectDetailComponent implements OnInit {
             this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
               .then(value => {
                 this.members = _.concat(this.members, selectedIds);
-                this.isLoading.openAssignModal = false
+                this.isLoading.openAssignMembersModal = false
               })
               .catch(reason => {
                 this.showErrorModal(reason.Message);
-                this.isLoading.openAssignModal = false
+                this.isLoading.openAssignMembersModal = false
               })
           } else {
             this.showErrorModal('Please select members!');
-            this.isLoading.openAssignModal = false;
+            this.isLoading.openAssignMembersModal = false;
           }
         };
 
         const initialState = {
           confirmCallback: onConfirm,
           cancelCallback: () => {
+            this.isLoading.openAssignMembersModal = false
           },
           closeCallback: () => {
+            this.isLoading.openAssignMembersModal = false
           },
           userPool: pool,
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog'});
+        this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
   }
+
+  // handleOnAssignMembersBtnClick() {
+  //   let currentUser = this.storeService.get(['currentUser']) as User;
+  //
+  //   this.teamService.getDetail(currentUser.team.id)
+  //     .then(value => {
+  //       const pool = [];
+  //       this.foundDepartment = value;
+  //       for (let member of this.foundDepartment.users as User[]) {
+  //         let removeFlag = false;
+  //         for (let assignedMember of this.foundProject.assignees as User[]) {
+  //           if (assignedMember.id == member.id) {
+  //             removeFlag = true;
+  //           }
+  //         }
+  //         if (!removeFlag) {
+  //           pool.push(member);
+  //         }
+  //       }
+  //
+  //       const onConfirm = (selelectedMembers: User[]) => {
+  //         let selectedIds = _.map(selelectedMembers, 'id');
+  //         if (selectedIds.length == 0) {
+  //           this.containmember = true;
+  //         }
+  //         if (!this.containmember) {
+  //           this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
+  //             .then(value => {
+  //               this.members = _.concat(this.members, selectedIds);
+  //               this.isLoading.openAssignModal = false
+  //             })
+  //             .catch(reason => {
+  //               this.showErrorModal(reason.Message);
+  //               this.isLoading.openAssignModal = false
+  //             })
+  //         } else {
+  //           this.showErrorModal('Please select members!');
+  //           this.isLoading.openAssignModal = false;
+  //         }
+  //       };
+  //
+  //       const initialState = {
+  //         confirmCallback: onConfirm,
+  //         cancelCallback: () => {
+  //         },
+  //         closeCallback: () => {
+  //         },
+  //         userPool: pool,
+  //         title: `Assign`,
+  //         confirmButtonText: 'Assign'
+  //       };
+  //       this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog'});
+  //     })
+  // }
 }

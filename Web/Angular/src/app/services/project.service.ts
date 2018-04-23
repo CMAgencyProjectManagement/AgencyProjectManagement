@@ -247,6 +247,22 @@ export class ProjectService {
     });
   }
 
+  public getAssignableUser(projectId: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getAssignableUser(projectId))
+        .set('token', this.tokenCursor.get())
+        .then((res) => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
   public closeProject(
     projectId: number
   ): Promise<any> {

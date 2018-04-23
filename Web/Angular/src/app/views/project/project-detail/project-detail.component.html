@@ -15,17 +15,25 @@
                     <h2 class="card-title">{{foundProject.name}}</h2>
                   </div>
                   <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;">
-                    <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light" *ngIf="currentUser.isAdmin">
+                    <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light"
+                       *ngIf="currentUser.isAdmin">
                       <i class="fa fa-edit"></i>&nbsp; Update
-                    </a>  
-                    <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)" *ngIf="currentUser.isAdmin">
+                    </a>
+                    <a class="btn btn-secondary bg-light"
+                       (click)="handleCloseProject(foundProject.id)"
+                       *ngIf="currentUser.isAdmin">
                       <i class="fa fa-close"></i>&nbsp; Close project
                     </a>
-                    <a class="btn btn-secondary bg-light" [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
-                      [ladda]="isLoading.openAssignModal" (click)="handleOnAssignBtnClick()" *ngIf="currentUser.isAdmin">
+                    <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
+                       [ladda]="isLoading.openAssignModal"
+                       (click)="handleOnAssignBtnClick()"
+                       *ngIf="currentUser.isAdmin">
                       <i class="fa fa-users"></i>&nbsp; Set department
                     </a>
-                    <a class="btn btn-secondary bg-light" (click)="handleOnAssignMembersBtnClick()" *ngIf="currentUser.isManager">
+                    <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignMembersModal}"
+                       (click)="handleOnAssignMembersBtnClick()"
+                       [ladda]="isLoading.openAssignMembersModal"
+                       *ngIf="currentUser.isManager || currentUser.isAdmin">
                       <i class="fa fa-user-plus"></i>&nbsp; Assign members
                     </a>
                   </div>
@@ -109,7 +117,8 @@
             <!--<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;-->
             <!--background-color: white;-->
             <!--border-color: black;">Close</button>-->
-            <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-danger" role="document">
                 <div class="modal-content" style="border-color: black;">
                   <div class="modal-header" style="color: black;

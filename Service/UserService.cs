@@ -83,17 +83,22 @@ namespace Service
             return db.Users.ToList();
         }
 
-        public IEnumerable<User> GetUsersOfTeam(int teamId, bool includeBanned = false)
+        public IEnumerable<User> GetUsersOfTeam(int teamId, bool excludeBanned = true, bool excludeManager = false)
         {
-            IEnumerable<User> users =
-                db.Users.Where(user => user.Teams.Any(team => team.ID == teamId) && user.IsManager == false);
+            IQueryable<User> users = db.Users
+                    .Where(user => user.Team.ID == teamId);
+
+            if (excludeManager)
+            {
+                users = users.Where(user => !user.IsManager);
+            }
             
-            if (!includeBanned)
+            if (excludeBanned)
             {
                 users = users.Where(user => user.IsActive);
             }
 
-            return users.ToList();
+            return users;
         }
 
 
@@ -150,6 +155,18 @@ namespace Service
             }
         }
 
+        public IEnumerable<User> GetAllManager(bool excludeBanned = true)
+        {
+            IQueryable<User> users = db.Users.Where(user => user.IsManager);
+
+            if (excludeBanned)
+            {
+                users = users.Where(user => user.IsActive);
+            }
+            
+            return users;
+        }
+
         public User CreateAccount(
             string name,
             string phone,
@@ -178,12 +195,10 @@ namespace Service
                 newUser.TeamID = teamId;
             }
 
-
             db.SaveChanges();
-
-
             return newUser;
         }
+        
         public User UpdateCurrentUser(int id, string name, string password, DateTime? birthdate)
         {
             User user = db.Users.Find(id);

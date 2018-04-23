@@ -220,7 +220,7 @@ namespace Service
 
             if (includeUsers)
             {
-                var users = userService.GetUsersOfTeam(team.ID);
+                var users = userService.GetUsersOfTeam(team.ID,excludeBanned:false);
                 var jArray = new JArray();
 
                 foreach (User user in users)
