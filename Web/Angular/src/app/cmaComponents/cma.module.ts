@@ -34,6 +34,9 @@ import {
   CreateProjectModalComponent,
 } from './modals';
 import { TasklistComponent } from './tasklist/tasklist.component';
+import { StaffSectionComponent } from './staff-section/staff-section.component';
+import { ManagerSectionComponent } from './manager-section/manager-section.component';
+import { AdminSectionComponent } from './admin-section/admin-section.component';
 
 const declares_exports = [
   ProjectCardComponent,
@@ -59,6 +62,9 @@ const declares_exports = [
   TaskPriorityComponent,
   SelectMembersModalComponent,
   CreateProjectModalComponent,
+  StaffSectionComponent,
+  ManagerSectionComponent,
+  AdminSectionComponent,
 ];
 
 

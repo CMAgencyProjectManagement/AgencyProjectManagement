@@ -200,7 +200,6 @@ export class ProjectDetailComponent implements OnInit {
           },
           userPool: pool,
           title: `Assign team to project "${this.foundProject.name}"`,
-          // confirmButtonText: 'Assign'
         };
         this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })

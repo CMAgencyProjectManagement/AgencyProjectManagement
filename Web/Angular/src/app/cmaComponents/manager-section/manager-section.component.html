@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <h4 class="card-title">
+    Late tasks
+  </h4>
+  <table datatable [dtOptions]="lateTableOptions" class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th>Deadline</th>
+      <th>Project</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <a routerLink="#">task name</a>
+      </td>
+      <td>High</td>
+      <td>
+        <app-task-status [taskStatusNumber]="1"></app-task-status>
+      </td>
+      <td>24/02/2018</td>
+      <td>
+        <a routerLink="#">project name</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<hr class="mt-4 mb-4"/>
+<div class="container-fluid">
+  <h4 class="card-title">
+    Need review tasks
+  </h4>
+  <table datatable [dtOptions]="thisWeekTableOptions" class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Priority</th>
+      <th>Deadline</th>
+      <th>Project</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <a routerLink="#">task name</a>
+      </td>
+      <td>High</td>
+      <td>24/02/2018</td>
+      <td>
+        <a routerLink="#">project name</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

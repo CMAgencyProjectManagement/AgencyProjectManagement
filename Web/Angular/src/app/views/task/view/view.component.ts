@@ -15,7 +15,7 @@ import {CommentService} from '../../../services/comment.service';
 import {Comment} from '../../../interfaces/comment';
 import {forEach} from '@angular/router/src/utils/collection';
 import {StoreService} from '../../../services/tree.service';
-import {SelectStatusModalComponent} from '../../../cmaComponents/modals/select-status-modal/select-status-modal.component';
+import {SelectStatusModalComponent} from '../../../cmaComponents/modals';
 
 @Component({
   selector: 'app-view',

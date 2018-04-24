@@ -5,7 +5,11 @@
   <app-spinner *ngIf="isLoading.page"></app-spinner>
   <div class="card-body" *ngIf="!isLoading.page">
     <div class="row">
-      <div class="col-7"></div>
+      <div class="col-7">
+        <app-staff-section *ngIf="!currentUser.isAdmin && !currentUser.isManager"></app-staff-section>
+        <app-manager-section *ngIf="!currentUser.isAdmin && currentUser.isManager"></app-manager-section>
+        <app-admin-section *ngIf="currentUser.isAdmin && !currentUser.isManager"></app-admin-section>
+      </div>
       <div class="col-5">
         <div class="card p-0">
           <div class="card-body">

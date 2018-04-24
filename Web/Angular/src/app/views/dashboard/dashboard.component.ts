@@ -1,4 +1,4 @@
-import {Component, OnInit, style} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Project} from '../../interfaces/project';
 import {StoreService} from '../../services/tree.service';
@@ -7,13 +7,14 @@ import {Location} from '@angular/common';
 import {BsModalService} from 'ngx-bootstrap';
 import {ErrorModalComponent} from '../../cmaComponents/modals';
 import {UserService} from '../../services/user.service';
+import {User} from '../../interfaces/user';
 
 @Component({
   templateUrl: 'dashboard.component.html',
-
 })
 export class DashboardComponent implements OnInit {
   projects: Project[];
+  currentUser: User;
   leaderboard: UserWithScore[];
   isLoading: {
     page
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
     private location: Location,
     private modalService: BsModalService
   ) {
+    this.currentUser = this.storeService.get(['currentUser']);
     this.isLoading = {
       page: true
     };
@@ -73,3 +75,6 @@ interface UserWithScore {
   avatar: string,
   score: number
 }
+
+
+
