@@ -302,7 +302,7 @@ namespace Web.Controllers
                             ResponseHelper.GetExceptionResponse(ModelState));
                     }
 
-                    if (!taskService.IsUserManagerOfTask(currentUserId, setStatusViewModel.TaskId.Value))
+                    if (!taskService.IsManagerOfTask(currentUserId, setStatusViewModel.TaskId.Value))
                     {
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
                             "User have to be manager of this task to edit it's status"));
@@ -496,7 +496,7 @@ namespace Web.Controllers
                     User currentUser = userService.GetUser(currentUserId);
                     int DurationLength = 15;
 
-                    if (!taskService.IsUserManagerOfTask(currentUserId, updateTaskViewModel.Id))
+                    if (!taskService.IsManagerOfTask(currentUserId, updateTaskViewModel.Id))
                         return Ok(ResponseHelper.GetExceptionResponse(
                             "User have to be manager of this task to edit task "));
 
@@ -635,7 +635,7 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                        if (taskService.IsUserManagerOfTask(currentUserId, assignTaskModel.TaskID))
+                        if (taskService.IsManagerOfTask(currentUserId, assignTaskModel.TaskID))
                         {
                             foreach (int userID in assignTaskModel.UserIDs)
                             {
@@ -679,7 +679,7 @@ namespace Web.Controllers
                     {
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
                         TaskService taskService = new TaskService(db);
-                        if (taskService.IsUserManagerOfTask(currentUserId, unassignTaskModel.TaskID))
+                        if (taskService.IsManagerOfTask(currentUserId, unassignTaskModel.TaskID))
                         {
                             foreach (int userID in unassignTaskModel.UserIDs)
                             {
@@ -728,7 +728,7 @@ namespace Web.Controllers
                         TaskService taskService = new TaskService(db);
                         var archivedTask = taskService.ArchiveTask(archiveTaskModel.TaskID, currentUserId);
                         Task task = db.Tasks.Find(archivedTask);
-                        if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
+                        if (taskService.IsManagerOfTask(currentUserId, task.ID))
                         {
                             return Ok(ResponseHelper.GetResponse(
                                 taskService.ParseToJson(task)
@@ -769,7 +769,7 @@ namespace Web.Controllers
                         TaskService taskService = new TaskService(db);
                         var archivedTask = taskService.UnArchiveTask(archiveTaskModel.TaskID, currentUserId);
                         Task task = db.Tasks.Find(archivedTask);
-                        if (taskService.IsUserManagerOfTask(currentUserId, task.ID))
+                        if (taskService.IsManagerOfTask(currentUserId, task.ID))
                         {
                             return Ok(ResponseHelper.GetResponse(
                                 taskService.ParseToJson(task)

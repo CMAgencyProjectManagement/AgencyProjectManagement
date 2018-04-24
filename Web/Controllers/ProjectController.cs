@@ -133,7 +133,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{projecId:int}/members/assignable")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult GetAssignableMember(int projecId)
         {
             try
@@ -145,7 +145,6 @@ namespace Web.Controllers
                     IEnumerable<Team> teamsOfProject = teamService.GetTeamsOfProject(projecId);
 
                     List<User> userList = new List<User>();
-//                    userList.AddRange(userService.GetAllManager());
                     foreach (Team team in teamsOfProject)
                     {
                         IEnumerable<User> users = userService.GetUsersOfTeam(team.ID, excludeManager: false);

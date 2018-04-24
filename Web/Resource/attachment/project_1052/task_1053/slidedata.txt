@@ -1,0 +1,12 @@
+﻿Project:
+	MediaZ 
+	01/04/2018
+	16/05/2018
+List:
+	chuẩn bị hợp đồng
+Task:
+	Lấy chi tiết của dự an
+	Soàn hợp đồng
+	
+
+		

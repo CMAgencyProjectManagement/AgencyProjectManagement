@@ -25,11 +25,12 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                    if (!taskService.IsAssigneeOfTask(currentUserId, createCommentModel.TaskID))
+                    if (!taskService.IsAssigneeOfTask(currentUserId, createCommentModel.TaskID) &&
+                        !taskService.IsManagerOfTask(currentUserId, createCommentModel.TaskID))
                     {
-                        return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member of task with ID {createCommentModel.TaskID}"));
-
+                        return Content(HttpStatusCode.Unauthorized, ResponseHelper.GetExceptionResponse(
+                            $"The person who do this action must be assigned member of task with ID {createCommentModel.TaskID}"
+                        ));
                     }
                 }
 
@@ -43,8 +44,9 @@ namespace Web.Controllers
                             createCommentModel.Body,
                             createCommentModel.TaskID,
                             Int32.Parse(userIdString)
-                            );
-                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment, avatarPath: AgencyConfig.AvatarPath)));
+                        );
+                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment,
+                            avatarPath: AgencyConfig.AvatarPath)));
                     }
                 }
                 else
@@ -53,13 +55,12 @@ namespace Web.Controllers
                         ResponseHelper.GetExceptionResponse(ModelState));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Content(HttpStatusCode.InternalServerError,
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
 
 
         [HttpPut]
@@ -76,22 +77,23 @@ namespace Web.Controllers
                     var taskId = db.Comments.Find(updateCommentModel.id).TaskID;
                     if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
-                        return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member of task with ID {taskId}"));
-
+                        return Content(HttpStatusCode.UnsupportedMediaType, ResponseHelper.GetExceptionResponse(
+                            $"the person who do this action must be assigned member of task with ID {taskId}"
+                        ));
                     }
                 }
 
                 if (ModelState.IsValid)
                 {
                     using (CmAgencyEntities db = new CmAgencyEntities())
-                    {       
+                    {
                         CommentService commentService = new CommentService(db);
                         var updatedComment = commentService.UpdateComment(
                             updateCommentModel.id,
                             updateCommentModel.Body
-                            );
-                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(updatedComment, avatarPath: AgencyConfig.AvatarPath)));
+                        );
+                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(updatedComment,
+                            avatarPath: AgencyConfig.AvatarPath)));
                     }
                 }
                 else

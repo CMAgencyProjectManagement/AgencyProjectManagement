@@ -221,7 +221,7 @@ namespace Service
             return users;
         }
 
-        public bool IsUserManagerOfTask(int userId, int taskId)
+        public bool IsManagerOfTask(int userId, int taskId)
         {
             IEnumerable<User> managers = GetManagersOfTask(taskId);
             foreach (User manager in managers)
@@ -231,7 +231,6 @@ namespace Service
                     return true;
                 }
             }
-
             return false;
         }
 
