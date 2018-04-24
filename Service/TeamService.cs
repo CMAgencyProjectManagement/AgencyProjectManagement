@@ -42,7 +42,8 @@ namespace Service
                 .Select(teamProject => GetTeamById(teamProject.TeamID)); 
             return teams;
         }
-
+        
+       
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);

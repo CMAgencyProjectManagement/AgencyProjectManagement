@@ -34,6 +34,8 @@ const serverPath = {
   unAssignTeam: '/api/team/unassign',
   setTeamRole: '/api/team/assign/role',
   getTeamDetail: (teamId) => `/api/team/${teamId}`,
+  getNeedReviewTasks: (teamId) => `/api/team/${teamId}/tasks/needreview`,
+  getLateTasks: (teamId) => `/api/team/${teamId}/tasks/late`,
   getAssignableUser: (projecId) => `/api/project/${projecId}/members/assignable`,
   // Task
   getTask: taskId => `/api/task/${taskId}`,

@@ -34,7 +34,7 @@ namespace Web.Controllers
                     JArray dataObject = new JArray();
                     foreach (var project in projects)
                     {
-                        dataObject.Add(projectService.ParseToJson(project, true, AgencyConfig.AvatarPath));
+                        dataObject.Add(projectService.ParseToJson(project, avatarPath: AgencyConfig.AvatarPath));
                     }
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
@@ -108,18 +108,15 @@ namespace Web.Controllers
                 {
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     ProjectService projectService = new ProjectService(db);
-                    TaskService taskService = new TaskService(db);
                     JArray dataObject = new JArray();
-                    if (db.Users.Find(userId).IsAdmin)
+                    var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
+
+
+                    foreach (var project in projects)
                     {
-                        var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
-
-
-                        foreach (var project in projects)
-                        {
-                            dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
-                        }
+                        dataObject.Add(projectService.ParseToJson(project, false, AgencyConfig.AvatarPath));
                     }
+
 
                     return Ok(ResponseHelper.GetResponse(dataObject));
                 }
@@ -147,7 +144,7 @@ namespace Web.Controllers
                     List<User> userList = new List<User>();
                     foreach (Team team in teamsOfProject)
                     {
-                        IEnumerable<User> users = userService.GetUsersOfTeam(team.ID, excludeManager: false);
+                        IEnumerable<User> users = userService.GetUsersOfTeam(team.ID);
                         userList.AddRange(users);
                     }
 

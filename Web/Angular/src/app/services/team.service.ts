@@ -49,6 +49,36 @@ export class TeamService {
     });
   }
 
+  public getNeedReviewTasks(teamId): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getNeedReviewTasks(teamId))
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+    });
+  }
+
+  public getLateTasks(teamId): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getLateTasks(teamId))
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+    });
+  }
+
   public assignTeam(userIdArray: number[], teamId: number): Promise<any> {
     const dataObj = {
       UserIds: userIdArray,

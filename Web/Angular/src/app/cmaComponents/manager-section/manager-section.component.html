@@ -13,17 +13,17 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr *ngFor="let task of lateTasks">
       <td>
-        <a routerLink="#">task name</a>
+        <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
       </td>
-      <td>High</td>
+      <td>{{task.priority}}</td>
       <td>
-        <app-task-status [taskStatusNumber]="1"></app-task-status>
+        <app-task-status [taskStatusNumber]="task.status"></app-task-status>
       </td>
-      <td>24/02/2018</td>
+      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
       <td>
-        <a routerLink="#">project name</a>
+        <a routerLink="/project/{{task.project.id}}/detail">{{task.project.name}}</a>
       </td>
     </tr>
     </tbody>
@@ -44,14 +44,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr *ngFor="let task of needReviewTasks">
       <td>
-        <a routerLink="#">task name</a>
+        <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
       </td>
-      <td>High</td>
-      <td>24/02/2018</td>
+      <td>{{task.status}}</td>
+      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
       <td>
-        <a routerLink="#">project name</a>
+        <a routerLink="/project/{{task.project.id}}/detail">{{task.project.name}}</a>
       </td>
     </tr>
     </tbody>

@@ -65,36 +65,6 @@ namespace Service
             }
         }
 
-        public IEnumerable<Task> GetTaskChangeThisWeek(List<Task> TaskList)
-        {
-            List<Task> TasksChangeThisWeek = new List<Task>();
-            foreach (var task in TaskList)
-            {
-                if (IsTaskChangeThisWeek(task))
-                {
-                    TasksChangeThisWeek.Add(task);
-                }
-            }
-
-            return TasksChangeThisWeek;
-        }
-
-        public bool IsTaskChangeThisWeek(Task task)
-        {
-            DateTime date = DateTime.Now.Date;
-            DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
-            DateTime weekLastDay = weekFirstDay.AddDays(6);
-            if (task.ChangedTime != null)
-            {
-                if (task.ChangedTime >= weekFirstDay.Date && task.ChangedTime <= weekLastDay.Date)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public List<Task> GetTasksOfUser(int userId)
         {
             User user = db.Users.Find(userId);
@@ -116,25 +86,6 @@ namespace Service
         }
 
         public IEnumerable<Task> GetLateTaskOfStaff(int userID)
-        {
-            var tasks = GetActiveTasksOfUser(userID);
-            var taskList = new List<Task>();
-            foreach (var task in tasks)
-            {
-                if (task.StartDate != null)
-                {
-                    DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
-                    if (DateTime.Now > deadline)
-                    {
-                        taskList.Add(task);
-                    }
-                }
-            }
-
-            return taskList;
-        }
-        
-        public IEnumerable<Task> GetLateTaskOfDepartment(int teamId)
         {
             var tasks = GetActiveTasksOfUser(userID);
             var taskList = new List<Task>();
@@ -180,8 +131,26 @@ namespace Service
 
             return lateActiveTasks;
         }
+        
+        public IEnumerable<Task> GetTaskOfDepartment(int teamId)
+        {
+            IQueryable<Task> tasks = db.Tasks
+                .Where(task => task.List.Project.TeamProjects.Any(teamProject => teamProject.TeamID == teamId));
+            return tasks;
+        }
 
-        public List<Task> GetActiveTasksOfUser(int userId,bool includeInactiveTasks = false)
+        public IEnumerable<Task> GetLateTaskOfDepartment(int teamId)
+        {
+            TaskService taskService = new TaskService(db);
+            IEnumerable<Task> tasks = GetTaskOfDepartment(teamId);
+            tasks = tasks.Where(task => taskService.IsTaskLate(task.ID));
+            return tasks;
+        }
+
+        
+
+
+        public List<Task> GetActiveTasksOfUser(int userId, bool includeInactiveTasks = false)
         {
             User user = db.Users.Find(userId);
             if (user != null)
@@ -192,7 +161,7 @@ namespace Service
                     if (!includeInactiveTasks)
                     {
                         if ((userTask.Task.Status == (int) TaskStatus.NotDone ||
-                            userTask.Task.Status == (int) TaskStatus.NeedReview) &&
+                             userTask.Task.Status == (int) TaskStatus.NeedReview) &&
                             !userTask.Task.IsArchived)
                         {
                             taskList.Add(userTask.Task);
@@ -202,7 +171,6 @@ namespace Service
                     {
                         taskList.Add(userTask.Task);
                     }
-                    
                 }
 
                 return taskList;
@@ -250,6 +218,7 @@ namespace Service
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -331,6 +300,23 @@ namespace Service
 
             db.SaveChanges();
             return task;
+        }
+        
+        public IEnumerable<Task> SortTaskByDeadline(IEnumerable<Task> tasks)
+        {
+            List<Task> newTasks = tasks.ToList();
+            
+            newTasks.Sort((taskLeft, taskRight) =>
+            {
+                DateTime deadLineLeft =
+                    taskLeft.StartDate?.AddDays(taskLeft.Duration) ?? DateTime.MinValue;
+                DateTime deadLineRight =
+                    taskLeft.StartDate?.AddDays(taskRight.Duration) ?? DateTime.MinValue;
+
+                return deadLineLeft.CompareTo(deadLineRight);
+            });
+            
+            return newTasks;
         }
 
         public bool CheckDuplicatedTaskname(string taskName)
@@ -746,7 +732,7 @@ namespace Service
 
             TaskPriority taskPriority = (TaskPriority) task.Priority;
             result["priorityText"] = DisplayCamelCaseString(taskPriority.ToString());
-            
+
             var project = projectService.GetProjectOfTask(task.ID);
             result["project"] = projectService.ParseToJson(project);
 
@@ -754,7 +740,7 @@ namespace Service
             {
                 CommentService commentService = new CommentService(db);
                 DependencyService dependencyService = new DependencyService(db);
-                AttachmentService attachmentService = new AttachmentService(db);                
+                AttachmentService attachmentService = new AttachmentService(db);
 
                 ListService listService = new ListService(db);
                 var list = listService.GetListOfTask(task.ID);

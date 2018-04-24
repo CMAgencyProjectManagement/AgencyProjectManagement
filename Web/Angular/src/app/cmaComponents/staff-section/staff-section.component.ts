@@ -14,14 +14,20 @@ export class StaffSectionComponent implements OnInit {
     searching: true,
     lengthChange: false,
     paging: true,
-    ordering: true
+    ordering: true,
+    order: [
+      [4, 'desc']
+    ]
   };
 
   thisWeekTableOptions: DataTables.Settings = {
     searching: true,
     lengthChange: false,
     paging: true,
-    ordering: true
+    ordering: true,
+    order: [
+      [5, 'desc']
+    ]
   };
 
   constructor() {

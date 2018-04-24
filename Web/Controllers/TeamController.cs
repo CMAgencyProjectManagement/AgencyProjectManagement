@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Entity;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json.Linq;
 using Service;
 using Web.ViewModels;
@@ -70,9 +71,10 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public IHttpActionResult GetTeamDetail(int id)
         {
             try
@@ -96,6 +98,70 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find team with ID {id}");
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        [HttpGet]
+        [Route("{id:int}/tasks/late")]
+        [Authorize]
+        public IHttpActionResult GetLateTaskOfDepartment(int id)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TeamService teamService = new TeamService(db);
+                    TaskService taskService = new TaskService(db);
+                    var team = teamService.GetTeamById(id);
+                    if (team == null)
+                    {
+                        return Content(HttpStatusCode.BadRequest, $"Can't find team with ID {id}");
+                    }
+
+                    IEnumerable<Task> lateTasks = taskService.GetLateTaskOfDepartment(team.ID);
+                    IEnumerable<JObject> lateTasksJson = lateTasks.Select(task => taskService.ParseToJson(task));
+                    
+                    return Ok(ResponseHelper.GetResponse(new JArray(lateTasksJson)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        [HttpGet]
+        [Route("{teamId:int}/tasks/needreview")]
+        [Authorize(Roles = "Manager")]
+        public IHttpActionResult GetNeedreviewTasks(int teamId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    
+                    JArray dataObject = new JArray();
+
+                    IEnumerable<Task> tasks = taskService.GetTaskOfDepartment(teamId)
+                        .Where(task => task.Status == (int) TaskStatus.NeedReview);
+                    
+                    tasks = taskService.SortTaskByDeadline(tasks);
+                    
+                    foreach (var task in tasks)
+                    {
+                        dataObject.Add(taskService.ParseToJson(task));
+                    }
+
+
+                    return Ok(ResponseHelper.GetResponse(dataObject));
                 }
             }
             catch (Exception ex)

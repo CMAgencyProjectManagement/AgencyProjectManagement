@@ -102,40 +102,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("recentchanged")]
-        [Authorize(Roles = "Manager")]
-        public IHttpActionResult GetManagerDashboard()
-        {
-            try
-            {
-                using (CmAgencyEntities db = new CmAgencyEntities())
-                {
-                    int userId = Int32.Parse(User.Identity.GetUserId());
-                    ProjectService projectService = new ProjectService(db);
-                    TaskService taskService = new TaskService(db);
-                    JArray dataObject = new JArray();
-
-                    TeamService teamService = new TeamService(db);
-                    var teamId = db.Users.Find(userId).TeamID;
-                    var tasksInTeam = teamService.GetTasksOfTeam((int) teamId);
-                    var tasks = taskService.GetTaskChangeThisWeek(tasksInTeam);
-                    tasks.OrderByDescending(X => X.ChangedTime);
-                    foreach (var task in tasks)
-                    {
-                        dataObject.Add(taskService.ParseToJson(task));
-                    }
-
-
-                    return Ok(ResponseHelper.GetResponse(dataObject));
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
+       
 
         [HttpGet]
         [Route("user/{id:int}")]

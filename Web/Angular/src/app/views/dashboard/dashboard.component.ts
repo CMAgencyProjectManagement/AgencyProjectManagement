@@ -8,28 +8,46 @@ import {BsModalService} from 'ngx-bootstrap';
 import {ErrorModalComponent} from '../../cmaComponents/modals';
 import {UserService} from '../../services/user.service';
 import {User} from '../../interfaces/user';
+import {Task} from '../../interfaces/Task';
+import {TeamService} from '../../services/team.service';
 
 @Component({
   templateUrl: 'dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
   projects: Project[];
-  currentUser: User;
-  leaderboard: UserWithScore[];
   isLoading: {
     page
   };
+  role: string;
+  currentUser: User;
+
+  leaderboard: UserWithScore[];
+  lateTasks: Task[];
+  needReviewTasks: Task[];
+
 
   constructor(
     private storeService: StoreService,
     private projectService: ProjectService,
+    private teamService: TeamService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
     private modalService: BsModalService
   ) {
-    this.currentUser = this.storeService.get(['currentUser']);
+    let currentUser = this.storeService.get(['currentUser']);
+    if (!currentUser.isAdmin && !currentUser.isManager) {
+      this.role = 'staff';
+    }
+    if (!currentUser.isAdmin && currentUser.isManager) {
+      this.role = 'manager';
+    }
+    if (currentUser.isAdmin && !currentUser.isManager) {
+      this.role = 'admin';
+    }
+    this.currentUser = currentUser;
     this.isLoading = {
       page: true
     };
@@ -45,7 +63,56 @@ export class DashboardComponent implements OnInit {
       })
       .catch(reason => {
         this.showErrorModal(reason.Message);
+      });
+
+    switch (this.role) {
+      case 'staff': {
+        break;
+      }
+      case 'manager': {
+        this.loadManagerSection();
+        break;
+      }
+      case 'admin': {
+        break;
+      }
+    }
+  }
+
+  private loadStaffSection() {
+    Promise.all([
+      this.teamService.getLateTasks(this.currentUser.team.id),
+      this.teamService.getNeedReviewTasks(this.currentUser.team.id),
+      this.userService.getLeaderBoard()])
+      .then((resData: [Task[], Task[], UserWithScore[]]) => {
+        this.lateTasks = resData[0];
+        this.needReviewTasks = resData[1];
+        this.leaderboard = resData[2];
+        this.isLoading.page = false;
       })
+      .catch(reason => {
+        this.showErrorModal(reason.Message);
+      })
+  }
+
+  private loadManagerSection() {
+    Promise.all([
+      this.teamService.getLateTasks(this.currentUser.team.id),
+      this.teamService.getNeedReviewTasks(this.currentUser.team.id),
+      this.userService.getLeaderBoard()])
+      .then((resData: [Task[], Task[], UserWithScore[]]) => {
+        this.lateTasks = resData[0];
+        this.needReviewTasks = resData[1];
+        this.leaderboard = resData[2];
+        this.isLoading.page = false;
+      })
+      .catch(reason => {
+        this.showErrorModal(reason.Message);
+      })
+  }
+
+  private loadMAdminSection() {
+
   }
 
 
