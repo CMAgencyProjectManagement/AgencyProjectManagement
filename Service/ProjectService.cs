@@ -200,57 +200,66 @@ namespace Service
             return new string(chars.ToArray());
         }
 
+        public Project AssignUsersToProject(int[] userIds, int projectId, int modifierId)
+        {
+            foreach (int userId in userIds)
+            {
+                AssignProject(userId, projectId);
+            }
+
+            Project project = db.Projects.Find(projectId);
+            project.ChangedBy = modifierId;
+            project.ChangedTime = DateTime.Today;
+            return project;
+        }
+
         public UserProject AssignProject(int userId, int projectId)
         {
             User user = db.Users.Find(userId);
-            if (user != null)
-            {
-                Project project = db.Projects.Find(projectId);
-                if (project != null)
-                {
-                    UserProject newUserProject;
-
-                    IEnumerable<TeamProject> teamProjects =
-                        db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
-                    foreach (var teamProject in teamProjects)
-                    {
-                        if (user.TeamID == teamProject.TeamID)
-                        {
-                            newUserProject = new UserProject
-                            {
-                                UserID = userId,
-                                ProjectID = projectId,
-                            };
-                            IEnumerable<UserProject> UserProject =
-                                db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
-                            if (UserProject.Count() == 0)
-                            {
-                                db.UserProjects.Add(newUserProject);
-                                db.SaveChanges();
-                                return newUserProject;
-                            }
-                            else
-                            {
-                                throw new ObjectNotFoundException($"This user is already in project");
-                            }
-                        }
-                        else
-                        {
-                            throw new ObjectNotFoundException($"Project and user not in one team");
-                        }
-                    }
-
-                    throw new ObjectNotFoundException($"Project not belong to any team");
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Project with ID{projectId} not found");
-                }
-            }
-            else
+            if (user == null)
             {
                 throw new ObjectNotFoundException($"User with ID{userId} not found");
             }
+
+            Project project = db.Projects.Find(projectId);
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with ID{projectId} not found");
+            }
+
+            UserProject newUserProject;
+
+            IEnumerable<TeamProject> teamProjects =
+                db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
+            foreach (var teamProject in teamProjects)
+            {
+                if (user.TeamID == teamProject.TeamID)
+                {
+                    newUserProject = new UserProject
+                    {
+                        UserID = userId,
+                        ProjectID = projectId,
+                    };
+                    IEnumerable<UserProject> UserProject =
+                        db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
+                    if (UserProject.Count() == 0)
+                    {
+                        db.UserProjects.Add(newUserProject);
+                        db.SaveChanges();
+                        return newUserProject;
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"This user is already in project");
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Project and user not in one team");
+                }
+            }
+
+            throw new ObjectNotFoundException($"Project not belong to any team");
         }
 
         public UserProject UnAssignProject(int userId, int projectId)

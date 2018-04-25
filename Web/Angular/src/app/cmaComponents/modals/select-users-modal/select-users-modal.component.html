@@ -19,6 +19,7 @@
                    placeholder="Select users"
                    (change)="onChange($event)"
                    [multiple]="true"
+                   [closeOnSelect]="false"
                    [(ngModel)]="selectedUsersIds">
         </ng-select>
       </div>

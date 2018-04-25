@@ -191,6 +191,7 @@ export class ProjectDetailComponent implements OnInit {
     this.teamService.getAllTeam()
       .then(value => {
         let pool = value;
+        let selected = this.foundProject.teams;
         const initialState = {
           confirmCallback: onConfirm,
           cancelCallback: () => {
@@ -199,7 +200,8 @@ export class ProjectDetailComponent implements OnInit {
           closeCallback: () => {
             this.isLoading.openAssignModal = false;
           },
-          userPool: pool,
+          teamPool: pool,
+          selectedTeams: selected,
           title: `Assign team to project "${this.foundProject.name}"`,
         };
         this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
@@ -208,8 +210,8 @@ export class ProjectDetailComponent implements OnInit {
 
   handleOnUnAssignMembersBtnClick() {
     this.isLoading.openUnAssignMembersModal = true;
-    const pool = _.filter(this.foundProject.assignees, (user: User) => {return !user.isManager});
-
+    const pool = this.foundProject.assignees;
+    // const selected = this.foundProject.assignees;
     const onConfirm = (selelectedMembers: User[]) => {
       let selectedIds = _.map(selelectedMembers, 'id');
       if (selectedIds.length == 0) {
@@ -240,6 +242,7 @@ export class ProjectDetailComponent implements OnInit {
         this.isLoading.openUnAssignMembersModal = false
       },
       userPool: pool,
+      // selectedUsers: selected,
       title: `Un-Assign`
     };
     this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});

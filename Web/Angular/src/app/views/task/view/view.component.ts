@@ -44,6 +44,7 @@ export class ViewComponent implements OnInit {
     attachment: string
   };
   openCommentForm: boolean;
+  lockAttachment: boolean;
 
   constructor(private taskService: TaskService,
               private uploadService: UploadService,
@@ -67,6 +68,7 @@ export class ViewComponent implements OnInit {
       editComment: false,
       setStatus: false
     };
+    this.lockAttachment = false;
     this.openCommentForm = false;
     this.resetErrors();
   }
@@ -91,6 +93,9 @@ export class ViewComponent implements OnInit {
       .then(value => {
         this.foundTask = value as Task;
         this.isLoading.page = false;
+        // TODO move this into another place
+        this.lockAttachment = this.foundTask.statusText == 'Need review' ||
+          this.foundTask.statusText == 'Done';
       })
       .catch(reason => {
         console.debug('ViewComponent-onInit', reason);

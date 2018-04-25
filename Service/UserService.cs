@@ -296,7 +296,7 @@ namespace Service
             if (foundUser != null)
             {
                 Random random = new Random();
-                string newPassword = random.Next(0, 99999).ToString("D4");
+                string newPassword = random.Next(0, 999999).ToString("D5");
                 foundUser.Password = newPassword;
                 db.SaveChanges();
                 return newPassword;

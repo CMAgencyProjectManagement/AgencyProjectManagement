@@ -7,11 +7,13 @@
     <div class="row">
       <div class="col-11">
         <img class="avatar img-avatar" src="{{comment.createdBy.avatar}}"/>
-        <a href="#/account/detail?id={{comment.createdBy.id}}">
+        <a href="#/account/{{comment.createdBy.id}}/detail">
           {{comment.createdBy.name}}
         </a>
       </div>
-      <div class="col-1 btn-edit" (click)="handleEditBtnClick($event)">
+      <div class="col-1 btn-edit"
+           *ngIf="editable"
+           (click)="handleEditBtnClick($event)">
         <i class="fa fa-pencil-square-o"></i>
       </div>
       <div class="col-12 mt-3" *ngIf="!isCollapsed">
