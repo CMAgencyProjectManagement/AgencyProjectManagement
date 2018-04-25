@@ -231,7 +231,7 @@ namespace Service
                             }
                             else
                             {
-                                throw new ObjectNotFoundException($"UserProject existed");
+                                throw new ObjectNotFoundException($"This user is already in project");
                             }
                         }
                         else
