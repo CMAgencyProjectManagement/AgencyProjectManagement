@@ -305,6 +305,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    ProjectService projectService = new ProjectService(db);
                     DependencyService dependencyService = new DependencyService(db);
 
                     bool flag = true;
@@ -316,7 +317,6 @@ namespace Web.Controllers
                         ModelState.AddModelError("Name", "Task name is taken");
                         flag = false;
                     }
-
                     if (taskService.CheckForListId(createTaskModel.ListID.Value))
                     {
                         ModelState.AddModelError("ListID", "The System don't have this list");
@@ -357,6 +357,13 @@ namespace Web.Controllers
                             flag = false;
                         }
                     }
+
+
+//                    projectService.GetProjectOfList();
+//                    if(projectService.IsDateRangeInBoundOfProject(
+//                        createTaskModel.StartDate, 
+//                        createTaskModel.Duration,
+//                        ))
 
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                     {
@@ -461,7 +468,7 @@ namespace Web.Controllers
                     DependencyService dependencyService = new DependencyService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
-                    int DurationLength = 15;
+                    int DurationLength = AgencyConfig.maxDuration;
 
                     if (!taskService.IsManagerOfTask(currentUserId, updateTaskViewModel.Id))
                         return Ok(ResponseHelper.GetExceptionResponse(
