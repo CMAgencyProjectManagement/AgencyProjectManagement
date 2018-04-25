@@ -57,6 +57,10 @@ export class ProjectCardComponent implements OnInit {
           listName
         ).then(value => {
           this.refresh.emit();
+        }). catch(value =>{
+          if(listName==""){
+            this.showErrorModal("Please input valid list name!");
+          }
         })
       }
     };
@@ -71,6 +75,10 @@ export class ProjectCardComponent implements OnInit {
           listName
         ).then(value => {
           this.refresh.emit();
+        }).catch(reason =>{
+          if(listName==""){
+            this.showErrorModal("Please input valid list name!");
+          }
         })
       },
       defaultlistname: defaultlistname
