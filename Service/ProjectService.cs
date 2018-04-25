@@ -74,6 +74,13 @@ namespace Service
                 ).ToList();
         }
 
+        public Project GetProjectOfList(int listId)
+        {
+            Project project = new Project();
+            int projectId = db.Lists.Find(listId).ProjectID;
+            return db.Projects.Find(projectId);
+        }
+
 
         /// <summary>
         /// Create new project
@@ -279,7 +286,7 @@ namespace Service
             }
         }
 
-        public bool IsDateRangeInBoundOfProject(DateTime startDate, DateTime endDate, int projectId)
+        public bool IsDateRangeInBoundOfProject(DateTime startDate, int duration, int projectId)
         {
             Project project = GetProjectByID(projectId);
             if (project == null)
@@ -287,7 +294,20 @@ namespace Service
                 throw new ObjectNotFoundException($"Project with id {projectId} not found");
             }
 
-            return false;
+            bool isInBound = true;
+            
+            if (startDate < project.StartDate)
+            {
+                isInBound = false;
+            }
+
+            DateTime endDate = startDate.AddDays(duration);
+            if (endDate > project.FinishedDate)
+            {
+                isInBound = false;
+            }
+
+            return isInBound;
         }
 
 

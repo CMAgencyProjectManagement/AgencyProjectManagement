@@ -14,7 +14,7 @@ import {TeamManagementRoutingModule} from './team-management-routing.module';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import {DataTablesModule} from 'angular-datatables';
-import {SpinnerModule} from '../../components/spinner/spinner.module';
+import {SpinnerModule} from '../../components';
 
 @NgModule({
   imports: [
