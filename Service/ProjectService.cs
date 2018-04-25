@@ -286,8 +286,8 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"Project with id {projectId} not found");
             }
-            
-            
+
+            return false;
         }
 
 
