@@ -10,7 +10,7 @@
           <div class="form-group row">
             <label class="col-md-1.2 col-form-label" for="name-input">Project Name
               <span style="color: #ee0d0d">
-                <strong>*</strong>
+                <strong>*</strong>  
               </span>
             </label>
             <div class="col-md-6">
@@ -34,19 +34,18 @@
             <div class="col-md-6" style="margin-left: 1px;">
               <my-date-picker #deadlinePicker name="deadline-input" [options]="myDatePickerOptions" class="form-control-mydatepicker" formControlName="deadline"
                 disable="true" style="margin-left: 28px;"></my-date-picker>
-              <div class="invalid-feedback" *ngIf="errors.deadline">{{errors.deadline}}</div>
+              <div class="invalid-feedback" *ngIf="errors.deadline" style="margin-left: 29px;">{{errors.deadline}}</div>
             </div>
           </div>
-          <div class="form-actions text-center">
-            <div class="col-12">
-              <button type="button" class="btn btn-primary btn-lg" style="color: black;
-                                background-color: white;
-                                border-color: black;margin-left: 40px;">Save changes
+          <div class="form-group row">
+            <div style="margin-left: 200px;">
+              <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isLoading" style="font-size: 20px; width: 150px">
+                Save Changes
               </button>
-              <button type="button" class="btn btn-secondary btn-lg" style="color: black;
-                background-color: white;
-                border-color: black; margin-left: 70px;">Reset
-              </button>
+              <!-- <button type="button" class="btn btn-success btn-bw " data-toggle="modal" (click)="successModal.show()">Add</button> -->
+            </div>
+            <div style="margin-left: 100px;">
+              <button class="btn btn-secondary" style="font-size: 20px; width: 100px" data-toggle="modal" onclick="location.href='#/project'">Cancel</button>
             </div>
           </div>
         </div>

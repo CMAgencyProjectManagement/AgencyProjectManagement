@@ -22,7 +22,7 @@
             <tbody *ngIf="foundTeam.users.length !== 0 || foundTeam.manager">
             <!--MANAGER-->
             <tr>
-              <td>
+              <td *ngIf="foundTeam.manager">
                 <a href="#/account/detail?id={{foundTeam.manager.id}}"
                    *ngIf="managementMode">
                   {{foundTeam.manager.name}}
