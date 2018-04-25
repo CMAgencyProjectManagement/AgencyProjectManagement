@@ -291,7 +291,7 @@ namespace Service
         }
 
 
-        public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
+        public Project SetProjectToTeamsVer2(int projectId, int[] newTeamIds, int modifierId)
         {
             Project project = GetProjectByID(projectId);
             if (project == null)
@@ -324,6 +324,45 @@ namespace Service
             return project;
         }
 
+        public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
+        {
+            Project project = GetProjectByID(projectId);
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with id {projectId} not found");
+            }
+
+            IEnumerable<int> oldTeamIds = db.TeamProjects
+                .Where(teamProject => teamProject.ProjectID == projectId)
+                .Select(teamProject => teamProject.TeamID);
+
+            IEnumerable<int> teamIdsToRemove = oldTeamIds.Except(newTeamIds);
+            IEnumerable<int> teamIdsToAdd = newTeamIds.Except(oldTeamIds);
+
+            IEnumerable<TeamProject> teamProjectToRemove = db.TeamProjects
+                .Where(teamProject => teamIdsToRemove.Contains(teamProject.TeamID));
+            IEnumerable<TeamProject> teamProjectToAdd = teamIdsToAdd
+                .Select(teamIdToAdd => new TeamProject
+                {
+                    ProjectID = projectId,
+                    TeamID = teamIdToAdd
+                });
+
+            db.TeamProjects.AddRange(teamProjectToAdd);
+            var UsersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID); 
+            if (UsersInProject!=null)
+            {
+                db.TeamProjects.RemoveRange(teamProjectToRemove);
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Cant remove departments, Still have user(s) in Project with id {projectId}");
+            }
+            project.ChangedBy = modifierId;
+            project.ChangedTime = DateTime.Today;
+            db.SaveChanges();
+            return project;
+        }
         public IQueryable<int> GetUsersInProject(int projectId)
         {
             var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
