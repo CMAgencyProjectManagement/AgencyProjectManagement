@@ -59,13 +59,13 @@ export class UpdateUserComponent implements OnInit {
   ngOnInit() {
     if (this.route.snapshot.paramMap.get('id') == undefined) {
       this.foundUser = this.storeService.get(['currentUser']) as User;
-      if(this.foundUser.team){
+      if (this.foundUser.team) {
         this.teamService.getDetail(this.foundUser.team.id)
-        .then(value => {
-          this.teams = value;
-          this.updateLoadingState();
-        });
-      } else{
+          .then(value => {
+            this.teams = value;
+            this.updateLoadingState();
+          });
+      } else {
         this.teams = null;
         this.updateLoadingState();
       }
@@ -94,7 +94,7 @@ export class UpdateUserComponent implements OnInit {
             if (this.users[i].id === this.userID) {
               this.foundUser = this.users[i];
               this.setDefaultValue(this.foundUser);
-              this.updateLoadingState();
+              this.isPageLoading = false;
             }
           }
           this.updateForm = new FormGroup({
@@ -120,7 +120,7 @@ export class UpdateUserComponent implements OnInit {
   setDefaultValue(user: User) {
     let birthdate = moment(user.birthdate);
     this.updateForm.patchValue({
-      birthdate:{
+      birthdate: {
         date: {
           year: birthdate.year(),
           month: birthdate.month() + 1,
@@ -131,9 +131,9 @@ export class UpdateUserComponent implements OnInit {
     this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
-    if (user.team!=null) {
+    if (user.team != null) {
       this.updateForm.controls['team'].setValue(user.team.id);
-    } else{
+    } else {
       this.updateForm.controls['team'].setValue(0);
     }
     this.updateForm.controls['isActive'].setValue(user.isActive);
