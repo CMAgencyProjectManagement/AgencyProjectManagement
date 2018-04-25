@@ -134,6 +134,7 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {CmaModule} from './cmaComponents/cma.module';
 
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -152,6 +153,7 @@ import {CmaModule} from './cmaComponents/cma.module';
     ...APP_CONTAINERS,
     ...APP_COMPONENTS,
     ...APP_DIRECTIVES,
+
   ],
   providers: [{
     provide: LocationStrategy,

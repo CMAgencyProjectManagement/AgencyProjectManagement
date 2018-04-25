@@ -123,7 +123,12 @@ const admin_navigation = [
         icon: 'icon-user',
       }
     ]
-  }
+  },
+  {
+    name: 'Config',
+    url: '/config',
+    icon: 'icon-speedometer'
+  },
 ];
 
 

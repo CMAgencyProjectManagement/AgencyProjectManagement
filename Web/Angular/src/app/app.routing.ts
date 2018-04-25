@@ -48,6 +48,10 @@ export const routes: Routes = [
       {
         path: 'task',
         loadChildren: './views/task/task.module#TaskModule'
+      },
+      {
+        path: 'config',
+        loadChildren: './views/config/config.module#ConfigModule'
       }
     ]
   },
