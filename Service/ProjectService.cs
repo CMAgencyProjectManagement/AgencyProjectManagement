@@ -485,33 +485,67 @@ namespace Service
             }
 
             int taskNumber = tasks.Count;
-
-            List<JObject> calculatedResult = new List<JObject>();
-            foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+            if (taskNumber!=0)
             {
-                int taskStatusCount = tasks.Where(x => x.Status == (int) status).Count();
-                calculatedResult.Add(new JObject
+
+                List<JObject> calculatedResult = new List<JObject>();
+                foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
                 {
-                    ["key"] = DisplayCamelCaseString(status.ToString()),
-                    ["value"] = (decimal) (taskStatusCount * 100) / taskNumber
-                });
+                    int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                    calculatedResult.Add(new JObject
+                    {
+                        ["key"] = DisplayCamelCaseString(status.ToString()),
+                        ["value"] = (decimal)(taskStatusCount * 100) / taskNumber
+                    });
+                }
+
+                var result = new JObject
+                {
+                    ["id"] = project.ID,
+                    ["name"] = project.Name,
+                    ["taskCount"] = tasks.Count(),
+                    ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
+                    ["userNumberNotInTask"] = GetNoTaskUsersInProject(project.ID).Count(),
+                    ["taskStatusReport"] = new JArray(calculatedResult),
+                };
+                if (isIncludeTask)
+                {
+                    result["taskExpireThisWeek"] = GetTaskExpireThisWeek(project.ID);
+                }
+
+                return result;
+            }
+            else
+            {
+
+               List<JObject> calculatedResult = new List<JObject>();
+                foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+                {
+                    int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                    calculatedResult.Add(new JObject
+                    {
+                        ["key"] = DisplayCamelCaseString(status.ToString()),
+                        ["value"] = 0//(decimal)(taskStatusCount * 100) 
+                    });
+                }
+
+                var result = new JObject
+                {
+                    ["id"] = project.ID,
+                    ["name"] = project.Name,
+                    ["taskCount"] = tasks.Count(),
+                    ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
+                    ["userNumberNotInTask"] = GetUsersInProject(project.ID).Count(),
+                    ["taskStatusReport"] = new JArray(calculatedResult),
+                };
+                if (isIncludeTask)
+                {
+                    result["taskExpireThisWeek"] = new JArray();
+                }
+                return result;
             }
 
-            var result = new JObject
-            {
-                ["id"] = project.ID,
-                ["name"] = project.Name,
-                ["taskCount"] = tasks.Count(),
-                ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
-                ["userNumberNotInTask"] = GetNoTaskUsersInProject(project.ID).Count(),
-                ["taskStatusReport"] = new JArray(calculatedResult),
-            };
-            if (isIncludeTask)
-            {
-                result["taskExpireThisWeek"] = GetTaskExpireThisWeek(project.ID);
-            }
 
-            return result;
         }
 
 
