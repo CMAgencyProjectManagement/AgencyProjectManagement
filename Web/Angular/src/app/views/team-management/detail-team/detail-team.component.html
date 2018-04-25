@@ -13,55 +13,53 @@
         <div>
           <table class="table table-bordered">
             <thead>
-            <tr>
-              <th>User</th>
-              <th>Role</th>
-              <th *ngIf="managementMode">Status</th>
-            </tr>
+              <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th *ngIf="managementMode">Status</th>
+              </tr>
             </thead>
             <tbody *ngIf="foundTeam.users.length !== 0 || foundTeam.manager">
-            <!--MANAGER-->
-            <tr>
-              <td *ngIf="foundTeam.manager">
-                <a href="#/account/detail?id={{foundTeam.manager.id}}"
-                   *ngIf="managementMode">
-                  {{foundTeam.manager.name}}
-                </a>
-                <span *ngIf="!managementMode">{{foundTeam.manager.name}}</span>
-              </td>
-              <td>
-                <strong>Manager</strong>
-              </td>
-              <td *ngIf="managementMode">
-                <div *ngIf="foundTeam.manager.isActive">Active</div>
-                <div *ngIf="!foundTeam.manager.isActive">Banned</div>
-              </td>
-            </tr>
-            <!--NORMAL USER-->
-            <tr *ngFor="let user of foundTeam.users">
-              <td>
-                <a href="#/account/detail?id={{user.id}}"
-                   *ngIf="managementMode">
-                  {{user.username}}
-                </a>
-                <span *ngIf="!managementMode">{{user.username}}</span>
-              </td>
-              <td>
-                <div *ngIf="user.isAdmin">
-                  <strong>Admin</strong>
-                </div>
-                <div *ngIf="!user.isAdmin && user.isManager">
+              <!--MANAGER-->
+              <tr *ngIf="foundTeam.manager">
+                <td>
+                  <a href="#/account/detail?id={{foundTeam.manager.id}}" *ngIf="managementMode">
+                    {{foundTeam.manager.name}}
+                  </a>
+                  <span *ngIf="!managementMode">{{foundTeam.manager.name}}</span>
+                </td>
+                <td>
                   <strong>Manager</strong>
-                </div>
-                <div *ngIf="!user.isAdmin && !user.isManager">
-                  Staff
-                </div>
-              </td>
-              <td *ngIf="managementMode">
-                <div *ngIf="user.isActive">Active</div>
-                <div *ngIf="!user.isActive">Banned</div>
-              </td>
-            </tr>
+                </td>
+                <td *ngIf="managementMode">
+                  <div *ngIf="foundTeam.manager.isActive">Active</div>
+                  <div *ngIf="!foundTeam.manager.isActive">Banned</div>
+                </td>
+              </tr>
+              <!--NORMAL USER-->
+              <tr *ngFor="let user of foundTeam.users">
+                <td>
+                  <a href="#/account/detail?id={{user.id}}" *ngIf="managementMode">
+                    {{user.username}}
+                  </a>
+                  <span *ngIf="!managementMode">{{user.username}}</span>
+                </td>
+                <td>
+                  <div *ngIf="user.isAdmin">
+                    <strong>Admin</strong>
+                  </div>
+                  <div *ngIf="!user.isAdmin && user.isManager">
+                    <strong>Manager</strong>
+                  </div>
+                  <div *ngIf="!user.isAdmin && !user.isManager">
+                    Staff
+                  </div>
+                </td>
+                <td *ngIf="managementMode">
+                  <div *ngIf="user.isActive">Active</div>
+                  <div *ngIf="!user.isActive">Banned</div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
