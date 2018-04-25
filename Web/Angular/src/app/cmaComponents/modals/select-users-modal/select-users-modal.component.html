@@ -19,6 +19,12 @@
         </select>
       </div>
     </div>
+    <ng-select [items]="userPool"
+               bindLabel="name"
+               bindValue="id"
+               [multiple]="true"
+               [(ngModel)]="selectedUsers">
+    </ng-select>
   </div>
   <div class="col-12" *ngIf="selectedUsers.length > 0">
     <h3>Selected</h3>

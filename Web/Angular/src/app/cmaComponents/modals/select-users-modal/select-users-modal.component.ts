@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {User} from '../../../interfaces/user';
 import * as _ from 'lodash';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-select-users-modal',
