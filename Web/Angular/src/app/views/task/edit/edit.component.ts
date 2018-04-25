@@ -190,7 +190,9 @@ export class EditComponent implements OnInit {
     let taskPool = [];
     for (let list of this.foundProject.lists) {
       for (let task of list.tasks) {
-        taskPool.push(task);
+        if (task.id != this.foundTask.id) {
+          taskPool.push(task);
+        }
       }
     }
     const initialState = {

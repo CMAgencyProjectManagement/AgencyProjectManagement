@@ -107,6 +107,64 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
+        [HttpGet]
+        [Route("latetasks")]
+        [Authorize]
+        public IHttpActionResult GetCurrentUserLateTasks(int teamId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    TaskService taskService = new TaskService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    
+                    IEnumerable<Task> lateTasks = taskService.GetTasksOfUser(currentUser.ID);
+                    lateTasks = lateTasks.Where(task => taskService.IsTaskLate(task.ID));
+                    
+                    IEnumerable<JObject> lateTasksJson = lateTasks.Select(task =>
+                        taskService.ParseToJson(task));
+                    return Ok(ResponseHelper.GetResponse(new JArray(lateTasksJson)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        [HttpGet]
+        [Route("expiresoon")]
+        [Authorize]
+        public IHttpActionResult GetCurrentUserTaskExpireThisWeek(int teamId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    TaskService taskService = new TaskService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    
+                    IEnumerable<Task> lateTasks = taskService.GetTasksOfUser(currentUser.ID);
+                    lateTasks = lateTasks.Where(task => taskService.IsTaskDeadlineInThisWeek(task));
+                    
+                    IEnumerable<JObject> lateTasksJson = lateTasks.Select(task =>
+                        taskService.ParseToJson(task));
+                    return Ok(ResponseHelper.GetResponse(new JArray(lateTasksJson)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
 
         [HttpGet]
         [Route("all")]

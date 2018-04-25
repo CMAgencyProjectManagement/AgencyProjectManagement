@@ -9,6 +9,8 @@ const serverPath = {
   leaderBoard: '/api/user/leaderboard',
   getUserOfProject: (projectId) => `/api/user/project/${projectId}`,
   getUserOfTeam: (teamId) => `/api/user/team/${teamId}`,
+  getLateTaskOfUser: '/api/user/latetasks',
+  getNearExpireTaskOfUser: '/api/user/expiresoon',
   resetPassword: userId => `/api/user/${userId}/resetpassword`,
   // Project
   allProject: '/api/project/all',

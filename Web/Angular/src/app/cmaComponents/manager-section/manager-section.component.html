@@ -17,11 +17,15 @@
       <td>
         <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
       </td>
-      <td>{{task.priority}}</td>
+      <td>{{task.priorityText}}</td>
       <td>
+        <span [hidden]="true">{{task.statusText}}</span>
         <app-task-status [taskStatusNumber]="task.status"></app-task-status>
       </td>
-      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
+      <td>
+        <span [hidden]="true">{{task.deadline | date:'yyyy/MM/dd'}}</span>
+        {{task.deadline | date:'dd/MM/yyyy'}}
+      </td>
       <td>
         <a routerLink="/project/{{task.project.id}}/detail">{{task.project.name}}</a>
       </td>
@@ -48,8 +52,11 @@
       <td>
         <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
       </td>
-      <td>{{task.status}}</td>
-      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
+      <td>{{task.priorityText}}</td>
+      <td>
+        <span [hidden]="true">{{task.deadline | date:'yyyy/MM/dd'}}</span>
+        {{task.deadline | date:'dd/MM/yyyy'}}
+      </td>
       <td>
         <a routerLink="/project/{{task.project.id}}/detail">{{task.project.name}}</a>
       </td>

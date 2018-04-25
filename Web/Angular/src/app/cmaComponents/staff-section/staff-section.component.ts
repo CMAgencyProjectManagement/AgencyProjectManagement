@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Task} from '../../interfaces/task';
 
 @Component({
@@ -7,8 +7,8 @@ import {Task} from '../../interfaces/task';
   styleUrls: ['./staff-section.component.scss']
 })
 export class StaffSectionComponent implements OnInit {
-  taskLate: Task[];
-  taskThisWeek: Task[];
+  @Input() lateTasks: Task[];
+  @Input() thisWeekTasks: Task[];
 
   lateTableOptions: DataTables.Settings = {
     searching: true,
@@ -16,7 +16,7 @@ export class StaffSectionComponent implements OnInit {
     paging: true,
     ordering: true,
     order: [
-      [4, 'desc']
+      [4, 'asc']
     ]
   };
 
@@ -26,7 +26,7 @@ export class StaffSectionComponent implements OnInit {
     paging: true,
     ordering: true,
     order: [
-      [5, 'desc']
+      [5, 'asc']
     ]
   };
 

@@ -6,7 +6,10 @@
   <div class="card-body" *ngIf="!isLoading.page">
     <div class="row">
       <div class="col-7">
-        <app-staff-section *ngIf="role == 'staff'"></app-staff-section>
+        <app-staff-section
+          [lateTasks] = lateTasks
+          [thisWeekTasks]="thisWeekTasks"
+          *ngIf="role == 'staff'"></app-staff-section>
         <app-manager-section [lateTasks]="lateTasks"
                              [needReviewTasks]="needReviewTasks"
                              *ngIf="role == 'manager'">

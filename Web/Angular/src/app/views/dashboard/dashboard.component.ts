@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
   leaderboard: UserWithScore[];
   lateTasks: Task[];
   needReviewTasks: Task[];
+  thisWeekTasks: Task[];
 
 
   constructor(
@@ -67,6 +68,7 @@ export class DashboardComponent implements OnInit {
 
     switch (this.role) {
       case 'staff': {
+        this.loadStaffSection();
         break;
       }
       case 'manager': {
@@ -81,12 +83,12 @@ export class DashboardComponent implements OnInit {
 
   private loadStaffSection() {
     Promise.all([
-      this.teamService.getLateTasks(this.currentUser.team.id),
-      this.teamService.getNeedReviewTasks(this.currentUser.team.id),
+      this.userService.getCurrentUserLateTasks(),
+      this.userService.getCurrentUserNearExpireTask(),
       this.userService.getLeaderBoard()])
       .then((resData: [Task[], Task[], UserWithScore[]]) => {
         this.lateTasks = resData[0];
-        this.needReviewTasks = resData[1];
+        this.thisWeekTasks = resData[1];
         this.leaderboard = resData[2];
         this.isLoading.page = false;
       })

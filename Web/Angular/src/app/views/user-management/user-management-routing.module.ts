@@ -27,6 +27,13 @@ const routes: Routes = [
         }
       },
       {
+        path: ':id/detail',
+        component: DetailUserComponent,
+        data: {
+          title: 'Account Detail'
+        }
+      },
+      {
         path: 'profile',
         component: DetailUserComponent,
         data: {

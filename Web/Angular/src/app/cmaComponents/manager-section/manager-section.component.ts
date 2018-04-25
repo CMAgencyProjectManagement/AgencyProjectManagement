@@ -16,7 +16,7 @@ export class ManagerSectionComponent implements OnInit {
     paging: true,
     ordering: true,
     order: [
-      [3, 'desc']
+      [3, 'asc']
     ]
   };
 
@@ -26,7 +26,7 @@ export class ManagerSectionComponent implements OnInit {
     paging: true,
     ordering: true,
     order: [
-      [2, 'desc']
+      [2, 'asc']
     ]
   };
 

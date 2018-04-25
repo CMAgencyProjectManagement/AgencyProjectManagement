@@ -233,7 +233,7 @@ namespace Service
                         }
                     }
 
-                    throw new ObjectNotFoundException($"Eo biet");
+                    throw new ObjectNotFoundException($"Project not belong to any team");
                 }
                 else
                 {
@@ -277,6 +277,17 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
             }
+        }
+
+        public bool IsDateRangeInBoundOfProject(DateTime startDate, DateTime endDate, int projectId)
+        {
+            Project project = GetProjectByID(projectId);
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with id {projectId} not found");
+            }
+            
+            
         }
 
 
