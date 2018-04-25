@@ -23,7 +23,6 @@ import {TeamService} from 'app/services/team.service';
 import {StoreService} from '../../../services/tree.service';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
-import {Directive, ElementRef, Renderer} from '@angular/core';
 
 @Component({
   templateUrl: './project-detail.component.html',
@@ -209,7 +208,7 @@ export class ProjectDetailComponent implements OnInit {
 
   handleOnUnAssignMembersBtnClick() {
     this.isLoading.openUnAssignMembersModal = true;
-    const pool = this.foundProject.assignees;
+    const pool = _.filter(this.foundProject.assignees, (user: User) => {return !user.isManager});
 
     const onConfirm = (selelectedMembers: User[]) => {
       let selectedIds = _.map(selelectedMembers, 'id');
@@ -217,34 +216,33 @@ export class ProjectDetailComponent implements OnInit {
         this.containmember = true;
       }
       if (!this.containmember) {
-        this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
+        this.projectService.unAssignUsersFromProject(this.foundProject.id, selectedIds)
           .then(value => {
-            this.members = _.concat(this.members, selectedIds);
-            this.isLoading.openAssignMembersModal = false
+            this.foundProject = value;
+            this.isLoading.openUnAssignMembersModal = false
           })
           .catch(reason => {
             this.showErrorModal(reason.Message);
-            this.isLoading.openAssignMembersModal = false
+            this.isLoading.openUnAssignMembersModal = false
           })
       } else {
         this.showErrorModal('Please select members!');
-        this.isLoading.openAssignMembersModal = false;
+        this.isLoading.openUnAssignMembersModal = false;
       }
     };
 
     const initialState = {
       confirmCallback: onConfirm,
       cancelCallback: () => {
-        this.isLoading.openAssignMembersModal = false
+        this.isLoading.openUnAssignMembersModal = false
       },
       closeCallback: () => {
-        this.isLoading.openAssignMembersModal = false
+        this.isLoading.openUnAssignMembersModal = false
       },
       userPool: pool,
-      title: `Assign`,
-      confirmButtonText: 'Assign'
+      title: `Un-Assign`
     };
-    this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+    this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
   handleOnAssignMembersBtnClick() {
@@ -261,7 +259,7 @@ export class ProjectDetailComponent implements OnInit {
           if (!this.containmember) {
             this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
               .then(value => {
-                this.members = _.concat(this.members, selectedIds);
+                this.foundProject = value;
                 this.isLoading.openAssignMembersModal = false
               })
               .catch(reason => {
@@ -286,7 +284,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+        this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
   }
 
