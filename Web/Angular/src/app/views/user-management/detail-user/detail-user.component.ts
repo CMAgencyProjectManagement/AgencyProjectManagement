@@ -50,19 +50,19 @@ export class DetailUserComponent implements OnInit {
         for (let i = 0; i < this.users.length; i++) {
           if (this.users[i].id == this.userID) {
             this.foundUser = this.users[i];
-            this.selectedUser.push({
-              id: this.foundUser.id,
-              itemName: this.foundUser.name,
-              itemUsername: this.foundUser.username,
-              itemBirthday: this.foundUser.birthdate,
-              itemAvatar: this.foundUser.avatar,
-              itemPhone: this.foundUser.phone,
-              itemTeam: this.foundUser.team.name,
-              itemEmail: this.foundUser.email,
-              itemManager: this.foundUser.isManager,
-              itemAdmin: this.foundUser.isAdmin,
-              itemBan: this.foundUser.isActive,
-            });
+            // this.selectedUser.push({
+            //   id: this.foundUser.id,
+            //   itemName: this.foundUser.name,
+            //   itemUsername: this.foundUser.username,
+            //   itemBirthday: this.foundUser.birthdate,
+            //   itemAvatar: this.foundUser.avatar,
+            //   itemPhone: this.foundUser.phone,
+            //   itemTeam: this.foundUser.team.name,
+            //   itemEmail: this.foundUser.email,
+            //   itemManager: this.foundUser.isManager,
+            //   itemAdmin: this.foundUser.isAdmin,
+            //   itemBan: this.foundUser.isActive,
+            // });
           }
         }
         this.isLoadingPage = false;
