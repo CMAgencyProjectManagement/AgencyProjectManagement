@@ -13,18 +13,17 @@
   <div class="col-12">
     <div class="form-group row">
       <div class="col-md-9">
-        <select id="user-select" name="user-select" class="form-control" (change)="handleOnSelect($event.target.value)">
-          <option value="{{undefined}}">Please select members</option>
-          <option value="{{user.id}}" *ngFor="let user of userPool">{{user.name}}</option>
-        </select>
+        <ng-select [items]="userPool"
+                   bindLabel="name"
+                   bindValue="id"
+                   placeholder="Select users"
+                   (change)="onChange($event)"
+                   [multiple]="true"
+                   [(ngModel)]="selectedUsersIds">
+        </ng-select>
       </div>
     </div>
-    <ng-select [items]="userPool"
-               bindLabel="name"
-               bindValue="id"
-               [multiple]="true"
-               [(ngModel)]="selectedUsers">
-    </ng-select>
+
   </div>
   <div class="col-12" *ngIf="selectedUsers.length > 0">
     <h3>Selected</h3>

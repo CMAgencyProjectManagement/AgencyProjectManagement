@@ -596,10 +596,10 @@ namespace Web.Controllers
                                 userId,
                                 assignProjectModel.ProjectId
                             );
-                            //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
                         }
 
-                        return Ok(ResponseHelper.GetResponse());
+                        Project project = projectService.GetProjectByID(assignProjectModel.ProjectId);
+                        return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project)));
                     }
                 }
                 else

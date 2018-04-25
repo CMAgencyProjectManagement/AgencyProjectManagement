@@ -55,7 +55,6 @@ export class ProjectUpdateComponent implements OnInit {
       this.projectID = Number(id);
       this.projectService.getProject(this.projectID).then(value => {
         this.foundProject = value;
-        console.debug(this.foundProject.description);
         this.isLoading = false;
       })
     } else {

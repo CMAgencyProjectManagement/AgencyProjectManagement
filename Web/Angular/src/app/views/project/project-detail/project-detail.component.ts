@@ -57,6 +57,7 @@ export class ProjectDetailComponent implements OnInit {
     attachmentRemove: boolean[]
     openAssignModal: boolean
     openAssignMembersModal: boolean
+    openUnAssignMembersModal: boolean
     openUnAssignModal: boolean
     done: boolean,
     comment: boolean,
@@ -82,6 +83,7 @@ export class ProjectDetailComponent implements OnInit {
       openAssignModal: false,
       openUnAssignModal: false,
       openAssignMembersModal: false,
+      openUnAssignMembersModal: false,
       done: false,
       comment: false,
       editComment: true,
@@ -204,6 +206,46 @@ export class ProjectDetailComponent implements OnInit {
         this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
   };
+
+  handleOnUnAssignMembersBtnClick() {
+    this.isLoading.openUnAssignMembersModal = true;
+    const pool = this.foundProject.assignees;
+
+    const onConfirm = (selelectedMembers: User[]) => {
+      let selectedIds = _.map(selelectedMembers, 'id');
+      if (selectedIds.length == 0) {
+        this.containmember = true;
+      }
+      if (!this.containmember) {
+        this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
+          .then(value => {
+            this.members = _.concat(this.members, selectedIds);
+            this.isLoading.openAssignMembersModal = false
+          })
+          .catch(reason => {
+            this.showErrorModal(reason.Message);
+            this.isLoading.openAssignMembersModal = false
+          })
+      } else {
+        this.showErrorModal('Please select members!');
+        this.isLoading.openAssignMembersModal = false;
+      }
+    };
+
+    const initialState = {
+      confirmCallback: onConfirm,
+      cancelCallback: () => {
+        this.isLoading.openAssignMembersModal = false
+      },
+      closeCallback: () => {
+        this.isLoading.openAssignMembersModal = false
+      },
+      userPool: pool,
+      title: `Assign`,
+      confirmButtonText: 'Assign'
+    };
+    this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+  }
 
   handleOnAssignMembersBtnClick() {
     this.isLoading.openAssignMembersModal = true;

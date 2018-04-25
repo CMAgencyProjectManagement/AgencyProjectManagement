@@ -102,7 +102,6 @@ namespace Web.Controllers
             }
         }
 
-       
 
         [HttpGet]
         [Route("user/{id:int}")]
@@ -317,6 +316,7 @@ namespace Web.Controllers
                         ModelState.AddModelError("Name", "Task name is taken");
                         flag = false;
                     }
+
                     if (taskService.CheckForListId(createTaskModel.ListID.Value))
                     {
                         ModelState.AddModelError("ListID", "The System don't have this list");
@@ -609,22 +609,15 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                        if (taskService.IsManagerOfTask(currentUserId, assignTaskModel.TaskID))
-                        {
-                            foreach (int userID in assignTaskModel.UserIDs)
-                            {
-                                taskService.AssignTask(
-                                    userID: userID,
-                                    taskID: assignTaskModel.TaskID,
-                                    currentUserId: currentUserId
-                                );
-                            }
+                        if (!taskService.IsManagerOfTask(currentUserId, assignTaskModel.TaskID))
+                            return Content(HttpStatusCode.Unauthorized, ResponseHelper.GetExceptionResponse(
+                                "User have to be manager of this task to Assign this task"));
 
-                            return Ok(ResponseHelper.GetResponse());
-                        }
+                        Task task = taskService.AssignUsersToTask(assignTaskModel.UserIDs, assignTaskModel.TaskID,
+                            currentUserId);
 
-                        return Ok(ResponseHelper.GetExceptionResponse(
-                            "User have to be manager of this task to Assign this task"));
+                        return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task, true,
+                            AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)));
                     }
                 }
                 else

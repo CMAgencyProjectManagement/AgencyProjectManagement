@@ -408,6 +408,20 @@ namespace Service
             }
         }
 
+        public Task AssignUsersToTask(int[] userIds,int taskId, int currentUserId)
+        {
+            foreach (int userId in userIds)
+            {
+                AssignTask(
+                    userID: userId,
+                    taskID: taskId,
+                    currentUserId: currentUserId
+                );
+            }
+
+            return db.Tasks.Find(taskId);
+        }
+
         public UserTask AssignTask(int taskID, int userID, int currentUserId)
         {
             User user = db.Users.Find(userID);

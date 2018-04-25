@@ -13,7 +13,6 @@ import {UserService} from '../../../services/user.service';
 import {User} from '../../../interfaces/user';
 import {CommentService} from '../../../services/comment.service';
 import {Comment} from '../../../interfaces/comment';
-import {forEach} from '@angular/router/src/utils/collection';
 import {StoreService} from '../../../services/tree.service';
 import {SelectStatusModalComponent} from '../../../cmaComponents/modals';
 
@@ -88,7 +87,6 @@ export class ViewComponent implements OnInit {
   }
 
   loadData(taskId) {
-    console.debug('loadData');
     this.taskService.getTaskDetail(taskId)
       .then(value => {
         this.foundTask = value as Task;
@@ -115,7 +113,7 @@ export class ViewComponent implements OnInit {
         }
       )
       .catch(reason => {
-        this.showErrorModal('Comment fail');
+        this.showErrorModal(reason.Message);
         console.debug('handleAddCommentBtnClick', reason);
         this.isLoading.comment = true;
       })
@@ -135,25 +133,16 @@ export class ViewComponent implements OnInit {
           this.isLoading.openAssignModal = false
         })
         .catch(reason => {
-          this.showErrorModal('Assign fail');
+          this.showErrorModal(reason.Message);
           this.isLoading.openAssignModal = false
         })
     };
     this.isLoading.openAssignModal = true;
     this.userService.getUserOfProject(this.foundTask.project.id)
-      .then(value => {
-        const pool = [];
-        for (let user of value as User[]) {
-          let removeFlag = false;
-          for (let assignee of this.foundTask.assignees) {
-            if (assignee.id == user.id) {
-              removeFlag = true;
-            }
-          }
-          if (!removeFlag) {
-            pool.push(user);
-          }
-        }
+      .then((value: User[]) => {
+        const currentAssigneesIds = _.map(this.foundTask.assignees, 'id');
+        const pool = _.filter(value, (user: User) => !currentAssigneesIds.includes(user.id) && !user.isManager);
+        const selected = _.filter(value, (user: User) => currentAssigneesIds.includes(user.id));
 
         const initialState = {
           confirmCallback: onConfirm,
@@ -164,6 +153,7 @@ export class ViewComponent implements OnInit {
             this.isLoading.openAssignModal = false;
           },
           userPool: pool,
+          selectedUser: selected,
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
@@ -188,7 +178,7 @@ export class ViewComponent implements OnInit {
           this.isLoading.openUnAssignModal = false;
         })
         .catch(reason => {
-          this.showErrorModal('Un-Assign fail');
+          this.showErrorModal(reason.Message);
           this.isLoading.openUnAssignModal = false;
         })
     };
@@ -216,7 +206,7 @@ export class ViewComponent implements OnInit {
           this.isLoading.done = false;
         })
         .catch(reason => {
-          this.showErrorModal('Finish task fail');
+          this.showErrorModal(reason.Message);
           this.isLoading.done = false;
         })
     };
