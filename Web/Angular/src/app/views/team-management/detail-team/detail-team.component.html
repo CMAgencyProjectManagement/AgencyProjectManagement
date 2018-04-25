@@ -23,9 +23,10 @@
               <!--MANAGER-->
               <tr *ngIf="foundTeam.manager">
                 <td>
-                  <a href="#/account/detail?id={{foundTeam.manager.id}}" *ngIf="managementMode">
+                  <a href="#/account/detail/{{foundTeam.manager.id}}" *ngIf="currentUser.isAdmin">
                     {{foundTeam.manager.name}}
                   </a>
+                  <span *ngIf="currentUser.isManager">{{foundTeam.manager.name}}</span>
                   <span *ngIf="!managementMode">{{foundTeam.manager.name}}</span>
                 </td>
                 <td>
@@ -39,9 +40,10 @@
               <!--NORMAL USER-->
               <tr *ngFor="let user of foundTeam.users">
                 <td>
-                  <a href="#/account/detail?id={{user.id}}" *ngIf="managementMode">
+                  <a href="#/account/detail/{{user.id}}" *ngIf="currentUser.isAdmin">
                     {{user.username}}
                   </a>
+                  <span *ngIf="currentUser.isManager">{{user.username}}</span>
                   <span *ngIf="!managementMode">{{user.username}}</span>
                 </td>
                 <td>
