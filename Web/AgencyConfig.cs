@@ -14,6 +14,8 @@ namespace Web
         public static int highPoint;
         public static int maxDuration;
         public static int penatyPercent;
+        public static int minAge;
+        
         
         public static string[] supportedImageTypes = {"jpeg", "gif", "bmp", "tiff", "png"};
     }

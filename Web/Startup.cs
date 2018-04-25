@@ -126,6 +126,7 @@ namespace Web
             AgencyConfig.highPoint = 9;
             AgencyConfig.maxDuration = 15;
             AgencyConfig.penatyPercent = 40;
+            AgencyConfig.minAge = 18;
         }
     }
 }

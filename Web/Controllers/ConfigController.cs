@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Web.Http;
-using Entity;
 using Newtonsoft.Json.Linq;
-using Service;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -24,7 +22,8 @@ namespace Web.Controllers
                     ["mediumPriorityPoint"] = AgencyConfig.mediumPoint,
                     ["highPriorityPoint"] = AgencyConfig.highPoint,
                     ["maxDuration"] = AgencyConfig.maxDuration,
-                    ["penatyPercent"] = AgencyConfig.penatyPercent
+                    ["penatyPercent"] = AgencyConfig.penatyPercent,
+                    ["minAge"] = AgencyConfig.minAge
                 };
                 return Ok(ResponseHelper.GetResponse(jObject));
             }
@@ -38,18 +37,62 @@ namespace Web.Controllers
         [HttpPut]
         [Route("")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult SetConfigs()
+        public IHttpActionResult SetConfigs(SetConfigViewModel configViewModel)
         {
             try
             {
+                if (configViewModel.PenatyPercent < 0 || configViewModel.PenatyPercent > 100)
+                {
+                    ModelState.AddModelError("PenatyPercent", "Penaty percent must be between 0 and 100");
+                }
+
+                if (configViewModel.MaxDuration < 1)
+                {
+                    ModelState.AddModelError("MaxDuration", "Max duration must be larger than 0");
+                }
+                
+                if (configViewModel.LowPoint < 0)
+                {
+                    ModelState.AddModelError("LowPoint", "Low priority point must be larger or equal to 0");
+                }
+                
+                if (configViewModel.MediumPoint < 0)
+                {
+                    ModelState.AddModelError("MediumPoint", "Medium priority point must be larger or equal to 0");
+                }
+                
+                if (configViewModel.HightPoint < 0)
+                {
+                    ModelState.AddModelError("HightPoint", "High priority point must be larger or equal to 0");
+                }
+                
+                //http://www.ilo.org/global/standards/subjects-covered-by-international-labour-standards/child-labour/lang--en/index.htm
+                if (configViewModel.MinAge < 0)
+                {
+                    ModelState.AddModelError("MinAge", "Minimun age point must be larger or equal to 13");
+                }
+
+
+                if (ModelState.IsValid)
+                {
+                    AgencyConfig.lowPoint = configViewModel.LowPoint;
+                    AgencyConfig.mediumPoint = configViewModel.MediumPoint;
+                    AgencyConfig.highPoint = configViewModel.HightPoint;
+                    AgencyConfig.penatyPercent = configViewModel.PenatyPercent;
+                    AgencyConfig.lowPoint = configViewModel.LowPoint;
+                    AgencyConfig.minAge = configViewModel.MinAge;
+                }
+                
                 JObject jObject = new JObject
                 {
                     ["lowPriorityPoint"] = AgencyConfig.lowPoint,
                     ["mediumPriorityPoint"] = AgencyConfig.mediumPoint,
                     ["highPriorityPoint"] = AgencyConfig.highPoint,
                     ["maxDuration"] = AgencyConfig.maxDuration,
-                    ["penatyPercent"] = AgencyConfig.penatyPercent
+                    ["penatyPercent"] = AgencyConfig.penatyPercent,
+                    ["minAge"] = AgencyConfig.minAge
                 };
+                
                 return Ok(ResponseHelper.GetResponse(jObject));
             }
             catch (Exception ex)
