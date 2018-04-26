@@ -74,7 +74,7 @@ namespace Web.Controllers
         
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult GetTeamDetail(int id)
         {
             try
@@ -237,39 +237,6 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-
-        [HttpPut]
-        [Route("assign/role")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult SetRole(SetTeamRoleViewModel viewModel)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        TeamService teamService = new TeamService(db);
-                        teamService.setManager(
-                            viewModel.TeamId.Value,
-                            viewModel.UserId.Value,
-                            viewModel.IsManager.Value
-                        );
-                        return Ok(ResponseHelper.GetResponse());
-                    }
-                }
-                else
-                {
-                    return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState));
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
         
         [HttpPut]
         [Route("{teamId:int}/assign/manager/{userId:int}")]
@@ -283,10 +250,9 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TeamService teamService = new TeamService(db);
-                        teamService.setManager(
+                        teamService.SetManager(
                             teamId,
-                            userId,
-                            true
+                            userId
                         );
                         return Ok(ResponseHelper.GetResponse());
                     }
