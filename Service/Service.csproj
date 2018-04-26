@@ -52,10 +52,12 @@
     <Compile Include="CommentService.cs" />
     <Compile Include="DependencyService.cs" />
     <Compile Include="ListService.cs" />
+    <Compile Include="NotificationComponent.cs" />
     <Compile Include="NotificationService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="ProjectStatus.cs" />
     <Compile Include="ReportResult.cs" />
+    <Compile Include="NotificationSentence.cs" />
     <Compile Include="TaskPriority.cs" />
     <Compile Include="TaskService.cs" />
     <Compile Include="TaskStatus.cs" />

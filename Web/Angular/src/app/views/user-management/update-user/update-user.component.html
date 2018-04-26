@@ -17,7 +17,7 @@
             <div class="col-8">
               <input type="text" id="fullname-input" name="fullname-input" [ngClass]="{'form-control': true, 'is-invalid': errors.fullname}"
                 formControlName="fullname">
-              <div class="invalid-feedback" *ngIf="errors.fullname">{{fullname.email}}</div>
+              <div class="invalid-feedback" *ngIf="errors.fullname">{{errors.email}}</div>
             </div>
           </div>
           <!--Birthdate -->

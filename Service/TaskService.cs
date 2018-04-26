@@ -208,6 +208,19 @@ namespace Service
 
             return users;
         }
+        
+        public IEnumerable<User> GetFollowersOfTask(int taskId)
+        {
+            Task task = GetTask(taskId);
+            if (task == null)
+            {
+                throw new ObjectNotFoundException($"Task with id {taskId} not found");
+            }
+
+            return task.UserTasks
+                .Where(userTask => userTask.IsFollow)
+                .Select(userTask => userTask.User);
+        }
 
         public bool IsManagerOfTask(int userId, int taskId)
         {

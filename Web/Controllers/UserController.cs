@@ -505,7 +505,7 @@ namespace Web.Controllers
                     int lowPriorityPoint = AgencyConfig.lowPoint;
                     int mediumPriorityPoint = AgencyConfig.mediumPoint;
                     int highPriorityPoint = AgencyConfig.highPoint;
-                    double penatyMultiplier = AgencyConfig.penatyPercent / 100;
+                    double penatyMultiplier = 1 - (AgencyConfig.penatyPercent / 100);
 
                     //Lấy hết user
                     var allUsers = userService.GetAll();
