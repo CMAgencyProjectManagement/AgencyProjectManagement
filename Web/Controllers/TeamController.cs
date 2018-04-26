@@ -250,7 +250,7 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TeamService teamService = new TeamService(db);
-                        teamService.setRole(
+                        teamService.setManager(
                             viewModel.TeamId.Value,
                             viewModel.UserId.Value,
                             viewModel.IsManager.Value
@@ -283,7 +283,7 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TeamService teamService = new TeamService(db);
-                        teamService.setRole(
+                        teamService.setManager(
                             teamId,
                             userId,
                             true

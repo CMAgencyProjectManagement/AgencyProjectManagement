@@ -158,8 +158,9 @@ namespace Service
             db.SaveChanges();
         }
 
-        public void setRole(int teamId, int userId, bool isManager)
+        public void setManager(int teamId, int userId, bool isManager)
         {
+            TaskService taskService = new TaskService(db);
             Team team = db.Teams.Find(teamId);
             if (team != null)
             {
@@ -178,8 +179,22 @@ namespace Service
                             throw new InvalidOperationException("Team can't have more than one manager");
                         }
                     }
-                    user.IsManager = isManager;
-                    db.SaveChanges();
+                    User CurrentManager = db.Users.Where(x => x.IsManager == true).SingleOrDefault();
+                    var UserActiveTasks =  taskService.GetActiveTasksOfUser(user.ID);
+                    if (UserActiveTasks.Count==0&&CurrentManager.ID!=userId)
+                    {
+                        user.IsManager = true;
+                        
+                            CurrentManager.IsManager = false;
+                            db.SaveChanges();
+                        
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"User with ID{userId} still in active tasks");
+
+                    }
+
                 }
                 else
                 {
