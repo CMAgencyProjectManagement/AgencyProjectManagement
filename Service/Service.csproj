@@ -52,6 +52,7 @@
     <Compile Include="CommentService.cs" />
     <Compile Include="DependencyService.cs" />
     <Compile Include="ListService.cs" />
+    <Compile Include="NotificationService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="ProjectStatus.cs" />
     <Compile Include="ReportResult.cs" />

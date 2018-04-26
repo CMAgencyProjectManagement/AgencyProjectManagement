@@ -528,13 +528,14 @@ namespace Service
             throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");
         }
 
-        public double calculateTaskScore(Task task)
+        public double calculateTaskScore(
+            Task task,
+            int lowPriorityScore,
+            int mediumPriorityScore,
+            int highPriorityScore,
+            double lateFinishMultiplier
+            )
         {
-            const int lowPriorityScore = 1;
-            const int mediumPriorityScore = 3;
-            const int highPriorityScore = 9;
-
-            const double lateFinishMultiplier = 0.4f;
 
             double score = 0f;
             switch ((TaskPriority) task.Priority)

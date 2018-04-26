@@ -491,6 +491,8 @@ namespace Web.Controllers
         [Authorize]
         public IHttpActionResult GetLeaderBoard()
         {
+            
+            
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
@@ -498,6 +500,12 @@ namespace Web.Controllers
                     //Init service
                     UserService userService = new UserService(db);
                     TaskService taskService = new TaskService(db);
+                    
+                    //Init constant
+                    int lowPriorityPoint = AgencyConfig.lowPoint;
+                    int mediumPriorityPoint = AgencyConfig.mediumPoint;
+                    int highPriorityPoint = AgencyConfig.highPoint;
+                    double penatyMultiplier = AgencyConfig.penatyPercent / 100;
 
                     //Lấy hết user
                     var allUsers = userService.GetAll();
@@ -515,7 +523,12 @@ namespace Web.Controllers
                         {
                             if (taskService.IsTaskFinishedThisMonth(task))
                             {
-                                userScore += taskService.calculateTaskScore(task);
+                                userScore += taskService.calculateTaskScore(
+                                    task,
+                                    lowPriorityPoint,
+                                    mediumPriorityPoint,
+                                    highPriorityPoint,
+                                    penatyMultiplier);
                             }
                         }
 
