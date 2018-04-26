@@ -4,8 +4,8 @@
       <div class="card-header">
         <strong>Create task</strong>
       </div>
-
-
+      <app-spinner *ngIf="isLoading.page"></app-spinner>
+      <div *ngIf="!isLoading.page" class="card-body row">
         <div [formGroup]="createForm" class="form-horizontal col-lg-8 col-md-10 col-sm-12">
           <div class="form-group row">
             <!--NAME-->
@@ -135,7 +135,7 @@
             </div>
           </div>
         </div>
-
+      </div>
     </div>
   </div>
 </div>
