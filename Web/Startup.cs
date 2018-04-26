@@ -121,6 +121,12 @@ namespace Web
         {
             AgencyConfig.AvatarPath = WebConfigurationManager.AppSettings["AvatarPath"];
             AgencyConfig.AttachmentPath = WebConfigurationManager.AppSettings["AttachmentPath"];
+            AgencyConfig.lowPoint = 1;
+            AgencyConfig.mediumPoint = 3;
+            AgencyConfig.highPoint = 9;
+            AgencyConfig.maxDuration = 15;
+            AgencyConfig.penatyPercent = 40;
+            AgencyConfig.minAge = 18;
         }
     }
 }

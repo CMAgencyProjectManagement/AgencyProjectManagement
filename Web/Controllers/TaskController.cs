@@ -102,7 +102,6 @@ namespace Web.Controllers
             }
         }
 
-       
 
         [HttpGet]
         [Route("user/{id:int}")]
@@ -305,6 +304,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    ProjectService projectService = new ProjectService(db);
                     DependencyService dependencyService = new DependencyService(db);
 
                     bool flag = true;
@@ -357,6 +357,13 @@ namespace Web.Controllers
                             flag = false;
                         }
                     }
+
+
+//                    projectService.GetProjectOfList();
+//                    if(projectService.IsDateRangeInBoundOfProject(
+//                        createTaskModel.StartDate, 
+//                        createTaskModel.Duration,
+//                        ))
 
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                     {
@@ -461,7 +468,7 @@ namespace Web.Controllers
                     DependencyService dependencyService = new DependencyService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
-                    int DurationLength = 15;
+                    int DurationLength = AgencyConfig.maxDuration;
 
                     if (!taskService.IsManagerOfTask(currentUserId, updateTaskViewModel.Id))
                         return Ok(ResponseHelper.GetExceptionResponse(
@@ -602,22 +609,15 @@ namespace Web.Controllers
                     {
                         TaskService taskService = new TaskService(db);
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                        if (taskService.IsManagerOfTask(currentUserId, assignTaskModel.TaskID))
-                        {
-                            foreach (int userID in assignTaskModel.UserIDs)
-                            {
-                                taskService.AssignTask(
-                                    userID: userID,
-                                    taskID: assignTaskModel.TaskID,
-                                    currentUserId: currentUserId
-                                );
-                            }
+                        if (!taskService.IsManagerOfTask(currentUserId, assignTaskModel.TaskID))
+                            return Content(HttpStatusCode.Unauthorized, ResponseHelper.GetExceptionResponse(
+                                "User have to be manager of this task to Assign this task"));
 
-                            return Ok(ResponseHelper.GetResponse());
-                        }
+                        Task task = taskService.AssignUsersToTask(assignTaskModel.UserIDs, assignTaskModel.TaskID,
+                            currentUserId);
 
-                        return Ok(ResponseHelper.GetExceptionResponse(
-                            "User have to be manager of this task to Assign this task"));
+                        return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task, true,
+                            AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)));
                     }
                 }
                 else

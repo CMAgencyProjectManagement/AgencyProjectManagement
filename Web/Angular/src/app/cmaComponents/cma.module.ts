@@ -11,7 +11,7 @@ import {CollapseModule} from 'ngx-bootstrap';
 import {RouterModule} from '@angular/router';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {FormsModule} from '@angular/forms';
-import {SpinnerModule} from '../components/spinner/spinner.module';
+import {SpinnerModule} from '../components';
 import {TypeaheadModule} from 'ngx-bootstrap';
 import {TaskTableComponent} from './task-table/task-table.component';
 import {TaskStatusComponent} from './task-status/task-status.component';
@@ -37,6 +37,7 @@ import { TasklistComponent } from './tasklist/tasklist.component';
 import { StaffSectionComponent } from './staff-section/staff-section.component';
 import { ManagerSectionComponent } from './manager-section/manager-section.component';
 import { AdminSectionComponent } from './admin-section/admin-section.component';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 const declares_exports = [
   ProjectCardComponent,
@@ -81,7 +82,8 @@ const declares_exports = [
     TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
     RouterModule,
-    FormsModule
+    FormsModule,
+    NgSelectModule
   ],
   exports: [
     ...declares_exports

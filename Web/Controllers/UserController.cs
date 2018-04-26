@@ -111,7 +111,7 @@ namespace Web.Controllers
         [HttpGet]
         [Route("latetasks")]
         [Authorize]
-        public IHttpActionResult GetCurrentUserLateTasks(int teamId)
+        public IHttpActionResult GetCurrentUserLateTasks()
         {
             try
             {
@@ -140,7 +140,7 @@ namespace Web.Controllers
         [HttpGet]
         [Route("expiresoon")]
         [Authorize]
-        public IHttpActionResult GetCurrentUserTaskExpireThisWeek(int teamId)
+        public IHttpActionResult GetCurrentUserTaskExpireThisWeek()
         {
             try
             {

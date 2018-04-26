@@ -36,6 +36,13 @@
                        *ngIf="currentUser.isManager || currentUser.isAdmin">
                       <i class="fa fa-user-plus"></i>&nbsp; Assign members
                     </a>
+
+                    <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignMembersModal}"
+                       (click)="handleOnUnAssignMembersBtnClick()"
+                       [ladda]="isLoading.openUnAssignMembersModal"
+                       *ngIf="currentUser.isManager || currentUser.isAdmin">
+                      <i class="fa fa-user-times"></i>&nbsp; Un-Assign members
+                    </a>
                   </div>
                   <div class="section mt-4">
                     <!--DESCRIPTION-->

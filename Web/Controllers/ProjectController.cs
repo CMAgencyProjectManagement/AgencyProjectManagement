@@ -553,16 +553,17 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         ProjectService projectService = new ProjectService(db);
-                        foreach (var userId in assignProjectModel.UserIds)
-                        {
-                            UserProject newUserProject = projectService.AssignProject(
-                                userId,
-                                assignProjectModel.ProjectId
-                            );
-                            return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(newUserProject.Project)));
-                        }
+                        UserService userService = new UserService(db);
+                        string userIdString = User.Identity.GetUserId();
+                        User currentUser = userService.GetUser(userIdString);
+                        Project project = projectService.AssignUsersToProject(
+                            assignProjectModel.UserIds,
+                            assignProjectModel.ProjectId,
+                            currentUser.ID
+                        );
 
-                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(""));
+                        return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project,
+                            true, AgencyConfig.AvatarPath)));
                     }
                 }
                 else
@@ -596,10 +597,11 @@ namespace Web.Controllers
                                 userId,
                                 assignProjectModel.ProjectId
                             );
-                            //return Ok(ResponseHelper.GetResponse(projectService.ParseToJsonUserProject(NewUserProject)));
                         }
 
-                        return Ok(ResponseHelper.GetResponse());
+                        Project project = projectService.GetProjectByID(assignProjectModel.ProjectId);
+                        return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true,
+                            AgencyConfig.AvatarPath)));
                     }
                 }
                 else

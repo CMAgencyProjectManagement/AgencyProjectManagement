@@ -23,7 +23,6 @@ import {TeamService} from 'app/services/team.service';
 import {StoreService} from '../../../services/tree.service';
 import {UserService} from '../../../services/user.service';
 import {User} from 'app/interfaces/user';
-import {Directive, ElementRef, Renderer} from '@angular/core';
 
 @Component({
   templateUrl: './project-detail.component.html',
@@ -57,6 +56,7 @@ export class ProjectDetailComponent implements OnInit {
     attachmentRemove: boolean[]
     openAssignModal: boolean
     openAssignMembersModal: boolean
+    openUnAssignMembersModal: boolean
     openUnAssignModal: boolean
     done: boolean,
     comment: boolean,
@@ -82,6 +82,7 @@ export class ProjectDetailComponent implements OnInit {
       openAssignModal: false,
       openUnAssignModal: false,
       openAssignMembersModal: false,
+      openUnAssignMembersModal: false,
       done: false,
       comment: false,
       editComment: true,
@@ -190,6 +191,7 @@ export class ProjectDetailComponent implements OnInit {
     this.teamService.getAllTeam()
       .then(value => {
         let pool = value;
+        let selected = this.foundProject.teams;
         const initialState = {
           confirmCallback: onConfirm,
           cancelCallback: () => {
@@ -198,12 +200,53 @@ export class ProjectDetailComponent implements OnInit {
           closeCallback: () => {
             this.isLoading.openAssignModal = false;
           },
-          userPool: pool,
+          teamPool: pool,
+          selectedTeams: selected,
           title: `Assign team to project "${this.foundProject.name}"`,
         };
         this.modalService.show(SelectTeamsModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
   };
+
+  handleOnUnAssignMembersBtnClick() {
+    this.isLoading.openUnAssignMembersModal = true;
+    const pool = this.foundProject.assignees;
+    // const selected = this.foundProject.assignees;
+    const onConfirm = (selelectedMembers: User[]) => {
+      let selectedIds = _.map(selelectedMembers, 'id');
+      if (selectedIds.length == 0) {
+        this.containmember = true;
+      }
+      if (!this.containmember) {
+        this.projectService.unAssignUsersFromProject(this.foundProject.id, selectedIds)
+          .then(value => {
+            this.foundProject = value;
+            this.isLoading.openUnAssignMembersModal = false
+          })
+          .catch(reason => {
+            this.showErrorModal(reason.Message);
+            this.isLoading.openUnAssignMembersModal = false
+          })
+      } else {
+        this.showErrorModal('Please select members!');
+        this.isLoading.openUnAssignMembersModal = false;
+      }
+    };
+
+    const initialState = {
+      confirmCallback: onConfirm,
+      cancelCallback: () => {
+        this.isLoading.openUnAssignMembersModal = false
+      },
+      closeCallback: () => {
+        this.isLoading.openUnAssignMembersModal = false
+      },
+      userPool: pool,
+      // selectedUsers: selected,
+      title: `Un-Assign`
+    };
+    this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+  }
 
   handleOnAssignMembersBtnClick() {
     this.isLoading.openAssignMembersModal = true;
@@ -219,7 +262,7 @@ export class ProjectDetailComponent implements OnInit {
           if (!this.containmember) {
             this.projectService.assignUsersToProject(this.foundProject.id, selectedIds)
               .then(value => {
-                this.members = _.concat(this.members, selectedIds);
+                this.foundProject = value;
                 this.isLoading.openAssignMembersModal = false
               })
               .catch(reason => {
@@ -244,7 +287,7 @@ export class ProjectDetailComponent implements OnInit {
           title: `Assign`,
           confirmButtonText: 'Assign'
         };
-        this.modalService.show(SelectMembersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+        this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
       })
   }
 

@@ -9,6 +9,14 @@ namespace Web
     {
         public static string AvatarPath;
         public static string AttachmentPath;
+        public static int lowPoint;
+        public static int mediumPoint;
+        public static int highPoint;
+        public static int maxDuration;
+        public static int penatyPercent;
+        public static int minAge;
+        
+        
         public static string[] supportedImageTypes = {"jpeg", "gif", "bmp", "tiff", "png"};
     }
 }

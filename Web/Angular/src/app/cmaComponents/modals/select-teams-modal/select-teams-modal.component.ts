@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
-import {User} from '../../../interfaces/user';
 import * as _ from 'lodash';
+import {Team} from '../../../interfaces/team';
 
 @Component({
   selector: 'app-select-teams-modal',
@@ -15,8 +15,9 @@ export class SelectTeamsModalComponent implements OnInit {
   title: string;
   confirmButtonText: string;
   message: string;
-  selectedUsers: User[];
-  userPool: User[];
+  selectedTeams: Team[];
+  selectedTeamIds: number[];
+  teamPool: Team[];
 
   constructor(private bsModalRef: BsModalRef) {
     if (!this.confirmButtonText) {
@@ -25,23 +26,27 @@ export class SelectTeamsModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedUsers = [];
+    if (this.selectedTeams) {
+      this.selectedTeamIds = _.map(this.selectedTeams, 'id');
+    } else {
+      this.selectedTeams = [];
+      this.selectedTeamIds = [];
+    }
   }
 
 
-  handleOnSelect(userId) {
-    this.selectedUsers = _.concat(this.selectedUsers, _.find(this.userPool, (user: User) => {
-      return user.id == userId;
-    }));
-
-    this.userPool = _.filter(this.userPool, (user: User) => {
-      return user.id != userId;
-    });
+  onChange($event) {
+    this.selectedTeams = _
+      .chain(this.selectedTeamIds)
+      .map((id) => {
+        return _.find(this.teamPool, (team: Team) => team.id == id)
+      })
+      .value();
   }
 
   handleOnConfirm() {
     if (this.confirmCallback) {
-      this.confirmCallback(this.selectedUsers);
+      this.confirmCallback(this.selectedTeams);
     }
     this.bsModalRef.hide()
   }

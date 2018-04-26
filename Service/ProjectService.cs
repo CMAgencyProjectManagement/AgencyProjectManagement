@@ -74,6 +74,13 @@ namespace Service
                 ).ToList();
         }
 
+        public Project GetProjectOfList(int listId)
+        {
+            Project project = new Project();
+            int projectId = db.Lists.Find(listId).ProjectID;
+            return db.Projects.Find(projectId);
+        }
+
 
         /// <summary>
         /// Create new project
@@ -193,57 +200,66 @@ namespace Service
             return new string(chars.ToArray());
         }
 
+        public Project AssignUsersToProject(int[] userIds, int projectId, int modifierId)
+        {
+            foreach (int userId in userIds)
+            {
+                AssignProject(userId, projectId);
+            }
+
+            Project project = db.Projects.Find(projectId);
+            project.ChangedBy = modifierId;
+            project.ChangedTime = DateTime.Today;
+            return project;
+        }
+
         public UserProject AssignProject(int userId, int projectId)
         {
             User user = db.Users.Find(userId);
-            if (user != null)
-            {
-                Project project = db.Projects.Find(projectId);
-                if (project != null)
-                {
-                    UserProject newUserProject;
-
-                    IEnumerable<TeamProject> teamProjects =
-                        db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
-                    foreach (var teamProject in teamProjects)
-                    {
-                        if (user.TeamID == teamProject.TeamID)
-                        {
-                            newUserProject = new UserProject
-                            {
-                                UserID = userId,
-                                ProjectID = projectId,
-                            };
-                            IEnumerable<UserProject> UserProject =
-                                db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
-                            if (UserProject.Count() == 0)
-                            {
-                                db.UserProjects.Add(newUserProject);
-                                db.SaveChanges();
-                                return newUserProject;
-                            }
-                            else
-                            {
-                                throw new ObjectNotFoundException($"UserProject existed");
-                            }
-                        }
-                        else
-                        {
-                            throw new ObjectNotFoundException($"Project and user not in one team");
-                        }
-                    }
-
-                    throw new ObjectNotFoundException($"Project not belong to any team");
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"Project with ID{projectId} not found");
-                }
-            }
-            else
+            if (user == null)
             {
                 throw new ObjectNotFoundException($"User with ID{userId} not found");
             }
+
+            Project project = db.Projects.Find(projectId);
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with ID{projectId} not found");
+            }
+
+            UserProject newUserProject;
+
+            IEnumerable<TeamProject> teamProjects =
+                db.TeamProjects.Where(x => x.ProjectID == projectId).ToList();
+            foreach (var teamProject in teamProjects)
+            {
+                if (user.TeamID == teamProject.TeamID)
+                {
+                    newUserProject = new UserProject
+                    {
+                        UserID = userId,
+                        ProjectID = projectId,
+                    };
+                    IEnumerable<UserProject> UserProject =
+                        db.UserProjects.Where(x => x.UserID == userId && x.ProjectID == projectId);
+                    if (UserProject.Count() == 0)
+                    {
+                        db.UserProjects.Add(newUserProject);
+                        db.SaveChanges();
+                        return newUserProject;
+                    }
+                    else
+                    {
+                        throw new ObjectNotFoundException($"This user is already in project");
+                    }
+                }
+                else
+                {
+                    throw new ObjectNotFoundException($"Project and user not in one team");
+                }
+            }
+
+            throw new ObjectNotFoundException($"Project not belong to any team");
         }
 
         public UserProject UnAssignProject(int userId, int projectId)
@@ -279,7 +295,7 @@ namespace Service
             }
         }
 
-        public bool IsDateRangeInBoundOfProject(DateTime startDate, DateTime endDate, int projectId)
+        public bool IsDateRangeInBoundOfProject(DateTime startDate, int duration, int projectId)
         {
             Project project = GetProjectByID(projectId);
             if (project == null)
@@ -287,11 +303,24 @@ namespace Service
                 throw new ObjectNotFoundException($"Project with id {projectId} not found");
             }
 
-            return false;
+            bool isInBound = true;
+            
+            if (startDate < project.StartDate)
+            {
+                isInBound = false;
+            }
+
+            DateTime endDate = startDate.AddDays(duration);
+            if (endDate > project.FinishedDate)
+            {
+                isInBound = false;
+            }
+
+            return isInBound;
         }
 
 
-        public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
+        public Project SetProjectToTeamsVer2(int projectId, int[] newTeamIds, int modifierId)
         {
             Project project = GetProjectByID(projectId);
             if (project == null)
@@ -324,6 +353,54 @@ namespace Service
             return project;
         }
 
+        public Project SetProjectToTeams(int projectId, int[] newTeamIds, int modifierId)
+        {
+            Project project = GetProjectByID(projectId);
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with id {projectId} not found");
+            }
+
+            IEnumerable<int> oldTeamIds = db.TeamProjects
+                .Where(teamProject => teamProject.ProjectID == projectId)
+                .Select(teamProject => teamProject.TeamID);
+
+            IEnumerable<int> teamIdsToRemove = oldTeamIds.Except(newTeamIds);
+            IEnumerable<int> teamIdsToAdd = newTeamIds.Except(oldTeamIds);
+
+            IEnumerable<TeamProject> teamProjectToRemove = db.TeamProjects
+                .Where(teamProject => teamIdsToRemove.Contains(teamProject.TeamID));
+            IEnumerable<TeamProject> teamProjectToAdd = teamIdsToAdd
+                .Select(teamIdToAdd => new TeamProject
+                {
+                    ProjectID = projectId,
+                    TeamID = teamIdToAdd
+                });
+
+            db.TeamProjects.AddRange(teamProjectToAdd);
+            foreach (var teamIdToAdd in teamIdsToAdd)
+            {
+                User manager = db.Users.Where(x => x.IsManager == true && x.TeamID == teamIdToAdd).SingleOrDefault();
+                var UserIdsInProject = db.UserProjects.Select(x => x.UserID);
+                if (!UserIdsInProject.Contains(manager.ID))
+                {
+                    AssignProject(manager.ID, projectId);
+                }
+            }
+            var UsersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID); 
+            if (UsersInProject!=null)
+            {
+                db.TeamProjects.RemoveRange(teamProjectToRemove);
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Cant remove departments, Still have user(s) in Project with id {projectId}");
+            }
+            project.ChangedBy = modifierId;
+            project.ChangedTime = DateTime.Today;
+            db.SaveChanges();
+            return project;
+        }
         public IQueryable<int> GetUsersInProject(int projectId)
         {
             var usersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.User);
@@ -426,33 +503,67 @@ namespace Service
             }
 
             int taskNumber = tasks.Count;
-
-            List<JObject> calculatedResult = new List<JObject>();
-            foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+            if (taskNumber!=0)
             {
-                int taskStatusCount = tasks.Where(x => x.Status == (int) status).Count();
-                calculatedResult.Add(new JObject
+
+                List<JObject> calculatedResult = new List<JObject>();
+                foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
                 {
-                    ["key"] = DisplayCamelCaseString(status.ToString()),
-                    ["value"] = (decimal) (taskStatusCount * 100) / taskNumber
-                });
+                    int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                    calculatedResult.Add(new JObject
+                    {
+                        ["key"] = DisplayCamelCaseString(status.ToString()),
+                        ["value"] = (decimal)(taskStatusCount * 100) / taskNumber
+                    });
+                }
+
+                var result = new JObject
+                {
+                    ["id"] = project.ID,
+                    ["name"] = project.Name,
+                    ["taskCount"] = tasks.Count(),
+                    ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
+                    ["userNumberNotInTask"] = GetNoTaskUsersInProject(project.ID).Count(),
+                    ["taskStatusReport"] = new JArray(calculatedResult),
+                };
+                if (isIncludeTask)
+                {
+                    result["taskExpireThisWeek"] = GetTaskExpireThisWeek(project.ID);
+                }
+
+                return result;
+            }
+            else
+            {
+
+               List<JObject> calculatedResult = new List<JObject>();
+                foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+                {
+                    int taskStatusCount = tasks.Where(x => x.Status == (int)status).Count();
+                    calculatedResult.Add(new JObject
+                    {
+                        ["key"] = DisplayCamelCaseString(status.ToString()),
+                        ["value"] = 0//(decimal)(taskStatusCount * 100) 
+                    });
+                }
+
+                var result = new JObject
+                {
+                    ["id"] = project.ID,
+                    ["name"] = project.Name,
+                    ["taskCount"] = tasks.Count(),
+                    ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
+                    ["userNumberNotInTask"] = GetUsersInProject(project.ID).Count(),
+                    ["taskStatusReport"] = new JArray(calculatedResult),
+                };
+                if (isIncludeTask)
+                {
+                    result["taskExpireThisWeek"] = new JArray();
+                }
+                return result;
             }
 
-            var result = new JObject
-            {
-                ["id"] = project.ID,
-                ["name"] = project.Name,
-                ["taskCount"] = tasks.Count(),
-                ["userNumberInProject"] = GetUsersInProject(project.ID).Count(),
-                ["userNumberNotInTask"] = GetNoTaskUsersInProject(project.ID).Count(),
-                ["taskStatusReport"] = new JArray(calculatedResult),
-            };
-            if (isIncludeTask)
-            {
-                result["taskExpireThisWeek"] = GetTaskExpireThisWeek(project.ID);
-            }
 
-            return result;
         }
 
 

@@ -88,10 +88,14 @@ export class ProjectSchedulingComponent implements OnInit {
         text: task.name,
         start_date: task.startDate,
         duration: task.duration,
-        progress: 1,
         statusText: task.statusText,
-        priorityText: task.priorityText
+        priorityText: task.priorityText,
+        progress: 0
       };
+
+      if (task.statusText == 'done') {
+        formattedTask.progress = 1
+      }
       formattedTasks.push(formattedTask);
     }
     return formattedTasks;

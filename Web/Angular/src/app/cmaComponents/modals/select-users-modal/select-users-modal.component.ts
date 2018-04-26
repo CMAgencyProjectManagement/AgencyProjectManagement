@@ -16,27 +16,34 @@ export class SelectUsersModalComponent implements OnInit {
   confirmButtonText: string;
   message: string;
   selectedUsers: User[];
+  selectedUsersIds: number[];
   userPool: User[];
 
   constructor(private bsModalRef: BsModalRef) {
+    this.selectedUsers = [];
+    this.selectedUsersIds = [];
     if (!this.confirmButtonText) {
       this.confirmButtonText = 'Confirm';
     }
   }
 
-  ngOnInit() {
-    this.selectedUsers = [];
+  onChange($event) {
+    this.selectedUsers = _
+      .chain(this.selectedUsersIds)
+      .map((id) => {
+        return _.find(this.userPool, (user: User) => user.id == id)
+      })
+      .value();
   }
 
-
-  handleOnSelect(userId) {
-    this.selectedUsers = _.concat(this.selectedUsers, _.find(this.userPool, (user: User) => {
-      return user.id == userId;
-    }));
-
-    this.userPool = _.filter(this.userPool, (user: User) => {
-      return user.id != userId;
-    });
+  ngOnInit() {
+    if (this.selectedUsers.length > 0) {
+      this.selectedUsersIds = _
+        .chain(this.userPool)
+        .pickBy((user: User) => _.map(this.selectedUsers, 'id').includes(user.id))
+        .map('id')
+        .value();
+    }
   }
 
   handleOnConfirm() {
