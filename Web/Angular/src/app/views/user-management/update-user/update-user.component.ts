@@ -50,6 +50,15 @@ export class UpdateUserComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location, ) {
+    this.updateForm = new FormGroup({
+      email: new FormControl(undefined),
+      phone: new FormControl(undefined),
+      team: new FormControl(undefined),
+      isActive: new FormControl(undefined),
+      fullname: new FormControl(undefined),
+      birthdate: new FormControl(undefined),
+      password: new FormControl(undefined),
+    })
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
     this.isSavingChange = false;
@@ -69,15 +78,6 @@ export class UpdateUserComponent implements OnInit {
         this.teams = null;
         this.updateLoadingState();
       }
-      this.updateForm = new FormGroup({
-        email: new FormControl(undefined),
-        phone: new FormControl(undefined),
-        team: new FormControl(undefined),
-        isActive: new FormControl(undefined),
-        fullname: new FormControl(undefined),
-        birthdate: new FormControl(undefined),
-        password: new FormControl(undefined),
-      })
       this.setDefaultValue(this.foundUser);
       this.updateLoadingState();
     } else {
@@ -87,7 +87,7 @@ export class UpdateUserComponent implements OnInit {
           this.teams = value;
           this.updateLoadingState();
         });
-      this.userService.getAllUser()
+      this.userService.getUserOfProject(this.userID)
         .then(value => {
           this.users = value;
           for (let i = 0; i < this.users.length; i++) {
@@ -97,15 +97,6 @@ export class UpdateUserComponent implements OnInit {
               this.isPageLoading = false;
             }
           }
-          this.updateForm = new FormGroup({
-            email: new FormControl(undefined),
-            phone: new FormControl(undefined),
-            team: new FormControl(undefined),
-            isActive: new FormControl(undefined),
-            fullname: new FormControl(undefined),
-            birthdate: new FormControl(undefined),
-            password: new FormControl(undefined),
-          })
         }
         );
     }
