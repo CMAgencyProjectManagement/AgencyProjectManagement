@@ -359,12 +359,6 @@ namespace Web.Controllers
                     }
 
 
-//                    projectService.GetProjectOfList();
-//                    if(projectService.IsDateRangeInBoundOfProject(
-//                        createTaskModel.StartDate, 
-//                        createTaskModel.Duration,
-//                        ))
-
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                     {
                         ModelState.AddModelError("Priority", "Invalid Priority ");
