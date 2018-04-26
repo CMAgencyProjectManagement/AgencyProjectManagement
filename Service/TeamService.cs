@@ -182,12 +182,9 @@ namespace Service
                 throw new InvalidOperationException("User have to be in team before set to be manager");
             }
 
-            if (isManager)
+            if (GetManager(team.ID) != null)
             {
-                if (GetManager(team.ID) != null)
-                {
-                    throw new InvalidOperationException("Team can't have more than one manager");
-                }
+                throw new InvalidOperationException("Team can't have more than one manager");
             }
 
             User currentManager = db.Users.SingleOrDefault(x => x.IsManager == true);
