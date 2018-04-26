@@ -381,14 +381,20 @@ namespace Service
             foreach (var teamIdToAdd in teamIdsToAdd)
             {
                 User manager = db.Users.Where(x => x.IsManager == true && x.TeamID == teamIdToAdd).SingleOrDefault();
-                var UserIdsInProject = db.UserProjects.Select(x => x.UserID);
+
+                var UserIdsInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID);
                 if (!UserIdsInProject.Contains(manager.ID))
                 {
-                    AssignProject(manager.ID, projectId);
+                    var newUserProject = new UserProject
+                    {
+                        UserID = manager.ID,
+                        ProjectID = projectId,
+                    };
+                    db.UserProjects.Add(newUserProject);
                 }
             }
-            var UsersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID); 
-            if (UsersInProject!=null)
+            var UsersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID);
+            if (UsersInProject.Count() == 0)
             {
                 db.TeamProjects.RemoveRange(teamProjectToRemove);
             }
