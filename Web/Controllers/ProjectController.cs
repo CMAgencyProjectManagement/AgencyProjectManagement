@@ -580,7 +580,7 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        [Route("Unassign")]
+        [Route("unassign")]
         [Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult UnAssignProject(AssignProjectModel assignProjectModel)
         {
