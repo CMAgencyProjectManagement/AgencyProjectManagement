@@ -350,6 +350,12 @@ namespace Web.Controllers
                                 flag = false;
                             }
                         }
+                        else
+                        {
+                            ModelState.AddModelError("ListID",
+                                $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
+                            flag = false;
+                        }
                     }
 
 
