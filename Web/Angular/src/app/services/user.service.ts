@@ -46,6 +46,11 @@ export class UserService {
     })
   }
 
+  public getUserById(userId): Promise<any> {
+    // return new Promise<User>();
+
+  }
+
   public applyToken(token, tokenExpireTime) {
     this.setLocalToken(token, tokenExpireTime);
     this.tokenCursor.set(token);

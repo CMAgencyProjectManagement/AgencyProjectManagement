@@ -523,7 +523,7 @@ namespace Web.Controllers
                         {
                             if (taskService.IsTaskFinishedThisMonth(task))
                             {
-                                userScore += taskService.calculateTaskScore(
+                                userScore += taskService.CalculateTaskScore(
                                     task,
                                     lowPriorityPoint,
                                     mediumPriorityPoint,

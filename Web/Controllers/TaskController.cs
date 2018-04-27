@@ -142,7 +142,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    IEnumerable<KeyValuePair<string, string>> priorities = taskService.getPriorities();
+                    IEnumerable<KeyValuePair<string, string>> priorities = taskService.GetPriorities();
                     IEnumerable<JObject> prioritiesJson = priorities.Select(pair => new JObject
                     {
                         ["key"] = pair.Key,
@@ -168,7 +168,7 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    IEnumerable<KeyValuePair<string, string>> statuses = taskService.getStatuses();
+                    IEnumerable<KeyValuePair<string, string>> statuses = taskService.GetStatuses();
                     IEnumerable<JObject> statusesJson = statuses.Select(pair => new JObject
                     {
                         ["key"] = pair.Key,
@@ -236,7 +236,7 @@ namespace Web.Controllers
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
 
                     TaskService taskService = new TaskService(db);
-                    var task = taskService.setStatus(taskId, currentUserId, TaskStatus.NeedReview);
+                    var task = taskService.SetStatus(taskId, currentUserId, TaskStatus.NeedReview);
 
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
@@ -274,7 +274,7 @@ namespace Web.Controllers
                             "User have to be manager of this task to edit it's status"));
                     }
 
-                    Task task = taskService.setStatus(
+                    Task task = taskService.SetStatus(
                         setStatusViewModel.TaskId.Value,
                         currentUserId,
                         (TaskStatus) setStatusViewModel.TaskStatus);

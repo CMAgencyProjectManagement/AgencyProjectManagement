@@ -18,7 +18,7 @@ namespace Service
         public void NotifyToUsersOfTask(int taskId, NotificationSentence sentence)
         {
             TaskService taskService = new TaskService(db);
-            IEnumerable<User> staffs = taskService.getTaskAssignee(taskId);
+            IEnumerable<User> staffs = taskService.GetTaskAssignee(taskId);
             IEnumerable<User> managers = taskService.GetManagersOfTask(taskId);
             IEnumerable<User> followers = taskService.GetFollowersOfTask(taskId);
 

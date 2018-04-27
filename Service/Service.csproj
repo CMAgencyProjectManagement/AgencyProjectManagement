@@ -51,12 +51,6 @@
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
     <Compile Include="CommentService.cs" />
-    <Compile Include="ConfigService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ConfigService.Designer.cs">
-      <DependentUpon>ConfigService.cs</DependentUpon>
-    </Compile>
     <Compile Include="DependencyService.cs" />
     <Compile Include="ListService.cs" />
     <Compile Include="NotificationComponent.cs" />

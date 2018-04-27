@@ -124,7 +124,7 @@ export class TeamService {
     const dataObj = {
       UserId: userId,
       TeamId: teamId,
-      IsManager: isManager
+      IsManager: true
     };
     return new Promise<any>((resolve, reject) => {
       put(serverPath.setTeamRole)

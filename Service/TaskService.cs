@@ -285,7 +285,7 @@ namespace Service
         }
 
 
-        public Task setStatus(int taskId, int modifierId, TaskStatus taskStatus)
+        public Task SetStatus(int taskId, int modifierId, TaskStatus taskStatus)
         {
             UserService userService = new UserService(db);
             User modifier = userService.GetUser(modifierId);
@@ -541,7 +541,7 @@ namespace Service
             throw new ObjectNotFoundException($"Task with TaskID{taskID} not found");
         }
 
-        public double calculateTaskScore(
+        public double CalculateTaskScore(
             Task task,
             int lowPriorityScore,
             int mediumPriorityScore,
@@ -633,7 +633,7 @@ namespace Service
         }
 
 
-        public IEnumerable<User> getTaskAssignee(int taskId)
+        public IEnumerable<User> GetTaskAssignee(int taskId)
         {
             var task = db.Tasks.Find(taskId);
             if (task != null)
@@ -650,7 +650,7 @@ namespace Service
             }
         }
 
-        public IEnumerable<KeyValuePair<string, string>> getPriorities()
+        public IEnumerable<KeyValuePair<string, string>> GetPriorities()
         {
             List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
             foreach (TaskPriority priority in Enum.GetValues(typeof(TaskPriority)))
@@ -663,7 +663,7 @@ namespace Service
             return result;
         }
 
-        public IEnumerable<KeyValuePair<string, string>> getStatuses()
+        public IEnumerable<KeyValuePair<string, string>> GetStatuses()
         {
             List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
             foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
@@ -775,7 +775,7 @@ namespace Service
                 var list = listService.GetListOfTask(task.ID);
                 result["list"] = listService.ParseToJson(list, false, false);
 
-                var assignees = getTaskAssignee(task.ID);
+                var assignees = GetTaskAssignee(task.ID);
                 var assigneesJson = assignees
                     .Select(user => userService.ParseToJson(user, avatarPath));
                 result["assignees"] = new JArray(assigneesJson);
