@@ -1,4 +1,6 @@
-﻿namespace Service
+﻿using Newtonsoft.Json.Linq;
+
+namespace Service
 {
     public class NotificationComponent
     {
@@ -26,6 +28,17 @@
         {
             return "{{" + $"{Type.ToString()},{Id},{content}" + "}}";
         }
+
+        public JObject ToJson()
+        {
+            JObject result = new JObject
+            {
+                ["id"] = Id,
+                ["type"] = Type.ToString(),
+                ["content"] = Content
+            };
+            return result;
+        }
     }
 
     public enum NotificationComponentType
@@ -36,4 +49,3 @@
         Department,
     }
 }
-
