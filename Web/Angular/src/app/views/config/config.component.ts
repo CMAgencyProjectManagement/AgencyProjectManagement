@@ -131,44 +131,18 @@ export class ConfigComponent implements OnInit {
   handleUpdate() {
     this.setErrorsNull();
     const formValue = this.updateForm.value;
-    let valid = true;
-    if (formValue.lowpriority == '') {
-      this.errors.lowPriority = 'Please input low priority!';
-      
-      valid = false;
-    }
-    if (formValue.mediumpriority != '' ) {
-      this.errors.mediumPriority = 'Please input medium priority!';
-      valid = false;
-    }
-    if (formValue.hightpriority == '' ) {
-      this.errors.hightPriority = 'Please input hight priority!';
-      valid = false;
-    }
-    if (formValue.taskmaxduration == '' ) {
-      this.errors. taskMaxDuration= 'Please input hight priority!';
-      valid = false;
-    }
-    if (formValue.latetaskpenalty == '' ) {
-      this.errors.lateTaskPenalty = 'Please input hight priority!';
-      valid = false;
-    }
-    if (formValue.minimumworkingage == '' ) {
-      this.errors.minimumWorkingAge = 'Please input hight priority!';
-      valid = false;
-    }
-    if (valid) {
+    
       const onConfirm = () => {
         // const formValue = this.updateForm.value;
         const formValue = this.updateForm.value;
         this.isLoading = true;
         this.configService.updateConfig(
-          formValue.lowpriority,
-          formValue.mediumpriority,
-          formValue.hightpriority,
-          formValue.taskmaxduration,
-          formValue.latetaskpenalty,
-          formValue.minimumworkingage,
+          formValue.lowPriority,
+          formValue.mediumPriority,
+          formValue.hightPriority,
+          formValue.taskMaxDuration,
+          formValue.lateTaskPenalty,
+          formValue.minimumWorkingAge,
           
         )
           .then(value => {
@@ -185,7 +159,7 @@ export class ConfigComponent implements OnInit {
         confirmCallback: onConfirm
       };
       this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
-    }
+    
   }
 
 

@@ -61,7 +61,7 @@ const serverPath = {
   uploadAttachment: taskID => `/api/file/task/${taskID}/attachment`,
   deleteAttachment: attachmentId => `/api/file/attachment/${attachmentId}/delete`,
   // Config
-  updateConfig: 'api/config/update',// PUT
+  updateConfig: 'api/config',// PUT
   config: '/api/config',
   // Notification
   getMyNotification: '/api/notification'
