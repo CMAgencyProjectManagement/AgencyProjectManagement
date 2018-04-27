@@ -273,9 +273,19 @@ namespace Service
                 .FirstOrDefault();
             if (choosedUserProject == null) throw new ObjectNotFoundException($"User with ID {userId} not have in project with ID {projectId}");
             List<Task> tasksOfProject = GetTasksOfProject(projectId);
-            IEnumerable<UserTask> userIdsInTaskList = GetUserTaskFromTasksOfProject(tasksOfProject, projectId);
+            IEnumerable<UserTask> UsertasksInTaskList = GetUserTaskFromTasksOfProject(tasksOfProject, projectId);
             IEnumerable<UserTask> taskListsOfUser = db.UserTasks.Where(x => x.UserID == userId);
-            if (userIdsInTaskList.Intersect(taskListsOfUser).Count()==0)
+            List<int> UsertaskIdsOfUserInProject = UsertasksInTaskList.Intersect(taskListsOfUser).Select(x => x.ID).ToList();
+            int count = 0;
+            foreach (var taskIdOfUserInProject in UsertaskIdsOfUserInProject)
+            {
+                var a = db.UserTasks.Find(taskIdOfUserInProject);
+                if (!a.IsAssigned)
+                {
+                    count = count + 1;
+                }
+            }
+            if (UsertasksInTaskList.Intersect(taskListsOfUser).Count()==0|| UsertaskIdsOfUserInProject.Count()==count)
             {
                 db.UserProjects.Remove(choosedUserProject);
                 db.SaveChanges();
@@ -283,7 +293,7 @@ namespace Service
             }
             else
             {
-               throw new ObjectNotFoundException($"User name {user.Username} still have task in this project");
+               throw new ObjectNotFoundException($"User name {user.Username} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
             }
         }
         public List<UserTask> GetUserTaskFromTasksOfProject(List<Task> tasksOfProject,int projectId)
