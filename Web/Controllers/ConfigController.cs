@@ -33,7 +33,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpPut]
         [Route("")]
         [Authorize(Roles = "Admin")]
@@ -50,22 +50,22 @@ namespace Web.Controllers
                 {
                     ModelState.AddModelError("MaxDuration", "Max duration must be larger than 0");
                 }
-                
+
                 if (configViewModel.LowPoint < 1)
                 {
                     ModelState.AddModelError("LowPoint", "Low priority point must be larger or equal to 1");
                 }
-                
+
                 if (configViewModel.MediumPoint < 1)
                 {
                     ModelState.AddModelError("MediumPoint", "Medium priority point must be larger or equal to 1");
                 }
-                
+
                 if (configViewModel.HightPoint < 1)
                 {
                     ModelState.AddModelError("HightPoint", "High priority point must be larger or equal to 1");
                 }
-                
+
                 //http://www.ilo.org/global/standards/subjects-covered-by-international-labour-standards/child-labour/lang--en/index.htm
                 if (configViewModel.MinAge < 13)
                 {
@@ -81,19 +81,23 @@ namespace Web.Controllers
                     AgencyConfig.penatyPercent = configViewModel.PenatyPercent;
                     AgencyConfig.lowPoint = configViewModel.LowPoint;
                     AgencyConfig.minAge = configViewModel.MinAge;
+
+
+                    JObject jObject = new JObject
+                    {
+                        ["lowPriorityPoint"] = AgencyConfig.lowPoint,
+                        ["mediumPriorityPoint"] = AgencyConfig.mediumPoint,
+                        ["highPriorityPoint"] = AgencyConfig.highPoint,
+                        ["maxDuration"] = AgencyConfig.maxDuration,
+                        ["penatyPercent"] = AgencyConfig.penatyPercent,
+                        ["minAge"] = AgencyConfig.minAge
+                    };
+
+                    return Ok(ResponseHelper.GetResponse(jObject));
                 }
                 
-                JObject jObject = new JObject
-                {
-                    ["lowPriorityPoint"] = AgencyConfig.lowPoint,
-                    ["mediumPriorityPoint"] = AgencyConfig.mediumPoint,
-                    ["highPriorityPoint"] = AgencyConfig.highPoint,
-                    ["maxDuration"] = AgencyConfig.maxDuration,
-                    ["penatyPercent"] = AgencyConfig.penatyPercent,
-                    ["minAge"] = AgencyConfig.minAge
-                };
-                
-                return Ok(ResponseHelper.GetResponse(jObject));
+                return Content(HttpStatusCode.BadRequest,
+                    ResponseHelper.GetExceptionResponse(ModelState));
             }
             catch (Exception ex)
             {

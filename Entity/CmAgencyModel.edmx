@@ -46,7 +46,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Body" Type="text" />
+          <Property Name="Body" Type="varchar(max)" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="ChangedTime" Type="datetime" />
@@ -70,7 +70,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Content" Type="text" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="NotificationUser">
           <Key>
@@ -87,15 +87,15 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="Description" Type="text" />
+          <Property Name="Description" Type="varchar(max)" />
           <Property Name="Deadline" Type="date" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="StartDate" Type="date" />
           <Property Name="ChangedBy" Type="int" />
           <Property Name="ChangedTime" Type="datetime" />
-          <Property Name="LessionLearnt" Type="text" />
-          <Property Name="CustomerFeedback" Type="text" />
+          <Property Name="LessionLearnt" Type="varchar(max)" />
+          <Property Name="CustomerFeedback" Type="varchar(max)" />
           <Property Name="Status" Type="int" />
           <Property Name="FinishedDate" Type="datetime" />
         </EntityType>
@@ -105,7 +105,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="Description" Type="text" />
+          <Property Name="Description" Type="varchar(max)" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="ChangedBy" Type="int" />
