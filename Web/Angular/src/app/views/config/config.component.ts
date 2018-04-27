@@ -1,25 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ConfigService} from '../../services/config.service';
-import { BsModalService } from 'ngx-bootstrap';
+import {BsModalService} from 'ngx-bootstrap';
 
-import { FormControl,
-  FormGroup,
-  Validators,} from '@angular/forms';
-  import {Cursor, StoreService} from '../../services/tree.service'
-  import {serverPath} from '../../_serverPath';
-  import * as request from 'superagent';
-import { TaskService } from '../../services/task.service';
 import {
-  CommentModalComponent,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {Cursor, StoreService} from '../../services/tree.service'
+import {TaskService} from '../../services/task.service';
+import {
   ConfirmModalComponent,
-  ErrorModalComponent,
-  SelectUsersModalComponent,
-  SelectTeamsModalComponent,
-  SelectMembersModalComponent
+  ErrorModalComponent
 } from '../../cmaComponents/modals';
-import { Config } from '../../interfaces/config';
-
+import {Config} from '../../interfaces/config';
 
 
 @Component({
@@ -45,8 +40,6 @@ export class ConfigComponent implements OnInit {
   };
 
   constructor(
-
-
     private router: Router,
     private route: ActivatedRoute,
     private storeService: StoreService,
@@ -60,106 +53,69 @@ export class ConfigComponent implements OnInit {
 
 
   ngOnInit() {
-      this.loadConfig();
+    this.loadConfig();
   }
 
-  loadConfig(){
+  loadConfig() {
     this.configService.getConfig()
-      .then((value:Config) => {
-        this.setDefaulConfig(value);
-        this.isLoading = false;        
+      .then((value: Config) => {
+        this.setDefaultConfig(value);
+        this.isLoading = false;
       })
       .catch(reason => {
         this.showErrorModal(reason.Message);
         this.isLoading = false;
-      })
-      this.updateForm = new FormGroup({
-        lowPriority: new FormControl(undefined, Validators.required),
-        mediumPriority: new FormControl(undefined, Validators.required),
-        hightPriority: new FormControl(undefined, Validators.required),
-        taskMaxDuration: new FormControl(undefined, Validators.required),
-        lateTaskPenalty: new FormControl(undefined, Validators.required),
-        minimumWorkingAge: new FormControl(undefined, Validators.required),
       });
-  }
-
-  setDefaulConfig(config: Config){
-    this.updateForm.patchValue({
-      lowPriority: config.lowPriorityPoint,
-      mediumPriority: config.mediumPriorityPoint,
-      hightPriority: config.highPriorityPoint,
-      taskMaxDuration: config.maxDuration,
-      lateTaskPenalty: config.penatyPercent,
-      minimumWorkingAge: config.minAge,
+    this.updateForm = new FormGroup({
+      lowPriority: new FormControl(undefined, Validators.required),
+      mediumPriority: new FormControl(undefined, Validators.required),
+      hightPriority: new FormControl(undefined, Validators.required),
+      taskMaxDuration: new FormControl(undefined, Validators.required),
+      lateTaskPenalty: new FormControl(undefined, Validators.required),
+      minimumWorkingAge: new FormControl(undefined, Validators.required),
     });
   }
 
-
-  editConfig(
-    lowPriority: number,
-    mediumPriority: number,
-    hightPriority: number,
-    taskMaxDuration: number,
-    lateTaskPenalty: number,
-    minimumWorkingAge: number,
-  ): Promise<any> {
-    const objData = {
-      LowPriority: lowPriority,
-      MediumPriority: mediumPriority,
-      HightPriority: hightPriority,
-      TaskMaxDuration: taskMaxDuration,
-      LateTaskPenalty: lateTaskPenalty,
-      MinimumWorkingAge: minimumWorkingAge,
-    };
-    return new Promise<any>((resolve, reject) => {
-      request.put(serverPath.editTask)
-        .set('token', this.tokenCursor.get())
-        .send(objData)
-        .type('form')
-        .then(res => {
-          const content = res.body;
-          if (content.IsSuccess) {
-            resolve(content.Data);
-          } else {
-            reject(content.Message);
-          }
-        })
-        .catch(reason => reject(reason.response.body));
+  setDefaultConfig(value: Config) {
+    this.updateForm.patchValue({
+      lowPriority: value.lowPriorityPoint,
+      mediumPriority: value.mediumPriorityPoint,
+      hightPriority: value.highPriorityPoint,
+      taskMaxDuration: value.maxDuration,
+      lateTaskPenalty: value.penatyPercent,
+      minimumWorkingAge: value.minAge,
     });
   }
 
   handleUpdate() {
     this.setErrorsNull();
     const formValue = this.updateForm.value;
-    
-      const onConfirm = () => {
-        // const formValue = this.updateForm.value;
-        const formValue = this.updateForm.value;
-        this.isLoading = true;
-        this.configService.updateConfig(
-          formValue.lowPriority,
-          formValue.mediumPriority,
-          formValue.hightPriority,
-          formValue.taskMaxDuration,
-          formValue.lateTaskPenalty,
-          formValue.minimumWorkingAge,
-          
-        )
-          .then(value => {
-            this.isLoading = false;
-            this.router.navigate(['dashboard']);
-          })
-          .catch(reason => {
-            this.setErrors(reason.Data);
-            this.isLoading = false;
-          })
-      };
-      const initialState = {
-        message: `Are you sure to save changes?`,
-        confirmCallback: onConfirm
-      };
-      this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
-    
+
+    const onConfirm = () => {
+      this.isLoading = true;
+      this.configService.updateConfig(
+        formValue.lowPriority,
+        formValue.mediumPriority,
+        formValue.hightPriority,
+        formValue.taskMaxDuration,
+        formValue.lateTaskPenalty,
+        formValue.minimumWorkingAge,
+      )
+        .then(() => {
+          this.isLoading = false;
+          this.router.navigate(['dashboard']);
+        })
+        .catch(reason => {
+          this.setErrors(reason.Data);
+          this.isLoading = false;
+        })
+    };
+    const initialState = {
+      message: `Are you sure to save changes?`,
+      confirmCallback: onConfirm
+    };
+    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
+
   }
 
 
@@ -173,6 +129,7 @@ export class ConfigComponent implements OnInit {
       minimumWorkingAge: '',
     }
   }
+
   setErrors(errors: any[]) {
     for (let error of errors) {
       const fieldName = error.key;
@@ -181,19 +138,19 @@ export class ConfigComponent implements OnInit {
         case 'LowPriority':
           this.errors.lowPriority = errorMessage;
           break;
-          case 'MediumPoint':
+        case 'MediumPoint':
           this.errors.mediumPriority = errorMessage;
           break;
-          case 'HightPoint':
+        case 'HightPoint':
           this.errors.hightPriority = errorMessage;
           break;
-          case 'MaxDuration':
+        case 'MaxDuration':
           this.errors.taskMaxDuration = errorMessage;
           break;
-          case 'PenatyPercent':
+        case 'PenatyPercent':
           this.errors.lateTaskPenalty = errorMessage;
           break;
-          case 'MinAge':
+        case 'MinAge':
           this.errors.minimumWorkingAge = errorMessage;
           break;
 
@@ -205,15 +162,8 @@ export class ConfigComponent implements OnInit {
     const initialState = {
       message: message
     };
-    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
+
 }
 
-interface config {
-  lowPriority: number;
-  mediumPriority: number;
-  hightPriority: number;
-  taskMaxDuration: number;
-  lateTaskPenalty: number;
-  minimumWorkingAge: number;
-}
