@@ -9,7 +9,7 @@ namespace Web.ViewModels
         [Required]
         public int MediumPoint { get; set; }
         [Required]
-        public int HightPoint { get; set; }
+        public int HighPoint { get; set; }
         [Required]
         public int MaxDuration { get; set; }
         [Required]

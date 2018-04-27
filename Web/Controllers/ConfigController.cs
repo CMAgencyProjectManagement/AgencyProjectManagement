@@ -61,7 +61,7 @@ namespace Web.Controllers
                     ModelState.AddModelError("MediumPoint", "Medium priority point must be larger or equal to 1");
                 }
 
-                if (configViewModel.HightPoint < 1)
+                if (configViewModel.HighPoint < 1)
                 {
                     ModelState.AddModelError("HightPoint", "High priority point must be larger or equal to 1");
                 }
@@ -77,7 +77,7 @@ namespace Web.Controllers
                 {
                     AgencyConfig.lowPoint = configViewModel.LowPoint;
                     AgencyConfig.mediumPoint = configViewModel.MediumPoint;
-                    AgencyConfig.highPoint = configViewModel.HightPoint;
+                    AgencyConfig.highPoint = configViewModel.HighPoint;
                     AgencyConfig.penatyPercent = configViewModel.PenatyPercent;
                     AgencyConfig.lowPoint = configViewModel.LowPoint;
                     AgencyConfig.minAge = configViewModel.MinAge;
