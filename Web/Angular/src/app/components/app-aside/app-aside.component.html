@@ -1,3 +1,52 @@
 <aside class="aside-menu">
-  aside-menu here
+  <div class="tab-content">
+    <div class="tab-pane active" id="timeline" role="tabpanel">
+      <div class="callout callout-info m-0 py-3" *ngFor="let notification of notifications">
+        <!--<div class="avatar float-right">-->
+        <!--<img src="img/avatars/4.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">-->
+        <!--</div>-->
+
+        <div>
+          <span *ngIf="notification.content.subject.url">
+            <a routerLink="{{notification.content.subject.url}}">
+              <strong>{{notification.content.subject.content}}</strong>
+            </a>
+          </span>
+          <span *ngIf="!notification.content.subject.url">
+            <strong>{{notification.content.subject.content}}</strong>
+          </span>
+          {{notification.content.verb}}
+          <span *ngIf="notification.content.primaryObject.url">
+          <a routerLink="{{notification.content.primaryObject.url}}">
+            <strong>{{notification.content.primaryObject.content}}</strong>
+          </a>
+          </span>
+          <span *ngIf="!notification.content.primaryObject.url">
+            <strong>{{notification.content.primaryObject.content}}</strong>
+          </span>
+          {{notification.content.objectLinker}}
+          <span *ngIf="notification.content.secondaryObject.url">
+          <a routerLink="{{notification.content.secondaryObject.url}}">
+            <strong>{{notification.content.secondaryObject.content}}</strong>
+          </a>
+          </span>
+          <span *ngIf="!notification.content.secondaryObject.url">
+            <strong>{{notification.content.secondaryObject.content}}</strong>
+          </span>
+          on
+          <span *ngIf="notification.content.location.url">
+          <a routerLink="{{notification.content.location.url}}">
+            <strong>{{notification.content.location.content}}</strong>
+          </a>
+          </span>
+          <span *ngIf="!notification.content.location.url">
+            <strong>{{notification.content.location.content}}</strong>
+          </span>
+        </div>
+        <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; {{notification.content.time}}</small>
+      </div>
+      <hr class="transparent mx-3 my-0">
+    </div>
+  </div>
+
 </aside>

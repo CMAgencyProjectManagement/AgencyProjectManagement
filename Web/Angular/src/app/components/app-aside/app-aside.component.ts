@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NotificationService} from '../../services/notification.service';
-import {Notification} from '../../interfaces/notification';
+import {Notification, Sentence, SentenceComponent} from '../../interfaces/notification';
 import {User} from '../../interfaces/user';
+import {StoreService} from '../../services/tree.service';
 
 @Component({
   selector: 'app-aside',
@@ -9,14 +10,21 @@ import {User} from '../../interfaces/user';
 })
 export class AppAsideComponent implements OnInit {
   notifications: Notification[];
+  currentUser: User;
 
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService,
+              private storeService: StoreService) {
+    this.currentUser = storeService.get(['currentUser']);
     this.notifications = [];
   }
 
   ngOnInit(): void {
     this.notificationService.getNotifications()
-      .then(value => {
+      .then((value: any[]) => {
+        for (let notification of value) {
+          notification.content = JSON.parse(notification.content);
+          this.applyReceiverToNotification(notification);
+        }
         this.notifications = value;
       })
       .catch(reason => {
@@ -24,45 +32,25 @@ export class AppAsideComponent implements OnInit {
       })
   }
 
-  formatNotification(notification: Notification) {
-
-  }
-}
-
-class NotificationResolver {
-  private currentUser: User;
-
-  constructor(currentUser: User) {
-    this.currentUser = currentUser;
+  applyReceiverToNotification(notification: Notification) {
+    this.applyReceiverToSentenceComponent(notification.content.subject);
+    this.applyReceiverToSentenceComponent(notification.content.primaryObject);
+    this.applyReceiverToSentenceComponent(notification.content.secondaryObject);
   }
 
-  public resolveNotification(notification: Notification): any {
-    let isRead = notification.isRead;
-    let sentence = notification.content;
-
-    let Subject = null;
-    let verb = null;
-    let primaryObject = null;
-    let objectLinker = null;
-    let secondaryObject = null;
-    let location = null;
-    let time = null;
+  applyReceiverToSentenceComponent(sentenceComponent: SentenceComponent) {
+    if (sentenceComponent.type == 'User') {
+      if (sentenceComponent.id == this.currentUser.id) {
+        sentenceComponent.content = 'You';
+      }
+    }
   }
-}
 
-class NotificationComponent {
-  type: NotificationComponentType;
-  id: number;
-  content: string;
+  applyUrlToSentenceComponent(sentenceComponent: SentenceComponent) {
+    switch (sentenceComponent.type) {
+      case 'User': {
 
-  constructor() {
-
+      }
+    }
   }
-}
-
-enum NotificationComponentType {
-  User,
-  Task,
-  Project,
-  Department,
 }

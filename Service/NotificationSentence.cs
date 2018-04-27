@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using Entity;
+using Microsoft.SqlServer.Server;
+using Newtonsoft.Json.Linq;
 
 namespace Service
 {
@@ -14,37 +16,24 @@ namespace Service
         public NotificationComponent Location { get; set; }
         public string Time { get; set; }
 
+        public JObject ToJson()
+        {
+            return  new JObject
+            {
+                ["subject"] = Subject.ToJson(),
+                ["verb"] = Verb,
+                ["primaryObject"] = PrimaryObject.ToJson(),
+                ["objectLinker"] = ObjectLinker,
+                ["secondaryObject"] = SecondaryObject.ToJson(),
+                ["location"] = Location.ToJson(),
+                ["time"] = Time,
+            };
+        }
+
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(Subject);
-            stringBuilder.Append(' ');
-            stringBuilder.Append(Verb);
-            stringBuilder.Append(' ');
-            stringBuilder.Append(PrimaryObject);
-            stringBuilder.Append(' ');
-            stringBuilder.Append(ObjectLinker);
-            stringBuilder.Append(' ');
-            stringBuilder.Append(SecondaryObject);
-
-            if (Location != null)
-            {
-                stringBuilder.Append(' ');
-                stringBuilder.Append("on");
-                stringBuilder.Append(' ');
-                stringBuilder.Append(Location);
-            }
-            
-            if (Time != null)
-            {
-                stringBuilder.Append(' ');
-                stringBuilder.Append("at");
-                stringBuilder.Append(' ');
-                stringBuilder.Append(Time);
-            }
-
-            return stringBuilder.ToString();
+            return ToJson().ToString();
         }
     }
 }
