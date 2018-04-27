@@ -8,14 +8,14 @@
       <div class="card-body " *ngIf="!isLoading">
         <div [formGroup]="updateForm" class="form-horizontal col-6">
 
-          <h3 class="col-12 text-right">Leader board config</h3>
+          <h3 class="col-12 text-center">Leader board config</h3>
 
           <div class="form-group row">
             <!--Low Priority-->
             <label class="col-6 col-form-label text-right" for="low-priority-input">
               Low Priority
             </label>
-            <div class="6">
+            <div class="col-6">
               <div class="input-group">
                 <input type="text" id="lowpriority-input" name="lowpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.lowpriority}"
                   formControlName="lowPriority">
