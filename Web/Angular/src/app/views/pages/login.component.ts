@@ -68,6 +68,6 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         this.errorMessage = reason.message;
       }
+    }
   }
-
 }
