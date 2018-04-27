@@ -309,8 +309,7 @@ namespace Web.Controllers
 
                     bool flag = true;
                     int DurationLength = 15;
-
-                    if (taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name,
+                    if (createTaskModel.Name!=null&&taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name,
                         createTaskModel.ListID.Value))
                     {
                         ModelState.AddModelError("Name", "Task name is taken");
