@@ -170,7 +170,7 @@ namespace Service
             return db.Projects.Find(id);
         }
 
-        public IEnumerable<KeyValuePair<string, string>> getStatuses()
+        public IEnumerable<KeyValuePair<string, string>> GetStatuses()
         {
             List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>();
             foreach (ProjectStatus status in Enum.GetValues(typeof(ProjectStatus)))
