@@ -76,6 +76,7 @@ import {DependencyService} from './services/dependency.service';
 import {UploadService} from './services/upload.service';
 import {ListService} from 'app/services/list.service';
 import {CommentService} from './services/comment.service';
+import {NotificationService} from './services/notification.service';
 const SERVICES = [
   AlwaysAuthGuard,
   StoreService,
@@ -88,7 +89,8 @@ const SERVICES = [
   DependencyService,
   UploadService,
   ListService,
-  CommentService
+  CommentService,
+  NotificationService
 ];
 
 // Import modal

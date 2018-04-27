@@ -12,6 +12,7 @@ namespace Service
         public string ObjectLinker { get; set; }
         public NotificationComponent SecondaryObject { get; set; }
         public NotificationComponent Location { get; set; }
+        public string Time { get; set; }
 
         public override string ToString()
         {
@@ -33,6 +34,14 @@ namespace Service
                 stringBuilder.Append("on");
                 stringBuilder.Append(' ');
                 stringBuilder.Append(Location);
+            }
+            
+            if (Time != null)
+            {
+                stringBuilder.Append(' ');
+                stringBuilder.Append("at");
+                stringBuilder.Append(' ');
+                stringBuilder.Append(Time);
             }
 
             return stringBuilder.ToString();

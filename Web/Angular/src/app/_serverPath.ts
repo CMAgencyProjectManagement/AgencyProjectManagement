@@ -58,7 +58,9 @@ const serverPath = {
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
   uploadAttachment: taskID => `/api/file/task/${taskID}/attachment`,
-  deleteAttachment: attachmentId => `/api/file/attachment/${attachmentId}/delete`
+  deleteAttachment: attachmentId => `/api/file/attachment/${attachmentId}/delete`,
+  // Notification
+  getMyNotification: '/api/notification'
 };
 
 export {

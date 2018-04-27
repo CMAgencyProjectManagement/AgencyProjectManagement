@@ -15,7 +15,7 @@ namespace Service
             this.db = db;
         }
 
-        public void NotifyToUsersOfTask(int taskId,NotificationSentence sentence)
+        public void NotifyToUsersOfTask(int taskId, NotificationSentence sentence)
         {
             TaskService taskService = new TaskService(db);
             IEnumerable<User> staffs = taskService.getTaskAssignee(taskId);
@@ -26,23 +26,36 @@ namespace Service
                 .Union(managers)
                 .Union(followers)
                 .ToList();
-            
+
             Notification notification = new Notification
             {
                 Content = sentence.ToString(),
                 Type = 1
             };
-            Notify(notification,usersToNotify);
+            Notify(notification, usersToNotify);
         }
 
         public void NotifyToUsersOfProject(int projectId)
         {
-            
         }
 
         public void NotifyToUsersOfDepartment(int teamId)
         {
-            
+        }
+
+        public void CheckinNotification(int userId)
+        {
+            UserService userService = new UserService(db);
+            User user = userService.GetUser(userId);
+
+            IEnumerable<NotificationUser> notificationUsers = db.NotificationUsers
+                .Where(notificationUser => notificationUser.UserID == user.ID);
+            foreach (var notificationUser in notificationUsers)
+            {
+                notificationUser.IsRead = false;
+            }
+
+            db.SaveChanges();
         }
 
         public IEnumerable<NotificationUser> GetNotificationsOfUser(int userId)
@@ -68,15 +81,15 @@ namespace Service
                 };
                 notificationUsers.Add(notificationUser);
             }
-            
+
             db.NotificationUsers.AddRange(notificationUsers);
             db.SaveChanges();
         }
 
         public JObject ParseToJson(NotificationUser notificationUser)
-        { 
-            Notification notification = notificationUser.Notification; 
-            JObject result= new JObject
+        {
+            Notification notification = notificationUser.Notification;
+            JObject result = new JObject
             {
                 ["isRead"] = notificationUser.IsRead,
                 ["content"] = notification.Content

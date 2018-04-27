@@ -13,6 +13,7 @@ import {UserService} from '../../services/user.service';
 import {Cursor, StoreService} from '../../services/tree.service';
 import {Router} from '@angular/router';
 
+
 @Component({
   templateUrl: 'login.component.html'
 })
@@ -28,7 +29,6 @@ export class LoginComponent implements OnInit {
               private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);
-
     this.isLoading = false;
   }
 
@@ -45,22 +45,29 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  handleLogin() {
+  async handleLogin() {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
       this.isLoading = true;
-      this.userService.login(
-        formValue.username,
-        formValue.password
-      ).then(value => {
-        this.isLoading = false;
-        this.router.navigate(['dashboard'])
+      try {
+        let loginInfo = await this.userService.login(
+          formValue.username,
+          formValue.password
+        );
+        const expiresIn = loginInfo.expires_in;
+        const token = loginInfo.access_token;
+        this.userService.applyToken(token, expiresIn);
 
-      }).catch(reason => {
+        let user = await this.userService.getCurrentUserInfo();
+        this.userService.applyCurrentUser(user);
+
+        console.debug('LoginComponent - handleLogin - complete login sequence');
+        this.isLoading = false;
+        this.router.navigate(['dashboard']);
+      } catch (reason) {
         this.isLoading = false;
         this.errorMessage = reason.message;
-      })
-    }
+      }
   }
 
 }

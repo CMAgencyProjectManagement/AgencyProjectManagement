@@ -14,10 +14,37 @@ namespace Web.Controllers
     [RoutePrefix("api/notification")]
     public class NotificationController : ApiController
     {
-        [HttpPost]
+        [HttpGet]
         [Route("")]
         [Authorize]
         public IHttpActionResult GetNotificationOfCurrentUser()
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+                    int userId = Int32.Parse(User.Identity.GetUserId());
+                    User user = userService.GetUser(userId);
+                    IEnumerable<NotificationUser> notificationUsers = notificationService.GetNotificationsOfUser(user.ID);
+
+                    IEnumerable<JObject> notificationsJson = notificationUsers
+                        .Select(notificationUser => notificationService.ParseToJson(notificationUser));
+                    return Ok(ResponseHelper.GetResponse(new JArray(notificationsJson)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        [HttpPut]
+        [Route("checkin")]
+        [Authorize]
+        public IHttpActionResult CheckinNotification()
         {
             try
             {

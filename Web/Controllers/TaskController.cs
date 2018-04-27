@@ -619,6 +619,8 @@ namespace Web.Controllers
                             currentUserId);
                         Project project = projectService.GetProjectOfTask(task.ID);
 
+                        
+                        // Notification
                         foreach (var assigneeId in assignTaskModel.UserIDs)
                         {
                             User user = userService.GetUser(assigneeId);
@@ -642,6 +644,7 @@ namespace Web.Controllers
                                     NotificationComponentType.Project,
                                     project.ID,
                                     project.Name),
+                                Time = DateTime.Today.ToShortDateString()
                             };
                             
                             notificationService.NotifyToUsersOfTask(task.ID,sentence);
