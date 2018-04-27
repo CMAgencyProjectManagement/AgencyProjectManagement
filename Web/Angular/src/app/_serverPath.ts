@@ -58,7 +58,10 @@ const serverPath = {
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
   uploadAttachment: taskID => `/api/file/task/${taskID}/attachment`,
-  deleteAttachment: attachmentId => `/api/file/attachment/${attachmentId}/delete`
+  deleteAttachment: attachmentId => `/api/file/attachment/${attachmentId}/delete`,
+  // Config
+  updateConfig: 'api/config/update',// PUT
+  config: '/api/config',
 };
 
 export {

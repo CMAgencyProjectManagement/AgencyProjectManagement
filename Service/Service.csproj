@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +51,12 @@
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
     <Compile Include="CommentService.cs" />
+    <Compile Include="ConfigService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ConfigService.Designer.cs">
+      <DependentUpon>ConfigService.cs</DependentUpon>
+    </Compile>
     <Compile Include="DependencyService.cs" />
     <Compile Include="ListService.cs" />
     <Compile Include="ProjectService.cs" />
