@@ -359,12 +359,6 @@ namespace Web.Controllers
                     }
 
 
-//                    projectService.GetProjectOfList();
-//                    if(projectService.IsDateRangeInBoundOfProject(
-//                        createTaskModel.StartDate, 
-//                        createTaskModel.Duration,
-//                        ))
-
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                     {
                         ModelState.AddModelError("Priority", "Invalid Priority ");
@@ -608,13 +602,53 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TaskService taskService = new TaskService(db);
+                        NotificationService notificationService = new NotificationService(db);
+                        UserService userService = new UserService(db);
+                        ProjectService projectService = new ProjectService(db);
+
                         int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                        User currentUser = userService.GetUser(currentUserId);
+
                         if (!taskService.IsManagerOfTask(currentUserId, assignTaskModel.TaskID))
                             return Content(HttpStatusCode.Unauthorized, ResponseHelper.GetExceptionResponse(
                                 "User have to be manager of this task to Assign this task"));
 
-                        Task task = taskService.AssignUsersToTask(assignTaskModel.UserIDs, assignTaskModel.TaskID,
+                        Task task = taskService.AssignUsersToTask(
+                            assignTaskModel.UserIDs,
+                            assignTaskModel.TaskID,
                             currentUserId);
+                        Project project = projectService.GetProjectOfTask(task.ID);
+
+                        
+                        // Notification
+                        foreach (var assigneeId in assignTaskModel.UserIDs)
+                        {
+                            User user = userService.GetUser(assigneeId);
+                            NotificationSentence sentence = new NotificationSentence
+                            {
+                                Subject = new NotificationComponent(
+                                    NotificationComponentType.User,
+                                    currentUserId,
+                                    currentUser.Name),
+                                Verb = "assigned",
+                                PrimaryObject = new NotificationComponent(
+                                    NotificationComponentType.User,
+                                    user.ID,
+                                    user.Name),
+                                ObjectLinker = "to",
+                                SecondaryObject = new NotificationComponent(
+                                    NotificationComponentType.Task,
+                                    task.ID,
+                                    task.Name),
+                                Location = new NotificationComponent(
+                                    NotificationComponentType.Project,
+                                    project.ID,
+                                    project.Name),
+                                Time = DateTime.Today.ToShortDateString()
+                            };
+                            
+                            notificationService.NotifyToUsersOfTask(task.ID,sentence);
+                        }
 
                         return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task, true,
                             AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)));

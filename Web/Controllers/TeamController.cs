@@ -41,7 +41,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("freestaff")]
         [Authorize(Roles = "Admin")]
@@ -71,10 +71,10 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize]
         public IHttpActionResult GetTeamDetail(int id)
         {
             try
@@ -82,9 +82,22 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TeamService teamService = new TeamService(db);
+                    UserService userService = new UserService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+
+
                     var team = teamService.GetTeamById(id);
                     if (team != null)
                     {
+                        if (!currentUser.IsAdmin &&
+                             !currentUser.IsManager &&
+                             currentUser.TeamID != id)
+                        {
+                            return Content(HttpStatusCode.Unauthorized,
+                                $"You don't have permission to view {team.Name}'s detail");
+                        }
+
                         return Ok(ResponseHelper.GetResponse(
                             teamService.ParseToJsonVer2(
                                 team,
@@ -106,7 +119,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("{id:int}/tasks/late")]
         [Authorize]
@@ -126,7 +139,7 @@ namespace Web.Controllers
 
                     IEnumerable<Task> lateTasks = taskService.GetLateTaskOfDepartment(team.ID);
                     IEnumerable<JObject> lateTasksJson = lateTasks.Select(task => taskService.ParseToJson(task));
-                    
+
                     return Ok(ResponseHelper.GetResponse(new JArray(lateTasksJson)));
                 }
             }
@@ -136,7 +149,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("{teamId:int}/tasks/needreview")]
         [Authorize(Roles = "Manager")]
@@ -147,14 +160,14 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    
+
                     JArray dataObject = new JArray();
 
                     IEnumerable<Task> tasks = taskService.GetTaskOfDepartment(teamId)
                         .Where(task => task.Status == (int) TaskStatus.NeedReview);
-                    
+
                     tasks = taskService.SortTaskByDeadline(tasks);
-                    
+
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));
@@ -239,39 +252,6 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        [Route("assign/role")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult SetRole(SetTeamRoleViewModel viewModel)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        TeamService teamService = new TeamService(db);
-                        teamService.setRole(
-                            viewModel.TeamId.Value,
-                            viewModel.UserId.Value,
-                            viewModel.IsManager.Value
-                        );
-                        return Ok(ResponseHelper.GetResponse());
-                    }
-                }
-                else
-                {
-                    return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState));
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
-        
-        [HttpPut]
         [Route("{teamId:int}/assign/manager/{userId:int}")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult AssignManager(int teamId, int userId)
@@ -283,10 +263,9 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TeamService teamService = new TeamService(db);
-                        teamService.setRole(
+                        teamService.SetManager(
                             teamId,
-                            userId,
-                            true
+                            userId
                         );
                         return Ok(ResponseHelper.GetResponse());
                     }

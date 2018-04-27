@@ -131,9 +131,9 @@ export class ProjectService {
   public getAllProjects(force: boolean = false): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       let projects = this.projectsCursor.get();
-      if (projects && !force) {
-        resolve(projects);
-      } else {
+      // if (projects && !force) {
+      //   resolve(projects);
+      // } else {
         get(serverPath.allProject)
           .set('token', this.tokenCursor.get())
           .then(res => {
@@ -146,7 +146,7 @@ export class ProjectService {
             }
           })
           .catch(reason => reject(reason.response.body));
-      }
+      // }
     });
   }
 

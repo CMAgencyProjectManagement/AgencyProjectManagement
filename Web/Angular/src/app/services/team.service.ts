@@ -16,21 +16,21 @@ export class TeamService {
 
   public getAllTeam(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      if (this.teamsCursor.get()) {
-        resolve(_.cloneDeep(this.teamsCursor.get()));
-      } else {
-        get(serverPath.allTeam)
-          .set('token', this.tokenCursor.get())
-          .then(res => {
-            const content = res.body;
-            if (content.IsSuccess) {
-              this.teamsCursor.set(content.Data);
-              resolve(content.Data);
-            } else {
-              reject(content.Message);
-            }
-          })
-      }
+      // if (this.teamsCursor.get()) {
+      //   resolve(_.cloneDeep(this.teamsCursor.get()));
+      // } else {
+      get(serverPath.allTeam)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            this.teamsCursor.set(content.Data);
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+      // }
     });
   }
 

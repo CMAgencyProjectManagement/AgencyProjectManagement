@@ -30,24 +30,12 @@ export class UserService {
    * @param password
    * @returns {Promise<User>}
    */
-  public login(username: string, password: string): Promise<User> {
+  public login(username: string, password: string): Promise<any> {
     // return new Promise<User>();
     return new Promise<User>((resolve, reject) => {
       this.getToken(username, password)
         .then(res => {
-          const type = res.token_type;
-          const expiresIn = res.expires_in;
-          const token = res.access_token;
-          console.debug('Login - getInfo', type, token.substring(10) + '.....');
-          this.tokenCursor.set(token);
-          this.setLocalToken(token, expiresIn);
-          this.getCurrentUserInfo()
-            .then(user => {
-              resolve(user);
-              this.currentUserCursor.set(user);
-              this.setLocalUser(user);
-            })
-            .catch(reject);
+          resolve(res);
         })
         .catch(reason => {
           reject({
@@ -55,8 +43,17 @@ export class UserService {
           })
           ;
         });
-
     })
+  }
+
+  public applyToken(token, tokenExpireTime) {
+    this.setLocalToken(token, tokenExpireTime);
+    this.tokenCursor.set(token);
+  }
+
+  public applyCurrentUser(userInfo) {
+    this.setLocalUser(userInfo);
+    this.currentUserCursor.set(userInfo);
   }
 
   public getUserOfProject(projectId): Promise<any> {
@@ -124,26 +121,20 @@ export class UserService {
   }
 
   public getAllUser(): Promise<any> {
-    const users = this.usersCursor.get() as User[];
-    if (users !== undefined) {
-      return Promise.resolve(users);
-    } else {
-      const authorization = this.tokenCursor.get();
-      return new Promise<any>((resolve, reject) => {
-        get(serverPath.allUser)
-          .set('token', authorization)
-          .then(res => {
-            const content = res.body;
-            if (content.IsSuccess) {
-              this.usersCursor.set(content.Data);
-              resolve(content.Data);
-            } else {
-              reject(content.Message);
-            }
-          }).catch(reject)
-      })
-    }
-
+    const authorization = this.tokenCursor.get();
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.allUser)
+        .set('token', authorization)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            this.usersCursor.set(content.Data);
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        }).catch(reject)
+    })
   }
 
   private getToken(username: string, password: string): Promise<any> {

@@ -62,6 +62,9 @@ const serverPath = {
   // Config
   updateConfig: 'api/config/update',// PUT
   config: '/api/config',
+  // Notification
+  getMyNotification: '/api/notification'
+
 };
 
 export {

@@ -480,6 +480,7 @@
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\DependencyController.cs" />
     <Compile Include="Controllers\ListController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\TeamController.cs" />

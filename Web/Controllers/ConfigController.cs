@@ -51,23 +51,23 @@ namespace Web.Controllers
                     ModelState.AddModelError("MaxDuration", "Max duration must be larger than 0");
                 }
                 
-                if (configViewModel.LowPoint < 0)
+                if (configViewModel.LowPoint < 1)
                 {
-                    ModelState.AddModelError("LowPoint", "Low priority point must be larger or equal to 0");
+                    ModelState.AddModelError("LowPoint", "Low priority point must be larger or equal to 1");
                 }
                 
-                if (configViewModel.MediumPoint < 0)
+                if (configViewModel.MediumPoint < 1)
                 {
-                    ModelState.AddModelError("MediumPoint", "Medium priority point must be larger or equal to 0");
+                    ModelState.AddModelError("MediumPoint", "Medium priority point must be larger or equal to 1");
                 }
                 
-                if (configViewModel.HightPoint < 0)
+                if (configViewModel.HightPoint < 1)
                 {
-                    ModelState.AddModelError("HightPoint", "High priority point must be larger or equal to 0");
+                    ModelState.AddModelError("HightPoint", "High priority point must be larger or equal to 1");
                 }
                 
                 //http://www.ilo.org/global/standards/subjects-covered-by-international-labour-standards/child-labour/lang--en/index.htm
-                if (configViewModel.MinAge < 0)
+                if (configViewModel.MinAge < 13)
                 {
                     ModelState.AddModelError("MinAge", "Minimun age point must be larger or equal to 13");
                 }

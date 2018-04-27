@@ -39,7 +39,6 @@ export class ViewUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
     this.userService.getAllUser()
       .then(value => {
           this.users = value;
@@ -53,54 +52,5 @@ export class ViewUserComponent implements OnInit {
     this.datatableElement.dtInstance.then(
       (dtInstance: DataTables.Api) => dtInstance.search(searchStr).draw()
     );
-    // this.isPageLoading = true;
-    // this.userService.getAllUser()
-    //   .then(users => {
-    //     this.users = _.filter(users, (user: User) => {
-    //         let result;
-    //         result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
-    //
-    //         if (!result) {
-    //           result = user.username && _.toLower(user.username).indexOf(_.toLower(searchStr)) >= 0;
-    //         }
-    //
-    //         if (!result) {
-    //           if (user.birthdate) {
-    //             let formatedBDate = moment(user.birthdate).format('DD/MM/YYYY');
-    //             result = _.toLower(formatedBDate).indexOf(_.toLower(searchStr)) >= 0;
-    //           }
-    //         }
-    //
-    //         if (!result) {
-    //           result = user.team && _.toLower(user.team.name).indexOf(_.toLower(searchStr)) >= 0;
-    //         }
-    //
-    //         if (!result) {
-    //           if (user.isAdmin) {
-    //             result = _.toLower('Admin').indexOf(_.toLower(searchStr)) >= 0;
-    //           } else if (user.isManager) {
-    //             result = _.toLower('Manager').indexOf(_.toLower(searchStr)) >= 0;
-    //           } else {
-    //             result = _.toLower('Staff').indexOf(_.toLower(searchStr)) >= 0;
-    //           }
-    //         }
-    //
-    //         if (!result) {
-    //           if (user.isActive) {
-    //             result = _.toLower('Active').indexOf(_.toLower(searchStr)) >= 0;
-    //           } else {
-    //             result = _.toLower('Banned').indexOf(_.toLower(searchStr)) >= 0;
-    //           }
-    //         }
-    //
-    //         return result;
-    //       }
-    //     );
-    //     this.isPageLoading = false;
-    //   })
-    //   .catch(reason => {
-    //     this.isPageLoading = false;
-    //   });
   }
-
 }

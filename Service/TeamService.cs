@@ -23,12 +23,14 @@ namespace Service
         {
             return db.Teams.ToList();
         }
+
         public List<User> GetFreeUsers()
         {
             var freeUsers = db.Users
                 .Where(x => x.TeamID == null && x.IsAdmin == false).ToList();
             return freeUsers;
         }
+
         public Team GetTeamById(int id)
         {
             return db.Teams.Find(id);
@@ -39,11 +41,11 @@ namespace Service
             Project project = db.Projects.Find(projectId);
             if (project == null) throw new ObjectNotFoundException($"Project with id {projectId} not found ");
             IEnumerable<Team> teams = project.TeamProjects
-                .Select(teamProject => GetTeamById(teamProject.TeamID)); 
+                .Select(teamProject => GetTeamById(teamProject.TeamID));
             return teams;
         }
-        
-       
+
+
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);
@@ -69,6 +71,7 @@ namespace Service
                 throw new ObjectNotFoundException($"Team with ID{teamId} not found");
             }
         }
+
         public List<Task> GetTasksOfTeam(int teamId)
         {
             ProjectService projectService = new ProjectService(db);
@@ -81,9 +84,10 @@ namespace Service
                 List<Task> list = projectService.GetTasksOfProject(projectId);
                 tasklist.AddRange(list);
             }
-            return tasklist;
 
+            return tasklist;
         }
+
         public Team Updateteam(
             int id,
             string name,
@@ -158,37 +162,42 @@ namespace Service
             db.SaveChanges();
         }
 
-        public void setRole(int teamId, int userId, bool isManager)
+        public void SetManager(int teamId, int userId)
         {
+            TaskService taskService = new TaskService(db);
             Team team = db.Teams.Find(teamId);
-            if (team != null)
+            if (team == null)
             {
-                User user = db.Users.Find(userId);
-                if (user != null)
-                {
-                    if (user.TeamID != team.ID)
-                    {
-                        throw new InvalidOperationException("User have to be in team before set to be manager");
-                    }
+                throw new ObjectNotFoundException($"Team with ID{teamId} not found");
+            }
 
-                    if (isManager)
-                    {
-                        if (GetManager(team.ID) != null)
-                        {
-                            throw new InvalidOperationException("Team can't have more than one manager");
-                        }
-                    }
-                    user.IsManager = isManager;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    throw new ObjectNotFoundException($"User with ID{userId} not found");
-                }
+            User user = db.Users.Find(userId);
+            if (user == null)
+            {
+                throw new ObjectNotFoundException($"User with ID{userId} not found");
+            }
+
+            if (user.TeamID != team.ID)
+            {
+                throw new InvalidOperationException("User have to be in team before set to be manager");
+            }
+
+            if (GetManager(team.ID) != null)
+            {
+                throw new InvalidOperationException("Team can't have more than one manager");
+            }
+
+            User currentManager = db.Users.SingleOrDefault(x => x.IsManager == true);
+            var userActiveTasks = taskService.GetActiveTasksOfUser(user.ID);
+            if (userActiveTasks.Count == 0 && currentManager.ID != userId)
+            {
+                user.IsManager = true;
+                currentManager.IsManager = false;
+                db.SaveChanges();
             }
             else
             {
-                throw new ObjectNotFoundException($"Team with ID{teamId} not found");
+                throw new ObjectNotFoundException($"User with ID{userId} still in active tasks");
             }
         }
 
@@ -205,7 +214,7 @@ namespace Service
                 ["createdBy"] = userService.ParseToJson(creator),
                 ["createdDate"] = team.CreatedDate.ToShortDateString()
             };
-            
+
             if (includeManager)
             {
                 var manager = GetManager(team.ID);
@@ -221,7 +230,7 @@ namespace Service
 
             if (includeUsers)
             {
-                var users = userService.GetUsersOfTeam(team.ID,excludeBanned:false);
+                var users = userService.GetUsersOfTeam(team.ID, excludeBanned: false);
                 var jArray = new JArray();
 
                 foreach (User user in users)
@@ -235,28 +244,28 @@ namespace Service
 
             return result;
         }
+
         public bool IsManagerOfTeam(int userId, IQueryable<int> teamIds)
         {
             var user = db.Users.Find(userId);
             if (!user.IsManager)
             {
                 throw new ObjectNotFoundException($"User {userId} is not a manager");
-
             }
+
             if (teamIds.Count() != 0)
             {
                 foreach (var teamId in teamIds)
                 {
-                    if (user.TeamID==teamId)
+                    if (user.TeamID == teamId)
                     {
-                        
                         return true;
                     }
                 }
+
                 throw new ObjectNotFoundException($"User {userId} is not a manager has assigned this project");
-                
             }
-           
+
             return false;
         }
 
