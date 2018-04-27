@@ -5,10 +5,10 @@
         <strong>Update account</strong>
       </div>
       <!-- <app-spinner *ngIf="isPageLoading"></app-spinner> -->
-      <div class="card-body animated fadeIn" >
+      <div class="card-body animated fadeIn">
         <div [formGroup]="updateForm" class="form-horizontal col-6">
           <!--Fullname -->
-          <div class="form-group row">
+          <div class="form-group row" *ngIf="!currentUser.isAdmin">
             <label class="col-4 col-form-label text-right" for="fullname-input">Fullname
               <span style="color: #ee0d0d">
                 <strong>*</strong>
@@ -17,24 +17,46 @@
             <div class="col-8">
               <input type="text" id="fullname-input" name="fullname-input" [ngClass]="{'form-control': true, 'is-invalid': errors.fullname}"
                 formControlName="fullname">
-              <div class="invalid-feedback" *ngIf="errors.fullname">{{errors.email}}</div>
+              <div class="invalid-feedback" *ngIf="errors.fullname">{{errors.fullname}}</div>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="currentUser.isAdmin">
+            <label class="col-4 col-form-label text-right" for="fullname-input">Fullname
+              <span style="color: #ee0d0d">
+                <strong>*</strong>
+              </span>
+            </label>
+            <div class="col-8">
+              <input type="text" id="fullname-input" name="fullname-input" [ngClass]="{'form-control': true, 'is-invalid': errors.fullname}"
+                formControlName="fullname" disabled="true">
+              <div class="invalid-feedback" *ngIf="errors.fullname">{{errors.fullname}}</div>
             </div>
           </div>
           <!--Birthdate -->
-          <div class="form-group row">
-              <label class="col-4 col-form-label text-right" for="birthdate-input">Birthdate
-                <span style="color: #ee0d0d">
-                  <strong>*</strong>
-                </span>
-              </label>
-              <div class="col-8 datepicker-group">
-                  <my-date-picker #datepicker [options]="myDatePickerOptions" formControlName="birthdate" [ngClass]="{'form-control': false, 'is-invalid': errors.birthdate}"
-                    required></my-date-picker>
-                  <div class="invalid-feedback" *ngIf="errors.birthdate">{{errors.birthdate}}</div>
-                </div>
+          <div class="form-group row" *ngIf="!currentUser.isAdmin">
+            <label class="col-4 col-form-label text-right" for="birthdate-input">Birthdate
+              <span style="color: #ee0d0d">
+                <strong>*</strong>
+              </span>
+            </label>
+            <div class="col-8 datepicker-group">
+              <my-date-picker #birthDatePicker [options]="myDatePickerOptions" formControlName="birthdate" [ngClass]="{'form-control': false, 'is-invalid': errors.birthdate}"
+                required></my-date-picker>
+              <div class="invalid-feedback" *ngIf="errors.birthdate">{{errors.birthdate}}</div>
             </div>
+          </div>
+          <!--Password-->
+          <div class="form-group row" *ngIf="!currentUser.isAdmin">
+            <label class="col-4 col-form-label text-right" for="password-input">Password</label>
+            <div class="col-8">
+              <input type="password" id="password-input" name="password-input" [ngClass]="{'form-control': true, 'is-invalid': errors.password}"
+              formControlName="password">
+            <div class="invalid-feedback" *ngIf="errors.password">{{errors.password}}</div>
+            </div>
+          </div>
           <!--Email -->
-          <div class="form-group row" *ngIf="foundUser.isAdmin">
+          <div class="form-group row" *ngIf="currentUser.isAdmin">
             <label class="col-4 col-form-label text-right" for="email-input">Email
               <span style="color: #ee0d0d">
                 <strong>*</strong>
@@ -46,16 +68,17 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="!foundUser.isAdmin">
-              <label class="col-4 col-form-label text-right" for="email-input">Email
-              </label>
-              <div class="col-8">
-                <input disabled="true" type="text" id="email-input" name="email-input" [ngClass]="{'form-control': true, 'is-invalid': errors.email}" formControlName="email">
-                <div class="invalid-feedback" *ngIf="errors.email">{{errors.email}}</div>
-              </div>
+          <div class="form-group row" *ngIf="!currentUser.isAdmin">
+            <label class="col-4 col-form-label text-right" for="email-input">Email
+            </label>
+            <div class="col-8">
+              <input disabled="true" type="text" id="email-input" name="email-input" [ngClass]="{'form-control': true, 'is-invalid': errors.email}"
+                formControlName="email">
+              <div class="invalid-feedback" *ngIf="errors.email">{{errors.email}}</div>
             </div>
+          </div>
           <!-- Phone -->
-          <div class="form-group row" *ngIf="foundUser.isAdmin">
+          <div class="form-group row" *ngIf="currentUser.isAdmin">
             <label class="col-4 col-form-label text-right" for="phone-input">Phone
               <span style="color: #ee0d0d">
                 <strong>*</strong>
@@ -68,17 +91,17 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="!foundUser.isAdmin">
-              <label class="col-4 col-form-label text-right" for="phone-input">Phone
-              </label>
-              <div class="col-8">
-                <input disabled="true" type="text" id="phone-input" name="phone-input" class="form-control" [ngClass]="{'form-control': true, 'is-invalid': errors.phone}"
-                  formControlName="phone">
-                <div class="invalid-feedback" *ngIf="errors.phone">{{errors.phone}}</div>
-              </div>
+          <div class="form-group row" *ngIf="!currentUser.isAdmin">
+            <label class="col-4 col-form-label text-right" for="phone-input">Phone
+            </label>
+            <div class="col-8">
+              <input disabled="true" type="text" id="phone-input" name="phone-input" class="form-control" [ngClass]="{'form-control': true, 'is-invalid': errors.phone}"
+                formControlName="phone">
+              <div class="invalid-feedback" *ngIf="errors.phone">{{errors.phone}}</div>
             </div>
+          </div>
           <!-- Department -->
-          <div class="form-group row" *ngIf="teams && foundUser.isAdmin">
+          <div class="form-group row" *ngIf="teams && currentUser.isAdmin">
             <label class="col-4 col-form-label text-right">Department</label>
             <div class="col-8">
               <select formControlName="team" [ngClass]="{'form-control': true, 'is-invalid': errors.team}">
@@ -88,7 +111,7 @@
             </div>
           </div>
           <!-- Status -->
-          <div class="form-group row" *ngIf="foundUser.isAdmin">
+          <div class="form-group row" *ngIf="currentUser.isAdmin">
             <label class="col-4 col-form-label text-right">Active</label>
             <div class="col-8">
               <label class="switch switch-3d switch-primary">
@@ -100,7 +123,7 @@
             </div>
           </div>
           <!-- Password -->
-          <div class="form-group row" *ngIf="foundUser.isAdmin">
+          <div class="form-group row" *ngIf="currentUser.isAdmin">
             <label class="col-4 col-form-label text-right">Password </label>
             <div class="col-8">
               <button type="button" class="btn btn-secondary" (click)="openConfirmResetPassword()" [ladda]="isResetPasswordLoading">
@@ -110,22 +133,15 @@
               </div>
             </div>
           </div>
-          <div class="form-actions text-center" *ngIf="foundUser.isAdmin">
+          <div class="form-actions text-center">
             <div class="col-12">
-              <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isSavingChange">
+              <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isSavingChange" style="margin-left: 30px;">
                 Save changes
               </button>
-              <button class="btn btn-secondary" type="button" (click)="setDefaultValue(foundUser)">Reset</button>
+              <button *ngIf="!currentUser.isAdmin" class="btn btn-secondary" type="button" onclick="location.href='#/account/profile'" style="margin-left: 30px;width: 100px;">Cancel</button>
+              <button *ngIf="currentUser.isAdmin" class="btn btn-secondary" type="button" onclick="location.href='#/account/view'" style="margin-left: 30px;width: 100px;">Cancel</button>
             </div>
           </div>
-          <div class="form-actions text-center" *ngIf="!foundUser.isAdmin">
-              <div class="col-12">
-                <button class="btn btn-primary" (click)="handleUpdate()" [ladda]="isSavingChange">
-                  Save changes
-                </button>
-                <button class="btn btn-secondary" type="button" (click)="setDefaultValue(foundUser)">Reset</button>
-              </div>
-            </div>
         </div>
       </div>
     </div>

@@ -11,7 +11,10 @@
       </div>
       <div class="col-4">
         <div class="button-row">
-          <a href="#/account/update/{{foundUser.id}}" class="btn btn-secondary bg-light" style="font-size: 20px" >
+          <a href="#/account/update/{{foundUser.id}}" class="btn btn-secondary bg-light" style="font-size: 20px" *ngIf="!match">
+            <i class="fa fa-edit"></i>&nbsp; Update
+          </a>
+          <a href="#/account/update" class="btn btn-secondary bg-light" style="font-size: 20px" *ngIf="match">
             <i class="fa fa-edit"></i>&nbsp; Update
           </a>
         </div>

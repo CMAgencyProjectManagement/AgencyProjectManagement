@@ -21,6 +21,7 @@ export class DetailUserComponent implements OnInit {
   isLoadingPage: boolean;
   match: boolean;
   currentUser: User;
+  teams: Team[];
   constructor(
     private teamService: TeamService,
     private userService: UserService,
@@ -37,13 +38,20 @@ export class DetailUserComponent implements OnInit {
   ngOnInit() {
     this.entity = {};
     if (this.route.snapshot.paramMap.get('id') == undefined) {
+      this.match = true;
       this.foundUser = this.currentUser;
       this.isLoadingPage = false;
     } else {
       this.userID = Number(this.route.snapshot.paramMap.get('id'));
-      if (this.userID == this.currentUser.id) {
-        this.match = true;
-      }
+      // if (this.userID == this.currentUser.id) {
+      //   this.match = true;
+      //   this.foundUser = this.currentUser;
+      // } else {
+      //   this.getAllTeam();
+      // }
+      this.teamService.getAllTeam().then(value => {
+        this.teams = value;
+      })
       this.getAllTeam();
     }
 

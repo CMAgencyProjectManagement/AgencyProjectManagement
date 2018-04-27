@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewContainerRef, ViewChild } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { User } from 'app/interfaces/user';
 import {
@@ -14,12 +14,14 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from '../../../cmaComponents/modals/confirm-modal/confirm-modal.component';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { currentId } from 'async_hooks';
 @Component({
   selector: 'app-update-user',
   templateUrl: './update-user.component.html',
   styleUrls: ['./update-user.component.scss']
 })
 export class UpdateUserComponent implements OnInit {
+  @ViewChild('birthDatePicker') birthDatePicker;
   updateForm: FormGroup;
   tokenCursor: Cursor;
   newpassword: string;
@@ -30,17 +32,16 @@ export class UpdateUserComponent implements OnInit {
   users: User[];
   foundUser: User;
   userID: number;
+  currentUser: User;
   teams: Team[];
   errors: {
-    username: string,
-    password: string,
     fullname: string,
     email: string,
     phone: string,
     birthdate: string,
     team: string,
-    avatar: string,
-    isActive: string
+    isActive: string,
+    password: string
   };
 
   constructor(private userService: UserService,
@@ -59,6 +60,8 @@ export class UpdateUserComponent implements OnInit {
       birthdate: new FormControl(undefined),
       password: new FormControl(undefined),
     })
+    this.users = [];
+    this.currentUser = this.storeService.get(['currentUser']) as User;
     this.isPageLoading = true;
     this.isResetPasswordLoading = false;
     this.isSavingChange = false;
@@ -67,17 +70,17 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit() {
     if (this.route.snapshot.paramMap.get('id') == undefined) {
-      this.foundUser = this.storeService.get(['currentUser']) as User;
-      if (this.foundUser.team) {
-        this.teamService.getDetail(this.foundUser.team.id)
-          .then(value => {
-            this.teams = value;
-            this.updateLoadingState();
-          });
-      } else {
-        this.teams = null;
-        this.updateLoadingState();
-      }
+      this.foundUser = this.currentUser;
+      // if (this.foundUser.team) {
+      //   this.teamService.getDetail(this.foundUser.team.id)
+      //     .then(value => {
+      //       this.teams = value;
+      //       this.updateLoadingState();
+      //     });
+      // } else {
+      //   this.teams = null;
+      //   this.updateLoadingState();
+      // }
       this.setDefaultValue(this.foundUser);
       this.updateLoadingState();
     } else {
@@ -87,11 +90,12 @@ export class UpdateUserComponent implements OnInit {
           this.teams = value;
           this.updateLoadingState();
         });
-      this.userService.getUserOfProject(this.userID)
+      this.userService.getAllUser()
         .then(value => {
           this.users = value;
           for (let i = 0; i < this.users.length; i++) {
-            if (this.users[i].id === this.userID) {
+            if (this.users[i].id == this.userID) {
+              console.debug("here");
               this.foundUser = this.users[i];
               this.setDefaultValue(this.foundUser);
               this.isPageLoading = false;
@@ -119,6 +123,8 @@ export class UpdateUserComponent implements OnInit {
         }
       }
     })
+    console.debug(user.password);
+    this.updateForm.controls['password'].setValue(user.password);
     this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
@@ -166,67 +172,143 @@ export class UpdateUserComponent implements OnInit {
 
   setErrorsNull(): void {
     this.errors = {
-      username: '',
-      password: '',
       fullname: '',
       email: '',
       phone: '',
       birthdate: '',
       team: '',
-      avatar: '',
-      isActive: ''
+      isActive: '',
+      password: '',
     };
   }
 
   handleUpdate() {
     this.setErrorsNull();
-    if (confirm('Save change ?')) {
-      this.isSavingChange = true;
-      const formValue = this.updateForm.value;
-      this.userService.updateUser(
-        this.foundUser.id,
-        formValue.phone,
-        formValue.email,
-        formValue.team,
-        formValue.isActive
-      ).then(value => {
-        this.isSavingChange = false;
-      }).catch(reason => {
-        this.errorMessage = reason.message;
-        let errors = reason.Data;
-        for (let error of errors) {
-          const fieldName = error.key;
-          const errorMessage = error.message;
-          switch (fieldName) {
-            case 'Username':
-              this.errors.username = errorMessage;
-              break;
-            case 'Password':
-              this.errors.password = errorMessage;
-              break;
-            case 'Name':
-              this.errors.fullname = errorMessage;
-              break;
-            case 'Phone':
-              this.errors.phone = errorMessage;
-              break;
-            case 'Birthdate':
-              this.errors.birthdate = errorMessage;
-              break;
-            case 'Email':
-              this.errors.email = errorMessage;
-              break;
-            case 'Team':
-              this.errors.team = errorMessage;
-              break;
-            case 'Avatar':
-              this.errors.avatar = errorMessage;
-              break;
+    // if (confirm('Save change ?')) {
+    //   this.isSavingChange = true;
+    //   const formValue = this.updateForm.value;
+    //   this.userService.updateUser(
+    //     this.foundUser.id,
+    //     formValue.phone,
+    //     formValue.email,
+    //     formValue.team,
+    //     formValue.isActive
+    //   ).then(value => {
+    //     this.isSavingChange = false;
+    //   }).catch(reason => {
+    //     this.errorMessage = reason.message;
+    //     let errors = reason.Data;
+    //     for (let error of errors) {
+    //       const fieldName = error.key;
+    //       const errorMessage = error.message;
+    //       switch (fieldName) {
+    //         case 'Username':
+    //           this.errors.username = errorMessage;
+    //           break;
+    //         case 'Password':
+    //           this.errors.password = errorMessage;
+    //           break;
+    //         case 'Name':
+    //           this.errors.fullname = errorMessage;
+    //           break;
+    //         case 'Phone':
+    //           this.errors.phone = errorMessage;
+    //           break;
+    //         case 'Birthdate':
+    //           this.errors.birthdate = errorMessage;
+    //           break;
+    //         case 'Email':
+    //           this.errors.email = errorMessage;
+    //           break;
+    //         case 'Team':
+    //           this.errors.team = errorMessage;
+    //           break;
+    //         case 'Avatar':
+    //           this.errors.avatar = errorMessage;
+    //           break;
 
-          }
-        }
-        this.isSavingChange = false;
-      })
+    //       }
+    //     }
+    //     this.isSavingChange = false;
+    //   })
+    // }
+    if (this.currentUser.isAdmin) {
+      const onConfirm = () => {
+        const formValue = this.updateForm.value;
+        this.isSavingChange = true;
+        this.userService.updateUser(
+          this.foundUser.id,
+          formValue.phone,
+          formValue.email,
+          formValue.team,
+          formValue.isActive,
+        )
+          .then(value => {
+            this.isSavingChange = false;
+            this.router.navigate(['account/view']);
+          })
+          .catch(reason => {
+            this.isSavingChange = false;
+            this.setErrors(reason.Data);
+          })
+      };
+      const initialState = {
+        message: `Are you sure to save these changes?`,
+        confirmCallback: onConfirm
+      };
+      this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
+    } else {
+      const onConfirm = () => {
+        let birthdate = moment(this.birthDatePicker.selectionDayTxt, 'DD/MM/YYYY');
+        const formValue = this.updateForm.value;
+        this.isSavingChange = true;
+        this.userService.updateProfile(
+          formValue.fullname,
+          birthdate.isValid() ? birthdate.format('YYYY-MM-DD') : this.birthDatePicker.selectionDayTxt,
+          formValue.password,
+        )
+          .then(value => {
+            this.isSavingChange = false;
+            this.router.navigate(['account/profile']);
+          })
+          .catch(reason => {
+            this.isSavingChange = false;
+            this.setErrors(reason.Data);
+          })
+      };
+      const initialState = {
+        message: `Are you sure to save these changes?`,
+        confirmCallback: onConfirm
+      };
+      this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
     }
   }
+
+  setErrors(errors: any[]) {
+    for (let error of errors) {
+      const fieldName = error.key;
+      const errorMessage = error.message;
+      switch (fieldName) {
+        case 'Email':
+          this.errors.email = errorMessage;
+          break;
+        case 'Phone':
+          this.errors.phone = errorMessage;
+          break;
+        case 'Department':
+          this.errors.team = errorMessage;
+          break;
+        case 'Birthdate':
+          this.errors.birthdate = errorMessage;
+          break;
+        case 'Fullname':
+          this.errors.fullname = errorMessage;
+          break;
+        case 'Password':
+          this.errors.password = errorMessage;
+          break;
+      }
+    }
+  }
+
 }
