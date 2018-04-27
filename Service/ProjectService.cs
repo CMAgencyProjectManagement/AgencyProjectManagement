@@ -283,7 +283,7 @@ namespace Service
             }
             else
             {
-               throw new ObjectNotFoundException($"User with ID {userId} still have task in this task");
+               throw new ObjectNotFoundException($"User name {user.Username} still have task in this project");
             }
         }
         public List<UserTask> GetUserTaskFromTasksOfProject(List<Task> tasksOfProject,int projectId)
@@ -381,6 +381,23 @@ namespace Service
                 });
 
             db.TeamProjects.AddRange(teamProjectToAdd);
+            AddManagerToAddedDepartment(teamIdsToAdd, projectId);
+            var UsersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID);
+            if (UsersInProject.Count() == 0)
+            {
+                db.TeamProjects.RemoveRange(teamProjectToRemove);
+            }
+            else
+            {
+                throw new ObjectNotFoundException($"Cant remove departments, Still have user(s) in Project {project.Name}");
+            }
+            project.ChangedBy = modifierId;
+            project.ChangedTime = DateTime.Today;
+            db.SaveChanges();
+            return project;
+        }
+        public void AddManagerToAddedDepartment(IEnumerable<int> teamIdsToAdd, int projectId)
+        {
             foreach (var teamIdToAdd in teamIdsToAdd)
             {
                 User manager = db.Users.Where(x => x.IsManager == true && x.TeamID == teamIdToAdd).SingleOrDefault();
@@ -396,19 +413,6 @@ namespace Service
                     db.UserProjects.Add(newUserProject);
                 }
             }
-            var UsersInProject = db.UserProjects.Where(x => x.ProjectID == projectId).Select(x => x.UserID);
-            if (UsersInProject.Count() == 0)
-            {
-                db.TeamProjects.RemoveRange(teamProjectToRemove);
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"Cant remove departments, Still have user(s) in Project with id {projectId}");
-            }
-            project.ChangedBy = modifierId;
-            project.ChangedTime = DateTime.Today;
-            db.SaveChanges();
-            return project;
         }
         public IQueryable<int> GetUsersInProject(int projectId)
         {
