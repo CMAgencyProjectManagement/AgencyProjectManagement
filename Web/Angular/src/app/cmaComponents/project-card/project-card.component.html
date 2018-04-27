@@ -51,13 +51,16 @@
                       </button>
                       <ul *dropdownMenu class="dropdown-menu" role="menu">
                         <li role="menuitem">
-                          <a class="dropdown-item" style="cursor: pointer" href="#/task/create?project={{project.id}}&list={{lists.id}}">Add task</a>
+                          <a class="dropdown-item" style="cursor: pointer"
+                             href="#/task/create?project={{project.id}}&list={{lists.id}}">Add task</a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
+                          <a class="dropdown-item" style="cursor: pointer"
+                             (click)="handleOnRenameListClick(lists.id, lists.name)">Rename</a>
                         </li>
                         <li role="menuitem">
-                          <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove list</a>
+                          <a class="dropdown-item" style="cursor: pointer" (click)="handleOnRemoveListClick(lists.id)">Remove
+                            list</a>
                         </li>
                       </ul>
                     </div>
@@ -65,22 +68,18 @@
                 </div>
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
-                <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer" data-toggle="modal"
-                  id="task">
+                <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer"
+                     data-toggle="modal"
+                     id="task">
                   <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color: black">
                     <div class="card-body">
                       {{task.name}}
                     </div>
-                  </a>
-                  <div class="card-footer" style="height: 30px;padding-top: 5px;
+                    <div class="card-footer p-0" style="height: 30px;">
+                      <app-task-status class="float-right" [taskStatusNumber]="task.status"></app-task-status>
 
-                  padding-right: 5px;">
-                    <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color:white">
-                      <span class="badge badge-warning float-right" style="color: white" *ngIf="task.status==0">Not Done</span>
-                      <span class="badge badge-primary float-right" *ngIf="task.status==1">Need Review</span>
-                      <span class="badge badge-success float-right" *ngIf="task.status==2">Done</span>
-                    </a>
-                  </div>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>

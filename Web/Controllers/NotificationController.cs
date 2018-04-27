@@ -30,6 +30,8 @@ namespace Web.Controllers
                     IEnumerable<NotificationUser> notificationUsers = notificationService.GetNotificationsOfUser(user.ID);
 
                     IEnumerable<JObject> notificationsJson = notificationUsers
+                        .Reverse()
+                        .Take(50)
                         .Select(notificationUser => notificationService.ParseToJson(notificationUser));
                     return Ok(ResponseHelper.GetResponse(new JArray(notificationsJson)));
                 }
