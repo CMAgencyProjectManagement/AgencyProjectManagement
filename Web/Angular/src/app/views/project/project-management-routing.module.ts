@@ -14,56 +14,56 @@ const routes: Routes = [
     path: '',
     component: ProjectManagementComponent,
     data: {
-      title: 'Project'
+      title: 'View projects'
     }
   },
   {
     path: ':id/schedule',
     component: ProjectSchedulingComponent,
     data: {
-      title: 'Scheduling'
+      title: 'Project schedule'
     }
   },
   {
     path: ':id/detail',
     component: ProjectDetailComponent,
     data: {
-      title: 'Detail'
+      title: 'Project detail'
     }
   },
   {
     path: 'add',
     component: AddProjectComponent,
     data: {
-      title: 'Create'
+      title: 'Create project'
     }
   },
   {
     path: ':id/update',
     component: ProjectUpdateComponent,
     data: {
-      title: 'Update'
+      title: 'Update project'
     }
   },
   {
     path: ':id/task',
     component: ProjectTaskComponent,
     data: {
-      title: 'Task'
+      title: 'View tasks'
     }
   },
   {
     path: ':id/report',
     component: ReportComponent,
     data: {
-      title: 'Report'
+      title: 'View report'
     }
   },
   {
     path: ':id/archive',
     component: ArchiveComponent,
     data: {
-      title: 'Archive'
+      title: 'View archives'
     }
   },
 ];

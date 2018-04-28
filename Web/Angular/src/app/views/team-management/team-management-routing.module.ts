@@ -15,7 +15,7 @@ const routes: Routes = [
         path: 'view',
         component: TeamManagePageComponent,
         data: {
-          title: 'View'
+          title: 'View departments'
         }
       },
       {
@@ -36,14 +36,14 @@ const routes: Routes = [
         path: 'create',
         component: CreateTeamComponent,
         data: {
-          title: 'Create'
+          title: 'Create department'
         }
       },
       {
         path: ':id/update',
         component: UpdateTeamComponent,
         data: {
-          title: 'Update'
+          title: 'Update department'
         }
       }
     ]
