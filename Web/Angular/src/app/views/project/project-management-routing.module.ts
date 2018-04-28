@@ -7,6 +7,7 @@ import {AddProjectComponent} from './add-project/add-project.component';
 import {ProjectUpdateComponent} from './project-update/project-update.component';
 import {ProjectTaskComponent} from './project-task/project-task.component';
 import {ReportComponent} from './report/report.component';
+import {ArchiveComponent} from './archive/archive.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,13 @@ const routes: Routes = [
     component: ReportComponent,
     data: {
       title: 'Report'
+    }
+  },
+  {
+    path: ':id/archive',
+    component: ArchiveComponent,
+    data: {
+      title: 'Archive'
     }
   },
 ];
