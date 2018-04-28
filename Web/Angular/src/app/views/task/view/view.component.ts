@@ -93,14 +93,18 @@ export class ViewComponent implements OnInit {
       .then(value => {
         this.foundTask = value as Task;
         this.isLoading.page = false;
-        // TODO move this into another place
-        this.lockAttachment = this.foundTask.statusText == 'Need review' ||
-          this.foundTask.statusText == 'Done';
+        this.updateLockingMode();
       })
       .catch(reason => {
         console.debug('ViewComponent-onInit', reason);
         this.showErrorModal(reason.Message, true);
       })
+  }
+
+  updateLockingMode() {
+    this.lockAttachment =
+      this.foundTask.statusText == 'Need review' ||
+      this.foundTask.statusText == 'Done';
   }
 
   handleOnCommentBtnClick() {
@@ -294,6 +298,7 @@ export class ViewComponent implements OnInit {
       task: this.foundTask,
       confirmCallback: (task) => {
         this.foundTask = task;
+        this.updateLockingMode();
         this.isLoading.setStatus = false;
       },
       cancelCallback: () => {

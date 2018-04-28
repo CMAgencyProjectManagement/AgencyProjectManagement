@@ -161,13 +161,13 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
 
-                    JArray dataObject = new JArray();
 
                     IEnumerable<Task> tasks = taskService.GetTaskOfDepartment(teamId)
                         .Where(task => task.Status == (int) TaskStatus.NeedReview);
 
                     tasks = taskService.SortTaskByDeadline(tasks);
 
+                    JArray dataObject = new JArray();
                     foreach (var task in tasks)
                     {
                         dataObject.Add(taskService.ParseToJson(task));

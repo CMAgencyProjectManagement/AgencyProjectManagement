@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TaskService} from '../../../services/task.service';
 import {DependencyService} from '../../../services/dependency.service';
 import {Task} from '../../../interfaces/task';
@@ -18,7 +18,7 @@ import {Dependency} from '../../../interfaces/dependency';
   templateUrl: './project-scheduling.component.html',
   styleUrls: ['./project-scheduling.component.scss']
 })
-export class ProjectSchedulingComponent implements OnInit {
+export class ProjectSchedulingComponent implements OnInit, OnDestroy {
   @ViewChild('gantt_here') ganttContainer: ElementRef;
   projectTasks: Task[];
   projectDependencies: Dependency[];
@@ -143,5 +143,9 @@ export class ProjectSchedulingComponent implements OnInit {
       message: message
     };
     this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
+  }
+
+  ngOnDestroy(): void {
+    gantt.clearAll();
   }
 }
