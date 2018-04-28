@@ -94,11 +94,7 @@ const admin_navigation = [
         url: '/project/add',
         icon: 'icon-calendar',
       },
-      {
-        name: 'Archive project',
-        url: '/project/1051/archive',
-        icon: 'icon-calendar',
-      },
+
       
     ]
   },
