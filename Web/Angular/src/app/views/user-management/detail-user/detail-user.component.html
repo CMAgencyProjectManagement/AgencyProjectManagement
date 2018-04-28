@@ -9,14 +9,14 @@
       <div id="left" class="col-4">
         <img id="img" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
       </div>
-      <div class="col-4">
+      <div class="col-8">
         
-        <div id="name" *ngIf="foundUser" style="text-transform: uppercase; font-size: 40px; color: #3960A4">
+        <div id="name" *ngIf="foundUser" style="text-transform: uppercase; font-size: 30px; color: #3960A4">
           <strong>{{foundUser.name}}</strong>
         </div>
         <div id="team" *ngIf="foundUser" style="font-size: 30px">
           <a href="#/department/{{foundUser.team.id}}/detail" *ngIf="foundUser.team">{{foundUser.team.name}}</a>
-          <span *ngIf="!foundUser.team" style="font-size: 25px">Not Update</span>
+          <span *ngIf="!foundUser.team" style="font-size: 25px">No information</span>
         </div>
         <br/>
         <div id="role" *ngIf="foundUser">
@@ -47,19 +47,19 @@
 
         <div id="phone" *ngIf="foundUser">
           <i class="fa fa-phone fa-lg"></i>
-          <span style="font-size: 20px" *ngIf="foundUser.phone"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>
-          <span style="font-size: 20px" *ngIf="!foundUser.phone"> &nbsp;&nbsp;&nbsp;&nbsp;Not Update</span>
+          <span style="font-size: 20px" *ngIf="foundUser.phone"> &nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>
+          <span style="font-size: 20px" *ngIf="!foundUser.phone"> &nbsp;&nbsp;&nbsp;No information</span>
         </div>
         <div id="email" *ngIf="foundUser">
           <i class="fa fa-envelope-o fa-lg" ></i>
           <span style="font-size: 20px" *ngIf="foundUser.email"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>
-          <span style="font-size: 20px" *ngIf="!foundUser.email"> &nbsp;&nbsp;&nbsp;Not Update</span>
+          <span style="font-size: 20px" *ngIf="!foundUser.email"> &nbsp;&nbsp;&nbsp;No information</span>
         </div>
         <div>
           <div id="birthdate" *ngIf="foundUser">
             <i class="fa fa-birthday-cake fa-lg"></i>
             <span style="font-size: 20px" *ngIf="foundUser.birthdate"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>
-            <span style="font-size: 20px" *ngIf="!foundUser.birthdate"> &nbsp;&nbsp;&nbsp;Not Update</span>
+            <span style="font-size: 20px" *ngIf="!foundUser.birthdate"> &nbsp;&nbsp;&nbsp;No information</span>
           </div>
         </div>
         <div class="button-row">
