@@ -1,4 +1,6 @@
 import {Directive, HostListener} from '@angular/core';
+import {NotificationService} from '../../services/notification.service';
+import {Cursor, StoreService} from '../../services/tree.service';
 
 /**
  * Allows the aside to be toggled via click.
@@ -7,16 +9,24 @@ import {Directive, HostListener} from '@angular/core';
   selector: '[appAsideMenuToggler]',
 })
 export class AsideToggleDirective {
-  constructor() {
+  private notificationsCursor: Cursor;
+
+  constructor(private notificationService: NotificationService,
+              private storeService: StoreService) {
+    this.notificationsCursor = storeService.select(['notifications']);
   }
 
   @HostListener('click', ['$event'])
   toggleOpen($event: any) {
     $event.preventDefault();
-    document.querySelector('body').classList.toggle('aside-menu-hidden');
+    let classList = document.querySelector('body').classList;
+    classList.toggle('aside-menu-hidden');
+    if (!classList.contains('aside-menu-hidden')) {
+      this.checkInNotification();
+    }
   }
 
-  checkInNotification() {
-    // TODO
+  async checkInNotification() {
+    await this.notificationService.checkin();
   }
 }
