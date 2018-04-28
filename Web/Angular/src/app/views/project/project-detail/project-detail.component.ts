@@ -210,8 +210,13 @@ export class ProjectDetailComponent implements OnInit {
 
   handleOnUnAssignMembersBtnClick() {
     this.isLoading.openUnAssignMembersModal = true;
-    const pool = this.foundProject.assignees;
-    // const selected = this.foundProject.assignees;
+    const pool = _.filter(this.foundProject.assignees, (user: User) => {
+      if (this.currentUser.isAdmin) {
+        return true;
+      } else if (this.currentUser.isManager) {
+        return !user.isManager && user.teamId == this.currentUser.teamId;
+      }
+    });
     const onConfirm = (selelectedMembers: User[]) => {
       let selectedIds = _.map(selelectedMembers, 'id');
       if (selectedIds.length == 0) {
@@ -252,7 +257,13 @@ export class ProjectDetailComponent implements OnInit {
     this.isLoading.openAssignMembersModal = true;
     this.projectService.getAssignableUser(this.foundProject.id)
       .then(users => {
-        const pool = users;
+        const pool = _.filter(users, (user: User) => {
+          if (this.currentUser.isAdmin) {
+            return true;
+          } else if (this.currentUser.isManager) {
+            return !user.isManager && user.teamId == this.currentUser.teamId;
+          }
+        });
 
         const onConfirm = (selelectedMembers: User[]) => {
           let selectedIds = _.map(selelectedMembers, 'id');

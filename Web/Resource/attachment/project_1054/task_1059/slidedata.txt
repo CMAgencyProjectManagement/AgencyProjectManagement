@@ -1,0 +1,21 @@
+﻿Project:
+	MISO media
+	Miso Media is a Venice Beach, CA startup who develops music education software. They use polyphonic note detection and realtime feedback to revolutionize sheet music and teach people how to play string instruments such as guitar, bass, ukulele, banjo, and mandolin. Current products include Miso Music: Plectrum (Winner of 2010 TechCrunch Disrupt SF...
+
+	01/04/2018
+	16/07/2018
+List:
+	chuẩn bị hợp đồng
+	Báo giá
+
+Task:
+	Lấy chi tiết của dự án
+		02/04/2018
+	Soạn hợp đồng
+		08/04/2018
+
+	Soạn báo giá
+		13/04/2018
+
+Comment:
+	Xem lại format của mục outline

@@ -321,7 +321,8 @@ namespace Service
                 ["username"] = user.Username,
                 ["isAdmin"] = user.IsAdmin,
                 ["isManager"] = user.IsManager,
-                ["isActive"] = user.IsActive
+                ["isActive"] = user.IsActive,
+                ["teamId"] = user.TeamID
             };
 
             string avatar = user.Avatar;

@@ -461,7 +461,7 @@ namespace Web.Controllers
                     DependencyService dependencyService = new DependencyService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
-                    int DurationLength = AgencyConfig.maxDuration;
+                    int durationLength = AgencyConfig.maxDuration;
 
                     if (!taskService.IsManagerOfTask(currentUserId, updateTaskViewModel.Id))
                         return Ok(ResponseHelper.GetExceptionResponse(
@@ -490,10 +490,10 @@ namespace Web.Controllers
                         flag = false;
                     }
 
-                    if (updateTaskViewModel.Duration < 1 || updateTaskViewModel.Duration > DurationLength)
+                    if (updateTaskViewModel.Duration < 1 || updateTaskViewModel.Duration > durationLength)
                     {
                         ModelState.AddModelError("Duration",
-                            $"Duration must be greater than 1 and smaller than {DurationLength}");
+                            $"Duration must be greater than 1 and smaller than {durationLength}");
                         flag = false;
                     }
 

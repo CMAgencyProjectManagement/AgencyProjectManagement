@@ -44,7 +44,7 @@ namespace Service
             TaskService taskService = new TaskService(db);
             Task task = taskService.GetTask(taskId);
             int[] oldPredecessorIds = GetPredecessors(taskId).Select(taskEl => taskEl.ID).ToArray();
-
+            newPredecessorIds = newPredecessorIds ?? new int[0]; 
             IEnumerable<int> predecessorToRemove = oldPredecessorIds.Except(newPredecessorIds);
             IEnumerable<int> predecessorToCreate = newPredecessorIds.Except(oldPredecessorIds);
 

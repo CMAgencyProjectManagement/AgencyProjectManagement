@@ -139,16 +139,20 @@ namespace Web.Controllers
                 {
                     TeamService teamService = new TeamService(db);
                     UserService userService = new UserService(db);
+                    ProjectService projectService = new ProjectService(db);
                     IEnumerable<Team> teamsOfProject = teamService.GetTeamsOfProject(projecId);
-
-                    List<User> userList = new List<User>();
+                    
+                    List<User> userOfAllTeam = new List<User>();
                     foreach (Team team in teamsOfProject)
                     {
                         IEnumerable<User> users = userService.GetUsersOfTeam(team.ID);
-                        userList.AddRange(users);
+                        userOfAllTeam.AddRange(users);
                     }
 
-                    IEnumerable<JObject> usersJson = userList.Select(user => userService.ParseToJson(user));
+                    IEnumerable<User> projectAssignees = userService.GetUsersOfProject(projecId);
+                    IEnumerable<User> assignableUser = userOfAllTeam.Except(projectAssignees);
+
+                    IEnumerable<JObject> usersJson = assignableUser.Select(user => userService.ParseToJson(user));
 
                     return Ok(ResponseHelper.GetResponse(new JArray(usersJson)));
                 }

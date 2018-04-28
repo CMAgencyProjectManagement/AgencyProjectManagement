@@ -12,5 +12,6 @@ export interface User {
   isAdmin: boolean,
   isManager: boolean,
   isActive: boolean,
+  teamId: number,
   team: Team
 }
