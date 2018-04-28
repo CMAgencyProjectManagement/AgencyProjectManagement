@@ -17,6 +17,8 @@ const StoreTree = {
   projects: undefined,
   // task detail
   tasksDetail: undefined,
+  // notification
+  notifications: undefined,
   // enum
   taskPriorities: undefined,
   taskStatuses: undefined,
