@@ -2,19 +2,16 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <strong>Departments</strong>
-
       </div>
       <app-spinner *ngIf="isPageLoading"></app-spinner>
       <div *ngIf="!isPageLoading" class="card-body">
         <table datatable [dtOptions]="datatableOptions" class="table table-bordered">
           <thead>
-          <tr>
-            <th style="text-align: center">Name</th>
-            <th style="text-align: center">Department Leader</th>
-            <th style="text-align: center">Created date</th>
-            <th style="text-align: center">Action</th>
-          </tr>
+            <tr>
+              <th style="text-align: center">Name</th>
+              <th style="text-align: center">Department Leader</th>
+              <th style="text-align: center">Created date</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let team of teams;let i = index">
@@ -27,11 +24,6 @@
               </td>
               <td>
                 <p>{{team.createdDate}}</p>
-              </td>
-              <td class="text-center">
-                <a routerLink="/department/{{team.id}}/update">
-                  <button type="button" class="btn btn-primary">Update</button>
-                </a>
               </td>
             </tr>
           </tbody>

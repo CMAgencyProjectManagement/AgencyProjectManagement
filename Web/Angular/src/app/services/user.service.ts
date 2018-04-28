@@ -251,7 +251,7 @@ export class UserService {
     };
     return new Promise<User>((resolve, reject) => {
       const token = this.tokenCursor.get();
-      put(serverPath.updateProfile)
+      post(serverPath.updateProfile)
         .set('token', token)
         .send(dataObject)
         .type('form')

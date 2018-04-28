@@ -127,7 +127,7 @@ export class TeamService {
       IsManager: true
     };
     return new Promise<any>((resolve, reject) => {
-      put(serverPath.setTeamRole)
+      put(serverPath.setTeamRole(userId,teamId))
         .set('token', this.tokenCursor.get())
         .send(dataObj)
         .then(res => {

@@ -53,6 +53,18 @@
                       </p>
                     </dl>
                   </div>
+                  <div class="section" *ngIf="foundProject.status==0">
+                    <!--Created Date-->
+                    <h5 class="mb-3">Status: Not started</h5>
+                  </div>
+                  <div class="section" *ngIf="foundProject.status==1">
+                    <!--Created Date-->
+                    <h5 class="mb-3">Status: Executing</h5>
+                  </div>
+                  <div class="section" *ngIf="foundProject.status==2">
+                    <!--Created Date-->
+                    <h5 class="mb-3">Status: Closed</h5>
+                  </div>
                   <div class="section">
                     <!--Created Date-->
                     <h5 class="mb-3">Created Date: {{foundProject.createdTime | date:'d/M/y'}}</h5>

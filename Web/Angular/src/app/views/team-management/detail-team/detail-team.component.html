@@ -3,69 +3,79 @@
     <div class="card-header">
       <strong>Department's detail</strong>
     </div>
-    <div class="card-body" *ngIf="foundTeam">
-      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <div class="col-12 text-center" *ngIf="foundTeam" style=" text-transform: uppercase">
-          <h1>
-            {{foundTeam.name}}
-          </h1>
-        </div>
-        <div>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Role</th>
-                <th *ngIf="managementMode">Status</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="foundTeam.users.length !== 0 || foundTeam.manager">
-              <!--MANAGER-->
-              <tr *ngIf="foundTeam.manager">
-                <td>
-                  <a href="#/account/detail/{{foundTeam.manager.id}}" *ngIf="currentUser.isAdmin">
-                    {{foundTeam.manager.name}}
-                  </a>
-                  <span *ngIf="currentUser.isManager">{{foundTeam.manager.name}}</span>
-                  <span *ngIf="!managementMode">{{foundTeam.manager.name}}</span>
-                </td>
-                <td>
+    <app-spinner *ngIf="isPageLoading"></app-spinner>
+    <div class="card-body" *ngIf="!isPageLoading">
+      <div class="col-12 text-center" *ngIf="foundTeam" style=" text-transform: uppercase">
+        <h1>
+          {{foundTeam.name}}
+        </h1>
+      </div>
+      <div>
+        <table id="allTeamsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th *ngIf="currentUser.isAdmin">Status</th>
+              <th *ngIf="currentUser.isAdmin" style="width: 200px">Action</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="foundTeam.users.length !== 0 || foundTeam.manager">
+            <!--MANAGER-->
+            <tr *ngIf="foundTeam.manager">
+              <td>
+                <a href="#/account/detail/{{foundTeam.manager.id}}" *ngIf="currentUser.isAdmin">
+                  {{foundTeam.manager.name}}
+                </a>
+                <span *ngIf="currentUser.isManager">{{foundTeam.manager.name}}</span>
+                <span *ngIf="!currentUser.isManager && !currentUser.isAdmin">{{foundTeam.manager.name}}</span>
+              </td>
+              <td>
+                <strong>Manager</strong>
+              </td>
+              <td *ngIf="currentUser.isAdmin">
+                <div *ngIf="foundTeam.manager.isActive">Active</div>
+                <div *ngIf="!foundTeam.manager.isActive">Banned</div>
+              </td>
+              <td *ngIf="currentUser.isAdmin" class="text-center">
+                <a class="btn btn-secondary bg-light" (click)="handleOnSetManagerBtnClick(foundTeam.manager.id)">
+                  <i class="fa fa-user-plus"></i>&nbsp; Set manager
+                </a>
+              </td>
+            </tr>
+            <!--NORMAL USER-->
+            <tr *ngFor="let user of foundTeam.users">
+              <td>
+                <a href="#/account/detail/{{user.id}}" *ngIf="currentUser.isAdmin">
+                  {{user.username}}
+                </a>
+                <span *ngIf="currentUser.isManager">{{user.username}}</span>
+                <span *ngIf="!currentUser.isManager && !currentUser.isAdmin">{{user.username}}</span>
+              </td>
+              <td>
+                <div *ngIf="user.isAdmin">
+                  <strong>Admin</strong>
+                </div>
+                <div *ngIf="!user.isAdmin && user.isManager">
                   <strong>Manager</strong>
-                </td>
-                <td *ngIf="managementMode">
-                  <div *ngIf="foundTeam.manager.isActive">Active</div>
-                  <div *ngIf="!foundTeam.manager.isActive">Banned</div>
-                </td>
-              </tr>
-              <!--NORMAL USER-->
-              <tr *ngFor="let user of foundTeam.users">
-                <td>
-                  <a href="#/account/detail/{{user.id}}" *ngIf="currentUser.isAdmin">
-                    {{user.username}}
-                  </a>
-                  <span *ngIf="currentUser.isManager">{{user.username}}</span>
-                  <span *ngIf="!managementMode">{{user.username}}</span>
-                </td>
-                <td>
-                  <div *ngIf="user.isAdmin">
-                    <strong>Admin</strong>
-                  </div>
-                  <div *ngIf="!user.isAdmin && user.isManager">
-                    <strong>Manager</strong>
-                  </div>
-                  <div *ngIf="!user.isAdmin && !user.isManager">
-                    Staff
-                  </div>
-                </td>
-                <td *ngIf="managementMode">
-                  <div *ngIf="user.isActive">Active</div>
-                  <div *ngIf="!user.isActive">Banned</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </form>
+                </div>
+                <div *ngIf="!user.isAdmin && !user.isManager">
+                  Staff
+                </div>
+              </td>
+              <td *ngIf="currentUser.isAdmin">
+                <div *ngIf="user.isActive">Active</div>
+                <div *ngIf="!user.isActive">Banned</div>
+              </td>
+              <td *ngIf="currentUser.isAdmin" class="text-center">
+                <a class="btn btn-secondary bg-light"  (click)="handleOnSetManagerBtnClick(user.id)">
+                  <i class="fa fa-user-plus"></i>&nbsp; Set manager
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

@@ -95,7 +95,6 @@ export class UpdateUserComponent implements OnInit {
           this.users = value;
           for (let i = 0; i < this.users.length; i++) {
             if (this.users[i].id == this.userID) {
-              console.debug("here");
               this.foundUser = this.users[i];
               this.setDefaultValue(this.foundUser);
               this.isPageLoading = false;
@@ -123,8 +122,8 @@ export class UpdateUserComponent implements OnInit {
         }
       }
     })
-    console.debug(user.password);
     this.updateForm.controls['password'].setValue(user.password);
+    console.debug(user.password);
     this.updateForm.controls['fullname'].setValue(user.name);
     this.updateForm.controls['email'].setValue(user.email);
     this.updateForm.controls['phone'].setValue(user.phone);
