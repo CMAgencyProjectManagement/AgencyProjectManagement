@@ -46,7 +46,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Body" Type="varchar(max)" />
+          <Property Name="Body" Type="nvarchar(max)" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="ChangedTime" Type="datetime" />
@@ -70,7 +70,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="NotificationUser">
           <Key>
@@ -87,15 +87,15 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Deadline" Type="date" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="StartDate" Type="date" />
           <Property Name="ChangedBy" Type="int" />
           <Property Name="ChangedTime" Type="datetime" />
-          <Property Name="LessionLearnt" Type="varchar(max)" />
-          <Property Name="CustomerFeedback" Type="varchar(max)" />
+          <Property Name="LessionLearnt" Type="nvarchar(max)" />
+          <Property Name="CustomerFeedback" Type="nvarchar(max)" />
           <Property Name="Status" Type="int" />
           <Property Name="FinishedDate" Type="datetime" />
         </EntityType>
@@ -105,7 +105,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedTime" Type="datetime" Nullable="false" />
           <Property Name="ChangedBy" Type="int" />
@@ -687,7 +687,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedTime" Type="DateTime" Precision="3" />
@@ -714,7 +714,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="NotificationUsers" Relationship="CmAgencyModel.FK_NotificationUser_Notification" FromRole="Notification" ToRole="NotificationUser" />
         </EntityType>
         <EntityType Name="NotificationUser">
@@ -734,15 +734,15 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Deadline" Type="DateTime" Precision="0" />
           <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="ChangedBy" Type="Int32" />
           <Property Name="ChangedTime" Type="DateTime" Precision="3" />
-          <Property Name="LessionLearnt" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CustomerFeedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LessionLearnt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerFeedback" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" />
           <Property Name="FinishedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Lists" Relationship="CmAgencyModel.FK_Stage_Project" FromRole="Project" ToRole="List" />
@@ -757,7 +757,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedBy" Type="Int32" />
