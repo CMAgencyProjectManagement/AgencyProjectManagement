@@ -10,14 +10,7 @@
         <img id="img" *ngIf="foundUser" src="{{foundUser.avatar}}" height="100%" width="100%">
       </div>
       <div class="col-4">
-        <div class="button-row">
-          <a href="#/account/update/{{foundUser.id}}" class="btn btn-secondary bg-light" style="font-size: 20px" *ngIf="!match">
-            <i class="fa fa-edit"></i>&nbsp; Update
-          </a>
-          <a href="#/account/update" class="btn btn-secondary bg-light" style="font-size: 20px" *ngIf="match">
-            <i class="fa fa-edit"></i>&nbsp; Update
-          </a>
-        </div>
+        
         <div id="name" *ngIf="foundUser" style="text-transform: uppercase; font-size: 40px; color: #3960A4">
           <strong>{{foundUser.name}}</strong>
         </div>
@@ -70,6 +63,14 @@
             <span style="font-size: 20px" *ngIf="!foundUser.birthdate"> &nbsp;&nbsp;&nbsp;Not Update</span>
           </div>
         </div>
+        <div class="button-row">
+            <a href="#/account/update/{{foundUser.id}}" class="btn btn-primary bg-primary text-light" style="font-size: 20px" *ngIf="!match">
+              <i class="fa fa-edit"></i>&nbsp; Update
+            </a>
+            <a href="#/account/update" class="btn btn-primary bg-primary text-light" style="font-size: 20px" *ngIf="match">
+              <i class="fa fa-edit"></i>&nbsp; Update
+            </a>
+          </div>
       </div>
     </div>
   </div>
