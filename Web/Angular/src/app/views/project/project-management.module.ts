@@ -18,6 +18,7 @@ import {SpinnerModule} from '../../components/spinner/spinner.module';
 import {ReportComponent} from './report/report.component';
 import {LaddaModule} from 'angular2-ladda';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { ArchiveComponent } from './archive/archive.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     ProjectUpdateComponent,
     ProjectTaskComponent,
     ReportComponent,
+    ArchiveComponent,
   ]
 })
 export class ProjectManagementModule {
