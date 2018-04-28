@@ -97,7 +97,7 @@ const admin_navigation = [
       {
         name: 'Archive project',
         url: '/project/1051/archive',
-        icon: 'icon-speedometer',
+        icon: 'icon-calendar',
       },
       
     ]
