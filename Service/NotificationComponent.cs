@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace Service
 {
@@ -38,6 +39,15 @@ namespace Service
                 ["content"] = Content
             };
             return result;
+        }
+
+        public static NotificationComponent FromJson(JObject jObject)
+        {
+            return new NotificationComponent
+            {
+                Type = jObject.Value<NotificationComponentType>(),
+                
+            };
         }
     }
 

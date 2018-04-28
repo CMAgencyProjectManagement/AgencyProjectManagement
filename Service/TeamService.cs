@@ -45,7 +45,6 @@ namespace Service
             return teams;
         }
 
-
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);

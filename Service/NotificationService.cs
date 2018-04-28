@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -41,6 +43,25 @@ namespace Service
 
         public void NotifyToUsersOfDepartment(int teamId)
         {
+        }
+
+        public IEnumerable<NotificationUser> RemoveUnauthorizedComponentId(
+            List<JObject> notificationsBody,
+            User currentUser)
+        {
+            TeamService teamservice = new TeamService(db);
+            TaskService taskService = new TaskService(db);
+            ProjectService projectService = new ProjectService(db);
+
+            Team team = currentUser.Team;
+            IEnumerable<Project> projects = projectService.GetProjectOfUser(currentUser.ID);
+            IEnumerable<Task> tasks = taskService.GetTasksOfUser(currentUser.ID);
+
+            foreach (JObject jObject in notificationsBody)
+            {
+//                NotificationSentence sentence = NotificationSentence.From
+            }
+            throw new NotSupportedException();
         }
 
         public void CheckinNotification(int userId)

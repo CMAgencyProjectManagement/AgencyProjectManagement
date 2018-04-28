@@ -27,12 +27,15 @@ namespace Web.Controllers
                     NotificationService notificationService = new NotificationService(db);
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     User user = userService.GetUser(userId);
-                    IEnumerable<NotificationUser> notificationUsers = notificationService.GetNotificationsOfUser(user.ID);
-
+                    IEnumerable<NotificationUser> notificationUsers = notificationService
+                        .GetNotificationsOfUser(user.ID)
+                        .Take(50);
+                    
                     IEnumerable<JObject> notificationsJson = notificationUsers
                         .Reverse()
-                        .Take(50)
                         .Select(notificationUser => notificationService.ParseToJson(notificationUser));
+                    
+                    
                     return Ok(ResponseHelper.GetResponse(new JArray(notificationsJson)));
                 }
             }
@@ -56,11 +59,9 @@ namespace Web.Controllers
                     NotificationService notificationService = new NotificationService(db);
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     User user = userService.GetUser(userId);
-                    IEnumerable<NotificationUser> notificationUsers = notificationService.GetNotificationsOfUser(user.ID);
+                    notificationService.CheckinNotification(user.ID);;
 
-                    IEnumerable<JObject> notificationsJson = notificationUsers
-                        .Select(notificationUser => notificationService.ParseToJson(notificationUser));
-                    return Ok(ResponseHelper.GetResponse(new JArray(notificationsJson)));
+                    return Ok(ResponseHelper.GetResponse());
                 }
             }
             catch (Exception ex)
