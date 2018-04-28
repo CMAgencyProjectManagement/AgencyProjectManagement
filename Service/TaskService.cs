@@ -65,24 +65,18 @@ namespace Service
             }
         }
 
-        public List<Task> GetTasksOfUser(int userId)
+        public IEnumerable<Task> GetTasksOfUser(int userId)
         {
             User user = db.Users.Find(userId);
-            if (user != null)
-            {
-                var taskList = new List<Task>();
-
-                foreach (var task in user.Tasks)
-                {
-                    taskList.Add(task);
-                }
-
-                return taskList;
-            }
-            else
+            if (user == null)
             {
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
             }
+
+            return db.UserTasks
+                .Where(userTask => userTask.UserID == userId)
+                .Select(userTask => userTask.Task);
+            
         }
 
         public IEnumerable<Task> GetLateTaskOfStaff(int userID)
