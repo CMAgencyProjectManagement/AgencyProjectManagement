@@ -186,12 +186,12 @@ namespace Service
                 throw new InvalidOperationException("Team can't have more than one manager");
             }
 
-            User currentManager = db.Users.SingleOrDefault(x => x.IsManager == true);
+            User currentManager = GetManager(teamId);
             var userActiveTasks = taskService.GetActiveTasksOfUser(user.ID);
             if (userActiveTasks.Count == 0 && currentManager.ID != userId)
             {
-                user.IsManager = true;
                 currentManager.IsManager = false;
+                user.IsManager = true;
                 db.SaveChanges();
             }
             else
