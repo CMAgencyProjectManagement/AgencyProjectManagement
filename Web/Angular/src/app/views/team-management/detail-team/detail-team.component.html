@@ -38,7 +38,7 @@
                 <div *ngIf="!foundTeam.manager.isActive">Banned</div>
               </td>
               <td *ngIf="currentUser.isAdmin" class="text-center">
-                <a class="btn btn-secondary bg-light" (click)="handleOnSetManagerBtnClick(foundTeam.manager.id)">
+                <a class="btn btn-primary bg-primary text-light" (click)="handleOnSetManagerBtnClick(foundTeam.manager.id)">
                   <i class="fa fa-user-plus"></i>&nbsp; Set manager
                 </a>
               </td>
@@ -68,7 +68,7 @@
                 <div *ngIf="!user.isActive">Banned</div>
               </td>
               <td *ngIf="currentUser.isAdmin" class="text-center">
-                <a class="btn btn-secondary bg-light"  (click)="handleOnSetManagerBtnClick(user.id)">
+                <a class="btn btn-primary bg-primary text-light"  (click)="handleOnSetManagerBtnClick(user.id)">
                   <i class="fa fa-user-plus"></i>&nbsp; Set manager
                 </a>
               </td>
