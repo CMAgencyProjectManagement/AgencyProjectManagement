@@ -1,47 +1,46 @@
-<div class="card">
-  <div class="card-header">
-    <h4 class="card-title">Summary</h4>
-  </div>
-  <app-spinner *ngIf="isLoading.page"></app-spinner>
-  <div class="card-body" *ngIf="!isLoading.page">
-    <div class="row">
-      <div class="col-7">
-        <app-staff-section
-          [lateTasks] = lateTasks
-          [thisWeekTasks]="thisWeekTasks"
-          *ngIf="role == 'staff'"></app-staff-section>
-        <app-manager-section [lateTasks]="lateTasks"
-                             [needReviewTasks]="needReviewTasks"
-                             *ngIf="role == 'manager'">
-
-        </app-manager-section>
-        <app-admin-section *ngIf="role == 'admin'"></app-admin-section>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>
+          <div class="card-title">Summary</div>
+        </strong>
       </div>
-      <div class="col-5">
-        <div class="card p-0">
-          <div class="card-body">
-            <h4 class="card-title col-12">Leader board</h4>
-            <table class="table">
-              <thead>
-              <tr>
-                <th class="text-center">Rank</th>
-                <th class="text-center">Name</th>
-                <tH class="text-center">Score</tH>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let item of leaderboard;let i = index">
-                <td class="text-center">{{i+1}}</td>
-                <td class="text-center">{{item.name}}</td>
-                <td class="text-center">{{item.score}}</td>
-              </tr>
-              </tbody>
-            </table>
+      <app-spinner *ngIf="isLoading.page"></app-spinner>
+      <div class="card-body" *ngIf="!isLoading.page">
+        <div class="row">
+          <div class="col-7">
+            <app-staff-section [lateTasks]=l ateTasks [thisWeekTasks]="thisWeekTasks" *ngIf="role == 'staff'"></app-staff-section>
+            <app-manager-section [lateTasks]="lateTasks" [needReviewTasks]="needReviewTasks" *ngIf="role == 'manager'">
+
+            </app-manager-section>
+            <app-admin-section *ngIf="role == 'admin'"></app-admin-section>
+          </div>
+          <div class="col-5">
+            <div class="card p-0">
+              <div class="card-body">
+                <h4 class="card-title col-12">Leader board</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Rank</th>
+                      <th class="text-center">Name</th>
+                      <tH class="text-center">Score</tH>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of leaderboard;let i = index">
+                      <td class="text-center">{{i+1}}</td>
+                      <td class="text-center">{{item.name}}</td>
+                      <td class="text-center">{{item.score}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
