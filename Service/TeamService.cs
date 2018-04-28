@@ -48,27 +48,28 @@ namespace Service
         public User GetManager(int teamId)
         {
             Team foundTeam = db.Teams.Find(teamId);
-            if (foundTeam != null)
-            {
-                List<User> managers = foundTeam.Users
-                    .Where(user => user.IsManager && user.IsActive)
-                    .ToList();
-                if (managers.Count == 0)
-                {
-                    return null;
-                }
 
-                if (managers.Count > 1)
-                {
-                    throw new InvalidOperationException($"Team with ID {teamId} have more than one manager");
-                }
-
-                return managers.First();
-            }
-            else
+            if (foundTeam == null)
             {
                 throw new ObjectNotFoundException($"Team with ID{teamId} not found");
             }
+
+            IEnumerable<User> managers = db.Users
+                .Where(user => user.TeamID == teamId &&
+                               user.IsManager && 
+                               user.IsActive);
+            
+            if (managers.Count() == 1)
+            {
+                return managers.Single();
+            }
+
+            if (managers.Count() > 1)
+            {
+                throw new InvalidOperationException($"Team with ID {teamId} have more than one manager");
+            }
+            
+            return null;
         }
 
         public List<Task> GetTasksOfTeam(int teamId)

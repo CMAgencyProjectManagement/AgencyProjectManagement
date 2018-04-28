@@ -293,7 +293,7 @@ namespace Service
             }
             else
             {
-               throw new ObjectNotFoundException($"User name {user.Name} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
+               throw new ObjectNotFoundException($"User name {user.Username} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
             }
         }
         public List<UserTask> GetUserTaskFromTasksOfProject(List<Task> tasksOfProject,int projectId)
