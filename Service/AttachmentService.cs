@@ -51,8 +51,11 @@ namespace Service
             db.SaveChanges();
         }
 
-        public JObject ParseToJson(Attachment attachment, string attachmentPath = null)
+        public JObject ParseToJson(Attachment attachment, string attachmentPath = null, string avatarPath = null)
         {
+            User creator = db.Users.Find(attachment.CreatedBy);
+            UserService userService = new UserService(db);
+
             JObject result = new JObject
             {
                 ["ID"] = attachment.ID,
@@ -60,7 +63,8 @@ namespace Service
                 ["path"] = attachment.Path,
                 ["taskID"] = attachment.TaskID,
                 ["createdTime"] = attachment.CreatedTime,
-                ["createdByID"] = attachment.CreatedBy
+                ["createdBy"] = userService.ParseToJson(creator, avatarPath),
+
             };
 
             if (attachmentPath != null)
