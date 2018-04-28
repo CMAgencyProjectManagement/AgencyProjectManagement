@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Entity;
+using Microsoft.SqlServer.Server;
 using Newtonsoft.Json.Linq;
 
 namespace Service
@@ -45,23 +47,52 @@ namespace Service
         {
         }
 
-        public IEnumerable<NotificationUser> RemoveUnauthorizedComponentId(
-            List<JObject> notificationsBody,
+        public IEnumerable<JObject> FormatNotificationForUser(
+            IEnumerable<NotificationUser> notificationUsers,
             User currentUser)
         {
-            TeamService teamservice = new TeamService(db);
             TaskService taskService = new TaskService(db);
             ProjectService projectService = new ProjectService(db);
 
-            Team team = currentUser.Team;
-            IEnumerable<Project> projects = projectService.GetProjectOfUser(currentUser.ID);
-            IEnumerable<Task> tasks = taskService.GetTasksOfUser(currentUser.ID);
-
-            foreach (JObject jObject in notificationsBody)
+            if (currentUser.IsAdmin) // Admin 
             {
-//                NotificationSentence sentence = NotificationSentence.From
+                return notificationUsers.Select(ParseToJson);
             }
-            throw new NotSupportedException();
+
+            List<Team> teams = new List<Team>();
+            List<Project> projects = projectService.GetProjectOfUser(currentUser.ID).ToList();
+            List<Task> tasks = new List<Task>();
+
+            teams.Add(currentUser.Team);
+
+            if (currentUser.IsManager) // Manager
+            {
+                foreach (Project project in projects)
+                {
+                    IEnumerable<Task> tasksOfProject = taskService.GetTasksOfProject(project.ID);
+                    tasks.AddRange(tasksOfProject);
+                }
+            }
+            else // Staff
+            {
+                IEnumerable<Task> taskOfUser = taskService.GetTasksOfUser(currentUser.ID);
+                tasks.AddRange(taskOfUser);
+            }
+
+            List<JObject> result = new List<JObject>();
+            foreach (NotificationUser notificationUser in notificationUsers)
+            {
+                JObject sentenceJson = JObject.Parse(notificationUser.Notification.Content);
+                NotificationSentence sentence = NotificationSentence.FromJson(sentenceJson);
+                sentenceJson = NotificationSentence.ToJson(sentence, currentUser, teams, projects, tasks);
+                result.Add(new JObject
+                {
+                    ["isRead"] = notificationUser.IsRead,
+                    ["content"] = sentenceJson
+                });
+            }
+
+            return result;
         }
 
         public void CheckinNotification(int userId)

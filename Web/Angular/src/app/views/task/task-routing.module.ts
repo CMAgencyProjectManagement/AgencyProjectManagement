@@ -23,6 +23,13 @@ const routes: Routes = [
         data: {
           title: 'View'
         },
+        path: ':id/detail',
+        component: ViewTask,
+      },
+      {
+        data: {
+          title: 'View'
+        },
         path: 'view',
         component: ViewTask,
       },

@@ -26,16 +26,15 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     NotificationService notificationService = new NotificationService(db);
                     int userId = Int32.Parse(User.Identity.GetUserId());
-                    User user = userService.GetUser(userId);
+                    User currentUser = userService.GetUser(userId);
                     IEnumerable<NotificationUser> notificationUsers = notificationService
-                        .GetNotificationsOfUser(user.ID)
-                        .Take(50);
-                    
-                    IEnumerable<JObject> notificationsJson = notificationUsers
-                        .Reverse()
-                        .Select(notificationUser => notificationService.ParseToJson(notificationUser));
-                    
-                    
+                        .GetNotificationsOfUser(currentUser.ID)
+                        .Take(50)
+                        .Reverse();
+
+                    IEnumerable<JObject> notificationsJson = notificationService
+                        .FormatNotificationForUser(notificationUsers, currentUser);
+
                     return Ok(ResponseHelper.GetResponse(new JArray(notificationsJson)));
                 }
             }
@@ -45,7 +44,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpPut]
         [Route("checkin")]
         [Authorize]
@@ -59,7 +58,8 @@ namespace Web.Controllers
                     NotificationService notificationService = new NotificationService(db);
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     User user = userService.GetUser(userId);
-                    notificationService.CheckinNotification(user.ID);;
+                    notificationService.CheckinNotification(user.ID);
+                    ;
 
                     return Ok(ResponseHelper.GetResponse());
                 }

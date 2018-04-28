@@ -136,7 +136,7 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find team with ID {id}");
                     }
-
+                    
                     IEnumerable<Task> lateTasks = taskService.GetLateTaskOfDepartment(team.ID);
                     IEnumerable<JObject> lateTasksJson = lateTasks.Select(task => taskService.ParseToJson(task));
 

@@ -22,7 +22,6 @@ export class AppAsideComponent implements OnInit {
     this.notificationService.getNotifications()
       .then((value: any[]) => {
         for (let notification of value) {
-          notification.content = JSON.parse(notification.content);
           this.applyReceiverToNotification(notification);
         }
         this.notifications = value;
@@ -33,23 +32,33 @@ export class AppAsideComponent implements OnInit {
   }
 
   applyReceiverToNotification(notification: Notification) {
-    this.applyReceiverToSentenceComponent(notification.content.subject);
-    this.applyReceiverToSentenceComponent(notification.content.primaryObject);
-    this.applyReceiverToSentenceComponent(notification.content.secondaryObject);
+    this.applyUrlToSentenceComponent(notification.content.subject);
+    this.applyUrlToSentenceComponent(notification.content.primaryObject);
+    this.applyUrlToSentenceComponent(notification.content.secondaryObject);
+    this.applyUrlToSentenceComponent(notification.content.location);
   }
 
-  applyReceiverToSentenceComponent(sentenceComponent: SentenceComponent) {
-    if (sentenceComponent.type == 'User') {
-      if (sentenceComponent.id == this.currentUser.id) {
-        sentenceComponent.content = 'You';
-      }
-    }
-  }
 
   applyUrlToSentenceComponent(sentenceComponent: SentenceComponent) {
-    switch (sentenceComponent.type) {
-      case 'User': {
-
+    if (sentenceComponent.id) {
+      let id = sentenceComponent.id;
+      switch (sentenceComponent.type) {
+        case 'User': {
+          sentenceComponent.url = `/account/profile`;
+          break;
+        }
+        case 'Task': {
+          sentenceComponent.url = `/task/${id}/view`;
+          break;
+        }
+        case 'Project': {
+          sentenceComponent.url = `/project/${id}/detail`;
+          break;
+        }
+        case 'Department': {
+          sentenceComponent.url = `/department/${id}/detail`;
+          break;
+        }
       }
     }
   }
