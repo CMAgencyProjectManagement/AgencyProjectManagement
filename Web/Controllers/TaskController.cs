@@ -321,41 +321,41 @@ namespace Web.Controllers
                         ModelState.AddModelError("ListID", "The System don't have this list");
                         flag = false;
                     }
-                    else
-                    {
-                        TeamService teamService = new TeamService(db);
-                        int userId = Int32.Parse(User.Identity.GetUserId());
-                        var teamId = db.Users.Find(userId).TeamID;
-                        int projectId = db.Lists.Find(createTaskModel.ListID.Value).ProjectID;
-                        var teamIdsOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
-                            .Select(x => x.TeamID);
-                        if (teamIdsOfList.Count() != 0)
-                        {
-                            int countCheck = 0;
-                            foreach (var teamIdOfList in teamIdsOfList)
-                            {
-                                if ((int) teamId == (int) teamIdOfList)
-                                {
-                                    countCheck = 1;
-                                    break;
-                                }
-                            }
+                    //else
+                    //{
+                    //    TeamService teamService = new TeamService(db);
+                    //    int userId = Int32.Parse(User.Identity.GetUserId());
+                    //    var teamId = db.Users.Find(userId).TeamID;
+                    //    int projectId = db.Lists.Find(createTaskModel.ListID.Value).ProjectID;
+                    //    var teamIdsOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
+                    //        .Select(x => x.TeamID);
+                    //    if (teamIdsOfList.Count() != 0)
+                    //    {
+                    //        int countCheck = 0;
+                    //        foreach (var teamIdOfList in teamIdsOfList)
+                    //        {
+                    //            if ((int) teamId == (int) teamIdOfList)
+                    //            {
+                    //                countCheck = 1;
+                    //                break;
+                    //            }
+                    //        }
 
-                            if (countCheck == 0)
-                            {
-                                ModelState.AddModelError("ListID",
-                                    $"The Department {db.Teams.Find(teamId).Name} don't have this list");
-                                ;
-                                flag = false;
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("ListID",
-                                $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
-                            flag = false;
-                        }
-                    }
+                    //        if (countCheck == 0)
+                    //        {
+                    //            ModelState.AddModelError("ListID",
+                    //                $"The Department {db.Teams.Find(teamId).Name} don't have this list");
+                    //            ;
+                    //            flag = false;
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        ModelState.AddModelError("ListID",
+                    //            $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
+                    //        flag = false;
+                    //    }
+                    //}
 
 
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
