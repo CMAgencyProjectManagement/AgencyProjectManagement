@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security;
+using Entity;
 using Newtonsoft.Json.Linq;
 
 namespace Service
@@ -45,9 +49,63 @@ namespace Service
         {
             return new NotificationComponent
             {
-                Type = jObject.Value<NotificationComponentType>(),
-                
+                Type = ParseType(jObject.Value<string>("type")),
+                Id = jObject.Value<int>("id"),
+                Content = jObject.Value<string>("content")
             };
+        }
+
+        public static JObject ToJson(
+            NotificationComponent notificationComponent,
+            User currentUser,
+            IEnumerable<int> allowedTeams,
+            IEnumerable<int> allowedProjects,
+            IEnumerable<int> allowedTasks)
+        {
+            bool allowId = false;
+            JObject result = new JObject();
+            if (notificationComponent.Type == NotificationComponentType.User &&
+                notificationComponent.Id == currentUser.ID)
+            {
+                result["content"] = "You";
+                allowId = true;
+            }
+            else
+            {
+                result["content"] = notificationComponent.Content;
+            }
+
+            switch (notificationComponent.Type)
+            {
+                case NotificationComponentType.Department:
+                {
+                    allowId = allowedTeams.Contains(notificationComponent.Id);
+                    break;
+                }
+                case NotificationComponentType.Project:
+                {
+                    allowId = allowedProjects.Contains(notificationComponent.Id);
+                    break;
+                }
+                case NotificationComponentType.Task:
+                {
+                    allowId = allowedTasks.Contains(notificationComponent.Id);
+                    break;
+                }
+            }
+
+            if (allowId)
+            {
+                result["id"] = notificationComponent.Id;
+            }            
+
+            result["type"] = notificationComponent.Type.ToString();
+            return result;
+        }
+        
+        private static NotificationComponentType ParseType(string value)
+        {
+            return (NotificationComponentType) Enum.Parse(typeof(NotificationComponentType), value, true);
         }
     }
 
