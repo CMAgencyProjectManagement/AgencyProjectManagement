@@ -180,8 +180,8 @@ namespace Service
             {
                 throw new InvalidOperationException("User have to be in team before set to be manager");
             }
-
-            if (GetManager(team.ID) != null)
+            
+            if (GetManager(team.ID) == null)
             {
                 throw new InvalidOperationException("Team can't have more than one manager");
             }
