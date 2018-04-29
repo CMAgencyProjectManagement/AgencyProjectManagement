@@ -279,7 +279,7 @@ namespace Service
             else
             {
                 throw new ObjectNotFoundException(
-                    $"User name {user.Username} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
+                    $"User {user.Username} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
             }
         }
 
