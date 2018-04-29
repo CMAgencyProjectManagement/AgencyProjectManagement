@@ -37,6 +37,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   handleNotificationUpdate(data) {
+    console.log('update');
     let notifications: Notification[] = _.cloneDeep(data);
     let unReadCount = 0;
     for (let notification of notifications) {

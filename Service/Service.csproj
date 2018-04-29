@@ -59,6 +59,7 @@
     <Compile Include="ProjectStatus.cs" />
     <Compile Include="ReportResult.cs" />
     <Compile Include="NotificationSentence.cs" />
+    <Compile Include="NotificationSentenceBuilder.cs" />
     <Compile Include="TaskPriority.cs" />
     <Compile Include="TaskService.cs" />
     <Compile Include="TaskStatus.cs" />

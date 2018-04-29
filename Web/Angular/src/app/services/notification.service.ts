@@ -65,7 +65,6 @@ export class NotificationService {
       notification.isRead = true;
     }
     this.notificationsCursor.set(notifications);
-    
     return new Promise<Notification[]>((resolve, reject) => {
       const token = this.tokenCursor.get();
       request.put(serverPath.checkin)

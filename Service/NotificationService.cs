@@ -41,12 +41,41 @@ namespace Service
             return usersToNotify;
         }
 
-        public void NotifyToUsersOfProject(int projectId)
+        public IEnumerable<User> NotifyToUsersOfProject(int projectId, NotificationSentence sentence)
         {
+            UserService userService = new UserService(db);
+            
+            IEnumerable<User> assignees = userService.GetUsersOfProject(projectId);
+            IEnumerable<User> admin = db.Users.Where(user => user.IsAdmin);
+
+            List<User> usersToNotify = assignees.Union(admin).ToList();
+
+            Notification notification = new Notification
+            {
+                Content = sentence.ToString(),
+                Type = 1
+            };
+            Notify(notification, usersToNotify);
+
+            return usersToNotify;
         }
 
-        public void NotifyToUsersOfDepartment(int teamId)
+        public IEnumerable<User> NotifyToUsersOfDepartment(int teamId, NotificationSentence sentence, bool allMember = false)
         {
+            UserService userService = new UserService(db);
+            
+            IEnumerable<User> assignees = userService.GetUsersOfTeam(teamId);
+            IEnumerable<User> admin = db.Users.Where(user => user.IsAdmin);
+            List<User> usersToNotify = assignees.Union(admin).ToList();
+            
+            Notification notification = new Notification
+            {
+                Content = sentence.ToString(),
+                Type = 1
+            };
+            Notify(notification, usersToNotify);
+
+            return usersToNotify;
         }
 
         public IEnumerable<JObject> FormatNotificationForUser(

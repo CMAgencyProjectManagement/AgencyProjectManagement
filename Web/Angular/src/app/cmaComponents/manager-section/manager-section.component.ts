@@ -12,7 +12,7 @@ export class ManagerSectionComponent implements OnInit {
 
   lateTableOptions: DataTables.Settings = {
     searching: true,
-    lengthChange: false,
+    lengthChange: true,
     paging: true,
     ordering: true,
     order: [
@@ -22,7 +22,7 @@ export class ManagerSectionComponent implements OnInit {
 
   thisWeekTableOptions: DataTables.Settings = {
     searching: true,
-    lengthChange: false,
+    lengthChange: true,
     paging: true,
     ordering: true,
     order: [

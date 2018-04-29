@@ -47,6 +47,11 @@ namespace Service
 
         public static NotificationComponent FromJson(JObject jObject)
         {
+            if (jObject == null)
+            {
+                return null;
+            }
+
             return new NotificationComponent
             {
                 Type = ParseType(jObject.Value<string>("type")),
@@ -115,6 +120,6 @@ namespace Service
         Task,
         Project,
         Department,
-        Status
+        staticString
     }
 }
