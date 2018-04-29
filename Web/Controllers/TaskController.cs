@@ -493,7 +493,7 @@ namespace Web.Controllers
 
                     if (!taskService.IsManagerOfTask(currentUserId, updateTaskViewModel.Id))
                         return Ok(ResponseHelper.GetExceptionResponse(
-                            "User have to be manager of this task to edit task "));
+                            "User have to be manager of this task to edit task or task not belong to any department"));
 
                     bool flag = true;
                     if (db.Tasks.Find(updateTaskViewModel.Id).Name != updateTaskViewModel.Name)
