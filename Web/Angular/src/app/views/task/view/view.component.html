@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
     <strong>Task detail</strong>
-    
+
   </div>
   <app-spinner *ngIf=isLoading.page></app-spinner>
   <div *ngIf=!isLoading.page class="card-body row">
@@ -151,7 +151,9 @@
                   </div>
                   <div class="col-12 mt-3 d-flex justify-content-end" *ngIf="openCommentForm">
                     <!--ADD COMMENT, CANCEL BTN-->
-                    <button class="btn btn-success mr-2" (click)="handleAddCommentBtnClick()">Add</button>
+                    <button class="btn btn-success mr-2" [ladda]="isLoading.comment"
+                            (click)="handleAddCommentBtnClick()">Add
+                    </button>
                     <button class="btn btn-secondary" (click)="handleCancelCommentBtnClick()">Cancel</button>
                   </div>
                 </div>

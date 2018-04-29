@@ -118,13 +118,13 @@ export class ViewComponent implements OnInit {
       .then(value => {
           let comment = value as Comment;
           this.foundTask.comments.push(comment);
-          this.isLoading.comment = true;
+          this.isLoading.comment = false;
         }
       )
       .catch(reason => {
         this.showErrorModal(reason.Message);
         console.debug('handleAddCommentBtnClick', reason);
-        this.isLoading.comment = true;
+        this.isLoading.comment = false;
       })
   }
 
