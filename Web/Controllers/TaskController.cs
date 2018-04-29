@@ -372,7 +372,25 @@ namespace Web.Controllers
                         ModelState.AddModelError("Priority", "Invalid Priority ");
                         flag = false;
                     }
-
+                    //validate the deadline and stardate of task and project
+                    int listId = (int)createTaskModel.ListID;
+                    Project project = projectService.GetProjectOfList(listId);
+                    DateTime projectStartDate = (DateTime)project.StartDate;
+                    DateTime projectDeadline = (DateTime)project.Deadline;
+                    DateTime taskDeadline = createTaskModel.StartDate.AddDays((int)createTaskModel.Duration);
+                    if (createTaskModel.StartDate.Date<projectStartDate.Date||createTaskModel.StartDate.Date>projectDeadline.Date)
+                    {
+                        ModelState.AddModelError("StartDate",
+                            $"Start date of Task must be between start date and deadline of project {project.Name}");
+                        flag = false;
+                    }
+                    if (taskDeadline.Date > projectDeadline.Date)
+                    {
+                        ModelState.AddModelError("Duration",
+                           $"You just set the duration out of deadline of project {project.Name}");
+                        flag = false;
+                    }
+                    //end validate
                     if (createTaskModel.Duration < 1 || createTaskModel.Duration > DurationLength)
                     {
                         ModelState.AddModelError("Duration",
@@ -467,6 +485,7 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     UserService userService = new UserService(db);
+                    ProjectService projectService = new ProjectService(db);
                     DependencyService dependencyService = new DependencyService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
@@ -498,6 +517,25 @@ namespace Web.Controllers
                         ModelState.AddModelError("Priority", "Invalid Priority ");
                         flag = false;
                     }
+                    //validate the deadline and stardate of task and project
+                    int listId = (int)updateTaskViewModel.ListID;
+                    Project project = projectService.GetProjectOfList(listId);
+                    DateTime projectStartDate = (DateTime)project.StartDate;
+                    DateTime projectDeadline = (DateTime)project.Deadline;
+                    DateTime taskDeadline = updateTaskViewModel.StartDate.AddDays((int)updateTaskViewModel.Duration);
+                    if (updateTaskViewModel.StartDate.Date < projectStartDate.Date || updateTaskViewModel.StartDate.Date > projectDeadline.Date)
+                    {
+                        ModelState.AddModelError("StartDate",
+                            $"Start date of Task must be between start date and deadline of project {project.Name}");
+                        flag = false;
+                    }
+                    if (taskDeadline.Date > projectDeadline.Date)
+                    {
+                        ModelState.AddModelError("Duration",
+                           $"You just set the duration out of deadline of project {project.Name}");
+                        flag = false;
+                    }
+                    //end validate
 
                     if (updateTaskViewModel.Duration < 1 || updateTaskViewModel.Duration > durationLength)
                     {
