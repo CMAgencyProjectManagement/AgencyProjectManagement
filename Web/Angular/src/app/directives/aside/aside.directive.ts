@@ -9,11 +9,9 @@ import {Cursor, StoreService} from '../../services/tree.service';
   selector: '[appAsideMenuToggler]',
 })
 export class AsideToggleDirective {
-  private notificationsCursor: Cursor;
 
   constructor(private notificationService: NotificationService,
               private storeService: StoreService) {
-    this.notificationsCursor = storeService.select(['notifications']);
   }
 
   @HostListener('click', ['$event'])

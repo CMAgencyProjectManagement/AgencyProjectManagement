@@ -22,12 +22,12 @@ export class AppAsideComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.notificationsCursor.on('update', (event) => {
+      this.updateNotificationData(event.data.currentData);
+    });
     this.notificationService.getNotifications()
       .then(value => {
-        this.updateNotificationData(value);
-        this.notificationsCursor.on('update', (event) => {
-          this.updateNotificationData(event.data.currentData);
-        });
+        // do nothing here
       })
       .catch(reason => {
         console.debug('AppAsideComponent - ngOnInit', reason);

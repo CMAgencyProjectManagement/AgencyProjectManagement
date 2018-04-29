@@ -115,5 +115,6 @@ namespace Service
         Task,
         Project,
         Department,
+        Status
     }
 }

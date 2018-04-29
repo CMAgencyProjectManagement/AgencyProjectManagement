@@ -19,7 +19,7 @@ namespace Service
             this.db = db;
         }
 
-        public void NotifyToUsersOfTask(int taskId, NotificationSentence sentence)
+        public IEnumerable<User> NotifyToUsersOfTask(int taskId, NotificationSentence sentence)
         {
             TaskService taskService = new TaskService(db);
             IEnumerable<User> staffs = taskService.GetTaskAssignee(taskId);
@@ -37,6 +37,8 @@ namespace Service
                 Type = 1
             };
             Notify(notification, usersToNotify);
+
+            return usersToNotify;
         }
 
         public void NotifyToUsersOfProject(int projectId)
@@ -100,11 +102,13 @@ namespace Service
             UserService userService = new UserService(db);
             User user = userService.GetUser(userId);
 
-            IEnumerable<NotificationUser> notificationUsers = db.NotificationUsers
-                .Where(notificationUser => notificationUser.UserID == user.ID);
+            List<NotificationUser> notificationUsers = db.NotificationUsers
+                .Where(notificationUser => notificationUser.UserID == user.ID &&
+                                           !notificationUser.IsRead)
+                .ToList();
             foreach (var notificationUser in notificationUsers)
             {
-                notificationUser.IsRead = false;
+                notificationUser.IsRead = true;
             }
 
             db.SaveChanges();

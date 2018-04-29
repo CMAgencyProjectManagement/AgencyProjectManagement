@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.Hubs;
 using Web.ViewModels;
 using Task = Entity.Task;
 
@@ -18,7 +20,7 @@ namespace Web.Controllers
     {
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetTask(int id)
         {
             try
@@ -62,7 +64,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("late")]
-        [Authorize(Roles = "Manager,Staff")]
+        [System.Web.Http.Authorize(Roles = "Manager,Staff")]
         public IHttpActionResult GetStaffDashboard()
         {
             try
@@ -105,7 +107,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("user/{id:int}")]
-        [Authorize(Roles = "Admin,Manager")]
+        [System.Web.Http.Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult GetTasksOfUser(int id)
         {
             try
@@ -134,7 +136,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("priority")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetPriority()
         {
             try
@@ -160,7 +162,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("status")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetStatus()
         {
             try
@@ -186,7 +188,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("myTask")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetMyTask()
         {
             try
@@ -214,7 +216,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("{taskId:int}/finishTask")]
-        [Authorize(Roles = "Staff")]
+        [System.Web.Http.Authorize(Roles = "Staff")]
         public IHttpActionResult TaskDone(int taskId)
         {
             try
@@ -252,15 +254,20 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("setstatus")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult SetStatus(SetStatusViewModel setStatusViewModel)
         {
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
-                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     TaskService taskService = new TaskService(db);
+                    UserService userService = new UserService(db);
+                    ProjectService projectService = new ProjectService(db);
+                    NotificationService notificationService = new NotificationService(db);
+
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    User currentUser = userService.GetUser(currentUserId);
 
                     if (!ModelState.IsValid)
                     {
@@ -280,6 +287,43 @@ namespace Web.Controllers
                         (TaskStatus) setStatusViewModel.TaskStatus);
                     task.ChangedBy = currentUserId;
                     task.ChangedTime = DateTime.Now;
+
+                    Project currentProject = projectService.GetProjectOfTask(task.ID);
+
+
+                    NotificationSentence sentence = new NotificationSentence
+                    {
+                        Subject = new NotificationComponent(
+                            NotificationComponentType.User,
+                            currentUserId,
+                            currentUser.Name),
+                        Verb = "set status of",
+                        PrimaryObject = new NotificationComponent(
+                            NotificationComponentType.Task,
+                            task.ID,
+                            task.Name),
+                        ObjectLinker = "to",
+                        SecondaryObject = new NotificationComponent(
+                            NotificationComponentType.Status,
+                            -1,
+                            projectService.DisplayCamelCaseString(((TaskStatus) task.Status).ToString())),
+                        Location = new NotificationComponent(
+                            NotificationComponentType.Project,
+                            currentProject.ID,
+                            currentProject.Name),
+                        Time = DateTime.Today.ToShortDateString()
+                    };
+                    IEnumerable<int> newNotificationUserIds = notificationService
+                        .NotifyToUsersOfTask(task.ID, sentence)
+                        .Select(affectedUser => affectedUser.ID);
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(newNotificationUserIds));
+                        context.Clients.All.updateNotification(newNotificationUserIds);
+                    }
+
+
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath,
                             AgencyConfig.AttachmentPath)
@@ -296,7 +340,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult CreateTask(CreateTaskModel createTaskModel)
         {
             try
@@ -309,8 +353,9 @@ namespace Web.Controllers
 
                     bool flag = true;
                     int DurationLength = 15;
-                    if (createTaskModel.Name!=null&&taskService.CheckDuplicatedTasknameAllowDublicateProject(createTaskModel.Name,
-                        createTaskModel.ListID.Value))
+                    if (createTaskModel.Name != null && taskService.CheckDuplicatedTasknameAllowDublicateProject(
+                            createTaskModel.Name,
+                            createTaskModel.ListID.Value))
                     {
                         ModelState.AddModelError("Name", "Task name is taken");
                         flag = false;
@@ -321,42 +366,6 @@ namespace Web.Controllers
                         ModelState.AddModelError("ListID", "The System don't have this list");
                         flag = false;
                     }
-                    //else
-                    //{
-                    //    TeamService teamService = new TeamService(db);
-                    //    int userId = Int32.Parse(User.Identity.GetUserId());
-                    //    var teamId = db.Users.Find(userId).TeamID;
-                    //    int projectId = db.Lists.Find(createTaskModel.ListID.Value).ProjectID;
-                    //    var teamIdsOfList = db.TeamProjects.Where(x => x.ProjectID == projectId)
-                    //        .Select(x => x.TeamID);
-                    //    if (teamIdsOfList.Count() != 0)
-                    //    {
-                    //        int countCheck = 0;
-                    //        foreach (var teamIdOfList in teamIdsOfList)
-                    //        {
-                    //            if ((int) teamId == (int) teamIdOfList)
-                    //            {
-                    //                countCheck = 1;
-                    //                break;
-                    //            }
-                    //        }
-
-                    //        if (countCheck == 0)
-                    //        {
-                    //            ModelState.AddModelError("ListID",
-                    //                $"The Department {db.Teams.Find(teamId).Name} don't have this list");
-                    //            ;
-                    //            flag = false;
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        ModelState.AddModelError("ListID",
-                    //            $"The List with Id {createTaskModel.ListID.Value} doesnot belong to any Department");
-                    //        flag = false;
-                    //    }
-                    //}
-
 
                     if (createTaskModel.Priority < 0 || createTaskModel.Priority > 3)
                     {
@@ -449,7 +458,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult UpdateTask(UpdateTaskViewModel updateTaskViewModel)
         {
             try
@@ -591,7 +600,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("assign")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult AssignTask(AssignTaskModel assignTaskModel)
         {
             try
@@ -618,7 +627,7 @@ namespace Web.Controllers
                             currentUserId);
                         Project project = projectService.GetProjectOfTask(task.ID);
 
-                        
+
                         // Notification
                         foreach (var assigneeId in assignTaskModel.UserIDs)
                         {
@@ -645,8 +654,15 @@ namespace Web.Controllers
                                     project.Name),
                                 Time = DateTime.Today.ToShortDateString()
                             };
-                            
-                            notificationService.NotifyToUsersOfTask(task.ID,sentence);
+                            IEnumerable<int> newNotificationUserIds = notificationService
+                                .NotifyToUsersOfTask(task.ID, sentence)
+                                .Select(affectedUser => affectedUser.ID);
+                            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                            if (context != null)
+                            {
+                                context.Clients.All.updateNotification(new JArray(newNotificationUserIds));
+                                context.Clients.All.updateNotification(newNotificationUserIds);
+                            }
                         }
 
                         return Ok(ResponseHelper.GetResponse(taskService.ParseToJson(task, true,
@@ -668,7 +684,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("unassign")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult UnassignTask(UnassignTaskModel unassignTaskModel)
         {
             try
@@ -715,7 +731,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("archive")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult Archive(ArchiveTaskModel archiveTaskModel)
         {
             try
@@ -754,7 +770,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("unarchive")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult UnArchive(ArchiveTaskModel archiveTaskModel)
         {
             try

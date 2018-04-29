@@ -3,17 +3,25 @@ import {Cursor, StoreService} from './tree.service';
 import * as request from 'superagent';
 import {serverPath} from '../_serverPath';
 import {Notification} from '../interfaces/notification';
+import {WebsocketService} from './websocket.service';
 
 @Injectable()
 export class NotificationService {
   private tokenCursor: Cursor;
   private currentUserCursor: Cursor;
   private notificationsCursor: Cursor;
+  private isConnectedCursor: Cursor;
 
-  constructor(private storeService: StoreService) {
+  constructor(private storeService: StoreService,
+              private webSocketService: WebsocketService) {
     this.currentUserCursor = storeService.select(['currentUser']);
     this.notificationsCursor = storeService.select(['notifications']);
     this.tokenCursor = storeService.select(['token', 'access_token']);
+    this.isConnectedCursor = this.storeService.select(['isWebSocketConnected']);
+  }
+
+  public serverNotificationChange(affectedUserList) {
+    console.debug('serverNotificationChange', affectedUserList);
   }
 
   public getNotifications(): Promise<Notification[]> {
@@ -42,7 +50,6 @@ export class NotificationService {
         .then((res) => {
           const content = res.body;
           if (content.IsSuccess) {
-            this.notificationsCursor.set(content.Data);
             resolve(content.Data);
           } else {
             reject(content.Message);
