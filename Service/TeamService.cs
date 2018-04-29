@@ -329,4 +329,18 @@ namespace Service
             return result;
         }
     }
+    
+    public class TeamEqualComparer : IEqualityComparer<Team> {
+        public bool Equals(Team x, Team y)
+        {
+            return x.ID == y.ID;
+        }
+
+        public int GetHashCode(Team obj)
+        {
+
+            return obj.ID.GetHashCode() ^
+                   obj.Name.GetHashCode();
+        }
+    }
 }
