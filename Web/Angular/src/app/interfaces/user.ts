@@ -13,5 +13,6 @@ export interface User {
   isManager: boolean,
   isActive: boolean,
   teamId: number,
-  team: Team
+  team: Team,
+  teamText: string
 }

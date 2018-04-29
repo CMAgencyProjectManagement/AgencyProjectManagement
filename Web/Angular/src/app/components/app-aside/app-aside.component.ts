@@ -25,13 +25,7 @@ export class AppAsideComponent implements OnInit {
     this.notificationsCursor.on('update', (event) => {
       this.updateNotificationData(event.data.currentData);
     });
-    this.notificationService.getNotifications()
-      .then(value => {
-        // do nothing here
-      })
-      .catch(reason => {
-        console.debug('AppAsideComponent - ngOnInit', reason);
-      });
+    this.notificationService.updateNotifications();
   }
 
   updateNotificationData(data) {

@@ -392,6 +392,7 @@ namespace Web.Controllers
 
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        
                         var updatedProject = projectService.UpdateProject(
                             updateProjectViewModel.id,
                             updateProjectViewModel.name,

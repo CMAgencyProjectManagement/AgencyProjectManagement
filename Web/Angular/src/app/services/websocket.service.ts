@@ -7,11 +7,15 @@ declare var $: any;
 export class WebsocketService {
   private connection;
   private isConnectedCursor: Cursor;
+  private notificationNeedUpdateCursor: Cursor;
+  private taskNeedUpdateCursor: Cursor;
   private tokenCursor: Cursor;
 
   constructor(private storeService: StoreService) {
     this.isConnectedCursor = this.storeService.select(['isWebSocketConnected']);
     this.tokenCursor = this.storeService.select(['token', 'access_token']);
+    this.notificationNeedUpdateCursor = this.storeService.select(['needUpdate', 'notification', 'userIds']);
+    this.taskNeedUpdateCursor = this.storeService.select(['needUpdate', 'task', 'taskIds']);
 
     let token = this.tokenCursor.get();
     if (!this.connection) {
@@ -34,9 +38,14 @@ export class WebsocketService {
       throw new Error('Missing dependency');
     } else {
       this.connection = $.connection;
+
       this.connection.eventHub.client.updateNotification = (data) => {
-        console.debug('WebsocketService', data);
+        this.notificationNeedUpdateCursor.set(data);
       };
+      this.connection.eventHub.client.updateTask = (data) => {
+        this.taskNeedUpdateCursor.set(data);
+      };
+
       this.connection.hub.qs = {'token': access_token};
       this.connection.hub.url = '/signalr';
       this.connection.hub.start()
@@ -45,4 +54,7 @@ export class WebsocketService {
         })
     }
   }
+
 }
+
+
