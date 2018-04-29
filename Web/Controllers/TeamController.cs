@@ -160,8 +160,6 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-
-
                     IEnumerable<Task> tasks = taskService.GetTaskOfDepartment(teamId)
                         .Where(task => task.Status == (int) TaskStatus.NeedReview);
 

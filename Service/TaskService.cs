@@ -132,7 +132,11 @@ namespace Service
                 .Where(task => task.List.Project.TeamProjects.Any(teamProject => teamProject.TeamID == teamId));
             return tasks;
         }
-
+        public IQueryable<Task> GetArchieveTasks()
+        {
+            var tasks = db.Tasks.Where(x => x.IsArchived == true);
+            return tasks;
+        }
         public IEnumerable<Task> GetLateTaskOfDepartment(int teamId)
         {
             TaskService taskService = new TaskService(db);

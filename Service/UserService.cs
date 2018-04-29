@@ -304,7 +304,7 @@ namespace Service
 
             throw new ObjectNotFoundException($"User with ID{id} not found");
         }
-
+        
         public JObject ParseToJson(
             User user,
             string avatarPath = null,
