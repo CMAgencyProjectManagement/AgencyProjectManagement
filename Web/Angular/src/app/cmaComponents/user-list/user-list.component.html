@@ -10,7 +10,9 @@
           {{user.name}}
         </a>
       </div>
-      <small>{{user.email}}</small>
+      <small *ngIf="user.isManager && !user.isAdmin" class="text-dark">{{user.teamText}} | Manager</small>
+      <small *ngIf="!user.isManager && !user.isAdmin">{{user.teamText}}</small>
+      <small *ngIf="!user.isManager && user.isAdmin">{{user.teamText}}</small>
     </div>
     <div class="value">
       <small>{{user.phone}}</small>

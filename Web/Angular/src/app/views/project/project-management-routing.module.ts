@@ -27,7 +27,7 @@ const routes: Routes = [
         path: ':id/schedule',
         component: ProjectSchedulingComponent,
         data: {
-          title: 'Project schedule'
+          title: 'View project schedule'
         }
       },
       {

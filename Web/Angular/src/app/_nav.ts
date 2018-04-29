@@ -24,7 +24,7 @@ const staff_navigation = [
     icon: 'icon-calendar'
   },
   {
-    name: 'Tasks',
+    name: 'My tasks',
     url: '/task/mytasks',
     icon: 'icon-briefcase'
   },
@@ -80,12 +80,12 @@ const admin_navigation = [
     icon: 'icon-speedometer'
   },
   {
-    name: 'Project',
+    name: 'Projects',
     url: '/project',
     icon: 'icon-calendar',
     children: [
       {
-        name: 'View project',
+        name: 'View projects',
         url: '/project',
         icon: 'icon-calendar',
       },
@@ -99,17 +99,17 @@ const admin_navigation = [
     ]
   },
   {
-    name: 'Department',
+    name: 'Departments',
     url: '/department/view',
     icon: 'icon-people',
   },
   {
-    name: 'Account',
+    name: 'Accounts',
     url: '/account/view',
     icon: 'icon-user',
     children: [
       {
-        name: 'View account',
+        name: 'View accounts',
         url: '/account/view',
         icon: 'icon-user',
 
@@ -120,7 +120,7 @@ const admin_navigation = [
         icon: 'icon-user',
       },
       {
-        name: 'My Profile',
+        name: 'My profile',
         url: '/account/profile',
         icon: 'icon-user',
       }

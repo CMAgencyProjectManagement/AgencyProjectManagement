@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <strong>Project Detail</strong>
+    <strong>Project detail</strong>
   </div>
   <app-spinner *ngIf="isPageLoading"></app-spinner>
   <div *ngIf="!isPageLoading" class="card-body">
@@ -38,7 +38,7 @@
                  (click)="handleOnUnAssignMembersBtnClick()"
                  [ladda]="isLoading.openUnAssignMembersModal"
                  *ngIf="currentUser.isManager || currentUser.isAdmin">
-                <i class="fa fa-user-times"></i>&nbsp; Un-Assign members
+                <i class="fa fa-user-times"></i>&nbsp; Un-assign members
               </a>
             </div>
             <div class="section mt-4">
@@ -64,11 +64,11 @@
             </div>
             <div class="section">
               <!--Created Date-->
-              <h5 class="mb-3">Created Date: {{foundProject.createdTime | date:'d/M/y'}}</h5>
+              <h5 class="mb-3">Created date: {{foundProject.createdTime | date:'d/M/y'}}</h5>
             </div>
             <div class="section">
               <!--Start Date-->
-              <h5 class="mb-3">Start Date: {{foundProject.startDate | date:'d/M/y'}}</h5>
+              <h5 class="mb-3">Start date: {{foundProject.startDate | date:'d/M/y'}}</h5>
             </div>
             <div class="section">
               <!--Deadline-->

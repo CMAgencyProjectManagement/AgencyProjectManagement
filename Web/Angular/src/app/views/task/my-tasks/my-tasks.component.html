@@ -1,49 +1,51 @@
 <!--<app-task-table [tasks]="tasks"></app-task-table>-->
-<div class="col-12">
-  <div class="card">
-    <div class="card-header">
-      <strong>tasks</strong> 
-    </div>
-    <app-spinner *ngIf="isLoading.page"></app-spinner>
-    <div *ngIf="!isLoading.page" class="card-body">
-      <div class="button-section">
-
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>My tasks</strong>
       </div>
-      <div class="input-group">
+      <app-spinner *ngIf="isLoading.page"></app-spinner>
+      <div *ngIf="!isLoading.page" class="card-body">
+        <div class="button-section">
+
+        </div>
+        <div class="input-group">
           <span class="input-group-btn">
             <button class="btn btn-primary" type="button" (click)="search(searchField.value)">
               <i class="fa fa-search"></i> Search
             </button>
           </span>
-        <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
-      </div>
-      <div class="dataTable-container hide-search mt-3">
-        <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Start date</th>
-            <th>Deadline</th>
-            <th>Project</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let task of tasks">
-            <td>
-              <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
-            </td>
-            <td>{{task.statusText}}</td>
-            <td>{{task.priorityText}}</td>
-            <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
-            <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
-            <td>
-              <a routerLink="/project/{{task.project.id}}/detail"> {{task.project.name}} </a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+          <input class="form-control" type="text" (input)="search(searchField.value)" #searchField>
+        </div>
+        <div class="dataTable-container hide-search mt-3">
+          <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Start date</th>
+                <th>Deadline</th>
+                <th>Project</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let task of tasks">
+                <td>
+                  <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
+                </td>
+                <td>{{task.statusText}}</td>
+                <td>{{task.priorityText}}</td>
+                <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
+                <td>
+                  <a routerLink="/project/{{task.project.id}}/detail"> {{task.project.name}} </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

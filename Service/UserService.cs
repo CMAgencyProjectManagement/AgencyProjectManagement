@@ -322,7 +322,7 @@ namespace Service
                 ["isAdmin"] = user.IsAdmin,
                 ["isManager"] = user.IsManager,
                 ["isActive"] = user.IsActive,
-                ["teamId"] = user.TeamID
+                ["teamId"] = user.TeamID,
             };
 
             string avatar = user.Avatar;
@@ -336,9 +336,13 @@ namespace Service
                 result["password"] = user.Password;
             }
 
+            TeamService teamService = new TeamService(db);
+            if (user.Team != null)
+            {
+                result["teamText"] = user.Team.Name;
+            }
             if (includeTeam)
             {
-                TeamService teamService = new TeamService(db);
                 if (user.Team != null)
                 {
                     result["team"] = teamService.ParseToJson(user.Team);

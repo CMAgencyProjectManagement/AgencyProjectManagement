@@ -22,14 +22,14 @@ const routes: Routes = [
         path: ':id/detail',
         component: DetailTeamComponent,
         data: {
-          title: 'Department Detail'
+          title: 'Department detail'
         }
       },
       {
         path: 'my',
         component: DetailTeamComponent,
         data: {
-          title: 'My department'
+          title: 'Department detail'
         }
       },
       {
