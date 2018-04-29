@@ -338,7 +338,6 @@ namespace Service
 
         public int GetHashCode(Team obj)
         {
-
             return obj.ID.GetHashCode() ^
                    obj.Name.GetHashCode();
         }

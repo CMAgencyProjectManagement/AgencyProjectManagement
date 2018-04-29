@@ -22,7 +22,16 @@ const StoreTree = {
   // enum
   taskPriorities: undefined,
   taskStatuses: undefined,
-  projectStatuses: undefined
+  projectStatuses: undefined,
+  // need update
+  needUpdate: {
+    notification: {
+      userIds: undefined
+    },
+    task: {
+      taskIds: undefined
+    }
+  }
 };
 
 @Injectable()
