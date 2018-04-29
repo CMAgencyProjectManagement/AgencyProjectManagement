@@ -113,7 +113,7 @@ namespace Service
                     task.Name),
                 ObjectLinker = "to",
                 SecondaryObject = new NotificationComponent(
-                    NotificationComponentType.staticString,
+                    NotificationComponentType.StaticString,
                     -1,
                     status),
                 Location = new NotificationComponent(
@@ -183,7 +183,7 @@ namespace Service
                     currentUser.Name),
                 Verb = "added",
                 PrimaryObject = new NotificationComponent(
-                    NotificationComponentType.staticString,
+                    NotificationComponentType.StaticString,
                     -1,
                     "comment"),
                 ObjectLinker = "to",
@@ -223,7 +223,7 @@ namespace Service
                     currentUser.Name),
                 Verb = "added",
                 PrimaryObject = new NotificationComponent(
-                    NotificationComponentType.staticString,
+                    NotificationComponentType.StaticString,
                     -1,
                     attachment.Name),
                 ObjectLinker = "to",
@@ -261,7 +261,7 @@ namespace Service
                     currentUser.Name),
                 Verb = "removed",
                 PrimaryObject = new NotificationComponent(
-                    NotificationComponentType.staticString,
+                    NotificationComponentType.StaticString,
                     -1,
                     attachmentName),
                 ObjectLinker = "to",
@@ -344,7 +344,7 @@ namespace Service
             return sentence;
         }
 
-        public NotificationSentence UnAssignMemberFromProjectSentence(int currentUserId, int removedUserId, int taskId,
+        public NotificationSentence UnAssignMemberFromProjectSentence(int currentUserId, int removedUserId,
             int projectId)
         {
             // user1 removed user2 from project1
@@ -409,7 +409,7 @@ namespace Service
             return sentence;
         }
 
-        public NotificationSentence CloseProjectSentence(int currentUserId, int projectId, int teamId)
+        public NotificationSentence CloseProjectSentence(int currentUserId, int projectId)
         {
             // user1 closed project1
             UserService userService = new UserService(db);
@@ -435,7 +435,7 @@ namespace Service
             return sentence;
         }
 
-        public NotificationSentence EditProjectSentence(int currentUserId, int teamId, int projectId)
+        public NotificationSentence EditProjectSentence(int currentUserId, int projectId)
         {
             // user1 edited project1 on department1            
             UserService userService = new UserService(db);
@@ -444,7 +444,6 @@ namespace Service
 
             User currentUser = userService.GetUser(currentUserId);
             Project project = projectService.GetProjectByID(projectId);
-            Team team = teamService.GetTeamById(teamId);
 
             NotificationSentence sentence = new NotificationSentence
             {
@@ -457,11 +456,6 @@ namespace Service
                     NotificationComponentType.Project,
                     project.ID,
                     project.Name),
-                ObjectLinker = "on",
-                SecondaryObject = new NotificationComponent(
-                    NotificationComponentType.Department,
-                    team.ID,
-                    team.Name),
                 Time = DateTime.Today.ToShortDateString()
             };
 
@@ -555,7 +549,7 @@ namespace Service
                     manager.Name),
                 ObjectLinker = "to be",
                 SecondaryObject = new NotificationComponent(
-                    NotificationComponentType.staticString,
+                    NotificationComponentType.StaticString,
                     -1,
                     "manager"),
                 Location = new NotificationComponent(

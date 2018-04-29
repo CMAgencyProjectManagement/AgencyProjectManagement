@@ -120,6 +120,6 @@ namespace Service
         Task,
         Project,
         Department,
-        staticString
+        StaticString
     }
 }

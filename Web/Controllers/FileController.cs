@@ -9,8 +9,10 @@ using System.Web;
 using System.Web.Http;
 using Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.Hubs;
 
 namespace Web.Controllers
 {
@@ -19,7 +21,7 @@ namespace Web.Controllers
     {
         [HttpPut]
         [Route("user/{id:int}/avatar")]
-        [Authorize(Roles = "Staff")]
+        [System.Web.Http.Authorize(Roles = "Staff")]
         public IHttpActionResult UploadAvatar(int id)
         {
             try
@@ -89,7 +91,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("task/{taskId:int}/attachment")]
-        [Authorize(Roles = "Admin, Staff")]
+        [System.Web.Http.Authorize(Roles = "Admin, Staff")]
         public IHttpActionResult UploadAttachment(int taskId)
         {
             try
@@ -97,15 +99,16 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
-                    int currentUserId = Int32.Parse(User.Identity.GetUserId());                    
-                    if (!taskService.IsAssigneeOfTask(currentUserId,taskId))
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member of task with ID {taskId}"));
-
+                            ResponseHelper.GetExceptionResponse(
+                                $"the person who do this action must be assigned member of task with ID {taskId}"));
                     }
                 }
-                    if (!Request.Content.IsMimeMultipartContent())
+
+                if (!Request.Content.IsMimeMultipartContent())
                 {
                     return Content(HttpStatusCode.UnsupportedMediaType,
                         ResponseHelper.GetExceptionResponse("Not supported media type"));
@@ -116,48 +119,64 @@ namespace Web.Controllers
                     : null;
 
 
-                if (attachment != null)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        AttachmentService attachmentService = new AttachmentService(db);
-                        UserService userService = new UserService(db);
-                        ProjectService projectService = new ProjectService(db);
-                        Project project = projectService.GetProjectOfTask(taskId);
-                        string attachmentPath = Path.Combine(
-                            $"project_{project.ID}",
-                            $"task_{taskId}"
-                        );
-                        string filename = attachment.FileName;
-                        string path = Path.Combine(
-                            HttpContext.Current.Server.MapPath("~"),
-                            AgencyConfig.AttachmentPath.Substring(1),
-                            attachmentPath,
-                            filename
-                        );
-
-                        path = getDeDeupFile(path);
-
-                        Directory.CreateDirectory(Path.GetDirectoryName(path));
-                        using (FileStream newfileStream = File.Create(path))
-                        {
-                            attachment.InputStream.CopyTo(newfileStream);
-                        }
-
-                        string userIdString = User.Identity.GetUserId();
-                        User user = userService.GetUser(userIdString);
-                        Attachment attachmentResult = attachmentService.AddAttachment(
-                            Path.GetFileName(path), attachmentPath, taskId, user.ID, DateTime.Today
-                        );
-                        return Ok(ResponseHelper.GetResponse(
-                            attachmentService.ParseToJson(attachmentResult, AgencyConfig.AttachmentPath))
-                        );
-                    }
-                }
-                else
+                if (attachment == null)
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse("No attachment file found"));
+                }
+
+
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    AttachmentService attachmentService = new AttachmentService(db);
+                    UserService userService = new UserService(db);
+                    ProjectService projectService = new ProjectService(db);
+                    NotificationService notificationService = new NotificationService(db);
+                    Project project = projectService.GetProjectOfTask(taskId);
+                    string attachmentPath = Path.Combine(
+                        $"project_{project.ID}",
+                        $"task_{taskId}"
+                    );
+                    string filename = attachment.FileName;
+                    string path = Path.Combine(
+                        HttpContext.Current.Server.MapPath("~"),
+                        AgencyConfig.AttachmentPath.Substring(1),
+                        attachmentPath,
+                        filename
+                    );
+
+                    path = getDeDeupFile(path);
+
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                    using (FileStream newfileStream = File.Create(path))
+                    {
+                        attachment.InputStream.CopyTo(newfileStream);
+                    }
+
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    Attachment attachmentResult = attachmentService.AddAttachment(
+                        Path.GetFileName(path), attachmentPath, taskId, currentUser.ID, DateTime.Today
+                    );
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    NotificationSentence sentence = builder.AddAttachmentSentence(
+                        currentUser.ID,
+                        attachmentResult.ID,
+                        taskId,
+                        project.ID);
+
+                    IEnumerable<User> notifiedUsers =
+                        notificationService.NotifyToUsersOfTask(taskId, sentence);
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(
+                        attachmentService.ParseToJson(attachmentResult, AgencyConfig.AttachmentPath))
+                    );
                 }
             }
             catch (Exception ex)
@@ -170,29 +189,29 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("attachment/{attId:int}/delete")]
-        [Authorize(Roles = "Admin, Staff")]
+        [System.Web.Http.Authorize(Roles = "Admin, Staff")]
         public IHttpActionResult DeleteAttachment(int attId)
         {
-            
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    ProjectService projectService = new ProjectService(db);
+                    NotificationService notificationService = new NotificationService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     var taskId = db.Attachments.Find(attId).TaskID;
-                    if (!taskService.IsAssigneeOfTask(currentUserId,taskId))
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
-                        ResponseHelper.GetExceptionResponse($"the person who do this action must be assigned member of task with ID {taskId}"));
-
+                            ResponseHelper.GetExceptionResponse(
+                                $"the person who do this action must be assigned member of task with ID {taskId}"));
                     }
-                }
-                using (CmAgencyEntities db = new CmAgencyEntities())
-                {
+
                     AttachmentService attachmentService = new AttachmentService(db);
                     Attachment attachment = attachmentService.GetAttachment(attId);
-
+                    Project project = projectService.GetProjectOfTask(attachment.TaskID);
+                    string attachmentName = attachment.Name;
                     string path = Path.Combine(
                         HttpContext.Current.Server.MapPath("~"),
                         AgencyConfig.AttachmentPath.Substring(1),
@@ -202,6 +221,23 @@ namespace Web.Controllers
 
                     File.Delete(path);
                     attachmentService.DeleteAttachment(attId);
+                    
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    NotificationSentence sentence = builder.RemoveAttachmentSentence(
+                        currentUserId,
+                        attachmentName,
+                        taskId,
+                        project.ID);
+
+                    IEnumerable<User> notifiedUsers =
+                        notificationService.NotifyToUsersOfTask(taskId, sentence);
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
+                    }
+
                     return Ok(ResponseHelper.GetResponse(new JObject
                         {
                             ["id"] = attId

@@ -2,11 +2,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.Hubs;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -16,14 +19,23 @@ namespace Web.Controllers
     {
         [HttpPost]
         [Route("create")]
-        [Authorize(Roles = "Manager, Staff")]
+        [System.Web.Http.Authorize(Roles = "Manager, Staff")]
         public IHttpActionResult AddComment(CreateCommentModel createCommentModel)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
+                    ProjectService projectService = new ProjectService(db);
+                    NotificationService notificationService = new NotificationService(db);
+
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     if (!taskService.IsAssigneeOfTask(currentUserId, createCommentModel.TaskID) &&
                         !taskService.IsManagerOfTask(currentUserId, createCommentModel.TaskID))
@@ -32,27 +44,31 @@ namespace Web.Controllers
                             $"The person who do this action must be assigned member of task with ID {createCommentModel.TaskID}"
                         ));
                     }
-                }
 
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    string userIdString = User.Identity.GetUserId();
+                    CommentService commentService = new CommentService(db);
+                    Comment newComment = commentService.CreateComment(
+                        createCommentModel.Body,
+                        createCommentModel.TaskID,
+                        Int32.Parse(userIdString)
+                    );
+                    Project project = projectService.GetProjectOfTask(createCommentModel.TaskID);
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    NotificationSentence sentence = builder.AddCommentSentence(
+                        currentUserId,
+                        createCommentModel.TaskID,
+                        project.ID);
+                    IEnumerable<User> notifiedUsers =
+                        notificationService.NotifyToUsersOfTask(createCommentModel.TaskID, sentence);
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
                     {
-                        string userIdString = User.Identity.GetUserId();
-                        CommentService commentService = new CommentService(db);
-                        Comment newComment = commentService.CreateComment(
-                            createCommentModel.Body,
-                            createCommentModel.TaskID,
-                            Int32.Parse(userIdString)
-                        );
-                        return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment,
-                            avatarPath: AgencyConfig.AvatarPath)));
+                        context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
                     }
-                }
-                else
-                {
-                    return Content(HttpStatusCode.BadRequest,
-                        ResponseHelper.GetExceptionResponse(ModelState));
+
+                    return Ok(ResponseHelper.GetResponse(commentService.ParseToJson(newComment,
+                        avatarPath: AgencyConfig.AvatarPath)));
                 }
             }
             catch (Exception ex)
@@ -65,7 +81,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("update")]
-        [Authorize(Roles = "Manager, Staff")]
+        [System.Web.Http.Authorize(Roles = "Manager, Staff")]
         public IHttpActionResult UpdateComment(UpdateCommentModel updateCommentModel)
         {
             try

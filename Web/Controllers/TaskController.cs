@@ -239,7 +239,34 @@ namespace Web.Controllers
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
 
                     TaskService taskService = new TaskService(db);
-                    var task = taskService.SetStatus(taskId, currentUserId, TaskStatus.NeedReview);
+                    ProjectService projectService = new ProjectService(db);
+                    NotificationService notificationService = new NotificationService(db);
+
+                    Task task = taskService.SetStatus(taskId, currentUserId, TaskStatus.NeedReview);
+                    IEnumerable<User> managers = taskService.GetManagersOfTask(task.ID);
+                    Project project = projectService.GetProjectOfTask(task.ID);
+
+
+                    // Notification
+                    List<int> newNotificationUserIds = new List<int>();
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    foreach (User manager in managers)
+                    {
+                        NotificationSentence sentence = builder.NeedReviewSentence(
+                            currentUserId,
+                            manager.ID,
+                            task.ID,
+                            project.ID
+                        );
+                        IEnumerable<User> notificationUser = notificationService.NotifyToUsersOfTask(task.ID, sentence);
+                        newNotificationUserIds.AddRange(notificationUser.Select(user => user.ID));
+                    }
+
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(newNotificationUserIds));
+                    }
 
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(task, true, AgencyConfig.AvatarPath, AgencyConfig.AttachmentPath)
@@ -297,16 +324,15 @@ namespace Web.Controllers
                         (TaskStatus) setStatusViewModel.TaskStatus,
                         setStatusViewModel.TaskId.Value,
                         currentProject.ID);
-                    
+
                     IEnumerable<int> newNotificationUserIds = notificationService
                         .NotifyToUsersOfTask(task.ID, sentence)
                         .Select(affectedUser => affectedUser.ID);
-                    
+
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
                     if (context != null)
                     {
                         context.Clients.All.updateNotification(new JArray(newNotificationUserIds));
-                        context.Clients.All.updateNotification(newNotificationUserIds);
                     }
 
 
@@ -358,24 +384,28 @@ namespace Web.Controllers
                         ModelState.AddModelError("Priority", "Invalid Priority ");
                         flag = false;
                     }
+
                     //validate the deadline and stardate of task and project
-                    int listId = (int)createTaskModel.ListID;
+                    int listId = (int) createTaskModel.ListID;
                     Project project = projectService.GetProjectOfList(listId);
-                    DateTime projectStartDate = (DateTime)project.StartDate;
-                    DateTime projectDeadline = (DateTime)project.Deadline;
-                    DateTime taskDeadline = createTaskModel.StartDate.AddDays((int)createTaskModel.Duration);
-                    if (createTaskModel.StartDate.Date<projectStartDate.Date||createTaskModel.StartDate.Date>projectDeadline.Date)
+                    DateTime projectStartDate = (DateTime) project.StartDate;
+                    DateTime projectDeadline = (DateTime) project.Deadline;
+                    DateTime taskDeadline = createTaskModel.StartDate.AddDays((int) createTaskModel.Duration);
+                    if (createTaskModel.StartDate.Date < projectStartDate.Date ||
+                        createTaskModel.StartDate.Date > projectDeadline.Date)
                     {
                         ModelState.AddModelError("StartDate",
                             $"Start date of Task must be between start date and deadline of project {project.Name}");
                         flag = false;
                     }
+
                     if (taskDeadline.Date > projectDeadline.Date)
                     {
                         ModelState.AddModelError("Duration",
-                           $"You just set the duration out of deadline of project {project.Name}");
+                            $"You just set the duration out of deadline of project {project.Name}");
                         flag = false;
                     }
+
                     //end validate
                     if (createTaskModel.Duration < 1 || createTaskModel.Duration > DurationLength)
                     {
@@ -473,6 +503,8 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     ProjectService projectService = new ProjectService(db);
                     DependencyService dependencyService = new DependencyService(db);
+                    NotificationService notificationService = new NotificationService(db);
+                    
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
                     int durationLength = AgencyConfig.maxDuration;
@@ -503,22 +535,25 @@ namespace Web.Controllers
                         ModelState.AddModelError("Priority", "Invalid Priority ");
                         flag = false;
                     }
+
                     //validate the deadline and stardate of task and project
-                    int listId = (int)updateTaskViewModel.ListID;
+                    int listId = (int) updateTaskViewModel.ListID;
                     Project project = projectService.GetProjectOfList(listId);
-                    DateTime projectStartDate = (DateTime)project.StartDate;
-                    DateTime projectDeadline = (DateTime)project.Deadline;
-                    DateTime taskDeadline = updateTaskViewModel.StartDate.AddDays((int)updateTaskViewModel.Duration);
-                    if (updateTaskViewModel.StartDate.Date < projectStartDate.Date || updateTaskViewModel.StartDate.Date > projectDeadline.Date)
+                    DateTime projectStartDate = (DateTime) project.StartDate;
+                    DateTime projectDeadline = (DateTime) project.Deadline;
+                    DateTime taskDeadline = updateTaskViewModel.StartDate.AddDays((int) updateTaskViewModel.Duration);
+                    if (updateTaskViewModel.StartDate.Date < projectStartDate.Date ||
+                        updateTaskViewModel.StartDate.Date > projectDeadline.Date)
                     {
                         ModelState.AddModelError("StartDate",
                             $"Start date of Task must be between start date and deadline of project {project.Name}");
                         flag = false;
                     }
+
                     if (taskDeadline.Date > projectDeadline.Date)
                     {
                         ModelState.AddModelError("Duration",
-                           $"You just set the duration out of deadline of project {project.Name}");
+                            $"You just set the duration out of deadline of project {project.Name}");
                         flag = false;
                     }
                     //end validate
@@ -581,38 +616,51 @@ namespace Web.Controllers
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
 
 
-                    if (ModelState.IsValid)
-                    {
-                        string loginedUserId = User.Identity.GetUserId();
-                        User creator = userService.GetUser(loginedUserId);
-                        var updatedTask = taskService.UpdateTask(
-                            updateTaskViewModel.Id,
-                            updateTaskViewModel.Name,
-                            updateTaskViewModel.Description,
-                            updateTaskViewModel.ListID,
-                            updateTaskViewModel.Priority,
-                            updateTaskViewModel.StartDate,
-                            updateTaskViewModel.Duration,
-                            updateTaskViewModel.Effort,
-                            currentUser.ID,
-                            DateTime.Now.Date);
-
-                        dependencyService.SetDependencyForTask(
-                            updatedTask.ID,
-                            updateTaskViewModel.Predecessors,
-                            creator.ID
-                        );
-
-                        return Ok(ResponseHelper.GetResponse(
-                            taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
-                                AgencyConfig.AttachmentPath)
-                        ));
-                    }
-                    else
+                    if (!ModelState.IsValid)
                     {
                         return Content(HttpStatusCode.BadRequest,
                             ResponseHelper.GetExceptionResponse(ModelState));
                     }
+
+                    string loginedUserId = User.Identity.GetUserId();
+                    User creator = userService.GetUser(loginedUserId);
+                    var updatedTask = taskService.UpdateTask(
+                        updateTaskViewModel.Id,
+                        updateTaskViewModel.Name,
+                        updateTaskViewModel.Description,
+                        updateTaskViewModel.ListID,
+                        updateTaskViewModel.Priority,
+                        updateTaskViewModel.StartDate,
+                        updateTaskViewModel.Duration,
+                        updateTaskViewModel.Effort,
+                        currentUser.ID,
+                        DateTime.Now.Date);
+
+                    dependencyService.SetDependencyForTask(
+                        updatedTask.ID,
+                        updateTaskViewModel.Predecessors,
+                        creator.ID
+                    );
+                    
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    NotificationSentence sentence = builder.EditTaskSentence(
+                        currentUserId,
+                        updateTaskViewModel.Id,
+                        project.ID);
+                    IEnumerable<User> notifiedUsers =
+                        notificationService.NotifyToUsersOfTask(updateTaskViewModel.Id, sentence);
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
+                    }
+
+                    
+
+                    return Ok(ResponseHelper.GetResponse(
+                        taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
+                            AgencyConfig.AttachmentPath)
+                    ));
                 }
             }
             catch (Exception ex)
@@ -700,7 +748,7 @@ namespace Web.Controllers
                     TaskService taskService = new TaskService(db);
                     ProjectService projectService = new ProjectService(db);
                     NotificationService notificationService = new NotificationService(db);
-                    
+
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     if (taskService.IsManagerOfTask(currentUserId, unassignTaskModel.TaskID))
                     {
@@ -712,9 +760,9 @@ namespace Web.Controllers
                                 currentUserId: currentUserId
                             );
                         }
-                        
+
                         // Notification
-                        
+
                         Project project = projectService.GetProjectOfTask(unassignTaskModel.TaskID);
                         foreach (var assigneeId in unassignTaskModel.UserIDs)
                         {
@@ -725,7 +773,7 @@ namespace Web.Controllers
                             IEnumerable<int> newNotificationUserIds = notificationService
                                 .NotifyToUsersOfTask(unassignTaskModel.TaskID, notificationSentence)
                                 .Select(affectedUser => affectedUser.ID);
-                            
+
                             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
                             if (context != null)
                             {
@@ -738,8 +786,7 @@ namespace Web.Controllers
                             ["id"] = new JArray(unassignTaskModel.UserIDs)
                         }));
                     }
-                    
-                    
+
 
                     return Content(HttpStatusCode.InternalServerError, ResponseHelper.GetExceptionResponse(
                         "User have to be manager of this task to Unassign this task"));

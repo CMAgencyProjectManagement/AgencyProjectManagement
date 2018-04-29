@@ -10,8 +10,10 @@ using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.Hubs;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -21,7 +23,7 @@ namespace Web.Controllers
     {
         [HttpGet]
         [Route("all")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult GetAllProject()
         {
             try
@@ -49,7 +51,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/taskarchive")]
-        [Authorize(Roles = "Admin,Manager")]
+        [System.Web.Http.Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult GetProjectById(int id)
         {
             try
@@ -99,7 +101,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("recentchanged")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult GetAdminDashboard()
         {
             try
@@ -130,7 +132,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{projecId:int}/members/assignable")]
-        [Authorize(Roles = "Admin, Manager")]
+        [System.Web.Http.Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult GetAssignableMember(int projecId)
         {
             try
@@ -141,7 +143,7 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     ProjectService projectService = new ProjectService(db);
                     IEnumerable<Team> teamsOfProject = teamService.GetTeamsOfProject(projecId);
-                    
+
                     List<User> userOfAllTeam = new List<User>();
                     foreach (Team team in teamsOfProject)
                     {
@@ -166,7 +168,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("setteams")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult SetProjectToTeams(SetProjectToTeamsViewModel projectToTeamsViewModel)
         {
             try
@@ -175,6 +177,8 @@ namespace Web.Controllers
                 {
                     ProjectService projectService = new ProjectService(db);
                     UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
 
@@ -182,6 +186,26 @@ namespace Web.Controllers
                         projectToTeamsViewModel.ProjectID,
                         projectToTeamsViewModel.TeamIDs,
                         currentUser.ID);
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    List<User> notifiedUsersList = new List<User>();
+                    foreach (int teamId in projectToTeamsViewModel.TeamIDs)
+                    {
+                        NotificationSentence sentence = builder.SetDepartmentToProjectSentence(
+                            currentUser.ID,
+                            teamId,
+                            project.ID);
+                        IEnumerable<User> notifiedUsers =
+                            notificationService.NotifyToUsersOfDepartment(teamId, sentence);
+                        notifiedUsersList.AddRange(notifiedUsers);
+                    }
+
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsersList.Select(user => user.ID)));
+                    }
+
 
                     return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true,
                         AgencyConfig.AvatarPath)));
@@ -197,7 +221,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetMyProject()
         {
             try
@@ -227,7 +251,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("dd/{id:int}")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetMyProjectinTeam(int id)
         {
             try
@@ -255,7 +279,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/list")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetListOfProject(int id)
         {
             try
@@ -277,7 +301,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult CreateProject(CreateProjectModel createProjectModel)
         {
             try
@@ -345,7 +369,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateProject(UpdateProjectViewModel updateProjectViewModel)
         {
             try
@@ -369,6 +393,13 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         ProjectService projectService = new ProjectService(db);
+                        UserService userService = new UserService(db);
+                        TeamService teamService = new TeamService(db);
+                        NotificationService notificationService = new NotificationService(db);
+                        
+                        string userIdString = User.Identity.GetUserId();
+                        User currentUser = userService.GetUser(userIdString);
+                        
                         Boolean flag = true;
 
                         if (updateProjectViewModel.startdate != null && updateProjectViewModel.deadline != null)
@@ -392,7 +423,7 @@ namespace Web.Controllers
 
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-                        
+
                         var updatedProject = projectService.UpdateProject(
                             updateProjectViewModel.id,
                             updateProjectViewModel.name,
@@ -400,6 +431,21 @@ namespace Web.Controllers
                             deadline,
                             startdate
                         );
+                        
+                        
+                        NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                        NotificationSentence sentence = builder.EditProjectSentence(
+                            currentUser.ID,
+                            updateProjectViewModel.id);
+                        IEnumerable<User> notifiedUsers =
+                            notificationService.NotifyToUsersOfProject(updateProjectViewModel.id, sentence);
+
+                        IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                        if (context != null)
+                        {
+                            context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
+                        }
+                        
                         return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(updatedProject)));
                     }
                 }
@@ -419,7 +465,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("close")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult CloseProject(DeleteProjectViewModel deleteProjectViewModel)
         {
             try
@@ -427,7 +473,26 @@ namespace Web.Controllers
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     ProjectService projectService = new ProjectService(db);
+                    UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    
                     projectService.CloseProject(deleteProjectViewModel.id);
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    NotificationSentence sentence = builder.CloseProjectSentence(
+                        currentUser.ID,
+                        deleteProjectViewModel.id);
+                    IEnumerable<User> notifiedUsers =
+                        notificationService.NotifyToUsersOfProject(deleteProjectViewModel.id, sentence);
+
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
+                    }
+
                     return Ok(ResponseHelper.GetResponse());
                 }
             }
@@ -440,7 +505,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{projectId:int}")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetProjectByID(int projectId)
         {
             try
@@ -490,7 +555,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/report")]
-        [Authorize(Roles = "Admin, Manager")]
+        [System.Web.Http.Authorize(Roles = "Admin, Manager")]
         public IHttpActionResult GetProjectTotalReport(int id)
         {
             try
@@ -548,33 +613,51 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("assign")]
-        [Authorize(Roles = "Admin,Manager")]
+        [System.Web.Http.Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult AssignProject(AssignProjectModel assignProjectModel)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        ProjectService projectService = new ProjectService(db);
-                        UserService userService = new UserService(db);
-                        string userIdString = User.Identity.GetUserId();
-                        User currentUser = userService.GetUser(userIdString);
-                        Project project = projectService.AssignUsersToProject(
-                            assignProjectModel.UserIds,
-                            assignProjectModel.ProjectId,
-                            currentUser.ID
-                        );
-
-                        return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project,
-                            true, AgencyConfig.AvatarPath)));
-                    }
-                }
-                else
+                if (!ModelState.IsValid)
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
+                }
+
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ProjectService projectService = new ProjectService(db);
+                    UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    Project project = projectService.AssignUsersToProject(
+                        assignProjectModel.UserIds,
+                        assignProjectModel.ProjectId,
+                        currentUser.ID
+                    );
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    List<User> notifiedUsersList = new List<User>();
+                    foreach (int userId in assignProjectModel.UserIds)
+                    {
+                        NotificationSentence sentence = builder.AssignMemberToProjectSentence(
+                            currentUser.ID,
+                            userId,
+                            project.ID);
+                        IEnumerable<User> notifiedUsers =
+                            notificationService.NotifyToUsersOfProject(assignProjectModel.ProjectId, sentence);
+                        notifiedUsersList.AddRange(notifiedUsers);
+                    }
+
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsersList.Select(user => user.ID)));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project,
+                        true, AgencyConfig.AvatarPath)));
                 }
             }
             catch (Exception ex)
@@ -586,7 +669,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("unassign")]
-        [Authorize(Roles = "Admin,Manager")]
+        [System.Web.Http.Authorize(Roles = "Admin,Manager")]
         public IHttpActionResult UnAssignProject(AssignProjectModel assignProjectModel)
         {
             try
@@ -596,6 +679,12 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         ProjectService projectService = new ProjectService(db);
+                        UserService userService = new UserService(db);
+                        NotificationService notificationService = new NotificationService(db);
+
+                        string userIdString = User.Identity.GetUserId();
+                        User currentUser = userService.GetUser(userIdString);
+
                         foreach (var userId in assignProjectModel.UserIds)
                         {
                             UserProject NewUserProject = projectService.UnAssignProject(
@@ -605,6 +694,28 @@ namespace Web.Controllers
                         }
 
                         Project project = projectService.GetProjectByID(assignProjectModel.ProjectId);
+
+
+                        NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                        List<User> notifiedUsersList = new List<User>();
+                        foreach (int userId in assignProjectModel.UserIds)
+                        {
+                            NotificationSentence sentence = builder.UnAssignMemberFromProjectSentence(
+                                currentUser.ID,
+                                userId,
+                                project.ID);
+                            IEnumerable<User> notifiedUsers =
+                                notificationService.NotifyToUsersOfProject(assignProjectModel.ProjectId, sentence);
+                            notifiedUsersList.AddRange(notifiedUsers);
+                        }
+
+                        IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                        if (context != null)
+                        {
+                            context.Clients.All.updateNotification(
+                                new JArray(notifiedUsersList.Select(user => user.ID)));
+                        }
+
                         return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(project, true,
                             AgencyConfig.AvatarPath)));
                     }
