@@ -12,6 +12,7 @@ import {
 import {UserService} from '../../services/user.service';
 import {Cursor, StoreService} from '../../services/tree.service';
 import {Router} from '@angular/router';
+import {NotificationService} from '../../services/notification.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private userService: UserService,
               private storeService: StoreService,
+              private notificationService: NotificationService,
               private router: Router) {
     this.currentAccountCursor = this.storeService.select(['currentUser']);
     this.tokenCursor = this.storeService.select(['token']);

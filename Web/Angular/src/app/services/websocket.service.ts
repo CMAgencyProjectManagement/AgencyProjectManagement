@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Cursor, StoreService} from './tree.service';
 
-
 declare var $: any;
 
 @Injectable()
@@ -12,16 +11,21 @@ export class WebsocketService {
 
   constructor(private storeService: StoreService) {
     this.isConnectedCursor = this.storeService.select(['isWebSocketConnected']);
-    this.tokenCursor = this.storeService.select(['token']);
+    this.tokenCursor = this.storeService.select(['token', 'access_token']);
 
-    this.tokenCursor.on('update', this.handleTokenUpdate.bind(this));
+    let token = this.tokenCursor.get();
+    if (!this.connection) {
+      this.handleTokenUpdate(token);
+    }
+
+    this.tokenCursor.on('update', (event) => {
+      this.handleTokenUpdate(event.data.currentData);
+    });
   }
 
-  public handleTokenUpdate(event) {
-    const token = event.data.currentData;
-    console.debug('handleTokenUpdate', token);
-    if (token.access_token) {
-      this.connect(token.access_token);
+  public handleTokenUpdate(token) {
+    if (token) {
+      this.connect(token);
     }
   }
 
@@ -30,39 +34,15 @@ export class WebsocketService {
       throw new Error('Missing dependency');
     } else {
       this.connection = $.connection;
+      this.connection.eventHub.client.updateNotification = (data) => {
+        console.debug('WebsocketService', data);
+      };
       this.connection.hub.qs = {'token': access_token};
       this.connection.hub.url = '/signalr';
-      this.connection.hub.start().then(_ => {
-        this.isConnectedCursor.set(true);
-      })
+      this.connection.hub.start()
+        .then(_ => {
+          this.isConnectedCursor.set(true);
+        })
     }
   }
-
-  public getUserHub() {
-    if (this.isConnectedCursor.get()) {
-      return this.connection.accountHub as {
-        server: {
-          login: (username: string, password: string) => Promise<any>
-        },
-        client: any
-      };
-    } else {
-      throw new Error('Connection is not available');
-    }
-  }
-
-  public getProjectHub() {
-    if (this.isConnectedCursor.get()) {
-      return this.connection.projectHub as {
-        server: {
-          getActiveProjects: () => Promise<any>
-        },
-        client: any
-      };
-    } else {
-      throw new Error('Connection is not available');
-    }
-  }
-
-
 }

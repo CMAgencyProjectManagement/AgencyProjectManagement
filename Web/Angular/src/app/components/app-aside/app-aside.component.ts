@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NotificationService} from '../../services/notification.service';
 import {Notification, Sentence, SentenceComponent} from '../../interfaces/notification';
 import {User} from '../../interfaces/user';
-import {StoreService} from '../../services/tree.service';
+import {Cursor, StoreService} from '../../services/tree.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-aside',
@@ -11,24 +12,33 @@ import {StoreService} from '../../services/tree.service';
 export class AppAsideComponent implements OnInit {
   notifications: Notification[];
   currentUser: User;
+  notificationsCursor: Cursor;
 
   constructor(private notificationService: NotificationService,
               private storeService: StoreService) {
     this.currentUser = storeService.get(['currentUser']);
+    this.notificationsCursor = storeService.select(['notifications']);
     this.notifications = [];
   }
 
   ngOnInit(): void {
+    this.notificationsCursor.on('update', (event) => {
+      this.updateNotificationData(event.data.currentData);
+    });
     this.notificationService.getNotifications()
-      .then((value: any[]) => {
-        for (let notification of value) {
-          this.applyReceiverToNotification(notification);
-        }
-        this.notifications = value;
+      .then(value => {
+        // do nothing here
       })
       .catch(reason => {
         console.debug('AppAsideComponent - ngOnInit', reason);
-      })
+      });
+  }
+
+  updateNotificationData(data) {
+    this.notifications = _.cloneDeep(data);
+    for (let notification of this.notifications) {
+      this.applyReceiverToNotification(notification);
+    }
   }
 
   applyReceiverToNotification(notification: Notification) {

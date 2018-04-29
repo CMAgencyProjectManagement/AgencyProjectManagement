@@ -12,6 +12,7 @@ using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.StaticFiles;
 using Owin;
 using Web;
+using Web.Hubs;
 using Web.Security;
 
 [assembly: OwinStartup(typeof(Startup))]

@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map'
   template: '<title>{{title | async}}</title> <router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
-
+  tokenCursor;
   title: Observable<string>;
 
   constructor(
@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title) {
+    this.tokenCursor = this.storeService.select(['token', 'access_token'])
   }
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit {
     let user = this.userService.getLocalUser();
 
     if (token && user) {
-      this.storeService.set(['token', 'access_token'], token);
+      this.tokenCursor.set(token);
       this.storeService.set(['currentUser'], user);
     }
 
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit {
           }
         }
         return null;
-      }).subscribe( (title: any) => {
+      }).subscribe((title: any) => {
       this.titleService.setTitle(title);
     });
   }

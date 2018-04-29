@@ -6,8 +6,10 @@ using System.Net;
 using System.Web.Http;
 using Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.Hubs;
 
 namespace Web.Controllers
 {
@@ -16,7 +18,7 @@ namespace Web.Controllers
     {
         [HttpGet]
         [Route("")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetNotificationOfCurrentUser()
         {
             try
@@ -34,7 +36,7 @@ namespace Web.Controllers
 
                     IEnumerable<JObject> notificationsJson = notificationService
                         .FormatNotificationForUser(notificationUsers, currentUser);
-
+                    
                     return Ok(ResponseHelper.GetResponse(new JArray(notificationsJson)));
                 }
             }
@@ -43,11 +45,13 @@ namespace Web.Controllers
                 return Content(HttpStatusCode.InternalServerError,
                     ResponseHelper.GetExceptionResponse(ex));
             }
+            
+            
         }
 
         [HttpPut]
         [Route("checkin")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult CheckinNotification()
         {
             try
@@ -59,7 +63,6 @@ namespace Web.Controllers
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     User user = userService.GetUser(userId);
                     notificationService.CheckinNotification(user.ID);
-                    ;
 
                     return Ok(ResponseHelper.GetResponse());
                 }
