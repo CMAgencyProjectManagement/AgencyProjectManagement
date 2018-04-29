@@ -37,7 +37,7 @@ const routes: Routes = [
         path: 'profile',
         component: DetailUserComponent,
         data: {
-          title: 'View profile'
+          title: 'Account detail'
         }
       },
       {
@@ -49,7 +49,7 @@ const routes: Routes = [
       },
       {
         data: {
-          title: 'Update accounts'
+          title: 'Update account'
         },
         path: 'update',
         component: UpdateUserComponent
