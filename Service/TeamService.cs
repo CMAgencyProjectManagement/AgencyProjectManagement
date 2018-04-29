@@ -197,7 +197,7 @@ namespace Service
             }
             else
             {
-                throw new ObjectNotFoundException($"User with ID{userId} still in active tasks");
+                throw new InvalidOperationException($"Cant set Manager, User named {user.Name} still has tasks in project(s)");
             }
         }
 

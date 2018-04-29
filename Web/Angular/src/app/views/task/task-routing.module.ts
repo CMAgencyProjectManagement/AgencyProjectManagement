@@ -14,21 +14,21 @@ const routes: Routes = [
     children: [
       {
         data: {
-          title: 'View task'
+          title: 'Task detail'
         },
         path: ':id/view',
         component: ViewTask,
       },
       {
         data: {
-          title: "View task's detail"
+          title: "Task 1"
         },
         path: ':id/detail',
         component: ViewTask,
       },
       {
         data: {
-          title: 'View tasks'
+          title: 'Tasks detail'
         },
         path: 'view',
         component: ViewTask,

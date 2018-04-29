@@ -22,7 +22,7 @@ const routes: Routes = [
         path: ':id/detail',
         component: DetailTeamComponent,
         data: {
-          title: 'Department Detail'
+          title: 'Department detail'
         }
       },
       {
