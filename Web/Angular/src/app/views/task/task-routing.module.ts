@@ -14,35 +14,35 @@ const routes: Routes = [
     children: [
       {
         data: {
-          title: 'View'
+          title: 'View task'
         },
         path: ':id/view',
         component: ViewTask,
       },
       {
         data: {
-          title: 'View'
+          title: "View task's detail"
         },
         path: ':id/detail',
         component: ViewTask,
       },
       {
         data: {
-          title: 'View'
+          title: 'View tasks'
         },
         path: 'view',
         component: ViewTask,
       },
       {
         data: {
-          title: 'Update'
+          title: 'Update task'
         },
         path: 'edit/:id',
         component: EditTask,
       },
       {
         data: {
-          title: 'Create'
+          title: 'Create task'
         },
         path: 'create',
         component: CreateTask,
