@@ -29,7 +29,7 @@ const routes: Routes = [
         path: 'my',
         component: DetailTeamComponent,
         data: {
-          title: 'My department'
+          title: 'Department detail'
         }
       },
       {
