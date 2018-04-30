@@ -3,7 +3,7 @@ webpackJsonp(["user-management.module"],{
 /***/ "../../../../../src/app/views/user-management/create-user/create-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>New account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"signupForm\" class=\"form-horizontal col-6 \">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"username-input\">Username <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"username-input\" name=\"username-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.username}\"\r\n                formControlName=\"username\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.username\">{{errors.username}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n                formControlName=\"password\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Full name <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone<span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker #datepicker [options]=\"myDatePickerOptions\" formControlName=\"birthDate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n\r\n            <label class=\"col-4 col-form-label text-right\">Department </label>\r\n\r\n\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\" (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div>\r\n\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreate()\" [ladda]=\"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Reset</button>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Create account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n        <div [formGroup]=\"signupForm\" class=\"form-horizontal col-6 \">\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"username-input\">Username <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"username-input\" name=\"username-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.username}\"\r\n                formControlName=\"username\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.username\">{{errors.username}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n                formControlName=\"password\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"name-input\">Full name <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"name-input\" name=\"name-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email <span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"email\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone<span style=\"color: #ee0d0d\"><strong>*</strong></span></label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Date of Birth</label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker #datepicker [options]=\"myDatePickerOptions\" formControlName=\"birthDate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" [ngStyle]=\"{'display':'block'}\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n\r\n\r\n          </div>\r\n          <div class=\"form-group row\" *ngIf=\"teams\">\r\n\r\n            <label class=\"col-4 col-form-label text-right\">Department </label>\r\n\r\n\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"file-input\">Avatar</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"file\" id=\"file-input\" name=\"file-input\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.avatar}\" (change)=\"avatarFileChange($event)\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.avatar\">{{errors.avatar}}</div>\r\n            </div>\r\n\r\n          </div>\r\n\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleCreate()\" [ladda]=\"isLoading\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"signupForm.reset()\">Reset</button>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -197,7 +197,7 @@ var CreateUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/detail-user/detail-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account's detail</strong>\r\n  </div>\r\n  <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n  <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n    <div id=\"AvaAndDe\" class=\"row\" *ngIf=\"foundUser\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div class=\"col-4\">\r\n        <div class=\"button-row\">\r\n          <a href=\"#/account/update\" class=\"btn btn-secondary bg-light\" style=\"font-size: 20px\">\r\n            <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n          </a>\r\n        </div>\r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase; font-size: 40px; color: #3960A4\">\r\n          <strong>{{foundUser.name}}</strong>\r\n        </div>\r\n        <div id=\"team\" *ngIf=\"foundUser\" style=\"font-size: 30px\">\r\n          <a href=\"#/department/{{foundUser.team.id}}/detail\" *ngIf=\"foundUser.team\">{{foundUser.team.name}}</a>\r\n          <span *ngIf=\"!foundUser.team\" style=\"font-size: 25px\">Not Update</span>\r\n        </div>\r\n        <br/>\r\n        <div id=\"role\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isAdmin\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Admin</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Manager</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Staff</span>\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"ban\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isActive\">\r\n            <i class=\"fa fa-check fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #3AA65B\"> &nbsp;&nbsp;&nbsp;Active</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\">\r\n            <i class=\"fa fa-close fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #CB0A0E\"> &nbsp;&nbsp;&nbsp;Banned</span>\r\n          </div>\r\n\r\n        </div>\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-phone fa-lg\"></i>\r\n          <span style=\"font-size: 20px\" *ngIf=\"foundUser.phone\"> &nbsp;&nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>\r\n          <span style=\"font-size: 20px\" *ngIf=\"!foundUser.phone\"> &nbsp;&nbsp;&nbsp;&nbsp;Not Update</span>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-envelope-o fa-lg\" ></i>\r\n          <span style=\"font-size: 20px\" *ngIf=\"foundUser.email\"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>\r\n          <span style=\"font-size: 20px\" *ngIf=\"!foundUser.email\"> &nbsp;&nbsp;&nbsp;Not Update</span>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\">\r\n            <i class=\"fa fa-birthday-cake fa-lg\"></i>\r\n            <span style=\"font-size: 20px\" *ngIf=\"foundUser.birthdate\"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>\r\n            <span style=\"font-size: 20px\" *ngIf=\"!foundUser.birthdate\"> &nbsp;&nbsp;&nbsp;Not Update</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>Account detail</strong>\r\n  </div>\r\n  <app-spinner *ngIf=\"isLoadingPage\"></app-spinner>\r\n  <div class=\"card-body animated fadeIn\" *ngIf=\"!isLoadingPage\">\r\n    <div id=\"AvaAndDe\" class=\"row\" *ngIf=\"foundUser\">\r\n\r\n      <div id=\"left\" class=\"col-4\">\r\n        <img id=\"img\" *ngIf=\"foundUser\" src=\"{{foundUser.avatar}}\" height=\"100%\" width=\"100%\">\r\n      </div>\r\n      <div class=\"col-8\">\r\n        \r\n        <div id=\"name\" *ngIf=\"foundUser\" style=\"text-transform: uppercase; font-size: 30px; color: #3960A4\">\r\n          <strong>{{foundUser.name}}</strong>\r\n        </div>\r\n        <div id=\"team\" *ngIf=\"foundUser\" style=\"font-size: 30px\">\r\n          <a href=\"#/department/{{foundUser.team.id}}/detail\" *ngIf=\"foundUser.team\">{{foundUser.team.name}}</a>\r\n          <span *ngIf=\"!foundUser.team\" style=\"font-size: 25px\">No information</span>\r\n        </div>\r\n        <br/>\r\n        <div id=\"role\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isAdmin\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Admin</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Manager</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isAdmin && !foundUser.isManager\">\r\n            <i class=\"fa fa-user-circle-o fa-lg\"></i>\r\n            <span style=\"font-size: 20px\"> &nbsp;&nbsp;&nbsp;Staff</span>\r\n          </div>\r\n        </div>\r\n\r\n        <!-- <div id=\"ban\" *ngIf=\"foundUser\">\r\n          <div *ngIf=\"foundUser.isActive\">\r\n            <i class=\"fa fa-check fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #3AA65B\"> &nbsp;&nbsp;&nbsp;Active</span>\r\n          </div>\r\n          <div *ngIf=\"!foundUser.isActive\">\r\n            <i class=\"fa fa-close fa-lg\"></i>\r\n            <span style=\"font-size: 20px;color: #CB0A0E\"> &nbsp;&nbsp;&nbsp;Banned</span>\r\n          </div>\r\n        </div> -->\r\n\r\n        <div id=\"phone\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-phone fa-lg\"></i>\r\n          <span style=\"font-size: 20px\" *ngIf=\"foundUser.phone\"> &nbsp;&nbsp;&nbsp;{{foundUser.phone}}</span>\r\n          <span style=\"font-size: 20px\" *ngIf=\"!foundUser.phone\"> &nbsp;&nbsp;&nbsp;No information</span>\r\n        </div>\r\n        <div id=\"email\" *ngIf=\"foundUser\">\r\n          <i class=\"fa fa-envelope-o fa-lg\" ></i>\r\n          <span style=\"font-size: 20px\" *ngIf=\"foundUser.email\"> &nbsp;&nbsp;&nbsp;{{foundUser.email}}</span>\r\n          <span style=\"font-size: 20px\" *ngIf=\"!foundUser.email\"> &nbsp;&nbsp;&nbsp;No information</span>\r\n        </div>\r\n        <div>\r\n          <div id=\"birthdate\" *ngIf=\"foundUser\">\r\n            <i class=\"fa fa-birthday-cake fa-lg\"></i>\r\n            <span style=\"font-size: 20px\" *ngIf=\"foundUser.birthdate\"> &nbsp;&nbsp;&nbsp;{{foundUser.birthdate |date:'dd/MM/yyyy'}}</span>\r\n            <span style=\"font-size: 20px\" *ngIf=\"!foundUser.birthdate\"> &nbsp;&nbsp;&nbsp;No information</span>\r\n          </div>\r\n        </div>\r\n        <div class=\"button-row\">\r\n            <a href=\"#/account/update/{{foundUser.id}}\" class=\"btn btn-primary bg-primary text-light\" style=\"font-size: 20px;margin-top: 10px;\" *ngIf=\"!match\">\r\n              <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n            </a>\r\n            <a href=\"#/account/update\" class=\"btn btn-primary bg-primary text-light\" style=\"font-size: 20px;margin-top: 10px;\" *ngIf=\"match\">\r\n              <i class=\"fa fa-edit\"></i>&nbsp; Update\r\n            </a>\r\n          </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -254,18 +254,30 @@ var DetailUserComponent = /** @class */ (function () {
         this.route = route;
         this.location = location;
         this.selectedUser = [];
+        this.match = false;
         this.isLoadingPage = true;
-        // let currentUser = this.storeService.get(['currentUser']) as User;
+        this.currentUser = this.storeService.get(['currentUser']);
         // this.managementMode = currentUser.isManager || currentUser.isAdmin;
     }
     DetailUserComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.entity = {};
         if (this.route.snapshot.paramMap.get('id') == undefined) {
-            this.foundUser = this.storeService.get(['currentUser']);
+            this.match = true;
+            this.foundUser = this.currentUser;
             this.isLoadingPage = false;
         }
         else {
             this.userID = Number(this.route.snapshot.paramMap.get('id'));
+            // if (this.userID == this.currentUser.id) {
+            //   this.match = true;
+            //   this.foundUser = this.currentUser;
+            // } else {
+            //   this.getAllTeam();
+            // }
+            this.teamService.getAllTeam().then(function (value) {
+                _this.teams = value;
+            });
             this.getAllTeam();
         }
     };
@@ -277,19 +289,19 @@ var DetailUserComponent = /** @class */ (function () {
             for (var i = 0; i < _this.users.length; i++) {
                 if (_this.users[i].id == _this.userID) {
                     _this.foundUser = _this.users[i];
-                    _this.selectedUser.push({
-                        id: _this.foundUser.id,
-                        itemName: _this.foundUser.name,
-                        itemUsername: _this.foundUser.username,
-                        itemBirthday: _this.foundUser.birthdate,
-                        itemAvatar: _this.foundUser.avatar,
-                        itemPhone: _this.foundUser.phone,
-                        itemTeam: _this.foundUser.team.name,
-                        itemEmail: _this.foundUser.email,
-                        itemManager: _this.foundUser.isManager,
-                        itemAdmin: _this.foundUser.isAdmin,
-                        itemBan: _this.foundUser.isActive,
-                    });
+                    // this.selectedUser.push({
+                    //   id: this.foundUser.id,
+                    //   itemName: this.foundUser.name,
+                    //   itemUsername: this.foundUser.username,
+                    //   itemBirthday: this.foundUser.birthdate,
+                    //   itemAvatar: this.foundUser.avatar,
+                    //   itemPhone: this.foundUser.phone,
+                    //   itemTeam: this.foundUser.team.name,
+                    //   itemEmail: this.foundUser.email,
+                    //   itemManager: this.foundUser.isManager,
+                    //   itemAdmin: this.foundUser.isAdmin,
+                    //   itemBan: this.foundUser.isActive,
+                    // });
                 }
             }
             _this.isLoadingPage = false;
@@ -493,7 +505,7 @@ var UpdateMyUserComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/update-user/update-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update account</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isPageLoading\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-6\">\r\n          <!--Fullname -->\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"fullname-input\">Fullname\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"fullname-input\" name=\"fullname-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{fullname.email}}</div>\r\n            </div>\r\n          </div>\r\n          <!--Birthdate -->\r\n          <div class=\"form-group row\">\r\n              <label class=\"col-4 col-form-label text-right\" for=\"birthdate-input\">Birthdate\r\n                <span style=\"color: #ee0d0d\">\r\n                  <strong>*</strong>\r\n                </span>\r\n              </label>\r\n              <div class=\"col-8 datepicker-group\">\r\n                  <my-date-picker #datepicker [options]=\"myDatePickerOptions\" formControlName=\"birthdate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                    required></my-date-picker>\r\n                  <div class=\"invalid-feedback\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n                </div>\r\n            </div>\r\n          <!--Email -->\r\n          <div class=\"form-group row\" *ngIf=\"foundUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\" *ngIf=\"!foundUser.isAdmin\">\r\n              <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email\r\n              </label>\r\n              <div class=\"col-8\">\r\n                <input disabled=\"true\" type=\"text\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n                <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n              </div>\r\n            </div>\r\n          <!-- Phone -->\r\n          <div class=\"form-group row\" *ngIf=\"foundUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\" *ngIf=\"!foundUser.isAdmin\">\r\n              <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone\r\n              </label>\r\n              <div class=\"col-8\">\r\n                <input disabled=\"true\" type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                  formControlName=\"phone\">\r\n                <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n              </div>\r\n            </div>\r\n          <!-- Department -->\r\n          <div class=\"form-group row\" *ngIf=\"teams && foundUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\">Department</label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- Status -->\r\n          <div class=\"form-group row\" *ngIf=\"foundUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\">Active</label>\r\n            <div class=\"col-8\">\r\n              <label class=\"switch switch-3d switch-primary\">\r\n                <input type=\"checkbox\" class=\"switch-input\" formControlName=\"isActive\">\r\n                <span class=\"switch-label\"></span>\r\n                <span class=\"switch-handle\"></span>\r\n              </label>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.isActive\">{{errors.isActive}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- Password -->\r\n          <div class=\"form-group row\" *ngIf=\"foundUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\">Password </label>\r\n            <div class=\"col-8\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openConfirmResetPassword()\" [ladda]=\"isResetPasswordLoading\">\r\n                Reset Password</button>\r\n              <div *ngIf=\"newpassword\" class=\"alert alert-success\" role=\"alert\">\r\n                New password: {{newpassword}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\" *ngIf=\"foundUser.isAdmin\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdate()\" [ladda]=\"isSavingChange\">\r\n                Save changes\r\n              </button>\r\n              <button class=\"btn btn-secondary\" type=\"button\" (click)=\"setDefaultValue(foundUser)\">Reset</button>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\" *ngIf=\"!foundUser.isAdmin\">\r\n              <div class=\"col-12\">\r\n                <button class=\"btn btn-primary\" (click)=\"handleUpdate()\" [ladda]=\"isSavingChange\">\r\n                  Save changes\r\n                </button>\r\n                <button class=\"btn btn-secondary\" type=\"button\" (click)=\"setDefaultValue(foundUser)\">Reset</button>\r\n              </div>\r\n            </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>Update account</strong>\r\n      </div>\r\n       <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div class=\"card-body animated fadeIn\" *ngIf=\"!isPageLoading\">\r\n        <div [formGroup]=\"updateForm\" class=\"form-horizontal col-6\">\r\n          <!--Fullname -->\r\n          <div class=\"form-group row\" *ngIf=\"!currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"fullname-input\">Fullname\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"fullname-input\" name=\"fullname-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\" *ngIf=\"currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"fullname-input\">Fullname\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"fullname-input\" name=\"fullname-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.fullname}\"\r\n                formControlName=\"fullname\" disabled=\"true\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.fullname\">{{errors.fullname}}</div>\r\n            </div>\r\n          </div>\r\n          <!--Birthdate -->\r\n          <div class=\"form-group row\" *ngIf=\"!currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"birthdate-input\">Birthdate\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8 datepicker-group\">\r\n              <my-date-picker #birthDatePicker [options]=\"myDatePickerOptions\" formControlName=\"birthdate\" [ngClass]=\"{'form-control': false, 'is-invalid': errors.birthdate}\"\r\n                required></my-date-picker>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.birthdate\">{{errors.birthdate}}</div>\r\n            </div>\r\n          </div>\r\n          <!--Password-->\r\n          <div class=\"form-group row\" *ngIf=\"!currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"password-input\">Password</label>\r\n            <div class=\"col-8\">\r\n              <input type=\"password\" id=\"password-input\" name=\"password-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.password}\"\r\n              formControlName=\"password\">\r\n            <div class=\"invalid-feedback\" *ngIf=\"errors.password\">{{errors.password}}</div>\r\n            </div>\r\n          </div>\r\n          <!--Email -->\r\n          <div class=\"form-group row\" *ngIf=\"currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\" formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\" *ngIf=\"!currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"email-input\">Email\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input disabled=\"true\" type=\"text\" id=\"email-input\" name=\"email-input\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.email}\"\r\n                formControlName=\"email\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.email\">{{errors.email}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- Phone -->\r\n          <div class=\"form-group row\" *ngIf=\"currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone\r\n              <span style=\"color: #ee0d0d\">\r\n                <strong>*</strong>\r\n              </span>\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\" *ngIf=\"!currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\" for=\"phone-input\">Phone\r\n            </label>\r\n            <div class=\"col-8\">\r\n              <input disabled=\"true\" type=\"text\" id=\"phone-input\" name=\"phone-input\" class=\"form-control\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.phone}\"\r\n                formControlName=\"phone\">\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.phone\">{{errors.phone}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- Department -->\r\n          <div class=\"form-group row\" *ngIf=\"teams && currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\">Department</label>\r\n            <div class=\"col-8\">\r\n              <select formControlName=\"team\" [ngClass]=\"{'form-control': true, 'is-invalid': errors.team}\">\r\n                <option *ngFor=\"let team of teams\" value=\"{{team.id}}\">{{team.name}}</option>\r\n              </select>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.team\">{{errors.team}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- Status -->\r\n          <div class=\"form-group row\" *ngIf=\"currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\">Active</label>\r\n            <div class=\"col-8\">\r\n              <label class=\"switch switch-3d switch-primary\">\r\n                <input type=\"checkbox\" class=\"switch-input\" formControlName=\"isActive\">\r\n                <span class=\"switch-label\"></span>\r\n                <span class=\"switch-handle\"></span>\r\n              </label>\r\n              <div class=\"invalid-feedback\" *ngIf=\"errors.isActive\">{{errors.isActive}}</div>\r\n            </div>\r\n          </div>\r\n          <!-- Password -->\r\n          <div class=\"form-group row\" *ngIf=\"currentUser.isAdmin\">\r\n            <label class=\"col-4 col-form-label text-right\">Password </label>\r\n            <div class=\"col-8\">\r\n              <button type=\"button\" class=\"btn btn-secondary\" (click)=\"openConfirmResetPassword()\" [ladda]=\"isResetPasswordLoading\">\r\n                Reset Password</button>\r\n              <div *ngIf=\"newpassword\" class=\"alert alert-success\" role=\"alert\">\r\n                New password: {{newpassword}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"form-actions text-center\">\r\n            <div class=\"col-12\">\r\n              <button class=\"btn btn-primary\" (click)=\"handleUpdate()\" [ladda]=\"isSavingChange\" style=\"margin-left: 30px;\">\r\n                Save changes\r\n              </button>\r\n              <button *ngIf=\"!currentUser.isAdmin\" class=\"btn btn-secondary\" type=\"button\" onclick=\"location.href='#/account/profile'\" style=\"margin-left: 30px;width: 100px;\">Cancel</button>\r\n              <button *ngIf=\"currentUser.isAdmin\" class=\"btn btn-secondary\" type=\"button\" onclick=\"location.href='#/account/view'\" style=\"margin-left: 30px;width: 100px;\">Cancel</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -559,6 +571,17 @@ var UpdateUserComponent = /** @class */ (function () {
         this.router = router;
         this.route = route;
         this.location = location;
+        this.updateForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
+            email: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+            phone: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+            team: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+            isActive: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+            fullname: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+            birthdate: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+            password: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
+        });
+        this.users = [];
+        this.currentUser = this.storeService.get(['currentUser']);
         this.isPageLoading = true;
         this.isResetPasswordLoading = false;
         this.isSavingChange = false;
@@ -567,56 +590,36 @@ var UpdateUserComponent = /** @class */ (function () {
     UpdateUserComponent.prototype.ngOnInit = function () {
         var _this = this;
         if (this.route.snapshot.paramMap.get('id') == undefined) {
-            this.foundUser = this.storeService.get(['currentUser']);
-            if (this.foundUser.team) {
-                this.teamService.getDetail(this.foundUser.team.id)
-                    .then(function (value) {
-                    _this.teams = value;
-                    _this.updateLoadingState();
-                });
-            }
-            else {
-                this.teams = null;
-                this.updateLoadingState();
-            }
-            this.updateForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
-                email: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                phone: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                team: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                isActive: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                fullname: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                birthdate: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                password: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-            });
+            this.foundUser = this.currentUser;
+            // if (this.foundUser.team) {
+            //   this.teamService.getDetail(this.foundUser.team.id)
+            //     .then(value => {
+            //       this.teams = value;
+            //       this.updateLoadingState();
+            //     });
+            // } else {
+            //   this.teams = null;
+            //   this.updateLoadingState();
+            // }
             this.setDefaultValue(this.foundUser);
-            this.updateLoadingState();
+            this.isPageLoading = false;
         }
         else {
             this.userID = Number(this.route.snapshot.paramMap.get('id'));
             this.teamService.getAllTeam()
                 .then(function (value) {
                 _this.teams = value;
-                _this.updateLoadingState();
             });
             this.userService.getAllUser()
                 .then(function (value) {
                 _this.users = value;
                 for (var i = 0; i < _this.users.length; i++) {
-                    if (_this.users[i].id === _this.userID) {
+                    if (_this.users[i].id == _this.userID) {
                         _this.foundUser = _this.users[i];
                         _this.setDefaultValue(_this.foundUser);
-                        _this.updateLoadingState();
+                        _this.isPageLoading = false;
                     }
                 }
-                _this.updateForm = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormGroup */]({
-                    email: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                    phone: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                    team: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                    isActive: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                    fullname: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                    birthdate: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                    password: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */](undefined),
-                });
             });
         }
     };
@@ -636,6 +639,8 @@ var UpdateUserComponent = /** @class */ (function () {
                 }
             }
         });
+        this.updateForm.controls['password'].setValue(user.password);
+        console.debug(user.password);
         this.updateForm.controls['fullname'].setValue(user.name);
         this.updateForm.controls['email'].setValue(user.email);
         this.updateForm.controls['phone'].setValue(user.phone);
@@ -680,63 +685,138 @@ var UpdateUserComponent = /** @class */ (function () {
     };
     UpdateUserComponent.prototype.setErrorsNull = function () {
         this.errors = {
-            username: '',
-            password: '',
             fullname: '',
             email: '',
             phone: '',
             birthdate: '',
             team: '',
-            avatar: '',
-            isActive: ''
+            isActive: '',
+            password: '',
         };
     };
     UpdateUserComponent.prototype.handleUpdate = function () {
         var _this = this;
         this.setErrorsNull();
-        if (confirm('Save change ?')) {
-            this.isSavingChange = true;
-            var formValue = this.updateForm.value;
-            this.userService.updateUser(this.foundUser.id, formValue.phone, formValue.email, formValue.team, formValue.isActive).then(function (value) {
-                _this.isSavingChange = false;
-            }).catch(function (reason) {
-                _this.errorMessage = reason.message;
-                var errors = reason.Data;
-                for (var _i = 0, errors_1 = errors; _i < errors_1.length; _i++) {
-                    var error = errors_1[_i];
-                    var fieldName = error.key;
-                    var errorMessage = error.message;
-                    switch (fieldName) {
-                        case 'Username':
-                            _this.errors.username = errorMessage;
-                            break;
-                        case 'Password':
-                            _this.errors.password = errorMessage;
-                            break;
-                        case 'Name':
-                            _this.errors.fullname = errorMessage;
-                            break;
-                        case 'Phone':
-                            _this.errors.phone = errorMessage;
-                            break;
-                        case 'Birthdate':
-                            _this.errors.birthdate = errorMessage;
-                            break;
-                        case 'Email':
-                            _this.errors.email = errorMessage;
-                            break;
-                        case 'Team':
-                            _this.errors.team = errorMessage;
-                            break;
-                        case 'Avatar':
-                            _this.errors.avatar = errorMessage;
-                            break;
-                    }
-                }
-                _this.isSavingChange = false;
-            });
+        // if (confirm('Save change ?')) {
+        //   this.isSavingChange = true;
+        //   const formValue = this.updateForm.value;
+        //   this.userService.updateUser(
+        //     this.foundUser.id,
+        //     formValue.phone,
+        //     formValue.email,
+        //     formValue.team,
+        //     formValue.isActive
+        //   ).then(value => {
+        //     this.isSavingChange = false;
+        //   }).catch(reason => {
+        //     this.errorMessage = reason.message;
+        //     let errors = reason.Data;
+        //     for (let error of errors) {
+        //       const fieldName = error.key;
+        //       const errorMessage = error.message;
+        //       switch (fieldName) {
+        //         case 'Username':
+        //           this.errors.username = errorMessage;
+        //           break;
+        //         case 'Password':
+        //           this.errors.password = errorMessage;
+        //           break;
+        //         case 'Name':
+        //           this.errors.fullname = errorMessage;
+        //           break;
+        //         case 'Phone':
+        //           this.errors.phone = errorMessage;
+        //           break;
+        //         case 'Birthdate':
+        //           this.errors.birthdate = errorMessage;
+        //           break;
+        //         case 'Email':
+        //           this.errors.email = errorMessage;
+        //           break;
+        //         case 'Team':
+        //           this.errors.team = errorMessage;
+        //           break;
+        //         case 'Avatar':
+        //           this.errors.avatar = errorMessage;
+        //           break;
+        //       }
+        //     }
+        //     this.isSavingChange = false;
+        //   })
+        // }
+        if (this.currentUser.isAdmin) {
+            var onConfirm = function () {
+                var formValue = _this.updateForm.value;
+                _this.isSavingChange = true;
+                _this.userService.updateUser(_this.foundUser.id, formValue.phone, formValue.email, formValue.team, formValue.isActive)
+                    .then(function (value) {
+                    _this.isSavingChange = false;
+                    _this.router.navigate(['account/view']);
+                })
+                    .catch(function (reason) {
+                    _this.isSavingChange = false;
+                    _this.setErrors(reason.Data);
+                });
+            };
+            var initialState = {
+                message: "Are you sure to save these changes?",
+                confirmCallback: onConfirm
+            };
+            this.modalService.show(__WEBPACK_IMPORTED_MODULE_7__cmaComponents_modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+        }
+        else {
+            var onConfirm = function () {
+                var birthdate = __WEBPACK_IMPORTED_MODULE_3_moment__(_this.birthDatePicker.selectionDayTxt, 'DD/MM/YYYY');
+                var formValue = _this.updateForm.value;
+                _this.isSavingChange = true;
+                _this.userService.updateProfile(formValue.fullname, birthdate.isValid() ? birthdate.format('YYYY-MM-DD') : _this.birthDatePicker.selectionDayTxt, formValue.password)
+                    .then(function (value) {
+                    _this.isSavingChange = false;
+                    _this.router.navigate(['account/profile']);
+                })
+                    .catch(function (reason) {
+                    _this.isSavingChange = false;
+                    _this.setErrors(reason.Data);
+                });
+            };
+            var initialState = {
+                message: "Are you sure to save these changes?",
+                confirmCallback: onConfirm
+            };
+            this.modalService.show(__WEBPACK_IMPORTED_MODULE_7__cmaComponents_modals_confirm_modal_confirm_modal_component__["a" /* ConfirmModalComponent */], { initialState: initialState, class: 'modal-dialog' });
         }
     };
+    UpdateUserComponent.prototype.setErrors = function (errors) {
+        for (var _i = 0, errors_1 = errors; _i < errors_1.length; _i++) {
+            var error = errors_1[_i];
+            var fieldName = error.key;
+            var errorMessage = error.message;
+            switch (fieldName) {
+                case 'Email':
+                    this.errors.email = errorMessage;
+                    break;
+                case 'Phone':
+                    this.errors.phone = errorMessage;
+                    break;
+                case 'Department':
+                    this.errors.team = errorMessage;
+                    break;
+                case 'Birthdate':
+                    this.errors.birthdate = errorMessage;
+                    break;
+                case 'Fullname':
+                    this.errors.fullname = errorMessage;
+                    break;
+                case 'Password':
+                    this.errors.password = errorMessage;
+                    break;
+            }
+        }
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('birthDatePicker'),
+        __metadata("design:type", Object)
+    ], UpdateUserComponent.prototype, "birthDatePicker", void 0);
     UpdateUserComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-update-user',
@@ -790,7 +870,7 @@ var routes = [
         children: [
             {
                 data: {
-                    title: 'View'
+                    title: 'View accounts'
                 },
                 path: 'view',
                 component: __WEBPACK_IMPORTED_MODULE_3__view_user_view_user_component__["a" /* ViewUserComponent */],
@@ -799,33 +879,40 @@ var routes = [
                 path: 'detail/:id',
                 component: __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__["a" /* DetailUserComponent */],
                 data: {
-                    title: 'Account Detail'
+                    title: 'Account detail'
+                }
+            },
+            {
+                path: ':id/detail',
+                component: __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__["a" /* DetailUserComponent */],
+                data: {
+                    title: 'Account detail'
                 }
             },
             {
                 path: 'profile',
                 component: __WEBPACK_IMPORTED_MODULE_5__detail_user_detail_user_component__["a" /* DetailUserComponent */],
                 data: {
-                    title: 'Account Detail'
+                    title: 'Account detail'
                 }
             },
             {
                 data: {
-                    title: 'Create'
+                    title: 'Create account'
                 },
                 path: 'create',
                 component: __WEBPACK_IMPORTED_MODULE_2__create_user_create_user_component__["a" /* CreateUserComponent */]
             },
             {
                 data: {
-                    title: 'Update'
+                    title: 'Update account'
                 },
                 path: 'update',
                 component: __WEBPACK_IMPORTED_MODULE_4__update_user_update_user_component__["a" /* UpdateUserComponent */]
             },
             {
                 data: {
-                    title: 'Update'
+                    title: 'Update account'
                 },
                 path: 'update/:id',
                 component: __WEBPACK_IMPORTED_MODULE_4__update_user_update_user_component__["a" /* UpdateUserComponent */]
@@ -927,7 +1014,7 @@ var UserManagementModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/user-management/view-user/view-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>All accounts</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=!isPageLoading class=\"card-body animated fadeIn\" >\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchUsername.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (input)=\"search(searchUsername.value)\" #searchUsername>\r\n        </div>\r\n        <div class=\"dataTable-container hide-search\">\r\n          <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n            <thead>\r\n            <tr>\r\n              <th>Avatar</th>\r\n              <th>Username</th>\r\n              <th>Full Name</th>\r\n              <th>Birthdate</th>\r\n              <th>Department</th>\r\n              <th>Role</th>\r\n              <th>Status</th>\r\n              <th>Action</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr *ngFor=\"let user of users;let i = index\">\r\n              <td class=\"text-center\">\r\n                <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n                <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar avatar-lg\">\r\n              </td>\r\n              <td>\r\n                <a href=\"#/account/detail/{{user.id}}\">{{user.username}}</a>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.name\">{{user.name}}</p>\r\n                <p *ngIf=\"!user.name\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</p>\r\n                <p *ngIf=\"!user.birthdate\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"!user.team\">N/A</p>\r\n                <p *ngIf=\"user.team\">{{user.team.name}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <strong>\r\n                  <p *ngIf=\"user.isAdmin\">Admin</p>\r\n                </strong>\r\n                <strong>\r\n                  <p *ngIf=\"!user.isAdmin && user.isManager\">Manager</p>\r\n                </strong>\r\n                <p *ngIf=\"!user.isAdmin && !user.isManager\">Staff</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <p *ngIf=\"user.isActive\">\r\n                  Active\r\n                </p>\r\n                <p *ngIf=\"!user.isActive\">\r\n                  Banned\r\n                </p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/account/update?id={{user.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>View accounts</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=!isPageLoading class=\"card-body animated fadeIn\" >\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchUsername.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (input)=\"search(searchUsername.value)\" #searchUsername>\r\n        </div>\r\n        <div class=\"dataTable-container hide-search\">\r\n          <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n            <thead>\r\n            <tr>\r\n              <th>Avatar</th>\r\n              <th>Username</th>\r\n              <th>Full Name</th>\r\n              <th>Birthdate</th>\r\n              <th>Department</th>\r\n              <th>Role</th>\r\n              <th>Status</th>\r\n              <th>Action</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr *ngFor=\"let user of users;let i = index\">\r\n              <td class=\"text-center\">\r\n                <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar avatar-lg\">\r\n                <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar avatar-lg\">\r\n              </td>\r\n              <td>\r\n                <a href=\"#/account/detail/{{user.id}}\">{{user.username}}</a>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.name\">{{user.name}}</p>\r\n                <p *ngIf=\"!user.name\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"user.birthdate\">{{user.birthdate | date:'dd/MM/yyyy'}}</p>\r\n                <p *ngIf=\"!user.birthdate\">N/A</p>\r\n              </td>\r\n              <td>\r\n                <p *ngIf=\"!user.team\">N/A</p>\r\n                <p *ngIf=\"user.team\">{{user.team.name}}</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <strong>\r\n                  <p *ngIf=\"user.isAdmin\">Admin</p>\r\n                </strong>\r\n                <strong>\r\n                  <p *ngIf=\"!user.isAdmin && user.isManager\">Manager</p>\r\n                </strong>\r\n                <p *ngIf=\"!user.isAdmin && !user.isManager\">Staff</p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <p *ngIf=\"user.isActive\">\r\n                  Active\r\n                </p>\r\n                <p *ngIf=\"!user.isActive\">\r\n                  Banned\r\n                </p>\r\n              </td>\r\n              <td class=\"text-center\">\r\n                <a href=\"#/account/update/{{user.id}}\">\r\n                  <button type=\"button\" class=\"btn btn-primary\">Update</button>\r\n                </a>\r\n              </td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -997,7 +1084,6 @@ var ViewUserComponent = /** @class */ (function () {
     }
     ViewUserComponent.prototype.ngOnInit = function () {
         var _this = this;
-        var id = this.route.snapshot.paramMap.get('id');
         this.userService.getAllUser()
             .then(function (value) {
             _this.users = value;
@@ -1007,54 +1093,6 @@ var ViewUserComponent = /** @class */ (function () {
     // search by username
     ViewUserComponent.prototype.search = function (searchStr) {
         this.datatableElement.dtInstance.then(function (dtInstance) { return dtInstance.search(searchStr).draw(); });
-        // this.isPageLoading = true;
-        // this.userService.getAllUser()
-        //   .then(users => {
-        //     this.users = _.filter(users, (user: User) => {
-        //         let result;
-        //         result = user.name && _.toLower(user.name).indexOf(_.toLower(searchStr)) >= 0;
-        //
-        //         if (!result) {
-        //           result = user.username && _.toLower(user.username).indexOf(_.toLower(searchStr)) >= 0;
-        //         }
-        //
-        //         if (!result) {
-        //           if (user.birthdate) {
-        //             let formatedBDate = moment(user.birthdate).format('DD/MM/YYYY');
-        //             result = _.toLower(formatedBDate).indexOf(_.toLower(searchStr)) >= 0;
-        //           }
-        //         }
-        //
-        //         if (!result) {
-        //           result = user.team && _.toLower(user.team.name).indexOf(_.toLower(searchStr)) >= 0;
-        //         }
-        //
-        //         if (!result) {
-        //           if (user.isAdmin) {
-        //             result = _.toLower('Admin').indexOf(_.toLower(searchStr)) >= 0;
-        //           } else if (user.isManager) {
-        //             result = _.toLower('Manager').indexOf(_.toLower(searchStr)) >= 0;
-        //           } else {
-        //             result = _.toLower('Staff').indexOf(_.toLower(searchStr)) >= 0;
-        //           }
-        //         }
-        //
-        //         if (!result) {
-        //           if (user.isActive) {
-        //             result = _.toLower('Active').indexOf(_.toLower(searchStr)) >= 0;
-        //           } else {
-        //             result = _.toLower('Banned').indexOf(_.toLower(searchStr)) >= 0;
-        //           }
-        //         }
-        //
-        //         return result;
-        //       }
-        //     );
-        //     this.isPageLoading = false;
-        //   })
-        //   .catch(reason => {
-        //     this.isPageLoading = false;
-        //   });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('searchUsername'),

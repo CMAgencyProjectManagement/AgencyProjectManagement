@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         data: {
-          title: "Task 1"
+          title: 'Task'
         },
         path: ':id/detail',
         component: ViewTask,
