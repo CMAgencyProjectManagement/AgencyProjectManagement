@@ -100,9 +100,10 @@ export class TeamService {
     });
   }
 
-  public unAssignTeam(userIdArray: number[]): Promise<any> {
+  public unAssignTeam(userIdArray: number[], teamId: Number): Promise<any> {
     const dataObj = {
-      UserIds: userIdArray
+      UserIds: userIdArray,
+      TeamId: teamId
     };
     return new Promise<any>((resolve, reject) => {
       put(serverPath.unAssignTeam)
