@@ -63,7 +63,6 @@ export class UserService {
         .then(res => {
           const content = res.body;
           if (content.IsSuccess) {
-            this.usersCursor.set(content.Data);
             resolve(content.Data);
           } else {
             reject(content.Message);
@@ -79,7 +78,6 @@ export class UserService {
         .then(res => {
           const content = res.body;
           if (content.IsSuccess) {
-            this.usersCursor.set(content.Data);
             resolve(content.Data);
           } else {
             reject(content.Message);
@@ -88,6 +86,20 @@ export class UserService {
     });
   }
 
+  public getFreeUser(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getNoTeamUser)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        }).catch(reject)
+    });
+  }
   public getCurrentUserLateTasks(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       get(serverPath.getLateTaskOfUser)

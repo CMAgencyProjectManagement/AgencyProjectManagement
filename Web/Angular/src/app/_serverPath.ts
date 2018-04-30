@@ -2,7 +2,7 @@ const serverPath = {
   token: '/token',
   // User
   user: '/api/user',
-  getUserById: () => `/api/user/{`,
+  getNoTeamUser: `/api/user/freeUser`,
   allUser: '/api/user/all',
   createUser: '/api/user',
   updateUser: '/api/user/update',

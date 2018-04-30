@@ -109,6 +109,29 @@ namespace Web.Controllers
         }
         
         [HttpGet]
+        [Route("freeUser")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetNoDepartmentUser()
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+
+                    IEnumerable<JObject> usersObject = userService.GetNoDepartmentUsers()
+                        .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
+                    return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        
+        [HttpGet]
         [Route("latetasks")]
         [Authorize]
         public IHttpActionResult GetCurrentUserLateTasks()

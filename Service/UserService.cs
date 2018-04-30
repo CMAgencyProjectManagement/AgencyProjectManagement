@@ -140,6 +140,23 @@ namespace Service
             }
         }
 
+        public IEnumerable<User> GetNoDepartmentUsers(bool excludeBannedUser = true, bool excludeAdmin = true)
+        {
+            IEnumerable<User> result = db.Users.Where(user => !user.TeamID.HasValue);
+            
+            if (excludeBannedUser)
+            {
+                result = result.Where(user => !user.IsActive);
+            }
+            
+            if (excludeAdmin)
+            {
+                result = result.Where(user => !user.IsAdmin);
+            }
+
+            return result;
+        }
+
 
         public void UpdateAvatar(string avatarFileName, int id)
         {
