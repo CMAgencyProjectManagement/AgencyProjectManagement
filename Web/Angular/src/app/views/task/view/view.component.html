@@ -8,7 +8,8 @@
     <div class="col-12">
       <h2 class="card-title">{{foundTask.name}}</h2>
     </div>
-    <div class="col-12" *ngIf="isReadonlyMode && !managementMode">
+    <!--<div class="col-12" *ngIf="isReadonlyMode && !managementMode">-->
+    <div class="col-12">
       <div class="button-row">
         <a routerLink="/task/edit/{{foundTask.id}}"
            *ngIf="managementMode"
@@ -83,6 +84,15 @@
             <dl class="row ml-1">
               <p class="col-12">
                 {{foundTask.description}}
+              </p>
+            </dl>
+          </div>
+          <div class="section">
+            <!--CHECK LIST-->
+            <h5 class="mb-3">Check list</h5>
+            <dl class="row ml-1">
+              <p class="col-12">
+
               </p>
             </dl>
           </div>
