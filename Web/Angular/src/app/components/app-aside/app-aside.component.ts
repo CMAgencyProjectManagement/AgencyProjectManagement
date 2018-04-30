@@ -52,7 +52,11 @@ export class AppAsideComponent implements OnInit {
       let id = sentenceComponent.id;
       switch (sentenceComponent.type) {
         case 'User': {
-          sentenceComponent.url = `/account/profile`;
+          if (this.currentUser.id == id) {
+            sentenceComponent.url = `/account/profile`;
+          } else {
+            sentenceComponent.url = `/account/${id}/detail`;
+          }
           break;
         }
         case 'Task': {
