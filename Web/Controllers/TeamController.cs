@@ -260,8 +260,8 @@ namespace Web.Controllers
                 if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
-                
-                
+
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TeamService teamService = new TeamService(db);
@@ -270,32 +270,36 @@ namespace Web.Controllers
 
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    
+
                     teamService.UnAssignTeam(
                         unAssignTeamModel.UserIds
                     );
-                    
+
                     NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                     List<User> notifiedUsersList = new List<User>();
+                    List<User> removedUserList = userService.GetUsers(unAssignTeamModel.UserIds).ToList();
                     foreach (int userId in unAssignTeamModel.UserIds)
                     {
                         NotificationSentence sentence = builder.UnAssignMemberFromDepartmentSentence(
                             currentUser.ID,
                             userId,
                             unAssignTeamModel.TeamId);
-                    
+
                         IEnumerable<User> notifiedUsers =
-                            notificationService.NotifyToUsersOfDepartment(unAssignTeamModel.TeamId, sentence);
-                            
+                            notificationService.NotifyToUsersOfDepartment(
+                                unAssignTeamModel.TeamId, 
+                                sentence,
+                                additionalReceivers: removedUserList);
+
                         notifiedUsersList.AddRange(notifiedUsers);
                     }
-                    
+
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
                     if (context != null)
                     {
                         context.Clients.All.updateNotification(new JArray(notifiedUsersList.Select(user => user.ID)));
                     }
-                    
+
                     return Ok(ResponseHelper.GetResponse());
                 }
             }

@@ -478,7 +478,7 @@ namespace Web.Controllers
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
                     
-                    projectService.CloseProject(deleteProjectViewModel.id);
+                    projectService.CloseProject(deleteProjectViewModel.id,currentUser.ID);
 
                     NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                     NotificationSentence sentence = builder.CloseProjectSentence(
@@ -698,6 +698,7 @@ namespace Web.Controllers
 
                         NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                         List<User> notifiedUsersList = new List<User>();
+                        List<User> removedUserList = userService.GetUsers(assignProjectModel.UserIds).ToList(); 
                         foreach (int userId in assignProjectModel.UserIds)
                         {
                             NotificationSentence sentence = builder.UnAssignMemberFromProjectSentence(
@@ -705,7 +706,10 @@ namespace Web.Controllers
                                 userId,
                                 project.ID);
                             IEnumerable<User> notifiedUsers =
-                                notificationService.NotifyToUsersOfProject(assignProjectModel.ProjectId, sentence);
+                                notificationService.NotifyToUsersOfProject(
+                                    assignProjectModel.ProjectId,
+                                    sentence,
+                                    removedUserList);
                             notifiedUsersList.AddRange(notifiedUsers);
                         }
 

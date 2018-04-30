@@ -742,7 +742,7 @@ namespace Web.Controllers
                 if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
-                
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
@@ -769,23 +769,26 @@ namespace Web.Controllers
                     // Notification
 
                     Project project = projectService.GetProjectOfTask(unassignTaskModel.TaskID);
-                    
+
                     List<User> notifiedUsersList = new List<User>();
-                    foreach (var assigneeId in unassignTaskModel.UserIDs)
+                    List<User> removedUserList = userService.GetUsers(unassignTaskModel.UserIDs).ToList();
+                    foreach (int unassigneeId in unassignTaskModel.UserIDs)
                     {
                         NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                         NotificationSentence notificationSentence = builder.UnAssignTaskSentence(
-                            currentUserId, assigneeId, unassignTaskModel.TaskID, project.ID);
+                            currentUserId, unassigneeId, unassignTaskModel.TaskID, project.ID);
 
-                        
-                        //TODO in the process of this
+
                         IEnumerable<User> notifiedUsers = notificationService
                             .NotifyToUsersOfTask(
                                 unassignTaskModel.TaskID,
-                                notificationSentence
+                                notificationSentence,
+                                removedUserList
                             );
                         notifiedUsersList.AddRange(notifiedUsers);
                     }
+                    
+
 
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
                     if (context != null)

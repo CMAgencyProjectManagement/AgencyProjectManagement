@@ -150,19 +150,26 @@ namespace Service
             }
         }
 
-        public int CloseProject(int id)
+        public int CloseProject(int projectId,int modifierId)
         {
-            var project = db.Projects.Find(id);
-            if (project != null)
+            var project = db.Projects.Find(projectId);
+            var modifier = db.Users.Find(modifierId);
+            if (project == null)
             {
-                project.Status = (int) ProjectStatus.Finished;
-                db.SaveChanges();
-                return id;
+                throw new ObjectNotFoundException($"Can't find project with ID {projectId}");
             }
-            else
+            
+            if (modifier == null)
             {
-                throw new ObjectNotFoundException($"Can't find project with ID {id}");
+                throw new ObjectNotFoundException($"Can't find user with ID {modifierId}");
             }
+
+            project.Status = (int) ProjectStatus.Finished;
+            project.ChangedBy = modifier.ID;
+            project.ChangedTime = DateTime.Today;
+            
+            db.SaveChanges();
+            return projectId;
         }
 
         public Project GetProjectByID(int id)

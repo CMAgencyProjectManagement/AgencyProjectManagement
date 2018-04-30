@@ -78,9 +78,16 @@ namespace Service
             }
         }
 
-        public IEnumerable<User> GetUserOfTeam(IEnumerable<int> userIds, bool excludeBanned = true)
+        public IEnumerable<User> GetUsers(IEnumerable<int> userIds, bool excludeBanned = true)
         {
-            return null;
+            var result = db.Users.Where(user => userIds.Contains(user.ID));
+            
+            if (excludeBanned)
+            {
+                result = result.Where(user => user.IsActive);
+            }
+
+            return result;
         }
 
         public IEnumerable<User> GetAll()
