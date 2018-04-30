@@ -5,10 +5,21 @@
     </div>
     <app-spinner *ngIf="isPageLoading"></app-spinner>
     <div class="card-body" *ngIf="!isPageLoading">
-      <div class="col-12 text-center" *ngIf="foundTeam" style=" text-transform: uppercase">
+      <div class="col-12" *ngIf="foundTeam">
         <h1>
           {{foundTeam.name}}
         </h1>
+      </div>
+      <div>
+        <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignMembersModal}" (click)="handleOnAssignMembersBtnClick()"
+          [ladda]="isLoading.openAssignMembersModal" *ngIf="currentUser.isAdmin">
+          <i class="fa fa-user-plus"></i>&nbsp; Assign members
+        </a>
+
+        <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignMembersModal}" (click)="handleOnUnAssignMembersBtnClick()"
+          [ladda]="isLoading.openUnAssignMembersModal" *ngIf="currentUser.isAdmin">
+          <i class="fa fa-user-times"></i>&nbsp; Un-assign members
+        </a>
       </div>
       <div>
         <table id="allTeamsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
@@ -38,11 +49,10 @@
                 <div *ngIf="!foundTeam.manager.isActive">Banned</div>
               </td>
               <td *ngIf="currentUser.isAdmin" class="text-center">
-                <button type="button" class="btn btn-primary bg-primary text-light" disabled="disabled" >
+                <button type="button" class="btn btn-primary bg-primary text-light" disabled="disabled">
                   <i class="fa fa-user-plus"></i>&nbsp; Set manager
                 </button>
               </td>
-              
             </tr>
 
             <!--NORMAL USER-->
@@ -70,7 +80,7 @@
                 <div *ngIf="!user.isActive">Banned</div>
               </td>
               <td *ngIf="currentUser.isAdmin" class="text-center">
-                <a class="btn btn-primary bg-primary text-light"  (click)="handleOnSetManagerBtnClick(user.id)">
+                <a class="btn btn-primary bg-primary text-light" (click)="handleOnSetManagerBtnClick(user.id)">
                   <i class="fa fa-user-plus"></i>&nbsp; Set manager
                 </a>
               </td>
