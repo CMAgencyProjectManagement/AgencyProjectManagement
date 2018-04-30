@@ -382,9 +382,10 @@ namespace Service
             // user1 assigned department1 to project1
             UserService userService = new UserService(db);
             ProjectService projectService = new ProjectService(db);
+            TeamService teamService = new TeamService(db);
 
             User currentUser = userService.GetUser(currentUserId);
-            User team = userService.GetUser(teamId);
+            Team team = teamService.GetTeamById(teamId);
             Project project = projectService.GetProjectByID(projectId);
 
             NotificationSentence sentence = new NotificationSentence

@@ -397,6 +397,7 @@
     <Content Include="Angular\dist\assets\img\logo-symbol.png" />
     <Content Include="Angular\dist\assets\img\logo.png" />
     <Content Include="Angular\dist\assets\img\teampic\1.jpg" />
+    <Content Include="Angular\dist\config.module.chunk.js" />
     <Content Include="Angular\dist\dashboard.module.chunk.js" />
     <Content Include="Angular\dist\dashboard.module.chunk.js.map" />
     <Content Include="Angular\dist\fontawesome-webfont.674f50d287a8c48dc19b.eot" />
@@ -434,6 +435,7 @@
     <Content Include="Angular\dist\vendor.bundle.js.map" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
+    <Content Include="Angular\dist\config.module.chunk.js.map" />
     <None Include="Properties\PublishProfiles\agencypm - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\agencypm - Web Deploy.pubxml" />
     <Content Include="Resource\attachment\project_14\task_52\Admin.docx" />
