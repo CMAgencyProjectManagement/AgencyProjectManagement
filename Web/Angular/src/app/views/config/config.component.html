@@ -17,11 +17,11 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="lowpriority-input" name="lowpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.lowpriority}"
-                  formControlName="lowPriority">
+                <input type="text" id="lowpriority-input" name="lowpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.mediumpriority}"
+                  formControlName="lowPriority" placeholder="Please enter low priority" class="form-control" >
                 <span class="input-group-addon">Point(s)</span>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.lowPriority">{{errors.lowPriority}}</div>
+              <div class="invalid-feedback" *ngIf="errors.lowPriority" style="display: block">{{errors.lowPriority}}</div>
             </div>
           </div>
           <div class="form-group row">
@@ -36,7 +36,7 @@
                   formControlName="mediumPriority">
                 <span class="input-group-addon">Point(s)</span>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.mediumPriority">{{errors.mediumPriority}}</div>
+              <div class="invalid-feedback" *ngIf="errors.mediumPriority" style="display: block">{{errors.mediumPriority}}</div>
             </div>
           </div>
 
@@ -52,7 +52,7 @@
                   formControlName="hightPriority">
                 <span class="input-group-addon">Point(s)</span>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.hightPriority">{{errors.hightPriority}}</div>
+              <div class="invalid-feedback" *ngIf="errors.hightPriority" style="display: block">{{errors.hightPriority}}</div>
             </div>
           </div>
 
@@ -68,7 +68,7 @@
                   formControlName="taskMaxDuration">
                 <span class="input-group-addon">Day(s)</span>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.taskMaxDuration">{{errors.taskMaxDuration}}</div>
+              <div class="invalid-feedback" *ngIf="errors.taskMaxDuration" style="display: block">{{errors.taskMaxDuration}}</div>
             </div>
           </div>
 
@@ -84,7 +84,7 @@
                   formControlName="lateTaskPenalty">
                 <span class="input-group-addon">%</span>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.lateTaskPenalty">{{errors.lateTaskPenalty}}</div>
+              <div class="invalid-feedback" *ngIf="errors.lateTaskPenalty" style="display: block">{{errors.lateTaskPenalty}}</div>
             </div>
           </div>
 
@@ -100,7 +100,7 @@
                   formControlName="minimumWorkingAge">
                 <span class="input-group-addon">Year(s) old</span>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.minimumWorkingAge">{{errors.minimumWorkingAge}}</div>
+              <div class="invalid-feedback" *ngIf="errors.minimumWorkingAge" style="display: block">{{errors.minimumWorkingAge}}</div>
             </div>
           </div>
 
