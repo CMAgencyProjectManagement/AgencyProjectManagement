@@ -178,7 +178,7 @@ export class ConfigComponent implements OnInit {
       const fieldName = error.key;
       const errorMessage = error.message;
       switch (fieldName) {
-        case 'LowPriority':
+        case 'LowPoint':
           this.errors.lowPriority = errorMessage;
           break;
           case 'MediumPoint':
