@@ -17,8 +17,8 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="lowpriority-input" name="lowpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.mediumpriority}"
-                  formControlName="lowPriority" placeholder="Please enter low priority" class="form-control" >
+                <input type="number" id="lowpriority-input" name="lowpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.mediumpriority}"
+                  formControlName="lowPriority"  class="form-control" >
                 <span class="input-group-addon">Point(s)</span>
               </div>
               <div class="invalid-feedback" *ngIf="errors.lowPriority" style="display: block">{{errors.lowPriority}}</div>
@@ -32,7 +32,7 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="mediumpriority-input" name="mediumpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.mediumpriority}"
+                <input type="number" id="mediumpriority-input" name="mediumpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.mediumpriority}"
                   formControlName="mediumPriority">
                 <span class="input-group-addon">Point(s)</span>
               </div>
@@ -48,7 +48,7 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="hightpriority-input" name="hightpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.hightpriority}"
+                <input type="number" id="hightpriority-input" name="hightpriority-input" [ngClass]="{'form-control': true, 'is-invalid': errors.hightpriority}"
                   formControlName="hightPriority">
                 <span class="input-group-addon">Point(s)</span>
               </div>
@@ -64,7 +64,7 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="taskmaxduration-input" name="taskmaxduration-input" [ngClass]="{'form-control': true, 'is-invalid': errors.taskmaxduration}"
+                <input type="number" id="taskmaxduration-input" name="taskmaxduration-input" [ngClass]="{'form-control': true, 'is-invalid': errors.taskmaxduration}"
                   formControlName="taskMaxDuration">
                 <span class="input-group-addon">Day(s)</span>
               </div>
@@ -80,7 +80,7 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="latetaskpenalty-input" name="latetaskpenalty-input" [ngClass]="{'form-control': true, 'is-invalid': errors.latetaskpenalty}"
+                <input type="number" id="latetaskpenalty-input" name="latetaskpenalty-input" [ngClass]="{'form-control': true, 'is-invalid': errors.latetaskpenalty}"
                   formControlName="lateTaskPenalty">
                 <span class="input-group-addon">%</span>
               </div>
@@ -96,7 +96,7 @@
             </label>
             <div class="col-6">
               <div class="input-group">
-                <input type="text" id="minimumworkingage-input" name="minimumworkingage-input" [ngClass]="{'form-control': true, 'is-invalid': errors.minimumworkingage}"
+                <input type="number" id="minimumworkingage-input" name="minimumworkingage-input" [ngClass]="{'form-control': true, 'is-invalid': errors.minimumworkingage}"
                   formControlName="minimumWorkingAge">
                 <span class="input-group-addon">Year(s) old</span>
               </div>
