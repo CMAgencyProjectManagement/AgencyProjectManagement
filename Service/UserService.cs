@@ -146,7 +146,7 @@ namespace Service
             
             if (excludeBannedUser)
             {
-                result = result.Where(user => !user.IsActive);
+                result = result.Where(user => user.IsActive);
             }
             
             if (excludeAdmin)
