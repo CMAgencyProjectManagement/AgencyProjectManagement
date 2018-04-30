@@ -7,10 +7,6 @@ namespace Web.ViewModels
     {
         [Required]
         public int ID { get; set; }
-        [Required]
-        [MaxLength(255)]
-        [MinLength(3)]
-        public string Name { get; set; }
         [Phone]
         [Required(ErrorMessage = "Phone is required")]
         [MaxLength(255)]
@@ -21,7 +17,6 @@ namespace Web.ViewModels
         [MinLength(3)]
         [MaxLength(255)]
         public string Email { get; set; }
-        public DateTime? Birthdate { get; set; }
         public bool? IsActive { get; set; }
         public int? Team { get; set; }
     }

@@ -18,6 +18,5 @@ namespace Web.ViewModels
         [MinLength(6)]
         public string Password { get; set; }
         public DateTime? Birthdate { get; set; }
-
     }
 }

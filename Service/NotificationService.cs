@@ -63,10 +63,20 @@ namespace Service
         public IEnumerable<User> NotifyToUsersOfDepartment(int teamId, NotificationSentence sentence, bool allMember = false)
         {
             UserService userService = new UserService(db);
+            TeamService teamService = new TeamService(db);
             
-            IEnumerable<User> assignees = userService.GetUsersOfTeam(teamId);
+            User manager = teamService.GetManager(teamId);
             IEnumerable<User> admin = db.Users.Where(user => user.IsAdmin);
-            List<User> usersToNotify = assignees.Union(admin).ToList();
+            
+            List<User> usersToNotify = new List<User>();
+            usersToNotify.Add(manager);
+            usersToNotify.AddRange(admin);
+
+            if (allMember)
+            {
+                IEnumerable<User> assignees = userService.GetUsersOfTeam(teamId);
+                usersToNotify = usersToNotify.Union(assignees).ToList();
+            }
             
             Notification notification = new Notification
             {

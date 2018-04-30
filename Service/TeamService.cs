@@ -141,22 +141,19 @@ namespace Service
             foreach (int userId in userIds)
             {
                 User user = db.Users.Find(userId);
-                if (user != null)
-                {
-                    if (user.TeamID != null)
-                    {
-                        user.TeamID = null;
-                        user.IsManager = false;
-                    }
-                    else
-                    {
-                        throw new ObjectNotFoundException($"!!Team Id must be already null or User still have task");
-                    }
-                }
-                else
+                if (user == null)
                 {
                     throw new ObjectNotFoundException($"User with ID{userId} not found");
                 }
+
+                if (user.TeamID == null)
+                {
+                    throw new ObjectNotFoundException($"!!Team Id must be already null or User still have task");
+                }
+
+                user.TeamID = null;
+                user.IsManager = false;
+                
             }
 
             db.SaveChanges();

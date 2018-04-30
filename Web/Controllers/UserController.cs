@@ -121,6 +121,7 @@ namespace Web.Controllers
 
                     IEnumerable<JObject> usersObject = userService.GetNoDepartmentUsers()
                         .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
+                    
                     return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
                 }
             }
@@ -375,25 +376,7 @@ namespace Web.Controllers
                             }
                         }
 
-                        if (updateUserModel.Birthdate != null)
-                        {
-                            if (updateUserModel.Birthdate > DateTime.Now)
-                            {
-                                ModelState.AddModelError("Birthdate",
-                                    "Birthdate must be smaller than the current time ");
-                                // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
-                                flag = false;
-                            }
-
-                            string UpdatedTime = updateUserModel.Birthdate.ToString();
-                            DateTime DoB = DateTime.Parse(UpdatedTime);
-                            if ((DateTime.Today.Year - DoB.Year) < 18)
-                            {
-                                ModelState.AddModelError("Birthdate",
-                                    "Age must be greater than 18 ");
-                                flag = false;
-                            }
-                        }
+                        
 
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
@@ -401,9 +384,9 @@ namespace Web.Controllers
 
                         User updatedUser = userService.Updateuser(
                             updateUserModel.ID,
-                            updateUserModel.Name,
+                            null,
                             updateUserModel.Phone,
-                            updateUserModel.Birthdate,
+                            null,
                             updateUserModel.Email,
                             updateUserModel.Team,
                             updateUserModel.IsActive
@@ -431,51 +414,39 @@ namespace Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        UserService userService = new UserService(db);
-                        int userId = Int32.Parse(User.Identity.GetUserId());
-                        Boolean flag = true;
-                        
-                        if (updateCurrentUserModel.Birthdate != null)
-                        {
-                            if (updateCurrentUserModel.Birthdate > DateTime.Now)
-                            {
-                                ModelState.AddModelError("Birthdate",
-                                    "Birthdate must be smaller than the current time ");
-                                // return Content(HttpStatusCode.BadRequest,ResponseHelper.GetExceptionResponse(ModelState));
-                                flag = false;
-                            }
-
-                            string UpdatedTime = updateCurrentUserModel.Birthdate.ToString();
-                            DateTime DoB = DateTime.Parse(UpdatedTime);
-                            if ((DateTime.Today.Year - DoB.Year) < 18)
-                            {
-                                ModelState.AddModelError("Birthdate",
-                                    "Age must be greater than 18 ");
-                                flag = false;
-                            }
-                        }
-
-                        if (flag == false)
-                            return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
-
-
-                        User updatedUser = userService.UpdateCurrentUser(
-                            userId,
-                            updateCurrentUserModel.Name,
-                            updateCurrentUserModel.Password,
-                            updateCurrentUserModel.Birthdate
-                        );
-                        return Ok(ResponseHelper.GetResponse(userService.ParseToJson(updatedUser)));
-                    }
-                }
-                else
-                {
+                if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
+                
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    UserService userService = new UserService(db);
+                    int userId = Int32.Parse(User.Identity.GetUserId());
+                    Boolean flag = true;
+
+                    if (updateCurrentUserModel.Birthdate != null)
+                    {
+                        string UpdatedTime = updateCurrentUserModel.Birthdate.ToString();
+                        DateTime DoB = DateTime.Parse(UpdatedTime);
+                        if ((DateTime.Today.Year - DoB.Year) < 18)
+                        {
+                            ModelState.AddModelError("Birthdate",
+                                "Age must be greater than 18 ");
+                            flag = false;
+                        }
+                    }
+
+                    if (flag == false)
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+
+
+                    User updatedUser = userService.UpdateCurrentUser(
+                        userId,
+                        updateCurrentUserModel.Name,
+                        updateCurrentUserModel.Password,
+                        updateCurrentUserModel.Birthdate
+                    );
+                    return Ok(ResponseHelper.GetResponse(userService.ParseToJson(updatedUser)));
                 }
             }
             catch (Exception ex)

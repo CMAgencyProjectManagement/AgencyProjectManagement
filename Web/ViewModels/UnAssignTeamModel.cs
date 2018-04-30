@@ -9,8 +9,11 @@ namespace Web.ViewModels
 {
     public class UnAssignTeamModel
     {
-        [Required(ErrorMessage = "User is array is required")]
+        [Required(ErrorMessage = "Users is required")]
         [AgencyArrayValidator.MustHaveOneElementAttribute(ErrorMessage = "Must at least one user")]
         public int[] UserIds { get; set; }
+        
+        [Required]
+        public int TeamId { get; set; }
     }
 }
