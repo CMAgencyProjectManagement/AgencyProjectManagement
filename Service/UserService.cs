@@ -78,6 +78,11 @@ namespace Service
             }
         }
 
+        public IEnumerable<User> GetUserOfTeam(IEnumerable<int> userIds, bool excludeBanned = true)
+        {
+            return null;
+        }
+
         public IEnumerable<User> GetAll()
         {
             return db.Users.ToList();

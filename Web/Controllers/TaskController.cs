@@ -504,7 +504,7 @@ namespace Web.Controllers
                     ProjectService projectService = new ProjectService(db);
                     DependencyService dependencyService = new DependencyService(db);
                     NotificationService notificationService = new NotificationService(db);
-                    
+
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     User currentUser = userService.GetUser(currentUserId);
                     int durationLength = AgencyConfig.maxDuration;
@@ -641,7 +641,7 @@ namespace Web.Controllers
                         updateTaskViewModel.Predecessors,
                         creator.ID
                     );
-                    
+
                     NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                     NotificationSentence sentence = builder.EditTaskSentence(
                         currentUserId,
@@ -655,7 +655,6 @@ namespace Web.Controllers
                         context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
                     }
 
-                    
 
                     return Ok(ResponseHelper.GetResponse(
                         taskService.ParseToJson(updatedTask, true, AgencyConfig.AvatarPath,
@@ -743,53 +742,61 @@ namespace Web.Controllers
                 if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
+                
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     TaskService taskService = new TaskService(db);
                     ProjectService projectService = new ProjectService(db);
                     NotificationService notificationService = new NotificationService(db);
+                    UserService userService = new UserService(db);
 
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                    if (taskService.IsManagerOfTask(currentUserId, unassignTaskModel.TaskID))
+                    if (!taskService.IsManagerOfTask(currentUserId, unassignTaskModel.TaskID))
                     {
-                        foreach (int userID in unassignTaskModel.UserIDs)
-                        {
-                            taskService.UnAssignTask(
-                                userID: userID,
-                                taskID: unassignTaskModel.TaskID,
-                                currentUserId: currentUserId
-                            );
-                        }
-
-                        // Notification
-
-                        Project project = projectService.GetProjectOfTask(unassignTaskModel.TaskID);
-                        foreach (var assigneeId in unassignTaskModel.UserIDs)
-                        {
-                            NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
-                            NotificationSentence notificationSentence = builder.UnAssignTaskSentence(
-                                currentUserId, assigneeId, unassignTaskModel.TaskID, project.ID);
-
-                            IEnumerable<int> newNotificationUserIds = notificationService
-                                .NotifyToUsersOfTask(unassignTaskModel.TaskID, notificationSentence)
-                                .Select(affectedUser => affectedUser.ID);
-
-                            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
-                            if (context != null)
-                            {
-                                context.Clients.All.updateNotification(new JArray(newNotificationUserIds));
-                            }
-                        }
-
-                        return Ok(ResponseHelper.GetResponse(new JObject
-                        {
-                            ["id"] = new JArray(unassignTaskModel.UserIDs)
-                        }));
+                        return Content(HttpStatusCode.InternalServerError, ResponseHelper.GetExceptionResponse(
+                            "User have to be manager of this task to Unassign this task"));
                     }
 
+                    foreach (int userID in unassignTaskModel.UserIDs)
+                    {
+                        taskService.UnAssignTask(
+                            userID: userID,
+                            taskID: unassignTaskModel.TaskID,
+                            currentUserId: currentUserId
+                        );
+                    }
 
-                    return Content(HttpStatusCode.InternalServerError, ResponseHelper.GetExceptionResponse(
-                        "User have to be manager of this task to Unassign this task"));
+                    // Notification
+
+                    Project project = projectService.GetProjectOfTask(unassignTaskModel.TaskID);
+                    
+                    List<User> notifiedUsersList = new List<User>();
+                    foreach (var assigneeId in unassignTaskModel.UserIDs)
+                    {
+                        NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                        NotificationSentence notificationSentence = builder.UnAssignTaskSentence(
+                            currentUserId, assigneeId, unassignTaskModel.TaskID, project.ID);
+
+                        
+                        //TODO in the process of this
+                        IEnumerable<User> notifiedUsers = notificationService
+                            .NotifyToUsersOfTask(
+                                unassignTaskModel.TaskID,
+                                notificationSentence
+                            );
+                        notifiedUsersList.AddRange(notifiedUsers);
+                    }
+
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsersList.Select(user => user.ID)));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse(new JObject
+                    {
+                        ["id"] = new JArray(unassignTaskModel.UserIDs)
+                    }));
                 }
             }
             catch (Exception ex)

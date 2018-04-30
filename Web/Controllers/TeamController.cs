@@ -6,8 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
+using Web.Hubs;
 using Web.ViewModels;
 
 namespace Web.Controllers
@@ -17,7 +19,7 @@ namespace Web.Controllers
     {
         [HttpGet]
         [Route("all")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult GetAllTeam()
         {
             try
@@ -44,7 +46,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("freestaff")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult GetFreeUser()
         {
             try
@@ -74,7 +76,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetTeamDetail(int id)
         {
             try
@@ -91,8 +93,8 @@ namespace Web.Controllers
                     if (team != null)
                     {
                         if (!currentUser.IsAdmin &&
-                             !currentUser.IsManager &&
-                             currentUser.TeamID != id)
+                            !currentUser.IsManager &&
+                            currentUser.TeamID != id)
                         {
                             return Content(HttpStatusCode.Unauthorized,
                                 $"You don't have permission to view {team.Name}'s detail");
@@ -122,7 +124,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/tasks/late")]
-        [Authorize]
+        [System.Web.Http.Authorize]
         public IHttpActionResult GetLateTaskOfDepartment(int id)
         {
             try
@@ -136,7 +138,7 @@ namespace Web.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, $"Can't find team with ID {id}");
                     }
-                    
+
                     IEnumerable<Task> lateTasks = taskService.GetLateTaskOfDepartment(team.ID);
                     IEnumerable<JObject> lateTasksJson = lateTasks.Select(task => taskService.ParseToJson(task));
 
@@ -152,7 +154,7 @@ namespace Web.Controllers
 
         [HttpGet]
         [Route("{teamId:int}/tasks/needreview")]
-        [Authorize(Roles = "Manager")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
         public IHttpActionResult GetNeedreviewTasks(int teamId)
         {
             try
@@ -184,7 +186,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("assign")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult AssignTeam(AssignTeamModel assignTeamModel)
         {
             try
@@ -194,12 +196,42 @@ namespace Web.Controllers
                     using (CmAgencyEntities db = new CmAgencyEntities())
                     {
                         TeamService teamService = new TeamService(db);
+                        UserService userService = new UserService(db);
+                        NotificationService notificationService = new NotificationService(db);
+
+                        string userIdString = User.Identity.GetUserId();
+                        User currentUser = userService.GetUser(userIdString);
+
+                        List<User> assignees = new List<User>();
                         foreach (int userId in assignTeamModel.UserIds)
                         {
-                            teamService.AssignTeam(
+                            User user = teamService.AssignTeam(
                                 userId,
                                 assignTeamModel.TeamId
                             );
+                            assignees.Add(user);
+                        }
+
+                        NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                        List<User> notifiedUsersList = new List<User>();
+                        foreach (User user in assignees)
+                        {
+                            NotificationSentence sentence = builder.AssignMemberToDepartmentSentence(
+                                currentUser.ID,
+                                user.ID,
+                                assignTeamModel.TeamId);
+
+                            IEnumerable<User> notifiedUsers =
+                                notificationService.NotifyToUsersOfDepartment(assignTeamModel.TeamId, sentence);
+
+                            notifiedUsersList.AddRange(notifiedUsers);
+                        }
+
+                        IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                        if (context != null)
+                        {
+                            context.Clients.All.updateNotification(
+                                new JArray(notifiedUsersList.Select(user => user.ID)));
                         }
 
                         return Ok(ResponseHelper.GetResponse());
@@ -220,26 +252,51 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("unassign")]
-        [Authorize(Roles = "Admin")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
         public IHttpActionResult UnAssignTeam(UnAssignTeamModel unAssignTeamModel)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        TeamService teamService = new TeamService(db);
-                        teamService.UnAssignTeam(
-                            unAssignTeamModel.UserIds
-                        );
-                        return Ok(ResponseHelper.GetResponse());
-                    }
-                }
-                else
-                {
+                if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
+                
+                
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TeamService teamService = new TeamService(db);
+                    UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    
+                    teamService.UnAssignTeam(
+                        unAssignTeamModel.UserIds
+                    );
+                    
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+                    List<User> notifiedUsersList = new List<User>();
+                    foreach (int userId in unAssignTeamModel.UserIds)
+                    {
+                        NotificationSentence sentence = builder.UnAssignMemberFromDepartmentSentence(
+                            currentUser.ID,
+                            userId,
+                            unAssignTeamModel.TeamId);
+                    
+                        IEnumerable<User> notifiedUsers =
+                            notificationService.NotifyToUsersOfDepartment(unAssignTeamModel.TeamId, sentence);
+                            
+                        notifiedUsersList.AddRange(notifiedUsers);
+                    }
+                    
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsersList.Select(user => user.ID)));
+                    }
+                    
+                    return Ok(ResponseHelper.GetResponse());
                 }
             }
             catch (Exception ex)
@@ -250,28 +307,49 @@ namespace Web.Controllers
         }
 
         [HttpPut]
-        [Route("{teamId:int}/assign/manager/{userId:int}")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult AssignManager(int teamId, int userId)
+        [Route("{teamId:int}/assign/manager/{managerId:int}")]
+        [System.Web.Http.Authorize(Roles = "Admin")]
+        public IHttpActionResult AssignManager(int teamId, int managerId)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    using (CmAgencyEntities db = new CmAgencyEntities())
-                    {
-                        TeamService teamService = new TeamService(db);
-                        teamService.SetManager(
-                            teamId,
-                            userId
-                        );
-                        return Ok(ResponseHelper.GetResponse());
-                    }
-                }
-                else
+                if (!ModelState.IsValid)
                 {
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
+                }
+
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TeamService teamService = new TeamService(db);
+                    UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+
+                    teamService.SetManager(
+                        teamId,
+                        managerId
+                    );
+
+                    NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
+
+                    NotificationSentence sentence = builder.SetManagerOfDepartmentSentence(
+                        currentUser.ID,
+                        managerId,
+                        teamId);
+
+                    IEnumerable<User> notifiedUsers =
+                        notificationService.NotifyToUsersOfDepartment(teamId, sentence);
+
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
+                    if (context != null)
+                    {
+                        context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
+                    }
+
+                    return Ok(ResponseHelper.GetResponse());
                 }
             }
             catch (Exception ex)
