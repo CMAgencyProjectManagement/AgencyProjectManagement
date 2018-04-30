@@ -8,7 +8,7 @@
     <div class="col-12">
       <h2 class="card-title">{{foundTask.name}}</h2>
     </div>
-    <div class="col-12">
+    <div class="col-12" *ngIf="isReadonlyMode && !managementMode">
       <div class="button-row">
         <a routerLink="/task/edit/{{foundTask.id}}"
            *ngIf="managementMode"
@@ -99,9 +99,8 @@
                            (change)="attachmentFileChange($event)">
                   </div>
                   <div class="col-3">
-                    <!--TODO gôm status vào enum-->
                     <button class="btn btn-success float-right"
-                            [disabled]="!attachmentForm.value.attachment || isLoading.attachmentUpload || lockAttachment"
+                            [disabled]="!attachmentForm.value.attachment || isLoading.attachmentUpload || needReviewMode"
                             [hidden]="!attachmentForm.value.attachment"
                             [ladda]="isLoading.attachmentUpload"
                             (click)="handleUploadAttachmentClick()">
@@ -118,7 +117,7 @@
                         <span>{{attachment.name}}</span>
                       </a>
                       <button class="btn btn-danger btn-sm ml-auto"
-                              [disabled]="isLoading.attachmentRemove[attachment.ID] || lockAttachment"
+                              [disabled]="isLoading.attachmentRemove[attachment.ID] || needReviewMode"
                               (click)="handleDeleteAttachmentClick(attachment.ID)"
                               [ladda]="isLoading.attachmentRemove[attachment.ID]">
                         <i class="fa fa-trash"></i>

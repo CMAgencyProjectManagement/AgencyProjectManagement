@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../interfaces/user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-user-list',
@@ -9,6 +10,7 @@ import {User} from '../../interfaces/user';
 export class UserListComponent implements OnInit {
   @Input() users: User[];
   @Input() user: User;
+  @Input() sort: boolean;
 
   constructor() {
   }
@@ -19,6 +21,19 @@ export class UserListComponent implements OnInit {
         this.users = [this.user];
       }
     }
+
+    if (this.sort) {
+      this.sortData();
+    }
   }
 
+  sortData() {
+    let users = _.cloneDeep(this.users);
+    users = _
+      .chain(users)
+      .sortBy(['teamId', 'isManager'])
+      .reverse()
+      .value();
+    this.users = users;
+  }
 }

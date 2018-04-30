@@ -38,7 +38,7 @@ export class AppAsideComponent implements OnInit {
   applyReceiverToNotification(notification: Notification) {
     this.applyUrlToSentenceComponent(notification.content.subject);
     this.applyUrlToSentenceComponent(notification.content.primaryObject);
-    if(notification.content.secondaryObject){
+    if (notification.content.secondaryObject) {
       this.applyUrlToSentenceComponent(notification.content.secondaryObject);
     }
     if (notification.content.location) {

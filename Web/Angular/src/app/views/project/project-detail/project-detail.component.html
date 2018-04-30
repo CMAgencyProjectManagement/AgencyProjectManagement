@@ -74,21 +74,10 @@
               <!--Deadline-->
               <h5 class="mb-3">Deadline: {{foundProject.deadline | date:'d/M/y'}}</h5>
             </div>
-            <!--<div class="form-group row" >-->
-            <!--Changed By: <input *ngIf="foundProject.changedBy" value="{{foundProject.changedBy.fullname}}"/>-->
-            <!--</div>-->
-            <!--<div class="form-group row">-->
-            <!--Changed Time: <input *ngIf="foundProject.changedTime" value="{{foundProject.changedTime | date:'d/M/y'}}"/>-->
-            <!--</div>-->
           </div>
         </div>
         <div class="col-6">
           <div class="section" style="font-size: 16px">
-            <!-- <dt class="col-12">Assignees:</dt>
-              <dd class="col-12 pl-4">
-                <app-user-list *ngIf="foundTask.assignees" [users]="foundTask.assignees"></app-user-list>
-                <span *ngIf="!foundTask.assignees || foundTask.assignees.length < 1">N/A</span>
-              </dd> -->
             <dt class="col-12">Creator:</dt>
             <dd class="col-12 pl-4">
               <app-user-list [user]="foundProject.createdBy"></app-user-list>
@@ -97,7 +86,7 @@
             <br/>
             <dt class="col-12">Members:</dt>
             <dd class="col-12 pl-4">
-              <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees"></app-user-list>
+              <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees" [sort]="true"></app-user-list>
               <span *ngIf="!foundProject.assignees || foundProject.assignees.length < 1">N/A</span>
             </dd>
             <br/>
@@ -108,17 +97,7 @@
                       <br/>
                     </span>
             </dd>
-            <dd>
-
-            </dd>
             <br/>
-            <!-- <dt class="col-12">Modifier:</dt>
-              <dd class="col-12 pl-4">
-                <app-user-list *ngIf="foundTask.changedBy" [user]="foundTask.changedBy"></app-user-list>
-                <span *ngIf="!foundTask.changedBy">N/A</span>
-              </dd> -->
-            <dt class="col-12">
-            </dt>
             <dd class="col-12 pl-4">
               <a routerLink="/project/{{foundProject.id}}/task" style="text-decoration-color: blue">
                 View all tasks...
@@ -127,12 +106,6 @@
           </div>
         </div>
       </div>
-      <!--<button type="button" class="btn btn-primary btn-lg" style="margin-left: 600px;color: black;-->
-      <!--background-color: white;-->
-      <!--border-color: black;">Update</button>-->
-      <!--<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" (click)="dangerModal.show()" style="margin-left: 50px;color: black;-->
-      <!--background-color: white;-->
-      <!--border-color: black;">Close</button>-->
       <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
            aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-danger" role="document">

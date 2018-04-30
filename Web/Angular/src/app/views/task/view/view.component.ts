@@ -25,6 +25,7 @@ export class ViewComponent implements OnInit {
   @ViewChild('attachmentInput') attachmentInput: ElementRef;
   foundTask: Task;
   managementMode: boolean;
+  staffMode: boolean;
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -44,7 +45,13 @@ export class ViewComponent implements OnInit {
     attachment: string
   };
   openCommentForm: boolean;
-  lockAttachment: boolean;
+  needReviewMode: boolean;
+  pageMode: {
+    manager: boolean,
+    staff: boolean,
+    done: boolean,
+    needReview: boolean
+  };
 
   constructor(private taskService: TaskService,
               private uploadService: UploadService,
@@ -68,7 +75,7 @@ export class ViewComponent implements OnInit {
       editComment: false,
       setStatus: false
     };
-    this.lockAttachment = false;
+    this.needReviewMode = false;
     this.openCommentForm = false;
     this.resetErrors();
   }
@@ -102,7 +109,7 @@ export class ViewComponent implements OnInit {
   }
 
   updateLockingMode() {
-    this.lockAttachment =
+    this.needReviewMode =
       this.foundTask.statusText == 'Need review' ||
       this.foundTask.statusText == 'Done';
   }

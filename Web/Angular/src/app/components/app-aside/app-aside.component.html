@@ -20,22 +20,23 @@
           <span *ngIf="!notification.content.primaryObject.url">
             <strong>{{notification.content.primaryObject.content}}</strong>
           </span>
-          {{notification.content.objectLinker}}
-          <span *ngIf="notification.content.secondaryObject.url">
+          <span *ngIf="notification.content.secondaryObject">{{notification.content.objectLinker}}</span>
+          <span *ngIf="notification.content.secondaryObject && notification.content.secondaryObject.url">
           <a routerLink="{{notification.content.secondaryObject.url}}">
             <strong>{{notification.content.secondaryObject.content}}</strong>
           </a>
           </span>
-          <span *ngIf="!notification.content.secondaryObject.url">
+          <span *ngIf="notification.content.secondaryObject && !notification.content.secondaryObject.url">
             <strong>{{notification.content.secondaryObject.content}}</strong>
           </span>
-          on
-          <span *ngIf="notification.content.location.url">
+          <!--Location-->
+          <span *ngIf="notification.content.location">on</span>
+          <span *ngIf="notification.content.location && notification.content.location.url">
           <a routerLink="{{notification.content.location.url}}">
             <strong>{{notification.content.location.content}}</strong>
           </a>
           </span>
-          <span *ngIf="!notification.content.location.url">
+          <span *ngIf="notification.content.location && !notification.content.location.url">
             <strong>{{notification.content.location.content}}</strong>
           </span>
         </div>

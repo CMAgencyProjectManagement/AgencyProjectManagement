@@ -20,16 +20,32 @@ namespace Service
 
         public JObject ToJson()
         {
-            return new JObject
+            JObject result = new JObject
             {
                 ["subject"] = Subject.ToJson(),
                 ["verb"] = Verb,
                 ["primaryObject"] = PrimaryObject.ToJson(),
-                ["objectLinker"] = ObjectLinker,
-                ["secondaryObject"] = SecondaryObject.ToJson(),
-                ["location"] = Location.ToJson(),
+//                ["objectLinker"] = ObjectLinker,
+//                ["secondaryObject"] = SecondaryObject.ToJson(),
+//                ["location"] = Location.ToJson(),
                 ["time"] = Time,
             };
+            if (ObjectLinker != null)
+            {
+                result["objectLinker"] = ObjectLinker;
+            }
+
+            if (SecondaryObject != null)
+            {
+                result["secondaryObject"] = SecondaryObject.ToJson();
+            }
+
+            if (Location != null)
+            {
+                result["location"] = Location.ToJson();
+            }
+
+            return result;
         }
 
         public static NotificationSentence FromJson(JObject jObject)
@@ -51,13 +67,12 @@ namespace Service
             User currentUser,
             IEnumerable<Team> allowedTeams,
             IEnumerable<Project> allowedProjects,
-            IEnumerable<Task> allowedTasks
-        )
+            IEnumerable<Task> allowedTasks)
         {
             List<int> allowedTeamIds = allowedTeams.Select(team => team.ID).ToList();
             List<int> allowedProjectIds = allowedProjects.Select(team => team.ID).ToList();
             List<int> allowedTaskIds = allowedTasks.Select(team => team.ID).ToList();
-            
+
             JObject result = new JObject
             {
                 ["verb"] = sentence.Verb,
@@ -65,16 +80,22 @@ namespace Service
                 ["time"] = sentence.Time,
             };
             result["subject"] = NotificationComponent
-                .ToJson(sentence.Subject,currentUser,allowedTeamIds,allowedProjectIds,allowedTaskIds);
+                .ToJson(sentence.Subject, currentUser, allowedTeamIds, allowedProjectIds, allowedTaskIds);
 
             result["primaryObject"] = NotificationComponent
-                .ToJson(sentence.PrimaryObject,currentUser,allowedTeamIds,allowedProjectIds,allowedTaskIds);
-            
-            result["secondaryObject"] = NotificationComponent
-                .ToJson(sentence.SecondaryObject,currentUser,allowedTeamIds,allowedProjectIds,allowedTaskIds);
-            
-            result["location"] = NotificationComponent
-                .ToJson(sentence.Location,currentUser,allowedTeamIds,allowedProjectIds,allowedTaskIds);
+                .ToJson(sentence.PrimaryObject, currentUser, allowedTeamIds, allowedProjectIds, allowedTaskIds);
+
+            if (sentence.SecondaryObject != null)
+            {
+                result["secondaryObject"] = NotificationComponent
+                    .ToJson(sentence.SecondaryObject, currentUser, allowedTeamIds, allowedProjectIds, allowedTaskIds);
+            }
+
+            if (sentence.Location != null)
+            {
+                result["location"] = NotificationComponent
+                    .ToJson(sentence.Location, currentUser, allowedTeamIds, allowedProjectIds, allowedTaskIds);
+            }
             
             return result;
         }
