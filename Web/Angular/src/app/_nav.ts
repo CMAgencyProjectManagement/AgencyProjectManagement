@@ -127,7 +127,7 @@ const admin_navigation = [
     ]
   },
   {
-    name: 'Config',
+    name: 'Configuration',
     url: '/config',
     icon: 'icon-speedometer'
   },

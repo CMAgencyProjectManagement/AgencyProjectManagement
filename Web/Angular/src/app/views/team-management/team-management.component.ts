@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {TeamService} from '../../services/team.service';
-import {StoreService} from '../../services/tree.service';
-import {Team} from '../../interfaces/team';
-import {User} from '../../interfaces/user';
-import {DataTableDirective} from 'angular-datatables';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TeamService } from '../../services/team.service';
+import { StoreService } from '../../services/tree.service';
+import { Team } from '../../interfaces/team';
+import { User } from '../../interfaces/user';
+import { DataTableDirective } from 'angular-datatables';
+import * as _ from 'lodash';
 @Component({
   templateUrl: 'team-management.component.html'
 })
@@ -27,7 +28,7 @@ export class TeamManagePageComponent implements OnInit {
   teams: Team[] = [];
   currentUser: User;
 
-  constructor(private teamService: TeamService,private storeService: StoreService) {
+  constructor(private teamService: TeamService, private storeService: StoreService) {
     this.currentUser = this.storeService.get(['currentUser']) as User;
   }
 
@@ -38,4 +39,5 @@ export class TeamManagePageComponent implements OnInit {
         this.isPageLoading = false;
       });
   }
+
 }

@@ -82,13 +82,12 @@ export class UpdateUserComponent implements OnInit {
       //   this.updateLoadingState();
       // }
       this.setDefaultValue(this.foundUser);
-      this.updateLoadingState();
+      this.isPageLoading=false;
     } else {
       this.userID = Number(this.route.snapshot.paramMap.get('id'));
       this.teamService.getAllTeam()
         .then(value => {
           this.teams = value;
-          this.updateLoadingState();
         });
       this.userService.getAllUser()
         .then(value => {
