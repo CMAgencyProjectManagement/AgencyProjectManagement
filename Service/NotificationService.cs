@@ -85,11 +85,6 @@ namespace Service
             TaskService taskService = new TaskService(db);
             ProjectService projectService = new ProjectService(db);
 
-            if (currentUser.IsAdmin) // Admin 
-            {
-                return notificationUsers.Select(ParseToJson);
-            }
-
             List<Team> teams = new List<Team>();
             List<Project> projects = projectService.GetProjectOfUser(currentUser.ID).ToList();
             List<Task> tasks = new List<Task>();
@@ -115,7 +110,14 @@ namespace Service
             {
                 JObject sentenceJson = JObject.Parse(notificationUser.Notification.Content);
                 NotificationSentence sentence = NotificationSentence.FromJson(sentenceJson);
-                sentenceJson = NotificationSentence.ToJson(sentence, currentUser, teams, projects, tasks);
+                if (currentUser.IsAdmin)
+                {
+                    sentenceJson = sentence.ToJson();
+                }
+                else
+                {
+                    sentenceJson = NotificationSentence.ToJson(sentence, currentUser, teams, projects, tasks);
+                }
                 result.Add(new JObject
                 {
                     ["isRead"] = notificationUser.IsRead,
