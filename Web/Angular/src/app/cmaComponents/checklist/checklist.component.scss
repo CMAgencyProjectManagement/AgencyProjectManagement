@@ -1,0 +1,256 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@mixin box-sizing($val) {
+  -webkit-box-sizing: $val;
+  -moz-box-sizing: $val;
+  box-sizing: $val;
+}
+
+@mixin user-select($val...) {
+  -webkit-user-select: $val;
+  -moz-user-select: $val;
+  -ms-user-select: $val;
+  user-select: $val;
+}
+
+@mixin box-shadow($shadows...) {
+  -webkit-box-shadow: $shadows;
+  box-shadow: $shadows;
+}
+
+@function inverse-side($side) {
+  @if $side == top {
+    @return bottom;
+  } @else if $side == bottom {
+    @return top;
+  } @else if $side == left {
+    @return right;
+  } @else if $side == right {
+    @return left;
+  }
+}
+
+@mixin linear-gradient($gradientLine, $colorStops...) {
+  background-image: -webkit-linear-gradient($gradientLine, $colorStops);
+  background-image: -moz-linear-gradient($gradientLine, $colorStops);
+  background-image: -o-linear-gradient($gradientLine, $colorStops);
+  @if length($gradientLine) == 2 {
+    background-image: linear-gradient(to #{inverse-side(nth($gradientLine, 1))} #{inverse-side(nth($gradientLine, 2))}, $colorStops);
+  } @else {
+    background-image: linear-gradient(to #{inverse-side($gradientLine)}, $colorStops);
+  }
+}
+
+@mixin radial-gradient($gradient...) {
+  background-image: -webkit-radial-gradient($gradient);
+  background-image: -moz-radial-gradient($gradient);
+  background-image: -o-radial-gradient($gradient);
+  background-image: radial-gradient($gradient);
+}
+
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+@mixin transition-property($properties...) {
+  -webkit-transition-property: $properties;
+  -moz-transition-property: $properties;
+  -o-transition-property: $properties;
+  transition-property: $properties;
+}
+
+@mixin transform($transform...) {
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  -o-transform: $transform;
+  transform: $transform;
+}
+
+@mixin clearfix {
+  zoom: 1;
+
+  &:before, &:after {
+    content: '';
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin inline-block {
+  display: inline-block;
+  vertical-align: baseline;
+  zoom: 1;
+  *display: inline;
+  *vertical-align: auto;
+}
+
+@mixin hide-text() {
+  font: 0/0 serif;
+  text-shadow: none;
+  color: transparent;
+}
+
+@mixin hidpi {
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+  only screen and (min-resolution: 144dpi) {
+    @content;
+  }
+}
+
+.tasks {
+  border: 1px solid #cdd3d7;
+  @include box-shadow(0 1px 2px rgba(black, .05));
+}
+
+.tasks-header {
+  position: relative;
+  line-height: 24px;
+  padding: 7px 15px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.hover-bg{
+  &:hover {
+    background-color: #F4F5F7;
+  }
+}
+
+.tasks-title {
+  line-height: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  color: inherit;
+  display: inline-block;
+}
+
+.btn-more{
+  cursor: pointer;
+  display: inline-block;
+  width: 24px;
+}
+
+.tasks-lists {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  margin-top: -11px;
+  padding: 10px 4px;
+  width: 19px;
+  height: 3px;
+  @include hide-text;
+
+  &:before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: #8c959d;
+    border-radius: 1px;
+    @include box-shadow(0 6px #8c959d, 0 -6px #8c959d);
+  }
+}
+
+.tasks-list-item {
+  display: block;
+  line-height: 24px;
+  padding: 12px 15px;
+  cursor: pointer;
+  @include user-select(none);
+
+  & + & {
+    border-top: 1px solid #f0f2f3;
+  }
+}
+
+.tasks-list-cb {
+  display: none;
+}
+
+.tasks-list-mark {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #c4cbd2;
+  border-radius: 12px;
+
+  &:before {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 54%;
+    left: 52%;
+    margin: -5px 0 0 -6px;
+    height: 7px;
+    width: 11px;
+    border: solid #39ca74;
+    border-width: 0 0 4px 4px;
+    @include transform(rotate(-45deg));
+  }
+  .tasks-list-cb:checked ~ & {
+    border-color: #39ca74;
+
+    &:before {
+      display: block;
+    }
+  }
+}
+
+.tasks-list-desc {
+  font-weight: bold;
+  color: #8a9a9b;
+
+  .tasks-list-cb:checked ~ & {
+    color: #34bf6e;
+    text-decoration: line-through;
+  }
+}
+
+

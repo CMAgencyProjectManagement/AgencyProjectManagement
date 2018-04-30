@@ -39,25 +39,43 @@ export class TaskService {
   }
 
   getStatuses(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      let statuses = this.statusesCursor.get();
-      if (statuses) {
-        resolve(statuses);
-      } else {
-        request.get(serverPath.getStatus)
-          .set('token', this.tokenCursor.get())
-          .then(res => {
-            const content = res.body;
-            if (content.IsSuccess) {
-              this.statusesCursor.set(content.Data);
-              resolve(content.Data);
-            } else {
-              reject(content.Message);
-            }
-          })
-          .catch(reason => reject(reason.response.body));
-      }
-    });
+    return Promise.resolve([
+      {
+        'key': 0,
+        'value': 'Not done'
+      },
+      {
+        'key': 1,
+        'value': 'Need review'
+      },
+      {
+        'key': 2,
+        'value': 'Done'
+      },
+      {
+        'key': 3,
+        'value': 'Pending'
+      },
+    ])
+    // return new Promise<any>((resolve, reject) => {
+    //   let statuses = this.statusesCursor.get();
+    //   if (statuses) {
+    //     resolve(statuses);
+    //   } else {
+    //     request.get(serverPath.getStatus)
+    //       .set('token', this.tokenCursor.get())
+    //       .then(res => {
+    //         const content = res.body;
+    //         if (content.IsSuccess) {
+    //           this.statusesCursor.set(content.Data);
+    //           resolve(content.Data);
+    //         } else {
+    //           reject(content.Message);
+    //         }
+    //       })
+    //       .catch(reason => reject(reason.response.body));
+    //   }
+    // });
   }
 
   setStatus(taskId, status): Promise<any> {

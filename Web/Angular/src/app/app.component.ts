@@ -5,6 +5,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router} from '@an
 import {Observable} from 'rxjs/Observable';
 import {Title} from '@angular/platform-browser';
 import 'rxjs/add/operator/map'
+import {TaskService} from './services/task.service';
 
 @Component({
   // tslint:disable-next-line
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
   constructor(
     private storeService: StoreService,
     private userService: UserService,
+    private taskService: TaskService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title) {
@@ -36,7 +38,6 @@ export class AppComponent implements OnInit {
     console.log('AppComponent-ngOnInit');
     let token = this.userService.getLocalToken();
     let user = this.userService.getLocalUser();
-
     if (token && user) {
       this.tokenCursor.set(token);
       this.storeService.set(['currentUser'], user);

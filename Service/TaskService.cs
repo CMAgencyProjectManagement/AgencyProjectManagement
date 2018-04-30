@@ -768,6 +768,7 @@ namespace Service
                 CommentService commentService = new CommentService(db);
                 DependencyService dependencyService = new DependencyService(db);
                 AttachmentService attachmentService = new AttachmentService(db);
+                ChecklistService checklistService = new ChecklistService(db);
 
                 ListService listService = new ListService(db);
                 var list = listService.GetListOfTask(task.ID);
@@ -796,6 +797,12 @@ namespace Service
                 IEnumerable<JObject> successorsJson = successors
                     .Select(task1 => ParseToJson(task1));
                 result["successors"] = new JArray(successorsJson);
+
+
+                IEnumerable<CheckList> checkLists = checklistService.GetCheckListOfTask(task.ID);
+                IEnumerable<JObject> checkListsJsons = checkLists
+                    .Select(checkList => checklistService.ParseToJson(checkList));
+                result["checkLists"] = new JArray(checkListsJsons);
             }
 
             return result;

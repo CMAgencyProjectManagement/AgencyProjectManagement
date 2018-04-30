@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
+    <Compile Include="ChecklistService.cs" />
     <Compile Include="CommentService.cs" />
     <Compile Include="DependencyService.cs" />
     <Compile Include="ListService.cs" />

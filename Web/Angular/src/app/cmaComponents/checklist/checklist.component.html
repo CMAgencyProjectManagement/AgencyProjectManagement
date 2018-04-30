@@ -1,0 +1,73 @@
+<section class="tasks">
+  <header class="tasks-header hover-bg">
+    <h2 class="tasks-title">{{checkList.name}}</h2>
+    <div class="float-right btn-more" *ngIf="managementMode">
+      <i class="fa fa-trash"></i>
+    </div>
+  </header>
+  <fieldset class="tasks-list" *ngIf="checkList.items">
+    <label class="tasks-list-item hover-bg" *ngFor="let checkListItem of checkList.items">
+      <ng-container *ngIf="!itemsEditMode[checkListItem.id]">
+        <input type="checkbox" class="tasks-list-cb" [checked]="checkListItem.isChecked">
+        <span class="tasks-list-mark"></span>
+        <span class="tasks-list-desc">{{checkListItem.name}}</span>
+        <div class="float-right btn-more"
+             *ngIf="managementMode"
+             (click)="handleEditItemClick(checkListItem.id);false">
+          <i class="fa fa-pencil"></i>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="itemsEditMode[checkListItem.id]">
+        <div class="input-group">
+          <input class="form-control" placeholder="content" type="text"
+                 [(ngModel)]="itemsEditModeValue[checkListItem.id]">
+          <span class="input-group-append">
+            <button class="btn btn-success" type="button"
+             (click)="handleDoneEditItemClick(checkListItem.id)"><i class="fa fa-check"></i></button>
+          </span>
+          <span class="input-group-append">
+            <button class="btn btn-danger" type="button"><i class="fa fa-times"></i></button>
+          </span>
+        </div>
+      </ng-container>
+    </label>
+  </fieldset>
+  <fieldset *ngIf="!checkList.items">
+    <label class="tasks-list-item">No item available</label>
+  </fieldset>
+</section>
+
+<!--<section class="tasks">-->
+<!--<header class="tasks-header">-->
+<!--<h2 class="tasks-title">check list name 1</h2>-->
+<!--<div class="float-right btn-more">-->
+<!--<i class="fa fa-trash"></i>-->
+<!--</div>-->
+<!--</header>-->
+<!--<fieldset class="tasks-list">-->
+<!--<label class="tasks-list-item">-->
+<!--<input type="checkbox" class="tasks-list-cb" checked>-->
+<!--<span class="tasks-list-mark"></span>-->
+<!--<span class="tasks-list-desc">list item 1</span>-->
+<!--<div class="float-right btn-more">-->
+<!--<i class="fa fa-pencil"></i>-->
+<!--</div>-->
+<!--</label>-->
+<!--<label class="tasks-list-item">-->
+<!--<div class="input-group">-->
+<!--<input class="form-control" placeholder="content" type="text" value="item 2">-->
+<!--<span class="input-group-append">-->
+<!--<button class="btn btn-success" type="button"><i class="fa fa-check"></i></button>-->
+<!--</span>-->
+<!--<span class="input-group-append">-->
+<!--<button class="btn btn-danger" type="button"><i class="fa fa-times"></i></button>-->
+<!--</span>-->
+<!--</div>-->
+<!--</label>-->
+<!--<label class="tasks-list-item">-->
+<!--<input type="checkbox" class="tasks-list-cb">-->
+<!--<span class="tasks-list-mark"></span>-->
+<!--<span class="tasks-list-desc">list item 3</span>-->
+<!--</label>-->
+<!--</fieldset>-->
+<!--</section>-->

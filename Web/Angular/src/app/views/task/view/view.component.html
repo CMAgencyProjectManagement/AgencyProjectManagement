@@ -92,7 +92,10 @@
             <h5 class="mb-3">Check list</h5>
             <dl class="row ml-1">
               <p class="col-12">
-
+                <app-checklist class="m-1"
+                               *ngFor="let checkList of foundTask.checkLists"
+                               [managementMode]="managementMode"
+                               [checkList]="checkList"></app-checklist>
               </p>
             </dl>
           </div>
