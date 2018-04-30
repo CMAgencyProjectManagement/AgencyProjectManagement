@@ -109,7 +109,7 @@ export class UpdateTeamComponent implements OnInit {
 
   unAssign(teamMemberSelectedIds: number[]) {
     this.loading.unAssign = true;
-    this.teamService.unAssignTeam(teamMemberSelectedIds)
+    this.teamService.unAssignTeam(teamMemberSelectedIds, this.foundTeam.id)
       .then(value => {
         this.loading.unAssign = false;
       })
