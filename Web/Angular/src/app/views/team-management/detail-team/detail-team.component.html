@@ -62,7 +62,7 @@
                   {{user.username}}
                 </a>
                 <span *ngIf="currentUser.isManager">{{user.username}}</span>
-                <span *ngIf="!currentUser.isManager && !currentUser.isAdmin">{{user.username}}</span>
+                <span *ngIf="!currentUser.isManager && !currentUser.isAdmin">{{user.name}}</span>
               </td>
               <td>
                 <div *ngIf="user.isAdmin">

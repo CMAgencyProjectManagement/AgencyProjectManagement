@@ -49,9 +49,11 @@ export class ViewComponent implements OnInit {
   pageMode: {
     manager: boolean,
     staff: boolean,
+    admin: boolean,
     done: boolean,
-    needReview: boolean
+    needReview: boolean,
   };
+  currentUser: User;
 
   constructor(private taskService: TaskService,
               private uploadService: UploadService,
@@ -63,6 +65,7 @@ export class ViewComponent implements OnInit {
               private location: Location,
               private modalService: BsModalService) {
     let currentUser = this.storeService.get(['currentUser']) as User;
+    this.currentUser = this.storeService.get(['currentUser']) as User;
     this.managementMode = currentUser.isManager || currentUser.isAdmin;
     this.isLoading = {
       page: true,
@@ -100,7 +103,7 @@ export class ViewComponent implements OnInit {
       .then(value => {
         this.foundTask = value as Task;
         this.isLoading.page = false;
-        this.updateLockingMode();
+        this.updatePageMode();
       })
       .catch(reason => {
         console.debug('ViewComponent-onInit', reason);
@@ -108,10 +111,14 @@ export class ViewComponent implements OnInit {
       })
   }
 
-  updateLockingMode() {
-    this.needReviewMode =
-      this.foundTask.statusText == 'Need review' ||
-      this.foundTask.statusText == 'Done';
+  updatePageMode() {
+    this.pageMode = {
+      done: this.foundTask.statusText == 'Done',
+      needReview: this.foundTask.statusText == 'Need review',
+      manager: this.currentUser.isManager,
+      admin: this.currentUser.isAdmin,
+      staff: !this.currentUser.isManager && !this.currentUser.isAdmin,
+    }
   }
 
   handleOnCommentBtnClick() {
@@ -228,7 +235,7 @@ export class ViewComponent implements OnInit {
     };
 
     const initialState = {
-      message: `Are you sure you want to finish this task!`,
+      message: `Are you sure you want to finish this task`,
       confirmCallback: onConfirm
     };
     this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
@@ -244,6 +251,7 @@ export class ViewComponent implements OnInit {
           let attachment = value as Attachment;
           this.foundTask.attachments.push(attachment);
           this.isLoading.attachmentUpload = false;
+          this.attachmentInput.nativeElement.value = '';
         })
         .catch(reason => {
           this.errors.attachment = reason.Data;
@@ -305,7 +313,7 @@ export class ViewComponent implements OnInit {
       task: this.foundTask,
       confirmCallback: (task) => {
         this.foundTask = task;
-        this.updateLockingMode();
+        this.updatePageMode();
         this.isLoading.setStatus = false;
       },
       cancelCallback: () => {

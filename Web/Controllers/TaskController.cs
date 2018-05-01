@@ -246,7 +246,6 @@ namespace Web.Controllers
                     IEnumerable<User> managers = taskService.GetManagersOfTask(task.ID);
                     Project project = projectService.GetProjectOfTask(task.ID);
 
-
                     // Notification
                     List<int> newNotificationUserIds = new List<int>();
                     NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
