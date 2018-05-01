@@ -43,7 +43,6 @@ import { ArchiveComponent } from './archive/archive.component';
     ProjectManagementComponent,
     ProjectSchedulingComponent,
     ProjectDetailComponent,
-    TruncateTextPipe,
     AddProjectComponent,
     ProjectUpdateComponent,
     ProjectTaskComponent,

@@ -1,3 +1,48 @@
-<p>
-  admin-section works!
-</p>
+<div class="dataTable-container hide-search">
+  <table id="allProjectsTable" datatable [dtOptions]="datatableOptions" class="table table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align: center">Name</th>
+        <th style="text-align: center">Description</th>
+        <th style="text-align: center">Deadline</th>
+        <th style="text-align: center">Start date</th>
+        <th style="text-align: center">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects;let i = index">
+        <ng-container *ngIf="project.status==0 || project.status==1">
+          <td>
+            <a routerLink="/project/{{project.id}}/detail" style="color: blue">
+              {{project.name | truncatetext:80}}
+            </a>
+          </td>
+          <td>
+            <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
+            <p *ngIf="!project.description">N/A</p>
+          </td>
+          <td>
+            <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
+            <span *ngIf=!project.deadline>N/A</span>
+          </td>
+          <td>
+            <span *ngIf=project.startDate>{{project.startDate | date:'dd/MM/yyyy'}}</span>
+            <span *ngIf=!project.startDate>N/A</span>
+          </td>
+          <td>
+            <span *ngIf="project.status === 0">
+              Not started
+            </span>
+            <span *ngIf="project.status === 1">
+              Executing
+            </span>
+            <span *ngIf="project.status === 2">
+              Closed
+            </span>
+            <span *ngIf="project.status === null">N/A</span>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>

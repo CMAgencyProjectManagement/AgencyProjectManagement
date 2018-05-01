@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import {TruncateTextPipe} from './directives';
 import {AppComponent} from './app.component';
 
 // Import containers
@@ -49,7 +49,6 @@ import {
   NAV_DROPDOWN_DIRECTIVES,
   ReplaceDirective,
   SIDEBAR_TOGGLE_DIRECTIVES,
-  TruncateTextPipe
 } from './directives';
 
 const APP_DIRECTIVES = [

@@ -17,7 +17,7 @@ import {TaskTableComponent} from './task-table/task-table.component';
 import {TaskStatusComponent} from './task-status/task-status.component';
 import {ProjectStatusComponent} from './project-status/project-status.component';
 import {TaskPriorityComponent} from './task-priority/task-priority.component';
-
+import {TruncateTextPipe} from '../directives';
 import {
   ConfirmModalComponent,
   CreateListModalComponent,
@@ -68,6 +68,7 @@ const declares_exports = [
   ManagerSectionComponent,
   AdminSectionComponent,
   ChecklistComponent,
+  TruncateTextPipe
 ];
 
 
