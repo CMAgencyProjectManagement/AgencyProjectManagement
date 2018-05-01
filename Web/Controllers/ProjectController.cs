@@ -312,7 +312,7 @@ namespace Web.Controllers
                     {
                         ProjectService projectService = new ProjectService(db);
                         Boolean flag = true;
-                        if (projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
+                        if (createProjectModel.Name != null && projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
                         {
                             ModelState.AddModelError("Name", "Project name is taken");
                             flag = false;
