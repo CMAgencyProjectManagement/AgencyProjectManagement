@@ -136,5 +136,40 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpPut]
+        [Route("{checkListId:int}")]
+        [Authorize(Roles = "Manager")]
+        public IHttpActionResult UpdateCheckList(int checkListId, UpdateCheckListModel updateCheckListModel)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    ChecklistService checklistService = new ChecklistService(db);
+                    UserService userService = new UserService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    User currentUser = userService.GetUser(currentUserId);
+                    CheckList checkList = db.CheckLists.Find(checkListId);
+                    if (!taskService.IsManagerOfTask(currentUserId, checkList.TaskID))
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                            "User have to be manager of this task to edit task or task not belong to any department"));
+                    var UpdatedCheckList = checklistService.UpdateCheckList(
+                        checkListId,
+                        updateCheckListModel.Name,
+                        currentUserId,
+                        DateTime.Now.Date
+                        );
+                    return Ok(ResponseHelper.GetResponse(checklistService.ParseToJson(UpdatedCheckList)));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
     }
 }

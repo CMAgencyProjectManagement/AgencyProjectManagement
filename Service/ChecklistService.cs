@@ -70,6 +70,21 @@ namespace Service
             db.CheckLists.Remove(checkList);
             db.SaveChanges();
         }
+        public CheckList UpdateCheckList(
+            int id,
+            string name,
+            int modifierId,
+            DateTime modifyTime
+            )
+        {
+            var foundCheckList = db.CheckLists.Find(id);
+            if (foundCheckList==null)  throw new ObjectNotFoundException($"Can't find check list with ID {id}");
+            foundCheckList.Name = name;
+            foundCheckList.ChangedBy = modifierId;
+            foundCheckList.ChangedTime = modifyTime;
+            db.SaveChanges();
+            return foundCheckList;
+        }
         public JObject ParseToJson(CheckList checkList)
         {
             UserService userService = new UserService(db);

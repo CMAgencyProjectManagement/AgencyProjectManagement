@@ -414,7 +414,7 @@ namespace Service
             }
             else
             {
-                throw new ObjectNotFoundException($"Can't find project with ID {id}");
+                throw new ObjectNotFoundException($"Can't find task with ID {id}");
             }
         }
 
