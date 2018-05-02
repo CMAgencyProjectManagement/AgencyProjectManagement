@@ -66,17 +66,17 @@ export class ArchiveComponent implements OnInit {
       .then(value => {
         this.lists = value;
         for(let i =0; i< this.lists.length;i++){
-          for(let y=0; i<this.lists[i].tasks.length;y++){
+          for(let y=0; y<this.lists[i].tasks.length;y++){
             if(this.lists[i].tasks[y].isArchived){
               this.tasks.push(this.lists[i].tasks[y]);
             }
           }
         }
-
         this.isLoading.page = false;
 
       })
       .catch(reason => {
+        console.debug('ArchiveComponent',reason )
         this.showErrorModal(reason.Message);
         this.isLoading.page = false;
       })
