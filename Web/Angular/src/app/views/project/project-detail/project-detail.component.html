@@ -9,30 +9,38 @@
         <div class="col-12" style="font-size: 20px">
           <h2 class="card-title">{{foundProject.name}}</h2>
         </div>
+        <!-- button start -->
+        <div class="col-12 form-horizontal">
+
+          <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;" *ngIf="foundProject.status!= 2">
+            <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light" *ngIf="currentUser.isAdmin">
+              <i class="fa fa-edit"></i>&nbsp; Update
+            </a>
+            <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)" *ngIf="currentUser.isAdmin">
+              <i class="fa fa-close"></i>&nbsp; Close project
+            </a>
+            <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}" [ladda]="isLoading.openAssignModal"
+              (click)="handleOnAssignBtnClick()" *ngIf="currentUser.isAdmin">
+              <i class="fa fa-users"></i>&nbsp; Set department
+            </a>
+            <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignMembersModal}" (click)="handleOnAssignMembersBtnClick()"
+              [ladda]="isLoading.openAssignMembersModal" *ngIf="currentUser.isManager || currentUser.isAdmin">
+              <i class="fa fa-user-plus"></i>&nbsp; Assign members
+            </a>
+
+            <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignMembersModal}" (click)="handleOnUnAssignMembersBtnClick()"
+              [ladda]="isLoading.openUnAssignMembersModal" *ngIf="currentUser.isManager || currentUser.isAdmin">
+              <i class="fa fa-user-times"></i>&nbsp; Un-assign members
+            </a>
+          </div>
+        </div>
+
+        <!-- button end -->
+
         <div class="col-6">
           <div class="form-horizontal">
 
-            <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;" *ngIf="foundProject.status!= 2">
-              <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light" *ngIf="currentUser.isAdmin">
-                <i class="fa fa-edit"></i>&nbsp; Update
-              </a>
-              <a class="btn btn-secondary bg-light" (click)="handleCloseProject(foundProject.id)" *ngIf="currentUser.isAdmin">
-                <i class="fa fa-close"></i>&nbsp; Close project
-              </a>
-              <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}" [ladda]="isLoading.openAssignModal"
-                (click)="handleOnAssignBtnClick()" *ngIf="currentUser.isAdmin">
-                <i class="fa fa-users"></i>&nbsp; Set department
-              </a>
-              <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignMembersModal}" (click)="handleOnAssignMembersBtnClick()"
-                [ladda]="isLoading.openAssignMembersModal" *ngIf="currentUser.isManager || currentUser.isAdmin">
-                <i class="fa fa-user-plus"></i>&nbsp; Assign members
-              </a>
 
-              <a [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignMembersModal}" (click)="handleOnUnAssignMembersBtnClick()"
-                [ladda]="isLoading.openUnAssignMembersModal" *ngIf="currentUser.isManager || currentUser.isAdmin">
-                <i class="fa fa-user-times"></i>&nbsp; Un-assign members
-              </a>
-            </div>
             <div class="section mt-4">
               <!--DESCRIPTION-->
               <h5 class="mb-3">Description</h5>
@@ -70,77 +78,79 @@
         </div>
         <div class="col-6">
           <div class="section" style="font-size: 16px">
-            <dt class="col-12">Links:</dt>
-            <dd class="col-12 pl-4">
-              <ul class="icons-list">
+            <div class="section mt-4">
+              <dt class="col-12">Links:</dt>
+              <dd class="col-12 pl-4">
+                <ul class="icons-list">
 
-                <!-- ITEM START -->
-                <a routerLink="/project/{{foundProject.id}}/task">
+                  <!-- ITEM START -->
+                  <a routerLink="/project/{{foundProject.id}}/task">
 
-                  <li class="d-flex align-items-center hover-bg">
-                    <i class="fa fa-tasks fa-lg bg-primary"></i>
-                    <div class="ml-2 font-weight-bold">
-                      <div class="title">All tasks</div>
-                    </div>
-                  </li>
-                </a>
+                    <li class="d-flex align-items-center hover-bg">
+                      <i class="fa fa-tasks fa-lg bg-primary"></i>
+                      <div class="ml-2 font-weight-bold">
+                        <div class="title">All tasks</div>
+                      </div>
+                    </li>
+                  </a>
 
-                <!-- ITEM END -->
+                  <!-- ITEM END -->
 
-                <!-- ITEM START -->
-                <a routerLink="/project/{{foundProject.id}}/task">
+                  <!-- ITEM START -->
+                  <a routerLink="/project/{{foundProject.id}}/schedule">
 
-                  <li class="d-flex align-items-center hover-bg">
-                    <i class="fa fa-tasks fa-lg bg-primary"></i>
-                    <div class="ml-2 font-weight-bold">
-                      <div class="title">Schedule</div>
-                    </div>
-                  </li>
-                </a>
+                    <li class="d-flex align-items-center hover-bg">
+                      <i class="fa fa-calendar fa-lg bg-primary"></i>
+                      <div class="ml-2 font-weight-bold">
+                        <div class="title">Schedule</div>
+                      </div>
+                    </li>
+                  </a>
 
-                <!-- ITEM END -->
+                  <!-- ITEM END -->
 
-                <!-- ITEM START -->
-                <a routerLink="/project/{{foundProject.id}}/task">
+                  <!-- ITEM START -->
+                  <a routerLink="/project/{{foundProject.id}}/report">
 
-                  <li class="d-flex align-items-center hover-bg">
-                    <i class="fa fa-tasks fa-lg bg-primary"></i>
-                    <div class="ml-2 font-weight-bold">
-                      <div class="title">Report</div>
-                    </div>
-                  </li>
-                </a>
+                    <li class="d-flex align-items-center hover-bg">
+                      <i class="fa fa-bar-chart fa-lg bg-primary"></i>
+                      <div class="ml-2 font-weight-bold">
+                        <div class="title">Report</div>
+                      </div>
+                    </li>
+                  </a>
 
-                <!-- ITEM END -->
+                  <!-- ITEM END -->
 
-                <!-- ITEM START -->
-                <a routerLink="/project/{{foundProject.id}}/task">
+                  <!-- ITEM START -->
+                  <a routerLink="/project/{{foundProject.id}}/taskarchive">
 
-                  <li class="d-flex align-items-center hover-bg">
-                    <i class="fa fa-tasks fa-lg bg-primary"></i>
-                    <div class="ml-2 font-weight-bold">
-                      <div class="title">Archive</div>
-                    </div>
-                  </li>
-                </a>
+                    <li class="d-flex align-items-center hover-bg">
+                      <i class="fa fa-archive fa-lg bg-primary"></i>
+                      <div class="ml-2 font-weight-bold">
+                        <div class="title">Archive</div>
+                      </div>
+                    </li>
+                  </a>
 
-                <!-- ITEM END -->
-              </ul>
+                  <!-- ITEM END -->
+                </ul>
 
-            </dd>
-            <dt class="col-12">Members:</dt>
-            <dd class="col-12 pl-4">
-              <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees" [sort]="true"></app-user-list>
-              <span *ngIf="!foundProject.assignees || foundProject.assignees.length < 1">N/A</span>
-            </dd>
-            <br/>
-            <dt class="col-12">Departments</dt>
-            <dd class="col-12 pl-4" *ngIf="foundProject.teams">
-              <span *ngFor="let team of foundProject.teams">
-                <a href="#/department/{{team.id}}/detail">{{team.name}}</a>
-                <br/>
-              </span>
-            </dd>
+              </dd>
+              <dt class="col-12">Members:</dt>
+              <dd class="col-12 pl-4">
+                <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees" [sort]="true"></app-user-list>
+                <span *ngIf="!foundProject.assignees || foundProject.assignees.length < 1">N/A</span>
+              </dd>
+              <br/>
+              <dt class="col-12">Departments</dt>
+              <dd class="col-12 pl-4" *ngIf="foundProject.teams">
+                <span *ngFor="let team of foundProject.teams">
+                  <a href="#/department/{{team.id}}/detail">{{team.name}}</a>
+                  <br/>
+                </span>
+              </dd>
+            </div>
           </div>
         </div>
       </div>
