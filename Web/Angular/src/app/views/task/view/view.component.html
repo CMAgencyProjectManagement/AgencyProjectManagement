@@ -11,48 +11,31 @@
     <!--<div class="col-12" *ngIf="isReadonlyMode && !managementMode">-->
     <div class="col-12">
       <div class="button-row" [hidden]="pageMode.admin">
-        <a routerLink="/task/edit/{{foundTask.id}}"
-           *ngIf="managementMode"
-           class="btn btn-secondary bg-light">
+        <a routerLink="/task/edit/{{foundTask.id}}" *ngIf="managementMode" class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
         </a>
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
-                [hidden]="!pageMode.manager || pageMode.done"
-                (click)="handleOnAssignBtnClick()"
-                [disabled]="isLoading.openAssignModal"
-                [ladda]="isLoading.openAssignModal">
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}" [hidden]="!pageMode.manager || pageMode.done"
+          (click)="handleOnAssignBtnClick()" [disabled]="isLoading.openAssignModal" [ladda]="isLoading.openAssignModal">
           <i class="fa fa-user-plus"></i>&nbsp; Assign
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}"
-                [hidden]="!pageMode.manager || pageMode.done"
-                (click)="handleOnUnAssignBtnClick()"
-                [disabled]="isLoading.openUnAssignModal"
-                [ladda]="isLoading.openUnAssignModal">
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}" [hidden]="!pageMode.manager || pageMode.done"
+          (click)="handleOnUnAssignBtnClick()" [disabled]="isLoading.openUnAssignModal" [ladda]="isLoading.openUnAssignModal">
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
-                [hidden]="!pageMode.staff || isLoading.done"
-                [disabled]="foundTask.status == 1 || isLoading.done"
-                (click)="handleOnNeedReviewBtnClick()"
-                [ladda]="isLoading.done">
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}" [hidden]="!pageMode.staff || isLoading.done"
+          [disabled]="foundTask.status == 1 || isLoading.done" (click)="handleOnNeedReviewBtnClick()" [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}"
-                [hidden]="!pageMode.manager"
-                [disabled]="isLoading.setStatus"
-                (click)="handleSetStatusBtnClick()"
-                [ladda]="isLoading.setStatus">
-                <i class="fa fa-refresh"></i>&nbsp;Set status
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}" [hidden]="!pageMode.manager" [disabled]="isLoading.setStatus"
+          (click)="handleSetStatusBtnClick()" [ladda]="isLoading.setStatus">
+          <i class="fa fa-refresh"></i>&nbsp;Set status
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}"
-                [hidden]="!pageMode.manager"
-                [disabled]="isLoading.setStatus"
-                (click)="handleArchiveBtnClick()"
-                [ladda]="isLoading.setStatus">
-                <i class="fa fa-archive"></i>&nbsp;Archive
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}" [hidden]="!pageMode.manager" [disabled]="isLoading.setStatus"
+          (click)="handleArchiveBtnClick()" [ladda]="isLoading.setStatus">
+          <i class="fa fa-archive"></i>&nbsp;Archive
         </button>
       </div>
     </div>
@@ -64,8 +47,9 @@
             <h5 class="mb-3">Detail</h5>
             <dl class="row ml-1">
               <dt class="col-3">Project:</dt>
-              <dd class="col-9"><a
-                routerLink="/project/{{foundTask.project.id}}/detail">{{foundTask.project.name}}</a></dd>
+              <dd class="col-9">
+                <a routerLink="/project/{{foundTask.project.id}}/detail">{{foundTask.project.name}}</a>
+              </dd>
               <dt class="col-3">List:</dt>
               <dd class="col-9">{{foundTask.list.name}}</dd>
               <dt class="col-3">Priority:</dt>
@@ -99,20 +83,15 @@
             <h5 class="mb-3">Check list</h5>
             <dl class="row ml-1">
               <div class="col-12">
-                <app-checklist class="m-1"
-                               *ngFor="let checkList of foundTask.checkLists"
-                               [managementMode]="pageMode.manager"
-                               [readonly]="pageMode.done"
-                               (onDeleteCheckList)="handleDeleteCheckListClick($event)"
-                               (onEditChecklist)="handleDoneEditCheckListClick($event)"
-                               [checkList]="checkList"></app-checklist>
+                <app-checklist class="m-1" *ngFor="let checkList of foundTask.checkLists" [managementMode]="pageMode.manager" [readonly]="pageMode.done"
+                  (onDeleteCheckList)="handleDeleteCheckListClick($event)" (onEditChecklist)="handleDoneEditCheckListClick($event)"
+                  [checkList]="checkList"></app-checklist>
               </div>
               <div class="col-12" [hidden]="!pageMode.manager || pageMode.done">
                 <div class="input-group">
                   <input class="form-control" placeholder="New list" type="text" #newCheckListInput>
                   <span class="input-group-append">
-                    <button class="btn btn-success" type="button"
-                            (click)="handleAddCheckListBtnClick(newCheckListInput)">
+                    <button class="btn btn-success" type="button" (click)="handleAddCheckListBtnClick(newCheckListInput)">
                       <i class="fa fa-plus"></i>
                     </button>
                   </span>
@@ -125,21 +104,13 @@
             <h5 class="mb-3">Attachments</h5>
             <dl class="row ml-1">
               <div class="col-12">
-                <div class="form-group row"
-                     [formGroup]="attachmentForm"
-                     [hidden]="pageMode.done || pageMode.needReview || pageMode.admin">
+                <div class="form-group row" [formGroup]="attachmentForm" [hidden]="pageMode.done || pageMode.needReview || pageMode.admin">
                   <div class="col-9">
-                    <input #attachmentInput
-                           id="file-input" name="file-input" type="file"
-                           formGroupName="attachment"
-                           (change)="attachmentFileChange($event)">
+                    <input #attachmentInput id="file-input" name="file-input" type="file" formGroupName="attachment" (change)="attachmentFileChange($event)">
                   </div>
                   <div class="col-3">
-                    <button class="btn btn-success float-right"
-                            [disabled]="!attachmentForm.value.attachment || isLoading.attachmentUpload || needReviewMode"
-                            [hidden]="!attachmentForm.value.attachment"
-                            [ladda]="isLoading.attachmentUpload"
-                            (click)="handleUploadAttachmentClick()">
+                    <button class="btn btn-success float-right" [disabled]="!attachmentForm.value.attachment || isLoading.attachmentUpload || needReviewMode"
+                      [hidden]="!attachmentForm.value.attachment" [ladda]="isLoading.attachmentUpload" (click)="handleUploadAttachmentClick()">
                       <i class="fa fa-plus"></i>
                     </button>
                   </div>
@@ -150,13 +121,13 @@
                   <li class="list-group-item" *ngFor="let attachment of this.foundTask.attachments">
                     <div class="d-flex align-items-center">
                       <a href="{{attachment.source}}">
-                        <span>{{attachment.name}}</span>
+                        <span >{{attachment.name}}</span>
+
                       </a>
-                      <button class="btn btn-danger btn-sm ml-auto"
-                              [hidden]="pageMode.needReview || pageMode.done"
-                              [disabled]="isLoading.attachmentRemove[attachment.ID]"
-                              [ladda]="isLoading.attachmentRemove[attachment.ID]"
-                              (click)="handleDeleteAttachmentClick(attachment.ID)">
+
+                      <div class="btn-sm ml-auto align-items-center float-right" style="color: silver;">{{attachment.createdTime | date:'dd/MM/yyyy'}}</div>
+                      <button class="btn btn-danger " [hidden]="pageMode.needReview || pageMode.done" [disabled]="isLoading.attachmentRemove[attachment.ID]"
+                        [ladda]="isLoading.attachmentRemove[attachment.ID]" (click)="handleDeleteAttachmentClick(attachment.ID)">
                         <i class="fa fa-trash"></i>
                       </button>
                     </div>
@@ -173,31 +144,23 @@
                 <div class="form-group row">
                   <div class="col-12">
                     <!--COMMENT BTN + LABEL-->
-                    <button class="btn btn-secondary bg-light"
-                            *ngIf="!openCommentForm"
-                            (click)="handleOnCommentBtnClick()">
+                    <button class="btn btn-secondary bg-light" *ngIf="!openCommentForm" (click)="handleOnCommentBtnClick()">
                       <i class="fa fa-comment-o"></i>&nbsp; Comment
                     </button>
                   </div>
                   <div class="col-12" *ngIf="openCommentForm">
                     <!--COMMENT TEXT AREA-->
-                    <textarea title="comment-input" rows="9" class="form-control"
-                              [(ngModel)]="commentBoxModel"
-                              placeholder="Content..."></textarea>
+                    <textarea title="comment-input" rows="9" class="form-control" [(ngModel)]="commentBoxModel" placeholder="Content..."></textarea>
                   </div>
                   <div class="col-12 mt-3 d-flex justify-content-end" *ngIf="openCommentForm">
                     <!--ADD COMMENT, CANCEL BTN-->
-                    <button class="btn btn-success mr-2" [ladda]="isLoading.comment"
-                            (click)="handleAddCommentBtnClick()">Add
+                    <button class="btn btn-success mr-2" [ladda]="isLoading.comment" (click)="handleAddCommentBtnClick()">Add
                     </button>
                     <button class="btn btn-secondary" (click)="handleCancelCommentBtnClick()">Cancel</button>
                   </div>
                 </div>
               </div>
-              <app-comment class="col-12"
-                           *ngFor="let comment of foundTask.comments"
-                           [comment]="comment"
-                           (onEdit)="handleEditComment($event)"></app-comment>
+              <app-comment class="col-12" *ngFor="let comment of foundTask.comments" [comment]="comment" (onEdit)="handleEditComment($event)"></app-comment>
             </dl>
           </div>
         </div>
@@ -230,16 +193,14 @@
               <dt class="col-12">Predecessor tasks:</dt>
               <dd class="col-12 pl-4">
                 <span *ngIf="foundTask.predecessors.length <= 0">N/A</span>
-                <app-tasklist *ngIf="foundTask.predecessors.length > 0"
-                              [tasks]="foundTask.predecessors">
+                <app-tasklist *ngIf="foundTask.predecessors.length > 0" [tasks]="foundTask.predecessors">
 
                 </app-tasklist>
               </dd>
               <dt class="col-12">Successor tasks:</dt>
               <dd class="col-12 pl-4">
                 <span *ngIf="foundTask.successors.length <= 0">N/A</span>
-                <app-tasklist *ngIf="foundTask.successors.length > 0"
-                              [tasks]="foundTask.successors">
+                <app-tasklist *ngIf="foundTask.successors.length > 0" [tasks]="foundTask.successors">
 
                 </app-tasklist>
               </dd>
@@ -267,12 +228,12 @@
               </dd>
               <dt class="col-4">Finished date:</dt>
               <dd class="col-8">
-              <span *ngIf="!foundTask.finishedDate">
-                N/A
-              </span>
+                <span *ngIf="!foundTask.finishedDate">
+                  N/A
+                </span>
                 <span *ngIf="foundTask.finishedDate">
-                {{foundTask.finishedDate | date:'dd/MM/yyyy'}}
-              </span>
+                  {{foundTask.finishedDate | date:'dd/MM/yyyy'}}
+                </span>
               </dd>
               <dt class="col-4">Created date:</dt>
               <dd class="col-8">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
