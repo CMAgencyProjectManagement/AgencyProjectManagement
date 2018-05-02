@@ -1,44 +1,38 @@
-<h4 _ngcontent-c3="" class="card-title">
-  Current projects
-</h4>
-<table id="allProjectsTable" datatable="ng" [dtOptions]="datatableOptions" [dtTrigger]="dtTrigger" class="table table-bordered">
-  <thead>
+<div class="container-fluid">
+  <h4 class="card-title">
+    Recent projects
+  </h4>
+  <table datatable [dtOptions]="recentProjectOptions" class="table table-bordered">
+    <thead>
     <tr>
-      <th style="text-align: center">Name</th>
-      <th style="text-align: center">Start date</th>
-      <th style="text-align: center">Deadline</th>
-      <th style="text-align: center">Status</th>
+      <th>Name</th>
+      <th>Changed date</th>
+      <th>Status</th>
+      <th>Start date</th>
+      <th>Deadline</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let project of projects;let i = index">
-      <!-- <ng-container *ngIf="project.status==0 || project.status==1"> -->
+    </thead>
+    <tbody>
+    <tr *ngFor="let project of projects">
       <td>
-        <a routerLink="/project/{{project.id}}/detail" style="color: blue">
-          {{project.name | truncatetext:80}}
-        </a>
+        <a routerLink="/project/{{project.id}}/detail">{{project.name}}</a>
       </td>
       <td>
-        <span *ngIf=project.startDate>{{project.startDate | date:'dd/MM/yyyy'}}</span>
-        <span *ngIf=!project.startDate>N/A</span>
+        <span [hidden]="true">{{project.changedTime | date:'yyyy/MM/dd'}}</span>
+        {{project.changedTime | date:'dd/MM/yyyy'}}
       </td>
       <td>
-        <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
-        <span *ngIf=!project.deadline>N/A</span>
+        {{project.statusText}}
       </td>
       <td>
-        <span *ngIf="project.status === 0">
-          Not started
-        </span>
-        <span *ngIf="project.status === 1">
-          Executing
-        </span>
-        <span *ngIf="project.status === 2">
-          Closed
-        </span>
-        <span *ngIf="project.status === null">N/A</span>
+        <span [hidden]="true">{{project.startDate | date:'yyyy/MM/dd'}}</span>
+        {{project.startDate | date:'dd/MM/yyyy'}}
       </td>
-      <!-- </ng-container> -->
+      <td>
+        <span [hidden]="true">{{project.deadline | date:'yyyy/MM/dd'}}</span>
+        {{project.deadline | date:'dd/MM/yyyy'}}
+      </td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>

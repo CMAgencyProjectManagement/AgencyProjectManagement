@@ -13,6 +13,7 @@ export interface Project {
   changedBy: User,
   changedTime: string,
   status: number,
+  statusText: string,
   lists: List[],
   teams: Team[],
   assignees: User[]

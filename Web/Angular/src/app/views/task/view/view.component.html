@@ -45,7 +45,14 @@
                 [disabled]="isLoading.setStatus"
                 (click)="handleSetStatusBtnClick()"
                 [ladda]="isLoading.setStatus">
-          Set status
+                <i class="fa fa-refresh"></i>&nbsp;Set status
+        </button>
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}"
+                [hidden]="!pageMode.manager"
+                [disabled]="isLoading.setStatus"
+                (click)="handleArchiveBtnClick()"
+                [ladda]="isLoading.setStatus">
+                <i class="fa fa-archive"></i>&nbsp;Archive
         </button>
       </div>
     </div>
@@ -267,7 +274,7 @@
               </dd>
               <dt class="col-4">Created date:</dt>
               <dd class="col-8">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>
-              <dt class="col-4">Changed date:</dt>
+              <dt class="col-4">Last change at:</dt>
               <dd class="col-8">
                 <span *ngIf="foundTask.changedDate">
                   {{foundTask.changedDate | date:'dd/MM/yyyy'}}

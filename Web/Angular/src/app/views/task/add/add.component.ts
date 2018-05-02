@@ -213,10 +213,12 @@ export class AddComponent implements OnInit {
       values.effort,
       preTaskIds
     ).then(value => {
+      let newTask = value as Task;
       const initialState = {
-        message: 'Your task successfully created'
+        message: 'Your task successfully created!'
       };
       this.modalService.show(SuccessModalComponent, {initialState, class: 'modal-dialog modal-success'});
+      this.router.navigate(['task/'+newTask.id+'/view']);
       this.isLoading.create = false;
     }).catch(reason => {
       this.setErrors(reason.Data);

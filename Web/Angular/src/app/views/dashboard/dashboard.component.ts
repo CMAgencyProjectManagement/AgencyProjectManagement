@@ -15,7 +15,6 @@ import {TeamService} from '../../services/team.service';
   templateUrl: 'dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
-  projects: Project[];
   isLoading: {
     page
   };
@@ -26,7 +25,7 @@ export class DashboardComponent implements OnInit {
   lateTasks: Task[];
   needReviewTasks: Task[];
   thisWeekTasks: Task[];
-
+  projects: Project[];
 
   constructor(
     private storeService: StoreService,
@@ -76,6 +75,7 @@ export class DashboardComponent implements OnInit {
         break;
       }
       case 'admin': {
+        this.loadAdminSection();
         break;
       }
     }
@@ -113,8 +113,18 @@ export class DashboardComponent implements OnInit {
       })
   }
 
-  private loadMAdminSection() {
-
+  private loadAdminSection() {
+    Promise.all([
+      this.projectService.getAllProjects(),
+      this.userService.getLeaderBoard()])
+      .then((resData: [Project[], UserWithScore[]]) => {
+        this.projects = resData[0];
+        this.leaderboard = resData[1];
+        this.isLoading.page = false;
+      })
+      .catch(reason => {
+        this.showErrorModal(reason.Message);
+      })
   }
 
 

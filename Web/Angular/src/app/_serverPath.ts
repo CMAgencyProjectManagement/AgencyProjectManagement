@@ -51,6 +51,8 @@ const serverPath = {
   assignTask: '/api/task/assign',
   unassignTask: `/api/task/unassign`,
   finishTask: taskID => `/api/task/${taskID}/finishTask`,
+  archiveTask: `/api/task/archive`,
+  unArchiveTask: `/api/task/unarchive`,
   // Dependency
   getDependenciesOfProject: projectId => `/api/project/${projectId}/dependency`,
   // Comment
