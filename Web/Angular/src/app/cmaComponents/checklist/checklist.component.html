@@ -1,18 +1,43 @@
 <section class="tasks">
-  <header class="tasks-header hover-bg">
-    <h2 class="tasks-title">{{checkList.name}}</h2>
-    <div class="float-right btn-more" *ngIf="managementMode">
-      <i class="fa fa-trash"></i>
+  <header class="tasks-header hover-bg row">
+    <h2 class="tasks-title col-9 d-inline-block" *ngIf="!checkListEditMode">{{checkList.name}}</h2>
+    <div class="col-9 d-inline-block" *ngIf=checkListEditMode>
+      <div class="input-group">
+        <input class="form-control" placeholder="content" type="text"
+               [(ngModel)]="checkListEditValue">
+        <span class="input-group-append">
+            <button class="btn btn-success" type="button"
+                    (click)="handleDoneEditCheckListClick()">
+              <i class="fa fa-check"></i>
+            </button>
+          </span>
+      </div>
+    </div>
+    <div class="col-2 float-right d-inline-block">
+      <div class="float-right btn-more"
+           *ngIf="managementMode && !readonly"
+           (click)="handleDeleteCheckListClick()">
+        <i class="fa fa-trash"></i>
+      </div>
+      <div class="float-right btn btn-outline-danger btn-more"
+           *ngIf="managementMode && !readonly"
+           (click)="handleEditCheckListClick()">
+        <i class="fa fa-pencil"></i>
+      </div>
     </div>
   </header>
   <fieldset class="tasks-list" *ngIf="checkList.items">
     <label class="tasks-list-item hover-bg" *ngFor="let checkListItem of checkList.items">
       <ng-container *ngIf="!itemsEditMode[checkListItem.id]">
-        <input type="checkbox" class="tasks-list-cb" [checked]="checkListItem.isChecked">
+        <input type="checkbox" class="tasks-list-cb"
+               [checked]="checkListItem.isChecked"
+               [disabled]="readonly"
+               (change)="handleCheckItemClick(checkListItem.id)">
         <span class="tasks-list-mark"></span>
         <span class="tasks-list-desc">{{checkListItem.name}}</span>
         <div class="float-right btn-more"
              *ngIf="managementMode"
+             [hidden]="readonly"
              (click)="handleEditItemClick(checkListItem.id);false">
           <i class="fa fa-pencil"></i>
         </div>
@@ -23,17 +48,30 @@
                  [(ngModel)]="itemsEditModeValue[checkListItem.id]">
           <span class="input-group-append">
             <button class="btn btn-success" type="button"
-             (click)="handleDoneEditItemClick(checkListItem.id)"><i class="fa fa-check"></i></button>
+                    (click)="handleDoneEditItemClick(checkListItem.id)"><i class="fa fa-check"></i></button>
           </span>
           <span class="input-group-append">
-            <button class="btn btn-danger" type="button"><i class="fa fa-times"></i></button>
+            <button class="btn btn-danger" type="button"
+                    (click)=handleDeleteItemClick(checkListItem.id)>
+              <i class="fa fa-trash"></i>
+            </button>
           </span>
         </div>
       </ng-container>
     </label>
-  </fieldset>
-  <fieldset *ngIf="!checkList.items">
-    <label class="tasks-list-item">No item available</label>
+    <label class="tasks-list-item hover-bg" *ngIf="managementMode && !readonly">
+      <div class="input-group">
+        <input class="form-control" placeholder="content" type="text"
+               [(ngModel)]="newItemValue">
+        <span class="input-group-append">
+            <button class="btn btn-success" type="button"
+                    (click)="handleAddItemClick()">
+              <i class="fa fa-plus"></i>
+            </button>
+          </span>
+      </div>
+    </label>
+    <label *ngIf="!checkList.items" class="tasks-list-item">No item available</label>
   </fieldset>
 </section>
 

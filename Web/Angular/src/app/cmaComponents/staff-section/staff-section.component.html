@@ -19,7 +19,7 @@
       </td>
       <td>{{task.priorityText}}</td>
       <td>
-        <app-task-status [taskStatusNumber]="task.status"></app-task-status>
+        {{task.statusText}}
       </td>
       <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
       <td>

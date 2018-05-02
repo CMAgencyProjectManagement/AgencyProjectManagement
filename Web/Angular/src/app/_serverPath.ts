@@ -35,7 +35,7 @@ const serverPath = {
   deleteTeam: '/api/team',
   assignTeam: '/api/team/assign',
   unAssignTeam: '/api/team/unassign',
-  setTeamRole: (userId, teamId) =>`/api/team/${teamId}/assign/manager/${userId}`,
+  setTeamRole: (userId, teamId) => `/api/team/${teamId}/assign/manager/${userId}`,
   getTeamDetail: (teamId) => `/api/team/${teamId}`,
   getNeedReviewTasks: (teamId) => `/api/team/${teamId}/tasks/needreview`,
   getLateTasks: (teamId) => `/api/team/${teamId}/tasks/late`,
@@ -49,13 +49,21 @@ const serverPath = {
   getStatus: '/api/task/status',
   getMyTask: '/api/task/myTask',
   assignTask: '/api/task/assign',
-  unassignTask:  `/api/task/unassign`,
+  unassignTask: `/api/task/unassign`,
   finishTask: taskID => `/api/task/${taskID}/finishTask`,
   // Dependency
   getDependenciesOfProject: projectId => `/api/project/${projectId}/dependency`,
   // Comment
   createComment: '/api/comment/create', // POST
-  updateComment: 'api/comment/update', // PUT
+  updateComment: '/api/comment/update', // PUT
+  // Check list
+  createChecklist: '/api/checklist', // POST
+  deleteChecklist: (checkListId) => `/api/checklist/${checkListId}`, // DELETE
+  editChecklist: (checkListId) => `/api/checklist/${checkListId}`, // PUT
+  createChecklistItem: (checkListId) => `/api/checklist/${checkListId}/item`, // POST
+  deleteChecklistItem: (checkListId, checkListItemId) => `/api/checklist/${checkListId}/item/${checkListItemId}`, // DELETE
+  editChecklistItem: (checkListId, checkListItemId) => `/api/checklist/${checkListId}/item/${checkListItemId}`, // PUT
+  checkCheckListItem: (checkListId, checkListItemId) => `/api/checklist/${checkListId}/item/${checkListItemId}`, // PUT
   // File
   uploadAvatar: userId => `/api/file/user/${userId}/avatar`,
   uploadAttachment: taskID => `/api/file/task/${taskID}/attachment`,

@@ -73,7 +73,6 @@ export class ProjectSchedulingComponent implements OnInit, OnDestroy {
 
   updatePageLoadingState() {
     if (this.projectTasks &&
-      this.projectTasks.length > 0 &&
       this.projectDependencies) {
       this.initGratt();
       this.isLoading.page = false;
@@ -126,10 +125,13 @@ export class ProjectSchedulingComponent implements OnInit, OnDestroy {
     gantt.config.readonly = true;
 
     gantt.init(this.ganttContainer.nativeElement);
-    gantt.parse({
-      data: this.formatTasks(this.projectTasks),
-      links: this.formatDependencies(this.projectDependencies),
-    });
+    if (this.projectTasks && this.projectDependencies) {
+      gantt.parse({
+        data: this.formatTasks(this.projectTasks),
+        links: this.formatDependencies(this.projectDependencies),
+      });
+    }
+
   }
 
 

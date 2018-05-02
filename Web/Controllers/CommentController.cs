@@ -91,7 +91,8 @@ namespace Web.Controllers
                     TaskService taskService = new TaskService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     var taskId = db.Comments.Find(updateCommentModel.id).TaskID;
-                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId) &&
+                        !taskService.IsManagerOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType, ResponseHelper.GetExceptionResponse(
                             $"the person who do this action must be assigned member of task with ID {taskId}"

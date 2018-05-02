@@ -14,11 +14,11 @@
       <small *ngIf="!user.isManager && !user.isAdmin">{{user.teamText}}</small>
       <small *ngIf="!user.isManager && user.isAdmin">{{user.teamText}}</small>
     </div>
-    <div class="value">
-      <small>{{user.phone}}</small>
-    </div>
-    <div class="actions">
-      <i *ngIf="user.phone" class="fa fa-phone text-muted"></i>
-    </div>
+    <!--<div class="value">-->
+      <!--<small>{{user.phone}}</small>-->
+    <!--</div>-->
+    <!--<div class="actions">-->
+      <!--<i *ngIf="user.phone" class="fa fa-phone text-muted"></i>-->
+    <!--</div>-->
   </li>
 </ul>
