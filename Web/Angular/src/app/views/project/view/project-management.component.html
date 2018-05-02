@@ -30,11 +30,11 @@
               <tr *ngFor="let project of projects;let i = index">
                 <td>
                   <a routerLink="/project/{{project.id}}/detail" style="color: blue">
-                    {{project.name | truncatetext:80}}
+                    {{project.name | truncatetext:50}}
                   </a>
                 </td>
                 <td>
-                  <p *ngIf="project.description">{{project.description | truncatetext:100}}</p>
+                  <p *ngIf="project.description">{{project.description | truncatetext:70}}</p>
                   <p *ngIf="!project.description">N/A</p>
                 </td>
                 <td>
@@ -57,7 +57,7 @@
                   </span>
                   <span *ngIf="project.status === null">N/A</span>
                 </td>
-                <td *ngIf="currentUser.isAdmin">
+                <td *ngIf="currentUser.isAdmin && project.status!= 2">
                   <div class="row">
                     <div class="btn-group col-12">
                       <a routerLink="/project/{{project.id}}/update" class="btn btn-primary">
@@ -75,9 +75,40 @@
                     </div>
                   </div>
                 </td>
-                <td *ngIf="currentUser.isManager">
+                <td *ngIf="currentUser.isAdmin && project.status == 2">
+                  <div class="row">
+                    <div class="btn-group col-12 text-center" style="margin-left: 40px;">
+                      <a routerLink="/project/{{project.id}}/task" class="btn btn-primary">
+                        Tasks
+                      </a>
+                      <a routerLink="/project/{{project.id}}/report" class="btn btn-primary">
+                        Report
+                      </a>
+                      <a routerLink="/project/{{project.id}}/schedule" class="btn btn-primary">
+                        Schedule
+                      </a>
+                    </div>
+                  </div>
+                </td>
+
+                <td *ngIf="currentUser.isManager && project.status!= 2">
                   <div class="row">
                     <div class="btn-group col-12">
+                      <a routerLink="/project/{{project.id}}/task" class="btn btn-primary">
+                        Tasks
+                      </a>
+                      <a routerLink="/project/{{project.id}}/report" class="btn btn-primary">
+                        Report
+                      </a>
+                      <a routerLink="/project/{{project.id}}/schedule" class="btn btn-primary">
+                        Schedule
+                      </a>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="currentUser.isManager && project.status== 2">
+                  <div class="row">
+                    <div class="btn-group col-12" style="margin-left: 40px;">
                       <a routerLink="/project/{{project.id}}/task" class="btn btn-primary">
                         Tasks
                       </a>

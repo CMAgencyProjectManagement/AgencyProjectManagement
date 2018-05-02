@@ -5,9 +5,8 @@
       <div class="card-header">
         <strong>View archives</strong>
       </div>
-      <!-- <app-spinner *ngIf="isLoading.page"></app-spinner>
-    <div *ngIf="!isLoading.page" class="card-body"> -->
-      <div class="card-body">
+      <app-spinner *ngIf="isLoading.page"></app-spinner>
+      <div *ngIf="!isLoading.page" class="card-body">
         <div class="button-section">
 
         </div>
@@ -29,20 +28,24 @@
                 <th>Start date</th>
                 <th>Deadline</th>
                 <th>Project</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let task of tasks">
+              <tr *ngFor="let task of tasks;">
                 <td>
-                  <a routerLink="/task/{{task.id}}/view">{{task.name}}</a>
+                  {{task.name}}
                 </td>
                 <td>{{task.statusText}}</td>
                 <td>{{task.priorityText}}</td>
                 <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
                 <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
+
                 <td>
                   <a routerLink="/project/{{task.project.id}}/detail"> {{task.project.name}} </a>
+
                 </td>
+                <td><button type="button" class="btn btn-primary">Unarchive</button></td>
               </tr>
             </tbody>
           </table>

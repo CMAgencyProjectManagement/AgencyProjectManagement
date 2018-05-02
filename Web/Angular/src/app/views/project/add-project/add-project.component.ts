@@ -19,6 +19,7 @@ import {
 import { Router } from '@angular/router';
 import { IMyDpOptions } from 'mydatepicker';
 import { BsModalService } from 'ngx-bootstrap';
+import { Project } from 'app/interfaces/project';
 @Component({
   selector: 'app-add-project',
   templateUrl: './add-project.component.html',
@@ -74,8 +75,10 @@ export class AddProjectComponent implements OnInit {
         deadline.isValid() ? deadline.format('YYYY-MM-DD') : this.deadlinePicker.selectionDayTxt,
       )
         .then(value => {
+          let newProject= value as Project;
+          
           this.isLoading = false;
-          this.router.navigate(['project']);
+          this.router.navigate(['project/'+newProject.id+'/detail']);
         })
         .catch(reason => {
           this.isLoading = false;
