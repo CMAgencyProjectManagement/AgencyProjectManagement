@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Core;
 using Entity;
 using Newtonsoft.Json.Linq;
@@ -24,7 +25,19 @@ namespace Service
 
             return task.CheckLists;
         }
-
+        public CheckList CreateChecklist(string name, int taskId, User creator)
+        {
+            CheckList newCheckList = new CheckList
+            {
+                Name = name,
+                TaskID = taskId,
+                CreatedBy = creator.ID,
+                CreatedTime = DateTime.Now
+            };
+            db.CheckLists.Add(newCheckList);
+            db.SaveChanges();
+            return newCheckList;
+        }
         public JObject ParseToJson(CheckList checkList)
         {
             UserService userService = new UserService(db);
