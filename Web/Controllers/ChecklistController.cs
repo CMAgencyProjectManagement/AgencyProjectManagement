@@ -68,13 +68,49 @@ namespace Web.Controllers
                 {
                     ChecklistService checklistService = new ChecklistService(db);
                     UserService userService = new UserService(db);
-                    NotificationService notificationService = new NotificationService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
                     checklistService.DeleteChecklist(checkListId, currentUser.ID);
                     return Ok(ResponseHelper.GetResponse());
                 }
 
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        [HttpDelete]
+        [Route("{checkListId:int}/item/{checklistItemId:int}")]
+        [Authorize(Roles = "Manager")]
+        public IHttpActionResult DeleteChecklistItem(int checkListId, int checklistItemId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ChecklistService checklistService = new ChecklistService(db);
+                    UserService userService = new UserService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x=> x.ID);
+                    int count = 0;
+                    foreach (var item in checkListItemIdsOfCheckList)
+                    {
+                        if (checklistItemId == item)
+                        {
+                            count = count + 1;
+                        }
+                    }
+                    if (count == 0)
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            $"Check List with Id {checkListId} don't have item with ID {checklistItemId}"));
+                    }
+                    checklistService.DeleteChecklistItem(checklistItemId, currentUser.ID);
+                    return Ok(ResponseHelper.GetResponse());
+                }
             }
             catch (Exception ex)
             {
@@ -121,21 +157,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("{checkListId:int}/item/{checklistItemId:int}")]
-        [Authorize(Roles = "Manager")]
-        public IHttpActionResult DeleteChecklistItem()
-        {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
+        
         [HttpPut]
         [Route("{checkListId:int}")]
         [Authorize(Roles = "Manager")]

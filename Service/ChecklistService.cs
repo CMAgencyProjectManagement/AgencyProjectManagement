@@ -70,6 +70,25 @@ namespace Service
             db.CheckLists.Remove(checkList);
             db.SaveChanges();
         }
+        public void DeleteChecklistItem(int checkListItemId, int modifierId)
+        {
+            var checkListItem = db.CheckListItems.Find(checkListItemId);
+            var modifier = db.Users.Find(modifierId);
+            if (checkListItem == null)
+            {
+                throw new ObjectNotFoundException($"Can't find checkList Item with ID {checkListItemId}");
+            }
+
+            if (modifier == null)
+            {
+                throw new ObjectNotFoundException($"Can't find user with ID {modifierId}");
+            }
+
+            checkListItem.ChangedBy = modifier.ID;
+            checkListItem.ChangedTime = DateTime.Today;
+            db.CheckListItems.Remove(checkListItem);
+            db.SaveChanges();
+        }
         public CheckList UpdateCheckList(
             int id,
             string name,
