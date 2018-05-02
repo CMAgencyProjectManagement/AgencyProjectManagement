@@ -70,7 +70,16 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    checklistService.DeleteChecklist(checkListId, currentUser.ID);
+                    var checkListItemsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Count();
+                    if (checkListItemsOfCheckList==0)
+                    {
+                        checklistService.DeleteChecklist(checkListId, currentUser.ID);
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            $"Can't remove check list with ID {checkListId} because it still have Item"));
+                    }
                     return Ok(ResponseHelper.GetResponse());
                 }
 
@@ -98,13 +107,17 @@ namespace Web.Controllers
 
                     var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x=> x.ID);
                     int count = 0;
-                    foreach (var item in checkListItemIdsOfCheckList)
+                    if (checkListItemIdsOfCheckList!=null)
                     {
-                        if (checklistItemId == item)
+                        foreach (var item in checkListItemIdsOfCheckList)
                         {
-                            count = count + 1;
+                            if (checklistItemId == item)
+                            {
+                                count = count + 1;
+                            }
                         }
                     }
+                    
                     if (count == 0)
                     {
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
@@ -236,6 +249,47 @@ namespace Web.Controllers
                        currentUserId,
                        DateTime.Now.Date
                        );
+                    return Ok(ResponseHelper.GetResponse(checklistService.ParseToJson(checkList)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+        [HttpPut]
+        [Route("{checkListId:int}/checkitem/{checklistItemId:int}")]
+        [Authorize]
+        public IHttpActionResult CheckCheckListItem(int checkListId, int checklistItemId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ChecklistService checklistService = new ChecklistService(db);
+                    UserService userService = new UserService(db);
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    CheckList checkList = db.CheckLists.Find(checkListId);
+                    User currentUser = userService.GetUser(currentUserId);
+                    //Check if item belong to check list
+                    var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x => x.ID);
+                    int count = 0;
+                    foreach (var item in checkListItemIdsOfCheckList)
+                    {
+                        if (checklistItemId == item)
+                        {
+                            count = count + 1;
+                        }
+                    }
+                    if (count == 0)
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            $"Check List with Id {checkListId} don't have item with ID {checklistItemId}"));
+                    }
+                    //end check
+                    checklistService.CheckCheckListItem(checklistItemId, currentUserId);
                     return Ok(ResponseHelper.GetResponse(checklistService.ParseToJson(checkList)));
                 }
             }
