@@ -78,12 +78,6 @@
         </div>
         <div class="col-6">
           <div class="section" style="font-size: 16px">
-            <dt class="col-12">Creator:</dt>
-            <dd class="col-12 pl-4">
-              <app-user-list [user]="foundProject.createdBy"></app-user-list>
-              <span *ngIf="!foundProject.createdBy">N/A</span>
-            </dd>
-            <br/>
             <dt class="col-12">Members:</dt>
             <dd class="col-12 pl-4">
               <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees" [sort]="true"></app-user-list>
