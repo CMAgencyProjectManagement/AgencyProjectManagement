@@ -90,7 +90,7 @@ export class ChecklistService {
 
   public checkChecklistItem(checkListId, checkListItemId): Promise<CheckList> {
     return new Promise<any>((resolve, reject) => {
-      request.post(serverPath.checkCheckListItem(checkListId, checkListItemId))
+      request.put(serverPath.checkCheckListItem(checkListId, checkListItemId))
         .set('token', this.tokenCursor.get())
         .then(res => {
           const content = res.body;

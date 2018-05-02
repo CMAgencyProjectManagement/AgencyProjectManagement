@@ -112,6 +112,7 @@ export class ChecklistComponent implements OnInit {
     this.checkListService.createChecklistItem(eventData.checkListId, eventData.content)
       .then(value => {
         this.checkList = value;
+        this.newItemValue = '';
       })
       .catch(reason => {
         console.debug('handleAddItemClick - error', reason.Message);
@@ -124,7 +125,9 @@ export class ChecklistComponent implements OnInit {
       checkListItemId: itemId
     };
 
+    this.checkListService.checkChecklistItem(eventData.checkListId, eventData.checkListItemId)
+      .catch(reason => console.debug('handleCheckItemClick - error', eventData, reason.message));
 
-    console.debug('handleCheckItemClick', eventData)
+
   }
 }
