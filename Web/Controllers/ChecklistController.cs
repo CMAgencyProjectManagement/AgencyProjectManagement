@@ -60,11 +60,21 @@ namespace Web.Controllers
         [HttpDelete]
         [Route("{checkListId:int}")]
         [Authorize(Roles = "Manager")]
-        public IHttpActionResult DeleteChecklist()
+        public IHttpActionResult DeleteChecklist(int checkListId)
         {
             try
             {
-                throw new NotImplementedException();
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ChecklistService checklistService = new ChecklistService(db);
+                    UserService userService = new UserService(db);
+                    NotificationService notificationService = new NotificationService(db);
+                    string userIdString = User.Identity.GetUserId();
+                    User currentUser = userService.GetUser(userIdString);
+                    checklistService.DeleteChecklist(checkListId, currentUser.ID);
+                    return Ok(ResponseHelper.GetResponse());
+                }
+
             }
             catch (Exception ex)
             {

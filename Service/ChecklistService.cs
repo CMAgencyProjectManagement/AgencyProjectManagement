@@ -51,6 +51,25 @@ namespace Service
             db.SaveChanges();
             return newCheckListItem;
         }
+        public void DeleteChecklist(int checkListId, int modifierId)
+        {
+            var checkList = db.CheckLists.Find(checkListId);
+            var modifier = db.Users.Find(modifierId);
+            if (checkList== null)
+            {
+                throw new ObjectNotFoundException($"Can't find checkList with ID {checkListId}");
+            }
+
+            if (modifier == null)
+            {
+                throw new ObjectNotFoundException($"Can't find user with ID {modifierId}");
+            }
+
+            checkList.ChangedBy = modifier.ID;
+            checkList.ChangedTime = DateTime.Today;
+            db.CheckLists.Remove(checkList);
+            db.SaveChanges();
+        }
         public JObject ParseToJson(CheckList checkList)
         {
             UserService userService = new UserService(db);
