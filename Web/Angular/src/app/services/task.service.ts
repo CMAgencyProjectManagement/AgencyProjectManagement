@@ -264,4 +264,45 @@ export class TaskService {
         .catch(reason => reject(reason.response.body));
     });
   }
+
+  archiveTask(taskId) {
+    const objData = {
+      TaskID: taskId
+    };
+    return new Promise<Task[]>((resolve, reject) => {
+      request.put(serverPath.archiveTask)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
+  unArchiveTask(taskId) {
+    const objData = {
+      TaskID: taskId
+    };
+    return new Promise<Task[]>((resolve, reject) => {
+      request.put(serverPath.unArchiveTask)
+        .set('token', this.tokenCursor.get())
+        .send(objData)
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
 }
