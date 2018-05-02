@@ -519,6 +519,7 @@
     <Compile Include="ViewModels\SetTeamRoleViewModel.cs" />
     <Compile Include="ViewModels\UnassignTaskModel.cs" />
     <Compile Include="ViewModels\UnAssignTeamModel.cs" />
+    <Compile Include="ViewModels\UpdateCheckListItemModel.cs" />
     <Compile Include="ViewModels\UpdateCheckListModel.cs" />
     <Compile Include="ViewModels\UpdateCommentModel.cs" />
     <Compile Include="ViewModels\UpdateCurrentUserModel.cs" />

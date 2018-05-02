@@ -94,6 +94,8 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
+                    //Check if item belong to check list
+
                     var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x=> x.ID);
                     int count = 0;
                     foreach (var item in checkListItemIdsOfCheckList)
@@ -108,6 +110,7 @@ namespace Web.Controllers
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
                             $"Check List with Id {checkListId} don't have item with ID {checklistItemId}"));
                     }
+                    //end check
                     checklistService.DeleteChecklistItem(checklistItemId, currentUser.ID);
                     return Ok(ResponseHelper.GetResponse());
                 }
@@ -192,6 +195,57 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpPut]
+        [Route("{checkListId:int}/item/{checklistItemId:int}")]
+        [Authorize(Roles = "Manager")]
+        public IHttpActionResult UpdateCheckListItem(int checkListId, int checklistItemId, UpdateCheckListItemModel updateCheckListItemModel)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ChecklistService checklistService = new ChecklistService(db);
+                    UserService userService = new UserService(db);
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    CheckList checkList = db.CheckLists.Find(checkListId);
+                    User currentUser = userService.GetUser(currentUserId);
+                    if (!taskService.IsManagerOfTask(currentUserId, checkList.TaskID))
+                        return Ok(ResponseHelper.GetExceptionResponse(
+                            "User have to be manager of this task to edit task or task not belong to any department"));
+
+                    //Check if item belong to check list
+                    var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x => x.ID);
+                    int count = 0;
+                    foreach (var item in checkListItemIdsOfCheckList)
+                    {
+                        if (checklistItemId == item)
+                        {
+                            count = count + 1;
+                        }
+                    }
+                    if (count == 0)
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            $"Check List with Id {checkListId} don't have item with ID {checklistItemId}"));
+                    }
+                    //end check
+                    var UpdatedCheckListItem = checklistService.UpdateCheckListItem(
+                       checklistItemId,
+                       updateCheckListItemModel.Name,
+                       currentUserId,
+                       DateTime.Now.Date
+                       );
+                    return Ok(ResponseHelper.GetResponse(checklistService.ParseToJson(checkList)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
 
     }
 }
