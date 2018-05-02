@@ -68,7 +68,8 @@
                 </div>
               </div>
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
-                <div class="card task-card" *ngFor="let task of lists.tasks" data-toggle="modal" style="cursor: pointer"
+                <ng-container *ngFor="let task of lists.tasks">
+                  <div class="card task-card" *ngIf="!task.isArchived" data-toggle="modal" style="cursor: pointer"
                      data-toggle="modal"
                      id="task">
                   <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color: black">
@@ -81,6 +82,7 @@
                     </div>
                   </a>
                 </div>
+                </ng-container>
               </div>
             </div>
           </ng-container>
