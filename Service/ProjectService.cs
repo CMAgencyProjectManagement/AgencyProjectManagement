@@ -254,6 +254,7 @@ namespace Service
             User user = db.Users.Find(userId);
             if (user == null)
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
+
             Project project = db.Projects.Find(projectId);
             if (project == null)
                 throw new ObjectNotFoundException($"Project with ID {projectId} not found");
@@ -262,7 +263,7 @@ namespace Service
                 .FirstOrDefault();
             if (choosedUserProject == null)
                 throw new ObjectNotFoundException($"User with ID {userId} not have in project with ID {projectId}");
-            List<Task> tasksOfProject = GetTasksOfProject(projectId);
+            List<Task> tasksOfProject = GetTasksOfProject(projectId).Where(x => x.Status != (int)TaskStatus.Done).ToList();
             IEnumerable<UserTask> UsertasksInTaskList = GetUserTaskFromTasksOfProject(tasksOfProject, projectId);
             IEnumerable<UserTask> taskListsOfUser = db.UserTasks.Where(x => x.UserID == userId);
             List<int> UsertaskIdsOfUserInProject =
@@ -287,7 +288,7 @@ namespace Service
             else
             {
                 throw new ObjectNotFoundException(
-                    $"User {user.Username} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
+                    $"User {user.Username} still have task in this project {project.Name}");
             }
         }
 

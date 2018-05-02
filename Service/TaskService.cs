@@ -445,6 +445,11 @@ namespace Service
             {
                 throw new ObjectNotFoundException($"Task with ID{taskID} not found");
             }
+            if (task.Status == (int)TaskStatus.Done)
+            {
+                throw new InvalidOperationException($"Task named {task.Name} is already done, cant assign more members");
+
+            }
 
             UserTask foundUserTask = db.UserTasks
                 .SingleOrDefault(userTask => userTask.TaskID == task.ID && userTask.UserID == userID);
