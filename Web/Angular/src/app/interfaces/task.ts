@@ -33,5 +33,5 @@ export class Task {
   attachments: Attachment[];
   predecessors: Task[];
   successors: Task[];
-  checkLists: CheckList;
+  checkLists: CheckList[];
 }
