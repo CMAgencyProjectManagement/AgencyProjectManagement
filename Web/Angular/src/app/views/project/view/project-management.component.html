@@ -20,8 +20,8 @@
               <tr>
                 <th style="text-align: center">Name</th>
                 <th style="text-align: center">Description</th>
-                <th style="text-align: center">Deadline</th>
                 <th style="text-align: center">Start date</th>
+                <th style="text-align: center">Deadline</th>
                 <th style="text-align: center">Status</th>
                 <th style="text-align: center" *ngIf="currentUser.isAdmin || currentUser.isManager">Action</th>
               </tr>
@@ -38,12 +38,12 @@
                   <p *ngIf="!project.description">N/A</p>
                 </td>
                 <td>
-                  <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
-                  <span *ngIf=!project.deadline>N/A</span>
-                </td>
-                <td>
                   <span *ngIf=project.startDate>{{project.startDate | date:'dd/MM/yyyy'}}</span>
                   <span *ngIf=!project.startDate>N/A</span>
+                </td>
+                <td>
+                  <span *ngIf=project.deadline>{{project.deadline | date:'dd/MM/yyyy'}}</span>
+                  <span *ngIf=!project.deadline>N/A</span>
                 </td>
                 <td>
                   <span *ngIf="project.status === 0">

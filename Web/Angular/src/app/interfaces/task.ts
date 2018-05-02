@@ -3,6 +3,7 @@ import {List} from './list';
 import {User} from './user';
 import {Comment} from './comment';
 import {Attachment} from './attachment';
+import {CheckList} from './checkList';
 
 export class Task {
   id: number;
@@ -32,4 +33,5 @@ export class Task {
   attachments: Attachment[];
   predecessors: Task[];
   successors: Task[];
+  checkLists: CheckList;
 }

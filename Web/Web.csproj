@@ -478,6 +478,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgencyConfig.cs" />
+    <Compile Include="Controllers\ChecklistController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\DependencyController.cs" />
@@ -501,6 +502,7 @@
     <Compile Include="ViewModels\AssignProjectModel.cs" />
     <Compile Include="ViewModels\AssignTaskModel.cs" />
     <Compile Include="ViewModels\AssignTeamModel.cs" />
+    <Compile Include="ViewModels\CreateChecklistModel.cs" />
     <Compile Include="ViewModels\CreateCommentModel.cs" />
     <Compile Include="ViewModels\CreateListModel.cs" />
     <Compile Include="ViewModels\CreateProjectModel.cs" />

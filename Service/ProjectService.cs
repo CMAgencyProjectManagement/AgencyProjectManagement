@@ -101,7 +101,8 @@ namespace Service
                 Deadline = deadline,
                 StartDate = startDate,
                 CreatedBy = creator.ID,
-                CreatedTime = DateTime.Now
+                CreatedTime = DateTime.Now,
+                Status = (int) ProjectStatus.NotStarted
             };
 
             db.Projects.Add(newProject);
@@ -150,19 +151,26 @@ namespace Service
             }
         }
 
-        public int CloseProject(int id)
+        public int CloseProject(int projectId, int modifierId)
         {
-            var project = db.Projects.Find(id);
-            if (project != null)
+            var project = db.Projects.Find(projectId);
+            var modifier = db.Users.Find(modifierId);
+            if (project == null)
             {
-                project.Status = (int) ProjectStatus.Finished;
-                db.SaveChanges();
-                return id;
+                throw new ObjectNotFoundException($"Can't find project with ID {projectId}");
             }
-            else
+
+            if (modifier == null)
             {
-                throw new ObjectNotFoundException($"Can't find project with ID {id}");
+                throw new ObjectNotFoundException($"Can't find user with ID {modifierId}");
             }
+
+            project.Status = (int) ProjectStatus.Finished;
+            project.ChangedBy = modifier.ID;
+            project.ChangedTime = DateTime.Today;
+
+            db.SaveChanges();
+            return projectId;
         }
 
         public Project GetProjectByID(int id)
@@ -246,6 +254,7 @@ namespace Service
             User user = db.Users.Find(userId);
             if (user == null)
                 throw new ObjectNotFoundException($"User with ID {userId} not found");
+
             Project project = db.Projects.Find(projectId);
             if (project == null)
                 throw new ObjectNotFoundException($"Project with ID {projectId} not found");
@@ -254,7 +263,7 @@ namespace Service
                 .FirstOrDefault();
             if (choosedUserProject == null)
                 throw new ObjectNotFoundException($"User with ID {userId} not have in project with ID {projectId}");
-            List<Task> tasksOfProject = GetTasksOfProject(projectId);
+            List<Task> tasksOfProject = GetTasksOfProject(projectId).Where(x => x.Status != (int)TaskStatus.Done).ToList();
             IEnumerable<UserTask> UsertasksInTaskList = GetUserTaskFromTasksOfProject(tasksOfProject, projectId);
             IEnumerable<UserTask> taskListsOfUser = db.UserTasks.Where(x => x.UserID == userId);
             List<int> UsertaskIdsOfUserInProject =
@@ -279,7 +288,7 @@ namespace Service
             else
             {
                 throw new ObjectNotFoundException(
-                    $"User {user.Username} still have task in this project {project.Name}||1: {UsertaskIdsOfUserInProject.Count()}||2: {count}");
+                    $"User {user.Username} still have task in this project {project.Name}");
             }
         }
 
@@ -385,7 +394,7 @@ namespace Service
                     bool isAlreadyInProject = project.UserProjects
                         .Select(userProject => userProject.UserID)
                         .Contains(manager.ID);
-                    
+
                     if (!isAlreadyInProject)
                     {
                         AssignProject(manager.ID, project.ID, modifierId);
@@ -470,6 +479,29 @@ namespace Service
             }
 
             return tasksJArray;
+        }
+
+        public Project UpdateProjectStatus(int projectId, int? modifierId = null)
+        {
+            var project = db.Projects.Find(projectId);
+
+            if (project == null)
+            {
+                throw new ObjectNotFoundException($"Project with id {projectId} not found");
+            }
+
+            if (modifierId.HasValue)
+            {
+                project.ChangedBy = modifierId.Value;
+                project.ChangedTime = DateTime.Today;
+            }
+
+            if (project.Status == (int) ProjectStatus.NotStarted && project.StartDate >= DateTime.Today)
+            {
+                project.Status = (int) ProjectStatus.Executing;
+            }
+
+            return project;
         }
 
         public JObject ParseToJsonProjectReport(Project project, bool isIncludeTask = false)
@@ -564,35 +596,35 @@ namespace Service
             }
         }
 
-
         public JObject ParseToJson(Project project, bool isDetailed = false, string avatarPath = null)
         {
             UserService userService = new UserService(db);
             ListService listService = new ListService(db);
-            User creator = userService.GetUser(project.CreatedBy);
-
+            
+            var updatedProject = UpdateProjectStatus(project.ID);
+            User creator = userService.GetUser(updatedProject.CreatedBy);
             var result = new JObject
             {
-                ["id"] = project.ID,
-                ["name"] = project.Name,
-                ["description"] = project.Description,
-                ["deadline"] = project.Deadline,
-                ["createdTime"] = project.CreatedTime,
+                ["id"] = updatedProject.ID,
+                ["name"] = updatedProject.Name,
+                ["description"] = updatedProject.Description,
+                ["deadline"] = updatedProject.Deadline,
+                ["createdTime"] = updatedProject.CreatedTime,
                 ["createdBy"] = userService.ParseToJson(creator, avatarPath),
-                ["startDate"] = project.StartDate,
-                ["changedTime"] = project.ChangedTime,
-                ["status"] = project.Status
+                ["startDate"] = updatedProject.StartDate,
+                ["changedTime"] = updatedProject.ChangedTime,
+                ["status"] = updatedProject.Status
             };
-            if (project.ChangedBy.HasValue)
+            if (updatedProject.ChangedBy.HasValue)
             {
-                var changer = userService.GetUser(project.ChangedBy.Value);
+                var changer = userService.GetUser(updatedProject.ChangedBy.Value);
                 result["changedBy"] = userService.ParseToJson(changer, avatarPath);
             }
 
             if (isDetailed)
             {
                 TeamService teamservice = new TeamService(db);
-                IEnumerable<List> lists = listService.GetListOfProject(project.ID);
+                IEnumerable<List> lists = listService.GetListOfProject(updatedProject.ID);
                 JArray listJArray = new JArray();
                 foreach (List list in lists)
                 {
@@ -602,7 +634,7 @@ namespace Service
                 result["lists"] = listJArray;
 
                 var users = userService.GetUsersOfProject(
-                    project.ID
+                    updatedProject.ID
                 );
 
                 var jArray = new JArray();
@@ -613,8 +645,7 @@ namespace Service
 
                 result["assignees"] = jArray;
 
-                JArray teamsJson = new JArray();
-                IEnumerable<Team> teams = teamservice.GetTeamsOfProject(project.ID);
+                IEnumerable<Team> teams = teamservice.GetTeamsOfProject(updatedProject.ID);
                 IEnumerable<JObject> teamJson = teams
                     .Select(team => teamservice.ParseToJson(team, avatarPath: avatarPath, includeUsers: true));
 

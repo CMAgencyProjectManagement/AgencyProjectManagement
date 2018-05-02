@@ -76,7 +76,6 @@ namespace Service
             return db.UserTasks
                 .Where(userTask => userTask.UserID == userId)
                 .Select(userTask => userTask.Task);
-            
         }
 
         public IEnumerable<Task> GetLateTaskOfStaff(int userID)
@@ -125,18 +124,20 @@ namespace Service
 
             return lateActiveTasks;
         }
-        
+
         public IEnumerable<Task> GetTaskOfDepartment(int teamId)
         {
             IQueryable<Task> tasks = db.Tasks
                 .Where(task => task.List.Project.TeamProjects.Any(teamProject => teamProject.TeamID == teamId));
             return tasks;
         }
+
         public IQueryable<Task> GetArchieveTasks()
         {
             var tasks = db.Tasks.Where(x => x.IsArchived == true);
             return tasks;
         }
+
         public IEnumerable<Task> GetLateTaskOfDepartment(int teamId)
         {
             TaskService taskService = new TaskService(db);
@@ -144,8 +145,6 @@ namespace Service
             tasks = tasks.Where(task => taskService.IsTaskLate(task.ID));
             return tasks;
         }
-
-        
 
 
         public List<Task> GetActiveTasksOfUser(int userId, bool includeInactiveTasks = false)
@@ -206,7 +205,7 @@ namespace Service
 
             return users;
         }
-        
+
         public IEnumerable<User> GetFollowersOfTask(int taskId)
         {
             Task task = GetTask(taskId);
@@ -301,11 +300,11 @@ namespace Service
             task.Status = (int) taskStatus;
             task.ChangedBy = modifier.ID;
 
-            if (taskStatus == TaskStatus.Done)
+            if (taskStatus == TaskStatus.NeedReview)
             {
                 task.FinishedDate = DateTime.Today;
             }
-            else
+            else if (taskStatus == TaskStatus.NotDone)
             {
                 task.FinishedDate = null;
             }
@@ -313,11 +312,11 @@ namespace Service
             db.SaveChanges();
             return task;
         }
-        
+
         public IEnumerable<Task> SortTaskByDeadline(IEnumerable<Task> tasks)
         {
             List<Task> newTasks = tasks.ToList();
-            
+
             newTasks.Sort((taskLeft, taskRight) =>
             {
                 DateTime deadLineLeft =
@@ -327,7 +326,7 @@ namespace Service
 
                 return deadLineLeft.CompareTo(deadLineRight);
             });
-            
+
             return newTasks;
         }
 
@@ -419,7 +418,7 @@ namespace Service
             }
         }
 
-        public Task AssignUsersToTask(int[] userIds,int taskId, int currentUserId)
+        public Task AssignUsersToTask(int[] userIds, int taskId, int currentUserId)
         {
             foreach (int userId in userIds)
             {
@@ -445,6 +444,11 @@ namespace Service
             if (task == null)
             {
                 throw new ObjectNotFoundException($"Task with ID{taskID} not found");
+            }
+            if (task.Status == (int)TaskStatus.Done)
+            {
+                throw new InvalidOperationException($"Task named {task.Name} is already done, cant assign more members");
+
             }
 
             UserTask foundUserTask = db.UserTasks
@@ -545,9 +549,8 @@ namespace Service
             int mediumPriorityScore,
             int highPriorityScore,
             double lateFinishMultiplier
-            )
+        )
         {
-
             double score = 0f;
             switch ((TaskPriority) task.Priority)
             {
@@ -768,6 +771,7 @@ namespace Service
                 CommentService commentService = new CommentService(db);
                 DependencyService dependencyService = new DependencyService(db);
                 AttachmentService attachmentService = new AttachmentService(db);
+                ChecklistService checklistService = new ChecklistService(db);
 
                 ListService listService = new ListService(db);
                 var list = listService.GetListOfTask(task.ID);
@@ -796,6 +800,12 @@ namespace Service
                 IEnumerable<JObject> successorsJson = successors
                     .Select(task1 => ParseToJson(task1));
                 result["successors"] = new JArray(successorsJson);
+
+
+                IEnumerable<CheckList> checkLists = checklistService.GetCheckListOfTask(task.ID);
+                IEnumerable<JObject> checkListsJsons = checkLists
+                    .Select(checkList => checklistService.ParseToJson(checkList));
+                result["checkLists"] = new JArray(checkListsJsons);
             }
 
             return result;

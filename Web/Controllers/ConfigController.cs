@@ -72,7 +72,6 @@ namespace Web.Controllers
                 {
                     ModelState.AddModelError("LowPoint", "Low priority point must be larger or equal to 1");
                     flag = false;
-
                 }
                 if (configViewModel.MediumPoint == 0)
                 {

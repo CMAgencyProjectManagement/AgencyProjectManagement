@@ -19,7 +19,10 @@ namespace Service
             this.db = db;
         }
 
-        public IEnumerable<User> NotifyToUsersOfTask(int taskId, NotificationSentence sentence)
+        public IEnumerable<User> NotifyToUsersOfTask(
+            int taskId,
+            NotificationSentence sentence,
+            IEnumerable<User> additionalReceivers = null)
         {
             TaskService taskService = new TaskService(db);
             IEnumerable<User> staffs = taskService.GetTaskAssignee(taskId);
@@ -30,6 +33,13 @@ namespace Service
                 .Union(managers)
                 .Union(followers)
                 .ToList();
+            
+            if (additionalReceivers != null)
+            {
+                usersToNotify = usersToNotify
+                    .Union(additionalReceivers)
+                    .ToList();
+            }
 
             Notification notification = new Notification
             {
@@ -41,14 +51,24 @@ namespace Service
             return usersToNotify;
         }
 
-        public IEnumerable<User> NotifyToUsersOfProject(int projectId, NotificationSentence sentence)
+        public IEnumerable<User> NotifyToUsersOfProject(
+            int projectId,
+            NotificationSentence sentence,
+            IEnumerable<User> additionalReceivers = null)
         {
             UserService userService = new UserService(db);
-            
+
             IEnumerable<User> assignees = userService.GetUsersOfProject(projectId);
             IEnumerable<User> admin = db.Users.Where(user => user.IsAdmin);
 
             List<User> usersToNotify = assignees.Union(admin).ToList();
+            
+            if (additionalReceivers != null)
+            {
+                usersToNotify = usersToNotify
+                    .Union(additionalReceivers)
+                    .ToList();
+            }
 
             Notification notification = new Notification
             {
@@ -60,24 +80,35 @@ namespace Service
             return usersToNotify;
         }
 
-        public IEnumerable<User> NotifyToUsersOfDepartment(int teamId, NotificationSentence sentence, bool allMember = false)
+        public IEnumerable<User> NotifyToUsersOfDepartment(
+            int teamId,
+            NotificationSentence sentence,
+            bool allMember = false,
+            IEnumerable<User> additionalReceivers = null)
         {
             UserService userService = new UserService(db);
             TeamService teamService = new TeamService(db);
-            
+
             User manager = teamService.GetManager(teamId);
             IEnumerable<User> admin = db.Users.Where(user => user.IsAdmin);
-            
+
             List<User> usersToNotify = new List<User>();
             usersToNotify.Add(manager);
             usersToNotify.AddRange(admin);
+            
+            if (additionalReceivers != null)
+            {
+                usersToNotify = usersToNotify
+                    .Union(additionalReceivers)
+                    .ToList();
+            }
 
             if (allMember)
             {
                 IEnumerable<User> assignees = userService.GetUsersOfTeam(teamId);
                 usersToNotify = usersToNotify.Union(assignees).ToList();
             }
-            
+
             Notification notification = new Notification
             {
                 Content = sentence.ToString(),
@@ -128,6 +159,7 @@ namespace Service
                 {
                     sentenceJson = NotificationSentence.ToJson(sentence, currentUser, teams, projects, tasks);
                 }
+
                 result.Add(new JObject
                 {
                     ["isRead"] = notificationUser.IsRead,

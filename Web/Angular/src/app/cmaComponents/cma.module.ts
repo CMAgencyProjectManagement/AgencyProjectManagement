@@ -17,7 +17,7 @@ import {TaskTableComponent} from './task-table/task-table.component';
 import {TaskStatusComponent} from './task-status/task-status.component';
 import {ProjectStatusComponent} from './project-status/project-status.component';
 import {TaskPriorityComponent} from './task-priority/task-priority.component';
-
+import {TruncateTextPipe} from '../directives';
 import {
   ConfirmModalComponent,
   CreateListModalComponent,
@@ -38,6 +38,7 @@ import { StaffSectionComponent } from './staff-section/staff-section.component';
 import { ManagerSectionComponent } from './manager-section/manager-section.component';
 import { AdminSectionComponent } from './admin-section/admin-section.component';
 import {NgSelectModule} from '@ng-select/ng-select';
+import { ChecklistComponent } from './checklist/checklist.component';
 
 const declares_exports = [
   ProjectCardComponent,
@@ -66,6 +67,8 @@ const declares_exports = [
   StaffSectionComponent,
   ManagerSectionComponent,
   AdminSectionComponent,
+  ChecklistComponent,
+  TruncateTextPipe
 ];
 
 

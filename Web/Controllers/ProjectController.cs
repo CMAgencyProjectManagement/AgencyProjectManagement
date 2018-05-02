@@ -312,7 +312,7 @@ namespace Web.Controllers
                     {
                         ProjectService projectService = new ProjectService(db);
                         Boolean flag = true;
-                        if (projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
+                        if (createProjectModel.Name != null && projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
                         {
                             ModelState.AddModelError("Name", "Project name is taken");
                             flag = false;
@@ -336,7 +336,10 @@ namespace Web.Controllers
 
 
                         if (flag == false)
+                        {
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        }
+                            
                         UserService userService = new UserService(db);
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
@@ -478,7 +481,7 @@ namespace Web.Controllers
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
                     
-                    projectService.CloseProject(deleteProjectViewModel.id);
+                    projectService.CloseProject(deleteProjectViewModel.id,currentUser.ID);
 
                     NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                     NotificationSentence sentence = builder.CloseProjectSentence(
@@ -698,6 +701,7 @@ namespace Web.Controllers
 
                         NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                         List<User> notifiedUsersList = new List<User>();
+                        List<User> removedUserList = userService.GetUsers(assignProjectModel.UserIds).ToList(); 
                         foreach (int userId in assignProjectModel.UserIds)
                         {
                             NotificationSentence sentence = builder.UnAssignMemberFromProjectSentence(
@@ -705,7 +709,10 @@ namespace Web.Controllers
                                 userId,
                                 project.ID);
                             IEnumerable<User> notifiedUsers =
-                                notificationService.NotifyToUsersOfProject(assignProjectModel.ProjectId, sentence);
+                                notificationService.NotifyToUsersOfProject(
+                                    assignProjectModel.ProjectId,
+                                    sentence,
+                                    removedUserList);
                             notifiedUsersList.AddRange(notifiedUsers);
                         }
 
