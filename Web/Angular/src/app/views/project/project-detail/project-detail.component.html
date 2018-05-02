@@ -6,11 +6,12 @@
   <div *ngIf="!isPageLoading" class="card-body">
     <div class="card-body" [formGroup]="viewForm" *ngIf="foundProject">
       <div class="row">
+        <div class="col-12" style="font-size: 20px">
+          <h2 class="card-title">{{foundProject.name}}</h2>
+        </div>
         <div class="col-6">
           <div class="form-horizontal">
-            <div style="font-size: 20px">
-              <h2 class="card-title">{{foundProject.name}}</h2>
-            </div>
+
             <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;" *ngIf="foundProject.status!= 2">
               <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light" *ngIf="currentUser.isAdmin">
                 <i class="fa fa-edit"></i>&nbsp; Update
@@ -69,11 +70,64 @@
         </div>
         <div class="col-6">
           <div class="section" style="font-size: 16px">
-            <dt class="col-12">
-              <a routerLink="/project/{{foundProject.id}}/task" class="btn btn-primary" style="font-size: 20px; width: 120px">
-                All tasks
-              </a>
-            </dt>
+            <dt class="col-12">Links:</dt>
+            <dd class="col-12 pl-4">
+              <ul class="icons-list">
+
+                <!-- ITEM START -->
+                <a routerLink="/project/{{foundProject.id}}/task">
+
+                  <li class="d-flex align-items-center hover-bg">
+                    <i class="fa fa-tasks fa-lg bg-primary"></i>
+                    <div class="ml-2 font-weight-bold">
+                      <div class="title">All tasks</div>
+                    </div>
+                  </li>
+                </a>
+
+                <!-- ITEM END -->
+
+                <!-- ITEM START -->
+                <a routerLink="/project/{{foundProject.id}}/task">
+
+                  <li class="d-flex align-items-center hover-bg">
+                    <i class="fa fa-tasks fa-lg bg-primary"></i>
+                    <div class="ml-2 font-weight-bold">
+                      <div class="title">Schedule</div>
+                    </div>
+                  </li>
+                </a>
+
+                <!-- ITEM END -->
+
+                <!-- ITEM START -->
+                <a routerLink="/project/{{foundProject.id}}/task">
+
+                  <li class="d-flex align-items-center hover-bg">
+                    <i class="fa fa-tasks fa-lg bg-primary"></i>
+                    <div class="ml-2 font-weight-bold">
+                      <div class="title">Report</div>
+                    </div>
+                  </li>
+                </a>
+
+                <!-- ITEM END -->
+
+                <!-- ITEM START -->
+                <a routerLink="/project/{{foundProject.id}}/task">
+
+                  <li class="d-flex align-items-center hover-bg">
+                    <i class="fa fa-tasks fa-lg bg-primary"></i>
+                    <div class="ml-2 font-weight-bold">
+                      <div class="title">Archive</div>
+                    </div>
+                  </li>
+                </a>
+
+                <!-- ITEM END -->
+              </ul>
+
+            </dd>
             <dt class="col-12">Members:</dt>
             <dd class="col-12 pl-4">
               <app-user-list *ngIf="foundProject.assignees" [users]="foundProject.assignees" [sort]="true"></app-user-list>
