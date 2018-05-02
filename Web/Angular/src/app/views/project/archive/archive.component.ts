@@ -72,7 +72,7 @@ export class ArchiveComponent implements OnInit {
             }
           }
         }
-        console.debug(this.tasks.length);
+
         this.isLoading.page = false;
 
       })
