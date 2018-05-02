@@ -326,8 +326,8 @@ export class ViewComponent implements OnInit {
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
-  handleAddCheckListBtnClick() {
-
+  handleAddCheckListBtnClick(value) {
+    console.debug('handleAddCheckListBtnClick', value)
   }
 
   attachmentFileChange(fileInput: any) {
