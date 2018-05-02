@@ -615,6 +615,13 @@ namespace Service
                 ["changedTime"] = updatedProject.ChangedTime,
                 ["status"] = updatedProject.Status
             };
+
+            if (updatedProject.Status.HasValue)
+            {
+                var statusText = ((ProjectStatus)updatedProject.Status.Value).ToString();
+                result["statusText"] = DisplayCamelCaseString(statusText);
+            }
+            
             if (updatedProject.ChangedBy.HasValue)
             {
                 var changer = userService.GetUser(updatedProject.ChangedBy.Value);

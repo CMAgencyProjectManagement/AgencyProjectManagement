@@ -11,10 +11,14 @@
         <div class="row">
           <div class="col-lg-7 col-md-10">
             <app-staff-section [lateTasks]=l ateTasks [thisWeekTasks]="thisWeekTasks" *ngIf="role == 'staff'"></app-staff-section>
-            <app-manager-section [lateTasks]="lateTasks" [needReviewTasks]="needReviewTasks" *ngIf="role == 'manager'">
-
+            <app-manager-section
+              [lateTasks]="lateTasks"
+              [needReviewTasks]="needReviewTasks"
+              *ngIf="role == 'manager'">
             </app-manager-section>
-            <app-admin-section *ngIf="role == 'admin'"></app-admin-section>
+            <app-admin-section
+              [projects]="projects"
+              *ngIf="role == 'admin'"></app-admin-section>
           </div>
           <div class="col-lg-5 col-md-10">
             <div class="card p-0">
