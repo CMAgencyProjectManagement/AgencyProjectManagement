@@ -7,9 +7,11 @@
     <div class="row">
       <div class="col-11">
         <img class="avatar img-avatar" src="{{comment.createdBy.avatar}}"/>
-        <a href="#/account/{{comment.createdBy.id}}/detail">
+        <!-- <a href="#/account/{{comment.createdBy.id}}/detail">
           {{comment.createdBy.name}}
-        </a>
+        </a> -->
+        {{comment.createdBy.name}}
+        <p style="float: right; color: silver; " >{{comment.createdTime | date:'dd/MM/yyyy'}}</p>
       </div>
       <div class="col-1 btn-edit"
            *ngIf="editable"
@@ -18,6 +20,7 @@
       </div>
       <div class="col-12 mt-3" *ngIf="!isCollapsed">
         <p>{{comment.body}}</p>
+        
       </div>
     </div>
   </div>
