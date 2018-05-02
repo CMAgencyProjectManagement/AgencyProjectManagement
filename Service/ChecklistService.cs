@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
+using System.Linq;
 using Entity;
 using Newtonsoft.Json.Linq;
 
@@ -166,14 +167,18 @@ namespace Service
                 result["changedTime"] = checkList.ChangedTime;
             }
 
+            IEnumerable<CheckListItem> checkListItems =
+                db.CheckListItems.Where(item => item.CheckListID == checkList.ID);  
+            
             JArray checkListItemsJArray = new JArray();
-            foreach (CheckListItem item in checkList.CheckListItems)
+            foreach (CheckListItem item in checkListItems)
             {
                 JObject itemJson = new JObject
                 {
                     ["id"] = item.ID,
                     ["name"] = item.Name,
-                    ["isChecked"] = item.IsChecked
+                    ["isChecked"] = item.IsChecked,
+                    
                 };
                 checkListItemsJArray.Add(itemJson);
             }

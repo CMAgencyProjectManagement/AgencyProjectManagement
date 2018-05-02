@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CheckList} from '../../interfaces/checkList';
+import {CheckList, CheckListItem} from '../../interfaces/checkList';
 import {ChecklistService} from '../../services/checklist.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-checklist',
@@ -81,7 +82,10 @@ export class ChecklistComponent implements OnInit {
     };
 
     this.onEditCheckListItem.emit(eventData);
-    console.debug('handleDoneEditItemClick', eventData)
+    this.checkListService.editChecklistItem(eventData.checkListId, eventData.checkListItemId, eventData.content)
+      .catch(reason => {
+        console.debug('handleDoneEditItemClick - error', reason.Message);
+      });
   }
 
   handleDeleteItemClick(itemId) {
@@ -89,8 +93,15 @@ export class ChecklistComponent implements OnInit {
       checkListId: this.checkList.id,
       checkListItemId: itemId
     };
-
-    console.debug('handleDeleteItemClick', eventData)
+    this.checkListService.deleteChecklistItem(eventData.checkListId, eventData.checkListItemId)
+      .then(value => {
+        this.checkList.items = _.filter(this.checkList.items, (item: CheckListItem) => {
+          return item.id !== itemId;
+        })
+      })
+      .catch(reason => {
+        console.debug('handleDeleteItemClick - error', reason.Message);
+      })
   }
 
   handleAddItemClick() {
@@ -98,8 +109,13 @@ export class ChecklistComponent implements OnInit {
       checkListId: this.checkList.id,
       content: this.newItemValue
     };
-
-    console.debug('handleAddItemClick', eventData)
+    this.checkListService.createChecklistItem(eventData.checkListId, eventData.content)
+      .then(value => {
+        this.checkList = value;
+      })
+      .catch(reason => {
+        console.debug('handleAddItemClick - error', reason.Message);
+      });
   }
 
   handleCheckItemClick(itemId) {
@@ -107,6 +123,7 @@ export class ChecklistComponent implements OnInit {
       checkListId: this.checkList.id,
       checkListItemId: itemId
     };
+
 
     console.debug('handleCheckItemClick', eventData)
   }

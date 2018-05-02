@@ -62,7 +62,7 @@ const serverPath = {
   createChecklist: '/api/checklist', // POST
   deleteChecklist: (checkListId) => `/api/checklist/${checkListId}`, // DELETE
   editChecklist: (checkListId) => `/api/checklist/${checkListId}`, // PUT
-  createChecklistItem: (checkListId) => `/api/checklist/${checkListId}/item`, // POST
+  createChecklistItem: `/api/checklist/item`, // POST
   deleteChecklistItem: (checkListId, checkListItemId) => `/api/checklist/${checkListId}/item/${checkListItemId}`, // DELETE
   editChecklistItem: (checkListId, checkListItemId) => `/api/checklist/${checkListId}/item/${checkListItemId}`, // PUT
   checkCheckListItem: (checkListId, checkListItemId) => `/api/checklist/${checkListId}/item/${checkListItemId}`, // PUT

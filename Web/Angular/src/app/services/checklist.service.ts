@@ -70,10 +70,11 @@ export class ChecklistService {
 
   public createChecklistItem(checkListId, name): Promise<CheckList> {
     const dataObject = {
-      Name: name
+      Name: name,
+      CheckListId: checkListId
     };
     return new Promise<any>((resolve, reject) => {
-      request.post(serverPath.createChecklistItem(checkListId))
+      request.post(serverPath.createChecklistItem)
         .set('token', this.tokenCursor.get())
         .send(dataObject)
         .then(res => {
@@ -107,7 +108,7 @@ export class ChecklistService {
       Name: name
     };
     return new Promise<any>((resolve, reject) => {
-      request.post(serverPath.editChecklistItem(checkListId, checkListItemId))
+      request.put(serverPath.editChecklistItem(checkListId, checkListItemId))
         .set('token', this.tokenCursor.get())
         .send(dataObject)
         .then(res => {
