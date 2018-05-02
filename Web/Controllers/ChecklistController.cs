@@ -245,6 +245,47 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        [HttpPut]
+        [Route("{checkListId:int}/checkitem/{checklistItemId:int}")]
+        [Authorize]
+        public IHttpActionResult CheckCheckListItem(int checkListId, int checklistItemId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    ChecklistService checklistService = new ChecklistService(db);
+                    UserService userService = new UserService(db);
+                    TaskService taskService = new TaskService(db);
+                    int currentUserId = Int32.Parse(User.Identity.GetUserId());
+                    CheckList checkList = db.CheckLists.Find(checkListId);
+                    User currentUser = userService.GetUser(currentUserId);
+                    //Check if item belong to check list
+                    var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x => x.ID);
+                    int count = 0;
+                    foreach (var item in checkListItemIdsOfCheckList)
+                    {
+                        if (checklistItemId == item)
+                        {
+                            count = count + 1;
+                        }
+                    }
+                    if (count == 0)
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            $"Check List with Id {checkListId} don't have item with ID {checklistItemId}"));
+                    }
+                    //end check
+                    checklistService.CheckCheckListItem(checklistItemId, currentUserId);
+                    return Ok(ResponseHelper.GetResponse(checklistService.ParseToJson(checkList)));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
 
 
     }
