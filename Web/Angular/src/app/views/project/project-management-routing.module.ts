@@ -66,7 +66,7 @@ const routes: Routes = [
         }
       },
       {
-        path: ':id/archive',
+        path: ':id/taskarchive',
         component: ArchiveComponent,
         data: {
           title: 'View archives'
