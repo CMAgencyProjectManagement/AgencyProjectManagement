@@ -38,6 +38,19 @@ namespace Service
             db.SaveChanges();
             return newCheckList;
         }
+        public CheckListItem CreateChecklistItem(string name, int checkListId, User creator)
+        {
+            CheckListItem newCheckListItem = new CheckListItem
+            {
+               Name = name,
+               CheckListID = checkListId,
+               CreatedBy = creator.ID,
+               CreatedTime = DateTime.Now
+            };
+            db.CheckListItems.Add(newCheckListItem);
+            db.SaveChanges();
+            return newCheckListItem;
+        }
         public JObject ParseToJson(CheckList checkList)
         {
             UserService userService = new UserService(db);

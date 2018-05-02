@@ -76,11 +76,33 @@ namespace Web.Controllers
         [HttpPost]
         [Route("item")]
         [Authorize(Roles = "Manager")]
-        public IHttpActionResult CreateChecklistItem()
+        public IHttpActionResult CreateChecklistItem(CreateCheckListItemModel createCheckListItemModel)
         {
             try
             {
-                throw new NotImplementedException();
+                if (ModelState.IsValid)
+                {
+                    using (CmAgencyEntities db = new CmAgencyEntities())
+                    {
+                        ChecklistService checklistService = new ChecklistService(db);
+                        UserService userService = new UserService(db);
+                        string loginedUserId = User.Identity.GetUserId();
+                        User creator = userService.GetUser(loginedUserId);
+                        CheckListItem newCheckListItem = checklistService.CreateChecklistItem(
+                            createCheckListItemModel.Name,
+                            (int)createCheckListItemModel.CheckListId,
+                            creator
+                            );
+                        JObject dataObject = checklistService.ParseToJson(db.CheckLists.Find(createCheckListItemModel.CheckListId));
+                        return Ok(ResponseHelper.GetResponse(dataObject));
+                    }
+
+                }
+                else
+                {
+                    return Content(HttpStatusCode.BadRequest,
+                        ResponseHelper.GetExceptionResponse(ModelState));
+                }
             }
             catch (Exception ex)
             {
