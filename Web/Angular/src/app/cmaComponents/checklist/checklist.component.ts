@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CheckList} from '../../interfaces/checkList';
+import {ChecklistService} from '../../services/checklist.service';
 
 @Component({
   selector: 'app-checklist',
@@ -28,7 +29,7 @@ export class ChecklistComponent implements OnInit {
 
   newItemValue: string;
 
-  constructor() {
+  constructor(private checkListService: ChecklistService) {
     this.itemsEditMode = [];
     this.itemsEditModeValue = [];
     this.checkListEditMode = false;
@@ -45,10 +46,13 @@ export class ChecklistComponent implements OnInit {
 
   handleDoneEditCheckListClick() {
     this.checkList.name = this.checkListEditValue;
+    this.handleEditCheckListClick();
     let eventData = {
       checkListId: this.checkList.id,
       content: this.checkListEditValue
     };
+
+    this.onEditChecklist.emit(eventData);
     console.debug('handleDoneEditCheckListClick', eventData)
   }
 
@@ -56,7 +60,7 @@ export class ChecklistComponent implements OnInit {
     let eventData = {
       checkListId: this.checkList.id
     };
-    console.debug('handleDeleteCheckListClick', eventData)
+    this.onDeleteCheckList.emit(eventData);
   }
 
   handleEditItemClick(itemId: number) {
@@ -76,6 +80,7 @@ export class ChecklistComponent implements OnInit {
       content: this.itemsEditModeValue[itemId],
     };
 
+    this.onEditCheckListItem.emit(eventData);
     console.debug('handleDoneEditItemClick', eventData)
   }
 

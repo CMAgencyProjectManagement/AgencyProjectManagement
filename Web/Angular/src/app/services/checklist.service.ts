@@ -39,7 +39,7 @@ export class ChecklistService {
       Name: name
     };
     return new Promise<any>((resolve, reject) => {
-      request.post(serverPath.editChecklist(checkListId))
+      request.put(serverPath.editChecklist(checkListId))
         .set('token', this.tokenCursor.get())
         .send(dataObject)
         .then(res => {
@@ -53,7 +53,7 @@ export class ChecklistService {
     });
   }
 
-  public removeChecklist(checkListId): Promise<number> {
+  public deleteChecklist(checkListId): Promise<number> {
     return new Promise<any>((resolve, reject) => {
       request.delete(serverPath.deleteChecklist(checkListId))
         .set('token', this.tokenCursor.get())
@@ -121,7 +121,7 @@ export class ChecklistService {
     });
   }
 
-  public deleteChecklist(checkListId, checkListItemId): Promise<number> {
+  public deleteChecklistItem(checkListId, checkListItemId): Promise<number> {
     return new Promise<any>((resolve, reject) => {
       request.delete(serverPath.deleteChecklistItem(checkListId, checkListItemId))
         .set('token', this.tokenCursor.get())

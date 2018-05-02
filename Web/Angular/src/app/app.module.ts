@@ -77,6 +77,7 @@ import {ListService} from 'app/services/list.service';
 import {CommentService} from './services/comment.service';
 import {ConfigService} from './services/config.service';
 import {NotificationService} from './services/notification.service';
+import {ChecklistService} from './services/checklist.service';
 
 const SERVICES = [
   AlwaysAuthGuard,
@@ -92,8 +93,8 @@ const SERVICES = [
   ListService,
   CommentService,
   ConfigService,
-  NotificationService
-
+  NotificationService,
+  ChecklistService
 ];
 
 // Import modal

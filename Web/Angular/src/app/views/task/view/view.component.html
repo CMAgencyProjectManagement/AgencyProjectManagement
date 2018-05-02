@@ -103,6 +103,8 @@
                                *ngFor="let checkList of foundTask.checkLists"
                                [managementMode]="pageMode.manager"
                                [readonly]="pageMode.done"
+                               (onDeleteCheckList)="handleDeleteCheckListClick($event)"
+                               (onEditChecklist)="handleDoneEditCheckListClick($event)"
                                [checkList]="checkList"></app-checklist>
               </div>
               <div class="col-12" [hidden]="!pageMode.manager || pageMode.done">
@@ -110,7 +112,7 @@
                   <input class="form-control" placeholder="New list" type="text" #newCheckListInput>
                   <span class="input-group-append">
                     <button class="btn btn-success" type="button"
-                            (click)="handleAddCheckListBtnClick(newCheckListInput.value)">
+                            (click)="handleAddCheckListBtnClick(newCheckListInput)">
                       <i class="fa fa-plus"></i>
                     </button>
                   </span>
