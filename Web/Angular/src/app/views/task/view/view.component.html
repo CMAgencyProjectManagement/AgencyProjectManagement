@@ -34,7 +34,7 @@
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
-                [hidden]="!pageMode.staff"
+                [hidden]="!pageMode.staff || isLoading.done"
                 [disabled]="foundTask.status == 1 || isLoading.done"
                 (click)="handleOnNeedReviewBtnClick()"
                 [ladda]="isLoading.done">
@@ -95,12 +95,19 @@
                 <app-checklist class="m-1"
                                *ngFor="let checkList of foundTask.checkLists"
                                [managementMode]="pageMode.manager"
+                               [readonly]="pageMode.done"
                                [checkList]="checkList"></app-checklist>
               </div>
-              <div class="col-12"
-                   [hidden]="!pageMode.manager || pageMode.done || pageMode.needReview">
-                <button class="btn btn-success"
-                (click)="handleAddCheckListBtnClick()">Add check list</button>
+              <div class="col-12" [hidden]="!pageMode.manager || pageMode.done">
+                <div class="input-group">
+                  <input class="form-control" placeholder="New list" type="text" #newCheckListInput>
+                  <span class="input-group-append">
+                    <button class="btn btn-success" type="button"
+                            (click)="handleAddCheckListBtnClick(newCheckListInput.value)">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </span>
+                </div>
               </div>
             </dl>
           </div>
