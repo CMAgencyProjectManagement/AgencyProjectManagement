@@ -19,11 +19,12 @@
       </td>
       <td>{{task.priorityText}}</td>
       <td>
-        <span [hidden]="true">{{task.statusText}}</span>
-        <app-task-status [taskStatusNumber]="task.status"></app-task-status>
+        {{task.statusText}}
+        <!--<span [hidden]="true">{{task.statusText}}</span>-->
+        <!--<app-task-status [taskStatusNumber]="task.status"></app-task-status>-->
       </td>
       <td>
-        <span [hidden]="true">{{task.deadline | date:'yyyy/MM/dd'}}</span>
+        <!--<span [hidden]="true">{{task.deadline | date:'yyyy/MM/dd'}}</span>-->
         {{task.deadline | date:'dd/MM/yyyy'}}
       </td>
       <td>

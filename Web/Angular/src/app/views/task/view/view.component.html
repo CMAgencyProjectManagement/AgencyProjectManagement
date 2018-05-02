@@ -10,7 +10,7 @@
     </div>
     <!--<div class="col-12" *ngIf="isReadonlyMode && !managementMode">-->
     <div class="col-12">
-      <div class="button-row">
+      <div class="button-row" [hidden]="pageMode.admin">
         <a routerLink="/task/edit/{{foundTask.id}}"
            *ngIf="managementMode"
            class="btn btn-secondary bg-light">
@@ -20,28 +20,28 @@
           <i class="fa fa-comment-o"></i>&nbsp; Comment
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
-                *ngIf="managementMode"
+                [hidden]="!pageMode.manager || pageMode.done"
                 (click)="handleOnAssignBtnClick()"
                 [disabled]="isLoading.openAssignModal"
                 [ladda]="isLoading.openAssignModal">
           <i class="fa fa-user-plus"></i>&nbsp; Assign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}"
-                *ngIf="managementMode"
+                [hidden]="!pageMode.manager || pageMode.done"
                 (click)="handleOnUnAssignBtnClick()"
                 [disabled]="isLoading.openUnAssignModal"
                 [ladda]="isLoading.openUnAssignModal">
           <i class="fa fa-user-times"></i>&nbsp; Un-Assign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
-                *ngIf="!managementMode"
+                [hidden]="!pageMode.staff"
                 [disabled]="foundTask.status == 1 || isLoading.done"
                 (click)="handleOnNeedReviewBtnClick()"
                 [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}"
-                *ngIf="managementMode"
+                [hidden]="!pageMode.manager"
                 [disabled]="isLoading.setStatus"
                 (click)="handleSetStatusBtnClick()"
                 [ladda]="isLoading.setStatus">
@@ -91,12 +91,17 @@
             <!--CHECK LIST-->
             <h5 class="mb-3">Check list</h5>
             <dl class="row ml-1">
-              <p class="col-12">
+              <div class="col-12">
                 <app-checklist class="m-1"
                                *ngFor="let checkList of foundTask.checkLists"
-                               [managementMode]="managementMode"
+                               [managementMode]="pageMode.manager"
                                [checkList]="checkList"></app-checklist>
-              </p>
+              </div>
+              <div class="col-12"
+                   [hidden]="!pageMode.manager || pageMode.done || pageMode.needReview">
+                <button class="btn btn-success"
+                (click)="handleAddCheckListBtnClick()">Add check list</button>
+              </div>
             </dl>
           </div>
           <div class="section">
@@ -104,7 +109,9 @@
             <h5 class="mb-3">Attachments</h5>
             <dl class="row ml-1">
               <div class="col-12">
-                <div class="form-group row" [formGroup]="attachmentForm">
+                <div class="form-group row"
+                     [formGroup]="attachmentForm"
+                     [hidden]="pageMode.done || pageMode.needReview || pageMode.admin">
                   <div class="col-9">
                     <input #attachmentInput
                            id="file-input" name="file-input" type="file"
@@ -130,9 +137,10 @@
                         <span>{{attachment.name}}</span>
                       </a>
                       <button class="btn btn-danger btn-sm ml-auto"
-                              [disabled]="isLoading.attachmentRemove[attachment.ID] || needReviewMode"
-                              (click)="handleDeleteAttachmentClick(attachment.ID)"
-                              [ladda]="isLoading.attachmentRemove[attachment.ID]">
+                              [hidden]="pageMode.needReview || pageMode.done"
+                              [disabled]="isLoading.attachmentRemove[attachment.ID]"
+                              [ladda]="isLoading.attachmentRemove[attachment.ID]"
+                              (click)="handleDeleteAttachmentClick(attachment.ID)">
                         <i class="fa fa-trash"></i>
                       </button>
                     </div>

@@ -336,7 +336,10 @@ namespace Web.Controllers
 
 
                         if (flag == false)
+                        {
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
+                        }
+                            
                         UserService userService = new UserService(db);
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);

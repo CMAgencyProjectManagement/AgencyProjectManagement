@@ -326,6 +326,10 @@ export class ViewComponent implements OnInit {
     this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
   }
 
+  handleAddCheckListBtnClick() {
+
+  }
+
   attachmentFileChange(fileInput: any) {
     let file = fileInput.target.files[0];
     this.attachmentForm.controls['attachment'].setValue(file);
