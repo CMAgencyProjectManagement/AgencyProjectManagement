@@ -11,7 +11,7 @@
             <div style="font-size: 20px">
               <h2 class="card-title">{{foundProject.name}}</h2>
             </div>
-            <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;">
+            <div class="button-row" style="margin-bottom: 5px;margin-top: 4px;" *ngIf="foundProject.status!= 2">
               <a routerLink="/project/{{foundProject.id}}/update" class="btn btn-secondary bg-light"
                  *ngIf="currentUser.isAdmin">
                 <i class="fa fa-edit"></i>&nbsp; Update
