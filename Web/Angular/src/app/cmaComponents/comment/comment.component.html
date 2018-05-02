@@ -10,6 +10,7 @@
         <a href="#/account/{{comment.createdBy.id}}/detail">
           {{comment.createdBy.name}}
         </a>
+        <p style="float: right; color: silver; " >{{comment.createdTime | date:'dd/MM/yyyy'}}</p>
       </div>
       <div class="col-1 btn-edit"
            *ngIf="editable"
@@ -18,6 +19,7 @@
       </div>
       <div class="col-12 mt-3" *ngIf="!isCollapsed">
         <p>{{comment.body}}</p>
+        
       </div>
     </div>
   </div>
