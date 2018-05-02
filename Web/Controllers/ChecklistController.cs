@@ -70,7 +70,16 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    checklistService.DeleteChecklist(checkListId, currentUser.ID);
+                    var checkListItemsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Count();
+                    if (checkListItemsOfCheckList==0)
+                    {
+                        checklistService.DeleteChecklist(checkListId, currentUser.ID);
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
+                            $"Can't remove check list with ID {checkListId} because it still have Item"));
+                    }
                     return Ok(ResponseHelper.GetResponse());
                 }
 
@@ -98,13 +107,17 @@ namespace Web.Controllers
 
                     var checkListItemIdsOfCheckList = db.CheckListItems.Where(x => x.CheckListID == checkListId).Select(x=> x.ID);
                     int count = 0;
-                    foreach (var item in checkListItemIdsOfCheckList)
+                    if (checkListItemIdsOfCheckList!=null)
                     {
-                        if (checklistItemId == item)
+                        foreach (var item in checkListItemIdsOfCheckList)
                         {
-                            count = count + 1;
+                            if (checklistItemId == item)
+                            {
+                                count = count + 1;
+                            }
                         }
                     }
+                    
                     if (count == 0)
                     {
                         return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(
