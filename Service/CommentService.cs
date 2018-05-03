@@ -42,7 +42,7 @@ namespace Service
             Task task = taskService.GetTask(taskId);
             if (task != null)
             {
-                IEnumerable<Comment> comments = db.Comments.Where(taskItem => taskItem.TaskID == task.ID);
+                IEnumerable<Comment> comments = db.Comments.Where(comment => comment.TaskID == task.ID);
                 return comments;
             }
 
@@ -62,6 +62,7 @@ namespace Service
             db.SaveChanges();
             return newComment;
         }
+        
 
         public JObject ParseToJson(Comment comment, bool isDetailed = false,string avatarPath = null)
         {
@@ -80,6 +81,10 @@ namespace Service
                 User creator = userService.GetUser(comment.CreatedBy);
                 result["createdBy"] = userService.ParseToJson(creator, avatarPath);
             }
+
+            result["lastChange"] = comment.ChangedTime.HasValue ?
+                comment.ChangedTime.Value :
+                comment.CreatedTime;
 
             if (isDetailed)
             {
