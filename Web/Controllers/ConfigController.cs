@@ -33,6 +33,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
 
         [HttpPut]
         [Route("")]
@@ -42,9 +43,10 @@ namespace Web.Controllers
             try
             {
                 bool flag = true;
+                
                 if (configViewModel.PenatyPercent==0)
                 {
-                    ModelState.AddModelError("PenatyPercent", "Penaty percent must not be empty");
+                    ModelState.AddModelError("PenatyPercent", "Penaty percent must be a integer and great than 0");
                     flag = false;
                 }
                 if (configViewModel.PenatyPercent < 0 || configViewModel.PenatyPercent > 100)
@@ -54,7 +56,7 @@ namespace Web.Controllers
                 }
                 if (configViewModel.MaxDuration == 0)
                 {
-                    ModelState.AddModelError("MaxDuration", "Max duration must not be empty");
+                    ModelState.AddModelError("MaxDuration", "Max duration must be a integer and great than 0");
                     flag = false;
                 }
                 if (configViewModel.MaxDuration < 1)
@@ -63,9 +65,10 @@ namespace Web.Controllers
                     flag = false;
 
                 }
+                
                 if (configViewModel.LowPoint == 0)
                 {
-                    ModelState.AddModelError("LowPoint", "Low priority point must not be empty");
+                    ModelState.AddModelError("LowPoint", "Low priority point must be a integer and great than 0");
                     flag = false;
                 }
                 if (configViewModel.LowPoint < 1)
@@ -73,9 +76,10 @@ namespace Web.Controllers
                     ModelState.AddModelError("LowPoint", "Low priority point must be larger or equal to 1");
                     flag = false;
                 }
+                
                 if (configViewModel.MediumPoint == 0)
                 {
-                    ModelState.AddModelError("MediumPoint", "Medium priority point must not be empty");
+                    ModelState.AddModelError("MediumPoint", "Medium priority point must be a integer and great than 0");
                     flag = false;
                 }
                 if (configViewModel.MediumPoint < 1)
@@ -83,9 +87,10 @@ namespace Web.Controllers
                     ModelState.AddModelError("MediumPoint", "Medium priority point must be larger or equal to 1");
                     flag = false;
                 }
+                
                 if (configViewModel.HighPoint == 0)
                 {
-                    ModelState.AddModelError("HightPoint", "High priority point must not be empty");
+                    ModelState.AddModelError("HightPoint", "High priority point must be a integer and great than 0");
                     flag = false;
                 }
                 if (configViewModel.HighPoint < 1)
@@ -93,9 +98,10 @@ namespace Web.Controllers
                     ModelState.AddModelError("HightPoint", "High priority point must be larger or equal to 1");
                     flag = false;
                 }
+                
                 if (configViewModel.MinAge == 0)
                 {
-                    ModelState.AddModelError("MinAge", "Min age must not be empty");
+                    ModelState.AddModelError("MinAge", "Min age must be a integer and great than 0");
                     flag = false;
                 }
                 //http://www.ilo.org/global/standards/subjects-covered-by-international-labour-standards/child-labour/lang--en/index.htm
