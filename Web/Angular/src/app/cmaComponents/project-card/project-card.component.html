@@ -1,11 +1,13 @@
 <div class="card">
   <div class="card-header">
-    <strong>View Tasks</strong>
-    <a href="#/project/task?projectID={{project.id}}" *ngIf="showbutton">
-      <button type="button" class="btn btn-primary" style="margin-left: 77%">
-        View full
-      </button>
-    </a>
+    <ng-container *ngIf="project">
+      <a routerLink="/project/{{project.id}}/detail">
+        <strong>{{project.name}}</strong>
+      </a>'s tasks
+    </ng-container>
+    <ng-container *ngIf="!project">
+      <strong>project's task</strong>
+    </ng-container>
   </div>
   <app-spinner *ngIf=!project></app-spinner>
   <div *ngIf=project>
@@ -70,18 +72,18 @@
               <div class="card-body cardbodytext" *ngIf="lists.tasks">
                 <ng-container *ngFor="let task of lists.tasks">
                   <div class="card task-card" *ngIf="!task.isArchived" data-toggle="modal" style="cursor: pointer"
-                     data-toggle="modal"
-                     id="task">
-                  <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color: black">
-                    <div class="card-body">
-                      {{task.name}}
-                    </div>
-                    <div class="card-footer p-0" style="height: 30px;">
-                      <app-task-status class="float-right" [taskStatusNumber]="task.status"></app-task-status>
+                       data-toggle="modal"
+                       id="task">
+                    <a routerLink="/task/{{task.id}}/view" style="text-decoration: none; color: black">
+                      <div class="card-body">
+                        {{task.name}}
+                      </div>
+                      <div class="card-footer p-0" style="height: 30px;">
+                        <app-task-status class="float-right" [taskStatusNumber]="task.status"></app-task-status>
 
-                    </div>
-                  </a>
-                </div>
+                      </div>
+                    </a>
+                  </div>
                 </ng-container>
               </div>
             </div>

@@ -82,7 +82,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("team/{teamId:int}")]
         [Authorize]
@@ -95,8 +95,8 @@ namespace Web.Controllers
                     UserService userService = new UserService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    
-                    IEnumerable<JObject> usersObject = userService.GetUsersOfTeam(teamId,currentUser.IsAdmin)
+
+                    IEnumerable<JObject> usersObject = userService.GetUsersOfTeam(teamId, currentUser.IsAdmin)
                         .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
                     return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
                 }
@@ -107,7 +107,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("freeUser")]
         [Authorize(Roles = "Admin")]
@@ -121,7 +121,7 @@ namespace Web.Controllers
 
                     IEnumerable<JObject> usersObject = userService.GetNoDepartmentUsers()
                         .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
-                    
+
                     return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
                 }
             }
@@ -131,7 +131,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("latetasks")]
         [Authorize]
@@ -145,10 +145,10 @@ namespace Web.Controllers
                     TaskService taskService = new TaskService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    
+
                     IEnumerable<Task> lateTasks = taskService.GetTasksOfUser(currentUser.ID);
                     lateTasks = lateTasks.Where(task => taskService.IsTaskLate(task.ID));
-                    
+
                     IEnumerable<JObject> lateTasksJson = lateTasks.Select(task =>
                         taskService.ParseToJson(task));
                     return Ok(ResponseHelper.GetResponse(new JArray(lateTasksJson)));
@@ -160,7 +160,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpGet]
         [Route("expiresoon")]
         [Authorize]
@@ -174,10 +174,10 @@ namespace Web.Controllers
                     TaskService taskService = new TaskService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    
+
                     IEnumerable<Task> lateTasks = taskService.GetTasksOfUser(currentUser.ID);
                     lateTasks = lateTasks.Where(task => taskService.IsTaskDeadlineInThisWeek(task));
-                    
+
                     IEnumerable<JObject> lateTasksJson = lateTasks.Select(task =>
                         taskService.ParseToJson(task));
                     return Ok(ResponseHelper.GetResponse(new JArray(lateTasksJson)));
@@ -376,7 +376,6 @@ namespace Web.Controllers
                             }
                         }
 
-                        
 
                         if (flag == false)
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
@@ -406,7 +405,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
-        
+
         [HttpPost]
         [Route("profile/update")]
         [Authorize]
@@ -417,7 +416,7 @@ namespace Web.Controllers
                 if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest,
                         ResponseHelper.GetExceptionResponse(ModelState));
-                
+
                 using (CmAgencyEntities db = new CmAgencyEntities())
                 {
                     UserService userService = new UserService(db);
@@ -485,8 +484,6 @@ namespace Web.Controllers
         [Authorize]
         public IHttpActionResult GetLeaderBoard()
         {
-            
-            
             try
             {
                 using (CmAgencyEntities db = new CmAgencyEntities())
@@ -494,12 +491,12 @@ namespace Web.Controllers
                     //Init service
                     UserService userService = new UserService(db);
                     TaskService taskService = new TaskService(db);
-                    
+
                     //Init constant
                     int lowPriorityPoint = AgencyConfig.lowPoint;
                     int mediumPriorityPoint = AgencyConfig.mediumPoint;
                     int highPriorityPoint = AgencyConfig.highPoint;
-                    double penatyMultiplier = 1 - (AgencyConfig.penatyPercent / 100);
+                    double penatyMultiplier = ((float) AgencyConfig.penatyPercent) / 100f;
 
                     //Lấy hết user
                     var allUsers = userService.GetAll();
