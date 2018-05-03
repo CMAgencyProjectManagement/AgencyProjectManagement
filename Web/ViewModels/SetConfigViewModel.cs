@@ -4,6 +4,7 @@ namespace Web.ViewModels
 {
     public class SetConfigViewModel
     {
+        
         [Required]
         public int LowPoint { get; set; }
         [Required]

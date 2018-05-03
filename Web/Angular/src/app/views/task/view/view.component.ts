@@ -1,22 +1,22 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Task} from '../../../interfaces/task'
-import {TaskService} from '../../../services/task.service';
-import {Location} from '@angular/common';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BsModalService} from 'ngx-bootstrap';
-import {CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent} from '../../../cmaComponents/modals';
-import {FormControl, FormGroup} from '@angular/forms';
-import {UploadService} from '../../../services/upload.service';
-import {Attachment} from '../../../interfaces/attachment';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Task } from '../../../interfaces/task'
+import { TaskService } from '../../../services/task.service';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap';
+import { CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent } from '../../../cmaComponents/modals';
+import { FormControl, FormGroup } from '@angular/forms';
+import { UploadService } from '../../../services/upload.service';
+import { Attachment } from '../../../interfaces/attachment';
 import * as _ from 'lodash';
-import {UserService} from '../../../services/user.service';
-import {User} from '../../../interfaces/user';
-import {CommentService} from '../../../services/comment.service';
-import {Comment} from '../../../interfaces/comment';
-import {StoreService} from '../../../services/tree.service';
-import {SelectStatusModalComponent} from '../../../cmaComponents/modals';
-import {ChecklistService} from '../../../services/checklist.service';
-import {CheckList} from '../../../interfaces/checkList';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../interfaces/user';
+import { CommentService } from '../../../services/comment.service';
+import { Comment } from '../../../interfaces/comment';
+import { StoreService } from '../../../services/tree.service';
+import { SelectStatusModalComponent } from '../../../cmaComponents/modals';
+import { ChecklistService } from '../../../services/checklist.service';
+import { CheckList } from '../../../interfaces/checkList';
 
 @Component({
   selector: 'app-view',
@@ -28,6 +28,8 @@ export class ViewComponent implements OnInit {
   foundTask: Task;
   managementMode: boolean;
   staffMode: boolean;
+  foundProjectID: number;
+  foundTaskID: number;
   isLoading: {
     page: boolean
     attachmentUpload: boolean
@@ -37,7 +39,9 @@ export class ViewComponent implements OnInit {
     done: boolean,
     setStatus: boolean,
     comment: boolean,
-    editComment: boolean
+    editComment: boolean,
+    addCheckList: boolean,
+    deleteCheckList: boolean
   };
   statuses: any[];
   priorities: any[];
@@ -58,15 +62,15 @@ export class ViewComponent implements OnInit {
   currentUser: User;
 
   constructor(private taskService: TaskService,
-              private uploadService: UploadService,
-              private userService: UserService,
-              private commentService: CommentService,
-              private storeService: StoreService,
-              private checkListService: ChecklistService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private location: Location,
-              private modalService: BsModalService) {
+    private uploadService: UploadService,
+    private userService: UserService,
+    private commentService: CommentService,
+    private storeService: StoreService,
+    private checkListService: ChecklistService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
+    private modalService: BsModalService) {
     let currentUser = this.storeService.get(['currentUser']) as User;
     this.currentUser = this.storeService.get(['currentUser']) as User;
     this.managementMode = currentUser.isManager || currentUser.isAdmin;
@@ -79,7 +83,9 @@ export class ViewComponent implements OnInit {
       done: false,
       comment: false,
       editComment: false,
-      setStatus: false
+      setStatus: false,
+      addCheckList: false,
+      deleteCheckList: false,
     };
     this.needReviewMode = false;
     this.openCommentForm = false;
@@ -89,6 +95,7 @@ export class ViewComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       let taskId = params['id'];
+      this.foundTaskID = taskId;
       if (Number(taskId)) {
         this.isLoading.page = true;
         this.loadData(taskId);
@@ -105,6 +112,7 @@ export class ViewComponent implements OnInit {
     this.taskService.getTaskDetail(taskId)
       .then(value => {
         this.foundTask = value as Task;
+        this.foundProjectID = this.foundTask.project.id;
         this.isLoading.page = false;
         this.updatePageMode();
       })
@@ -133,10 +141,10 @@ export class ViewComponent implements OnInit {
     let content = this.commentBoxModel;
     this.commentService.createComment(content, this.foundTask.id)
       .then(value => {
-          let comment = value as Comment;
-          this.foundTask.comments.push(comment);
-          this.isLoading.comment = false;
-        }
+        let comment = value as Comment;
+        this.foundTask.comments.push(comment);
+        this.isLoading.comment = false;
+      }
       )
       .catch(reason => {
         this.showErrorModal(reason.Message);
@@ -184,7 +192,7 @@ export class ViewComponent implements OnInit {
           confirmButtonText: 'Assign'
         };
         this.modalService.show(SelectUsersModalComponent,
-          {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+          { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
       })
       .catch(reason => {
         this.showErrorModal('An error has occurred while trying to open assign pop-up ');
@@ -220,7 +228,7 @@ export class ViewComponent implements OnInit {
       title: `Un-assign`,
       confirmButtonText: 'Un-assign'
     };
-    this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+    this.modalService.show(SelectUsersModalComponent, { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
   }
 
   handleOnNeedReviewBtnClick() {
@@ -238,10 +246,10 @@ export class ViewComponent implements OnInit {
     };
 
     const initialState = {
-      message: `Are you sure you want to finish this task`,
+      message: `Are you sure you want to finish this task?`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
   }
 
   handleUploadAttachmentClick() {
@@ -285,7 +293,7 @@ export class ViewComponent implements OnInit {
       message: `Are you sure you want to delete attachment ?`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
   }
 
   handleEditComment(comment) {
@@ -307,7 +315,7 @@ export class ViewComponent implements OnInit {
       comment: comment,
       confirmCallback: confirmCallback,
     };
-    this.modalService.show(CommentModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(CommentModalComponent, { initialState, class: 'modal-dialog' });
   }
 
   handleSetStatusBtnClick() {
@@ -326,28 +334,34 @@ export class ViewComponent implements OnInit {
         this.isLoading.setStatus = false;
       }
     };
-    this.modalService.show(SelectStatusModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+    this.modalService.show(SelectStatusModalComponent, { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
   }
 
   handleAddCheckListBtnClick(input) {
+    this.isLoading.addCheckList = true;
     let name = input.value;
     this.checkListService.createChecklist(name, this.foundTask.id)
       .then((value: CheckList) => {
-        // TODO loading
-        this.foundTask.checkLists.push(value);
         input.value = '';
+        this.foundTask.checkLists.push(value);
+        this.isLoading.addCheckList = false;
       })
       .catch(reason => {
-        this.showErrorModal(reason.Message);
+        console.debug('handleAddCheckListBtnClick - error', reason);
+        let message = reason.Data[0].message;
+        this.showErrorModal(message);
+        this.isLoading.addCheckList = false;
       });
   }
 
   handleDeleteCheckListClick($event) {
+    this.isLoading.deleteCheckList = false;
     this.checkListService.deleteChecklist($event.checkListId)
       .then(value => {
         this.foundTask.checkLists = _.filter(this.foundTask.checkLists, (checkList: CheckList) => {
           return checkList.id != $event.checkListId
         });
+        this.isLoading.deleteCheckList = false;
       })
       .catch(reason => {
         this.showErrorModal(reason.Message);
@@ -381,17 +395,21 @@ export class ViewComponent implements OnInit {
       },
       message: message
     };
-    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
+    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
 
   handleArchiveBtnClick() {
     const onConfirm = () => {
-      // const formValue = this.updateForm.value;
+      this.isLoading.page = true;
+      this.taskService.archiveTask(this.foundTaskID).then(value => {
+        this.isLoading.page = false;
+        this.router.navigate(['/project/' + this.foundProjectID + '/task']);
+      })
     };
     const initialState = {
       message: `Are you sure to archive this task?`,
       confirmCallback: onConfirm
     };
-    this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
   }
 }

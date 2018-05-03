@@ -3,7 +3,14 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <strong>View archives</strong>
+        <ng-container *ngIf="foundProject">
+          <a routerLink="/project/{{foundProject.id}}/detail">
+            <strong>{{foundProject.name}}</strong>
+          </a>'s archived task
+        </ng-container>
+        <ng-container *ngIf="!foundProject">
+          <strong>project's archived task</strong>
+        </ng-container>
       </div>
       <app-spinner *ngIf="isLoading.page"></app-spinner>
       <div *ngIf="!isLoading.page" class="card-body">
@@ -27,7 +34,6 @@
                 <th>Priority</th>
                 <th>Start date</th>
                 <th>Deadline</th>
-                <th>Project</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -40,12 +46,7 @@
                 <td>{{task.priorityText}}</td>
                 <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
                 <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
-
-                <td>
-                  <a routerLink="/project/{{task.project.id}}/detail"> {{task.project.name}} </a>
-
-                </td>
-                <td><button type="button" class="btn btn-primary">Unarchive</button></td>
+                <td class="text-center"><button type="button" class="btn btn-primary" (click)="handleUnArchiveBtnClick(task.id)">Unarchive</button></td>
               </tr>
             </tbody>
           </table>

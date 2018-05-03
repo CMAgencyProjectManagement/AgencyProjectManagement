@@ -123,7 +123,7 @@
                   <!-- ITEM END -->
 
                   <!-- ITEM START -->
-                  <a routerLink="/project/{{foundProject.id}}/taskarchive">
+                  <a routerLink="/project/{{foundProject.id}}/taskarchive" *ngIf="currentUser.isManager">
 
                     <li class="d-flex align-items-center hover-bg">
                       <i class="fa fa-archive fa-lg bg-primary"></i>

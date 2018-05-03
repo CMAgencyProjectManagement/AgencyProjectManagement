@@ -30,11 +30,20 @@ export class ChecklistComponent implements OnInit {
 
   newItemValue: string;
 
+  isLoading: {
+    addItem: boolean,
+    deleteItem: boolean
+  };
+
   constructor(private checkListService: ChecklistService) {
     this.itemsEditMode = [];
     this.itemsEditModeValue = [];
     this.checkListEditMode = false;
     this.checkListEditValue = '';
+    this.isLoading = {
+      addItem: false,
+      deleteItem: false
+    }
   }
 
   ngOnInit() {
@@ -89,6 +98,7 @@ export class ChecklistComponent implements OnInit {
   }
 
   handleDeleteItemClick(itemId) {
+    this.isLoading.deleteItem = true;
     let eventData = {
       checkListId: this.checkList.id,
       checkListItemId: itemId
@@ -97,14 +107,17 @@ export class ChecklistComponent implements OnInit {
       .then(value => {
         this.checkList.items = _.filter(this.checkList.items, (item: CheckListItem) => {
           return item.id !== itemId;
-        })
+        });
+        this.isLoading.deleteItem = false;
       })
       .catch(reason => {
+        this.isLoading.deleteItem = false;
         console.debug('handleDeleteItemClick - error', reason.Message);
       })
   }
 
   handleAddItemClick() {
+    this.isLoading.addItem = true;
     let eventData = {
       checkListId: this.checkList.id,
       content: this.newItemValue
@@ -113,9 +126,11 @@ export class ChecklistComponent implements OnInit {
       .then(value => {
         this.checkList = value;
         this.newItemValue = '';
+        this.isLoading.addItem = false;
       })
       .catch(reason => {
         console.debug('handleAddItemClick - error', reason.Message);
+        this.isLoading.addItem = false;
       });
   }
 
