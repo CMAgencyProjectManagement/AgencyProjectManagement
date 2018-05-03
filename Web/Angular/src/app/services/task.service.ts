@@ -289,7 +289,7 @@ export class TaskService {
     const objData = {
       TaskID: taskId
     };
-    return new Promise<Task[]>((resolve, reject) => {
+    return new Promise<Task>((resolve, reject) => {
       request.put(serverPath.unArchiveTask)
         .set('token', this.tokenCursor.get())
         .send(objData)

@@ -871,7 +871,8 @@ namespace Web.Controllers
                             ));
                         }
 
-                        return Ok(ResponseHelper.GetExceptionResponse(
+                        return Content(HttpStatusCode.Unauthorized,
+                            ResponseHelper.GetExceptionResponse(
                             "User have to be manager of this task to edit it's Archive status"));
                     }
                 }

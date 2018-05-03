@@ -3,7 +3,14 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <strong>View archives</strong>
+        <ng-container *ngIf="foundProject">
+          <a routerLink="/project/{{foundProject.id}}/detail">
+            <strong>{{foundProject.name}}</strong>
+          </a>'s archived task
+        </ng-container>
+        <ng-container *ngIf="!foundProject">
+          <strong>project's archived task</strong>
+        </ng-container>
       </div>
       <app-spinner *ngIf="isLoading.page"></app-spinner>
       <div *ngIf="!isLoading.page" class="card-body">
