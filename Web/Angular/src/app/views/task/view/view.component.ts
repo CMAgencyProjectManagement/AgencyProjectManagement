@@ -39,7 +39,9 @@ export class ViewComponent implements OnInit {
     done: boolean,
     setStatus: boolean,
     comment: boolean,
-    editComment: boolean
+    editComment: boolean,
+    addCheckList: boolean,
+    deleteCheckList: boolean
   };
   statuses: any[];
   priorities: any[];
@@ -81,7 +83,9 @@ export class ViewComponent implements OnInit {
       done: false,
       comment: false,
       editComment: false,
-      setStatus: false
+      setStatus: false,
+      addCheckList: false,
+      deleteCheckList: false,
     };
     this.needReviewMode = false;
     this.openCommentForm = false;
@@ -334,24 +338,30 @@ export class ViewComponent implements OnInit {
   }
 
   handleAddCheckListBtnClick(input) {
+    this.isLoading.addCheckList = true;
     let name = input.value;
     this.checkListService.createChecklist(name, this.foundTask.id)
       .then((value: CheckList) => {
-        // TODO loading
-        this.foundTask.checkLists.push(value);
         input.value = '';
+        this.foundTask.checkLists.push(value);
+        this.isLoading.addCheckList = false;
       })
       .catch(reason => {
-        this.showErrorModal(reason.Message);
+        console.debug('handleAddCheckListBtnClick - error', reason);
+        let message = reason.Data[0].message;
+        this.showErrorModal(message);
+        this.isLoading.addCheckList = false;
       });
   }
 
   handleDeleteCheckListClick($event) {
+    this.isLoading.deleteCheckList = false;
     this.checkListService.deleteChecklist($event.checkListId)
       .then(value => {
         this.foundTask.checkLists = _.filter(this.foundTask.checkLists, (checkList: CheckList) => {
           return checkList.id != $event.checkListId
         });
+        this.isLoading.deleteCheckList = false;
       })
       .catch(reason => {
         this.showErrorModal(reason.Message);

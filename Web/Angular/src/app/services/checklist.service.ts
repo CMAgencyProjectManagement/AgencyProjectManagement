@@ -31,6 +31,7 @@ export class ChecklistService {
             reject(content.Message);
           }
         })
+        .catch(reason => reject(reason.response.body));
     });
   }
 
