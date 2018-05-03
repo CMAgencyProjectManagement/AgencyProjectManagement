@@ -27,7 +27,6 @@
                 <th>Priority</th>
                 <th>Start date</th>
                 <th>Deadline</th>
-                <th>Project</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -40,12 +39,7 @@
                 <td>{{task.priorityText}}</td>
                 <td>{{task.startDate | date:'dd/MM/yyyy'}}</td>
                 <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>
-
-                <td>
-                  <a routerLink="/project/{{task.project.id}}/detail"> {{task.project.name}} </a>
-
-                </td>
-                <td><button type="button" class="btn btn-primary">Unarchive</button></td>
+                <td class="text-center"><button type="button" class="btn btn-primary" (click)="handleUnArchiveBtnClick(task.id)">Unarchive</button></td>
               </tr>
             </tbody>
           </table>

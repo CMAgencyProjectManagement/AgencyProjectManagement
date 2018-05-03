@@ -9,8 +9,8 @@ import { ProjectService } from './../../../services/project.service'
 import { Location } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ErrorModalComponent } from '../../../cmaComponents/modals';
 import { DataTableDirective } from 'angular-datatables';
+import { CommentModalComponent, ConfirmModalComponent, ErrorModalComponent, SelectUsersModalComponent } from '../../../cmaComponents/modals';
 
 @Component({
   selector: 'app-archive',
@@ -23,6 +23,7 @@ export class ArchiveComponent implements OnInit {
   foundProject: Project;
   lists: List[];
   tasks: Task[];
+  foundProjectID: number;
   foundTasks: Task[];
   isLoading: {
     page: boolean
@@ -62,6 +63,7 @@ export class ArchiveComponent implements OnInit {
 
   ngOnInit() {
     let id = Number(this.route.snapshot.paramMap.get('id'));
+    this.foundProjectID=id;
     this.projectService.getListOfProject(id)
       .then(value => {
         this.lists = value;
@@ -93,5 +95,18 @@ export class ArchiveComponent implements OnInit {
     this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
   }
   
-
+  handleUnArchiveBtnClick(taskID: number){
+    const onConfirm = () => {
+      this.isLoading.page = true;
+      this.taskService.unArchiveTask(taskID).then(value => {
+        this.isLoading.page = false;
+        this.router.navigate(['/project/' + this.foundProjectID + '/taskarchive']);
+      })
+    };
+    const initialState = {
+      message: `Are you sure to unarchive this task?`,
+      confirmCallback: onConfirm
+    };
+    this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
+  }
 }
