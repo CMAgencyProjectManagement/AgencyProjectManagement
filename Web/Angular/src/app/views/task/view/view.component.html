@@ -23,7 +23,7 @@
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}" [hidden]="!pageMode.manager || pageMode.done"
           (click)="handleOnUnAssignBtnClick()" [disabled]="isLoading.openUnAssignModal" [ladda]="isLoading.openUnAssignModal">
-          <i class="fa fa-user-times"></i>&nbsp; Un-Assign
+          <i class="fa fa-user-times"></i>&nbsp; Unassign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}" [hidden]="!pageMode.staff || isLoading.done"
           [disabled]="foundTask.status == 1 || isLoading.done" (click)="handleOnNeedReviewBtnClick()" [ladda]="isLoading.done">
@@ -142,7 +142,7 @@
             <dl class="row ml-1">
               <div class="col-12">
                 <div class="form-group row">
-                  <div class="col-12">
+                  <div class="col-12" *ngIf="currentUser.isManager || currentUser.isStaff">
                     <!--COMMENT BTN + LABEL-->
                     <button class="btn btn-secondary bg-light" *ngIf="!openCommentForm" (click)="handleOnCommentBtnClick()">
                       <i class="fa fa-comment-o"></i>&nbsp; Comment
