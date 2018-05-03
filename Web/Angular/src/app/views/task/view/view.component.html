@@ -27,7 +27,7 @@
                 [hidden]="!pageMode.manager || pageMode.done"
                 (click)="handleOnUnAssignBtnClick()" [disabled]="isLoading.openUnAssignModal"
                 [ladda]="isLoading.openUnAssignModal">
-          <i class="fa fa-user-times"></i>&nbsp; Un-Assign
+          <i class="fa fa-user-times"></i>&nbsp; Unassign
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
                 [hidden]="!pageMode.staff || isLoading.done"
