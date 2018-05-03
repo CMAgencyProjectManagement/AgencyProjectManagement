@@ -109,9 +109,10 @@ export class ArchiveComponent implements OnInit {
       this.taskService.unArchiveTask(taskID)
         .then((task: Task) => {
           this.isLoading.page = false;
-          this.foundTasks = _.filter(this.foundTasks, (item: Task) => {
+          this.tasks = _.filter(this.tasks, (item: Task) => {
             return task.id != item.id;
           });
+          // this.search('');
         })
     };
     const initialState = {
