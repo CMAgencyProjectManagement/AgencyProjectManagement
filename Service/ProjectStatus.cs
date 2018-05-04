@@ -4,7 +4,7 @@
     {
         NotStarted,
         Executing,
-        Canceled,
+        Closed,
         Finished
     }
 }
