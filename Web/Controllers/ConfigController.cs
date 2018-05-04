@@ -23,7 +23,8 @@ namespace Web.Controllers
                     ["highPriorityPoint"] = AgencyConfig.highPoint,
                     ["maxDuration"] = AgencyConfig.maxDuration,
                     ["penatyPercent"] = AgencyConfig.penatyPercent,
-                    ["minAge"] = AgencyConfig.minAge
+                    ["minAge"] = AgencyConfig.minAge,
+                    ["allowAdminInTeam"] = AgencyConfig.allowAdminInTeam
                 };
                 return Ok(ResponseHelper.GetResponse(jObject));
             }
@@ -123,7 +124,7 @@ namespace Web.Controllers
                     AgencyConfig.penatyPercent = configViewModel.PenatyPercent;
                     AgencyConfig.lowPoint = configViewModel.LowPoint;
                     AgencyConfig.minAge = configViewModel.MinAge;
-
+                    AgencyConfig.allowAdminInTeam = configViewModel.AllowAdminInTeam;
 
                     JObject jObject = new JObject
                     {
@@ -132,7 +133,8 @@ namespace Web.Controllers
                         ["highPriorityPoint"] = AgencyConfig.highPoint,
                         ["maxDuration"] = AgencyConfig.maxDuration,
                         ["penatyPercent"] = AgencyConfig.penatyPercent,
-                        ["minAge"] = AgencyConfig.minAge
+                        ["minAge"] = AgencyConfig.minAge,
+                        ["allowAdminInTeam"] = AgencyConfig.allowAdminInTeam,
                     };
 
                     return Ok(ResponseHelper.GetResponse(jObject));

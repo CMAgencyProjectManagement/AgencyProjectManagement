@@ -17,5 +17,7 @@ namespace Web.ViewModels
         public int PenatyPercent { get; set; }
         [Required]
         public int MinAge { get; set; }
+        [Required]
+        public bool AllowAdminInTeam { get; set; }
     }
 }

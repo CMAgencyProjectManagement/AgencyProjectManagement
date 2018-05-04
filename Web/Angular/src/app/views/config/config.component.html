@@ -107,8 +107,7 @@
           <div class="form-group row">
             <!--Allow admin participant age-->
             <label class="col-6 col-form-label text-right">
-              Minimum working age
-
+              Allow admin to join department
             </label>
             <div class="col-6">
               <div class="input-group">
@@ -118,7 +117,9 @@
                   <span class="switch-handle"></span>
                 </label>
               </div>
-              <div class="invalid-feedback" *ngIf="errors.minimumWorkingAge" style="display: block">{{errors.minimumWorkingAge}}</div>
+              <div class="invalid-feedback" *ngIf="errors.allowAdminParticipant" style="display: block">
+                {{errors.allowAdminParticipant}}
+              </div>
             </div>
           </div>
 

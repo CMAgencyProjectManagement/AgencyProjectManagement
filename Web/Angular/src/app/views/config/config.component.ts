@@ -91,48 +91,12 @@ export class ConfigComponent implements OnInit {
       taskMaxDuration: config.maxDuration,
       lateTaskPenalty: config.penatyPercent,
       minimumWorkingAge: config.minAge,
-      allowAdminParticipant: config.minAge,
-    });
-  }
-
-
-  editConfig(
-    lowPriority: number,
-    mediumPriority: number,
-    hightPriority: number,
-    taskMaxDuration: number,
-    lateTaskPenalty: number,
-    minimumWorkingAge: number,
-  ): Promise<any> {
-    const objData = {
-      LowPriority: lowPriority,
-      MediumPriority: mediumPriority,
-      HightPriority: hightPriority,
-      TaskMaxDuration: taskMaxDuration,
-      LateTaskPenalty: lateTaskPenalty,
-      MinimumWorkingAge: minimumWorkingAge,
-    };
-    return new Promise<any>((resolve, reject) => {
-      request.put(serverPath.editTask)
-        .set('token', this.tokenCursor.get())
-        .send(objData)
-        .type('form')
-        .then(res => {
-          const content = res.body;
-          if (content.IsSuccess) {
-            resolve(content.Data);
-          } else {
-            reject(content.Message);
-          }
-        })
-        .catch(reason => reject(reason.response.body));
+      allowAdminParticipant: config.allowAdminInTeam,
     });
   }
 
   handleUpdate() {
     this.setErrorsNull();
-    const formValue = this.updateForm.value;
-
     const onConfirm = () => {
       // const formValue = this.updateForm.value;
       const formValue = this.updateForm.value;
@@ -144,6 +108,7 @@ export class ConfigComponent implements OnInit {
         formValue.taskMaxDuration,
         formValue.lateTaskPenalty,
         formValue.minimumWorkingAge,
+        formValue.allowAdminParticipant
       )
         .then(value => {
           this.isLoading = false;

@@ -128,6 +128,7 @@ namespace Web
             AgencyConfig.maxDuration = 15;
             AgencyConfig.penatyPercent = 40;
             AgencyConfig.minAge = 18;
+            AgencyConfig.allowAdminInTeam = false;
         }
     }
 }

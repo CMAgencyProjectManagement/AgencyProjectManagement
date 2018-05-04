@@ -8,4 +8,5 @@ export interface Config {
     maxDuration: number;
     penatyPercent: number;
     minAge: number;
+  allowAdminInTeam: boolean;
 }
