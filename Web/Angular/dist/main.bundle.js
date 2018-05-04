@@ -218,6 +218,7 @@ var serverPath = {
     updateProject: '/api/project',
     createProject: '/api/project',
     closeProject: '/api/project/close',
+    recentProject: '/api/project/recentchanged',
     getProjectStatus: '/api/project/statuses',
     assignUsersToProject: '/api/project/assign',
     unAssignUsersFromProject: '/api/project/Unassign',
@@ -5933,6 +5934,26 @@ var ProjectService = /** @class */ (function () {
             //   resolve(projects);
             // } else {
             Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].allProject)
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    _this.projectsCursor.set(content.Data);
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+            // }
+        });
+    };
+    ProjectService.prototype.getRecentProjects = function (force) {
+        var _this = this;
+        if (force === void 0) { force = false; }
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].recentProject)
                 .set('token', _this.tokenCursor.get())
                 .then(function (res) {
                 var content = res.body;

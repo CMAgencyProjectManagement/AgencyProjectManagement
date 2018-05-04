@@ -170,7 +170,7 @@ var DashboardComponent = /** @class */ (function () {
     DashboardComponent.prototype.loadAdminSection = function () {
         var _this = this;
         Promise.all([
-            this.projectService.getAllProjects(),
+            this.projectService.getRecentProjects(),
             this.userService.getLeaderBoard()
         ])
             .then(function (resData) {

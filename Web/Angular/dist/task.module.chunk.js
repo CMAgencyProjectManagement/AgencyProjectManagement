@@ -508,7 +508,7 @@ var EditComponent = /** @class */ (function () {
     };
     EditComponent.prototype.showSuccessModal = function (message, isNavigateBack) {
         var _this = this;
-        if (isNavigateBack === void 0) { isNavigateBack = false; }
+        if (isNavigateBack === void 0) { isNavigateBack = true; }
         var initialState = {
             closeCallback: function () {
                 if (isNavigateBack) {
