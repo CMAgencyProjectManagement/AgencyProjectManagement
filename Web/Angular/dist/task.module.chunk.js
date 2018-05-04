@@ -219,10 +219,12 @@ var AddComponent = /** @class */ (function () {
         var startDate = __WEBPACK_IMPORTED_MODULE_3_moment__(this.datepicker.selectionDayTxt, 'DD/MM/YYYY');
         var preTaskIds = __WEBPACK_IMPORTED_MODULE_9_lodash__["map"](this.predecessorTasks, 'id');
         this.taskService.createTask(values.name, values.description, values.list, values.priority, startDate.isValid() ? startDate.format('YYYY-MM-DD') : this.datepicker.selectionDayTxt, values.duration, values.effort, preTaskIds).then(function (value) {
+            var newTask = value;
             var initialState = {
-                message: 'Your task successfully created'
+                message: 'Your task successfully created!'
             };
             _this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["m" /* SuccessModalComponent */], { initialState: initialState, class: 'modal-dialog modal-success' });
+            _this.router.navigate(['task/' + newTask.id + '/view']);
             _this.isLoading.create = false;
         }).catch(function (reason) {
             _this.setErrors(reason.Data);
@@ -854,7 +856,7 @@ var TaskModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/task/view/view.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Task detail</strong>\n\n  </div>\n  <app-spinner *ngIf=isLoading.page></app-spinner>\n  <div *ngIf=!isLoading.page class=\"card-body row\">\n    <div class=\"col-12\">\n      <h2 class=\"card-title\">{{foundTask.name}}</h2>\n    </div>\n    <!--<div class=\"col-12\" *ngIf=\"isReadonlyMode && !managementMode\">-->\n    <div class=\"col-12\">\n      <div class=\"button-row\">\n        <a routerLink=\"/task/edit/{{foundTask.id}}\"\n           *ngIf=\"managementMode\"\n           class=\"btn btn-secondary bg-light\">\n          <i class=\"fa fa-edit\"></i>&nbsp; Edit\n        </a>\n        <button class=\"btn btn-secondary bg-light\" (click)=\"handleOnCommentBtnClick()\">\n          <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}\"\n                *ngIf=\"managementMode\"\n                (click)=\"handleOnAssignBtnClick()\"\n                [disabled]=\"isLoading.openAssignModal\"\n                [ladda]=\"isLoading.openAssignModal\">\n          <i class=\"fa fa-user-plus\"></i>&nbsp; Assign\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}\"\n                *ngIf=\"managementMode\"\n                (click)=\"handleOnUnAssignBtnClick()\"\n                [disabled]=\"isLoading.openUnAssignModal\"\n                [ladda]=\"isLoading.openUnAssignModal\">\n          <i class=\"fa fa-user-times\"></i>&nbsp; Un-Assign\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}\"\n                *ngIf=\"!managementMode\"\n                [disabled]=\"foundTask.status == 1 || isLoading.done\"\n                (click)=\"handleOnNeedReviewBtnClick()\"\n                [ladda]=\"isLoading.done\">\n          <i class=\"fa fa-check\"></i>&nbsp; Need review\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}\"\n                *ngIf=\"managementMode\"\n                [disabled]=\"isLoading.setStatus\"\n                (click)=\"handleSetStatusBtnClick()\"\n                [ladda]=\"isLoading.setStatus\">\n          Set status\n        </button>\n      </div>\n    </div>\n    <div class=\"col-12 mt-5\">\n      <div class=\"row\">\n        <div class=\"col-6 left-pane\">\n          <div class=\"section\">\n            <!--DETAIL SECTION-->\n            <h5 class=\"mb-3\">Detail</h5>\n            <dl class=\"row ml-1\">\n              <dt class=\"col-3\">Project:</dt>\n              <dd class=\"col-9\"><a\n                routerLink=\"/project/{{foundTask.project.id}}/detail\">{{foundTask.project.name}}</a></dd>\n              <dt class=\"col-3\">List:</dt>\n              <dd class=\"col-9\">{{foundTask.list.name}}</dd>\n              <dt class=\"col-3\">Priority:</dt>\n              <dd class=\"col-9\">\n                <span>{{foundTask.priorityText}}</span>\n              </dd>\n              <dt class=\"col-3\">Status:</dt>\n              <dd class=\"col-9\">\n                <!--<span>{{foundTask.statusText}}</span>-->\n                <app-task-status [taskStatusNumber]=\"foundTask.status\"></app-task-status>\n              </dd>\n              <dt class=\"col-3\">Effort:</dt>\n              <dd class=\"col-9\">\n                {{foundTask.effort}}\n                <span *ngIf=\"foundTask.effort <= 1\">Hour</span>\n                <span *ngIf=\"foundTask.effort > 1\">Hours</span>\n              </dd>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--DESCRIPTION-->\n            <h5 class=\"mb-3\">Description</h5>\n            <dl class=\"row ml-1\">\n              <p class=\"col-12\">\n                {{foundTask.description}}\n              </p>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--CHECK LIST-->\n            <h5 class=\"mb-3\">Check list</h5>\n            <dl class=\"row ml-1\">\n              <p class=\"col-12\">\n\n              </p>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--ATTACHMENT-->\n            <h5 class=\"mb-3\">Attachments</h5>\n            <dl class=\"row ml-1\">\n              <div class=\"col-12\">\n                <div class=\"form-group row\" [formGroup]=\"attachmentForm\">\n                  <div class=\"col-9\">\n                    <input #attachmentInput\n                           id=\"file-input\" name=\"file-input\" type=\"file\"\n                           formGroupName=\"attachment\"\n                           (change)=\"attachmentFileChange($event)\">\n                  </div>\n                  <div class=\"col-3\">\n                    <button class=\"btn btn-success float-right\"\n                            [disabled]=\"!attachmentForm.value.attachment || isLoading.attachmentUpload || needReviewMode\"\n                            [hidden]=\"!attachmentForm.value.attachment\"\n                            [ladda]=\"isLoading.attachmentUpload\"\n                            (click)=\"handleUploadAttachmentClick()\">\n                      <i class=\"fa fa-plus\"></i>\n                    </button>\n                  </div>\n                </div>\n              </div>\n              <div class=\"col-12\">\n                <ul class=\"list-group\">\n                  <li class=\"list-group-item\" *ngFor=\"let attachment of this.foundTask.attachments\">\n                    <div class=\"d-flex align-items-center\">\n                      <a href=\"{{attachment.source}}\">\n                        <span>{{attachment.name}}</span>\n                      </a>\n                      <button class=\"btn btn-danger btn-sm ml-auto\"\n                              [disabled]=\"isLoading.attachmentRemove[attachment.ID] || needReviewMode\"\n                              (click)=\"handleDeleteAttachmentClick(attachment.ID)\"\n                              [ladda]=\"isLoading.attachmentRemove[attachment.ID]\">\n                        <i class=\"fa fa-trash\"></i>\n                      </button>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--COMMENT-->\n            <h5 class=\"mb-3\">Comments</h5>\n            <dl class=\"row ml-1\">\n              <div class=\"col-12\">\n                <div class=\"form-group row\">\n                  <div class=\"col-12\">\n                    <!--COMMENT BTN + LABEL-->\n                    <button class=\"btn btn-secondary bg-light\"\n                            *ngIf=\"!openCommentForm\"\n                            (click)=\"handleOnCommentBtnClick()\">\n                      <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\n                    </button>\n                  </div>\n                  <div class=\"col-12\" *ngIf=\"openCommentForm\">\n                    <!--COMMENT TEXT AREA-->\n                    <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\"\n                              [(ngModel)]=\"commentBoxModel\"\n                              placeholder=\"Content...\"></textarea>\n                  </div>\n                  <div class=\"col-12 mt-3 d-flex justify-content-end\" *ngIf=\"openCommentForm\">\n                    <!--ADD COMMENT, CANCEL BTN-->\n                    <button class=\"btn btn-success mr-2\" [ladda]=\"isLoading.comment\"\n                            (click)=\"handleAddCommentBtnClick()\">Add\n                    </button>\n                    <button class=\"btn btn-secondary\" (click)=\"handleCancelCommentBtnClick()\">Cancel</button>\n                  </div>\n                </div>\n              </div>\n              <app-comment class=\"col-12\"\n                           *ngFor=\"let comment of foundTask.comments\"\n                           [comment]=\"comment\"\n                           (onEdit)=\"handleEditComment($event)\"></app-comment>\n            </dl>\n          </div>\n        </div>\n        <div class=\"col-5 right-pane ml-4\">\n          <div class=\"section\">\n            <!--MEMBER-->\n            <!--<h5 class=\"mb-3\">Members</h5>-->\n            <dl class=\"row ml-1\">\n              <dt class=\"col-12\">Assignees:</dt>\n              <dd class=\"col-12 pl-4\">\n                <app-user-list *ngIf=\"foundTask.assignees\" [users]=\"foundTask.assignees\"></app-user-list>\n                <span *ngIf=\"!foundTask.assignees || foundTask.assignees.length < 1\">N/A</span>\n              </dd>\n              <dt class=\"col-12\">Creator:</dt>\n              <dd class=\"col-12 pl-4\">\n                <app-user-list [user]=\"foundTask.createdBy\"></app-user-list>\n                <span *ngIf=\"!foundTask.createdBy\">N/A</span>\n              </dd>\n              <dt class=\"col-12\">Modifier:</dt>\n              <dd class=\"col-12 pl-4\">\n                <app-user-list *ngIf=\"foundTask.changedBy\" [user]=\"foundTask.changedBy\"></app-user-list>\n                <span *ngIf=\"!foundTask.changedBy\">N/A</span>\n              </dd>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--TASK DEPENDENCY-->\n            <!--<h5 class=\"mb-3\">Members</h5>-->\n            <dl class=\"row ml-1\">\n              <dt class=\"col-12\">Predecessor tasks:</dt>\n              <dd class=\"col-12 pl-4\">\n                <span *ngIf=\"foundTask.predecessors.length <= 0\">N/A</span>\n                <app-tasklist *ngIf=\"foundTask.predecessors.length > 0\"\n                              [tasks]=\"foundTask.predecessors\">\n\n                </app-tasklist>\n              </dd>\n              <dt class=\"col-12\">Successor tasks:</dt>\n              <dd class=\"col-12 pl-4\">\n                <span *ngIf=\"foundTask.successors.length <= 0\">N/A</span>\n                <app-tasklist *ngIf=\"foundTask.successors.length > 0\"\n                              [tasks]=\"foundTask.successors\">\n\n                </app-tasklist>\n              </dd>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--DATE SECTION-->\n            <!--<h5 class=\"mb-3\">Date</h5>-->\n            <dl class=\"row ml-1\">\n              <dt class=\"col-4\">Start date:</dt>\n              <dd class=\"col-8\">\n                <span *ngIf=\"foundTask.startDate\">\n                  {{foundTask.startDate | date:'dd/MM/yyyy'}}\n                </span>\n              </dd>\n              <dt class=\"col-4\">Duration:</dt>\n              <dd class=\"col-8\">\n                {{foundTask.duration}}\n                <span *ngIf=\"foundTask.duration <= 1\">Day</span>\n                <span *ngIf=\"foundTask.duration > 1\">Days</span>\n              </dd>\n              <dt class=\"col-4\">Deadline date:</dt>\n              <dd class=\"col-8\">\n                {{foundTask.deadline | date:'dd/MM/yyyy'}}\n              </dd>\n              <dt class=\"col-4\">Finished date:</dt>\n              <dd class=\"col-8\">\n              <span *ngIf=\"!foundTask.finishedDate\">\n                N/A\n              </span>\n                <span *ngIf=\"foundTask.finishedDate\">\n                {{foundTask.finishedDate | date:'dd/MM/yyyy'}}\n              </span>\n              </dd>\n              <dt class=\"col-4\">Created date:</dt>\n              <dd class=\"col-8\">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>\n              <dt class=\"col-4\">Changed date:</dt>\n              <dd class=\"col-8\">\n                <span *ngIf=\"foundTask.changedDate\">\n                  {{foundTask.changedDate | date:'dd/MM/yyyy'}}\n                </span>\n                <span *ngIf=\"!foundTask.changedDate\">\n                  N/A\n                </span>\n              </dd>\n            </dl>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <strong>Task detail</strong>\n\n  </div>\n  <app-spinner *ngIf=isLoading.page></app-spinner>\n  <div *ngIf=!isLoading.page class=\"card-body row\">\n    <div class=\"col-12\">\n      <h2 class=\"card-title\">{{foundTask.name}}</h2>\n    </div>\n    <!--<div class=\"col-12\" *ngIf=\"isReadonlyMode && !managementMode\">-->\n    <div class=\"col-12\">\n      <div class=\"button-row\" [hidden]=\"pageMode.admin\">\n        <a routerLink=\"/task/edit/{{foundTask.id}}\"\n           *ngIf=\"managementMode\"\n           [hidden]=\"pageMode.done\"\n           class=\"btn btn-secondary bg-light\">\n          <i class=\"fa fa-edit\"></i>&nbsp; Edit\n        </a>\n        <button class=\"btn btn-secondary bg-light\" (click)=\"handleOnCommentBtnClick()\">\n          <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}\"\n                [hidden]=\"!pageMode.manager || pageMode.done\"\n                (click)=\"handleOnAssignBtnClick()\" [disabled]=\"isLoading.openAssignModal\"\n                [ladda]=\"isLoading.openAssignModal\">\n          <i class=\"fa fa-user-plus\"></i>&nbsp; Assign\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignModal}\"\n                [hidden]=\"!pageMode.manager || pageMode.done\"\n                (click)=\"handleOnUnAssignBtnClick()\" [disabled]=\"isLoading.openUnAssignModal\"\n                [ladda]=\"isLoading.openUnAssignModal\">\n          <i class=\"fa fa-user-times\"></i>&nbsp; Unassign\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}\"\n                [hidden]=\"!pageMode.staff || isLoading.done\"\n                [disabled]=\"foundTask.status == 1 || isLoading.done\" (click)=\"handleOnNeedReviewBtnClick()\"\n                [ladda]=\"isLoading.done\">\n          <i class=\"fa fa-check\"></i>&nbsp; Need review\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}\"\n                [hidden]=\"!pageMode.manager\" [disabled]=\"isLoading.setStatus\"\n                (click)=\"handleSetStatusBtnClick()\" [ladda]=\"isLoading.setStatus\">\n          <i class=\"fa fa-refresh\"></i>&nbsp;Set status\n        </button>\n        <button [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.archiveTask}\"\n                [hidden]=\"!pageMode.manager\" [disabled]=\"isLoading.archiveTask\"\n                (click)=\"handleArchiveBtnClick()\" [ladda]=\"isLoading.archiveTask\">\n          <i class=\"fa fa-archive\"></i>&nbsp;Archive\n        </button>\n      </div>\n    </div>\n    <div class=\"col-12 mt-5\">\n      <div class=\"row\">\n        <div class=\"col-6 left-pane\">\n          <div class=\"section\">\n            <!--DETAIL SECTION-->\n            <h5 class=\"mb-3\">Detail</h5>\n            <dl class=\"row ml-1\">\n              <dt class=\"col-3\">Project:</dt>\n              <dd class=\"col-9\">\n                <a routerLink=\"/project/{{foundTask.project.id}}/detail\">{{foundTask.project.name}}</a>\n              </dd>\n              <dt class=\"col-3\">List:</dt>\n              <dd class=\"col-9\">{{foundTask.list.name}}</dd>\n              <dt class=\"col-3\">Priority:</dt>\n              <dd class=\"col-9\">\n                <span>{{foundTask.priorityText}}</span>\n              </dd>\n              <dt class=\"col-3\">Status:</dt>\n              <dd class=\"col-9\">\n                <!--<span>{{foundTask.statusText}}</span>-->\n                <app-task-status [taskStatusNumber]=\"foundTask.status\"></app-task-status>\n              </dd>\n              <dt class=\"col-3\">Effort:</dt>\n              <dd class=\"col-9\">\n                {{foundTask.effort}}\n                <span *ngIf=\"foundTask.effort <= 1\">Hour</span>\n                <span *ngIf=\"foundTask.effort > 1\">Hours</span>\n              </dd>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--DESCRIPTION-->\n            <h5 class=\"mb-3\">Description</h5>\n            <dl class=\"row ml-1\">\n              <p class=\"col-12\">\n                {{foundTask.description}}\n              </p>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--CHECK LIST-->\n            <h5 class=\"mb-3\">Check list</h5>\n            <dl class=\"row ml-1\">\n              <div class=\"col-12\">\n                <app-checklist class=\"m-1\" *ngFor=\"let checkList of foundTask.checkLists\"\n                               [managementMode]=\"pageMode.manager\"\n                               [readonly]=\"pageMode.done\"\n                               (onDeleteCheckList)=\"handleDeleteCheckListClick($event)\"\n                               (onEditChecklist)=\"handleDoneEditCheckListClick($event)\"\n                               [checkList]=\"checkList\"></app-checklist>\n              </div>\n              <div class=\"col-12\" [hidden]=\"!pageMode.manager || pageMode.done\">\n                <div class=\"input-group\">\n                  <input class=\"form-control\" placeholder=\"New list\" type=\"text\" #newCheckListInput>\n                  <span class=\"input-group-append\">\n                    <button class=\"btn btn-success\" type=\"button\"\n                            [ladda]=\"isLoading.addCheckList\"\n                            (click)=\"handleAddCheckListBtnClick(newCheckListInput)\">\n                      <i class=\"fa fa-plus\"></i>\n                    </button>\n                  </span>\n                </div>\n              </div>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--ATTACHMENT-->\n            <h5 class=\"mb-3\">Attachments</h5>\n            <dl class=\"row ml-1\">\n              <div class=\"col-12\">\n                <div class=\"form-group row\" [formGroup]=\"attachmentForm\"\n                     [hidden]=\"pageMode.done || pageMode.needReview || pageMode.admin\">\n                  <div class=\"col-9\">\n                    <input #attachmentInput id=\"file-input\" name=\"file-input\" type=\"file\" formGroupName=\"attachment\"\n                           (change)=\"attachmentFileChange($event)\">\n                  </div>\n                  <div class=\"col-3\">\n                    <button class=\"btn btn-success float-right\"\n                            [disabled]=\"!attachmentForm.value.attachment || isLoading.attachmentUpload || needReviewMode\"\n                            [hidden]=\"!attachmentForm.value.attachment\" [ladda]=\"isLoading.attachmentUpload\"\n                            (click)=\"handleUploadAttachmentClick()\">\n                      <i class=\"fa fa-plus\"></i>\n                    </button>\n                  </div>\n                </div>\n              </div>\n              <div class=\"col-12\">\n                <ul class=\"list-group\">\n                  <li class=\"list-group-item\" *ngFor=\"let attachment of this.foundTask.attachments\">\n                    <div class=\"d-flex align-items-center\">\n                      <a href=\"{{attachment.source}}\">\n                        <span>{{attachment.name}}</span>\n\n                      </a>\n\n                      <div class=\"btn-sm ml-auto align-items-center float-right\" style=\"color: silver;\">\n                        {{attachment.createdTime | date:'dd/MM/yyyy'}}\n                      </div>\n                      <button class=\"btn btn-danger \" [hidden]=\"pageMode.needReview || pageMode.done\"\n                              [disabled]=\"isLoading.attachmentRemove[attachment.ID]\"\n                              [ladda]=\"isLoading.attachmentRemove[attachment.ID]\"\n                              (click)=\"handleDeleteAttachmentClick(attachment.ID)\">\n                        <i class=\"fa fa-trash\"></i>\n                      </button>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--COMMENT-->\n            <h5 class=\"mb-3\">Comments</h5>\n            <dl class=\"row ml-1\">\n              <div class=\"col-12\">\n                <div class=\"form-group row\">\n                  <div class=\"col-12\" *ngIf=\"currentUser.isManager || currentUser.isStaff\">\n                    <!--COMMENT BTN + LABEL-->\n                    <button class=\"btn btn-secondary bg-light\" *ngIf=\"!openCommentForm\"\n                            (click)=\"handleOnCommentBtnClick()\">\n                      <i class=\"fa fa-comment-o\"></i>&nbsp; Comment\n                    </button>\n                  </div>\n                  <div class=\"col-12\" *ngIf=\"openCommentForm\">\n                    <!--COMMENT TEXT AREA-->\n                    <textarea title=\"comment-input\" rows=\"9\" class=\"form-control\" [(ngModel)]=\"commentBoxModel\"\n                              placeholder=\"Content...\"></textarea>\n                  </div>\n                  <div class=\"col-12 mt-3 d-flex justify-content-end\" *ngIf=\"openCommentForm\">\n                    <!--ADD COMMENT, CANCEL BTN-->\n                    <button class=\"btn btn-success mr-2\" [ladda]=\"isLoading.comment\"\n                            (click)=\"handleAddCommentBtnClick()\">Add\n                    </button>\n                    <button class=\"btn btn-secondary\" (click)=\"handleCancelCommentBtnClick()\">Cancel</button>\n                  </div>\n                </div>\n              </div>\n              <app-comment class=\"col-12\" *ngFor=\"let comment of foundTask.comments\" [comment]=\"comment\"\n                           (onEdit)=\"handleEditComment($event)\"></app-comment>\n            </dl>\n          </div>\n        </div>\n        <div class=\"col-5 right-pane ml-4\">\n          <div class=\"section\">\n            <!--MEMBER-->\n            <!--<h5 class=\"mb-3\">Members</h5>-->\n            <dl class=\"row ml-1\">\n              <dt class=\"col-12\">Assignees:</dt>\n              <dd class=\"col-12 pl-4\">\n                <app-user-list *ngIf=\"foundTask.assignees\" [users]=\"foundTask.assignees\"></app-user-list>\n                <span *ngIf=\"!foundTask.assignees || foundTask.assignees.length < 1\">N/A</span>\n              </dd>\n              <dt class=\"col-12\">Creator:</dt>\n              <dd class=\"col-12 pl-4\">\n                <app-user-list [user]=\"foundTask.createdBy\"></app-user-list>\n                <span *ngIf=\"!foundTask.createdBy\">N/A</span>\n              </dd>\n              <dt class=\"col-12\">Modifier:</dt>\n              <dd class=\"col-12 pl-4\">\n                <app-user-list *ngIf=\"foundTask.changedBy\" [user]=\"foundTask.changedBy\"></app-user-list>\n                <span *ngIf=\"!foundTask.changedBy\">N/A</span>\n              </dd>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--TASK DEPENDENCY-->\n            <!--<h5 class=\"mb-3\">Members</h5>-->\n            <dl class=\"row ml-1\">\n              <dt class=\"col-12\">Predecessor tasks:</dt>\n              <dd class=\"col-12 pl-4\">\n                <span *ngIf=\"foundTask.predecessors.length <= 0\">N/A</span>\n                <app-tasklist *ngIf=\"foundTask.predecessors.length > 0\" [tasks]=\"foundTask.predecessors\">\n\n                </app-tasklist>\n              </dd>\n              <dt class=\"col-12\">Successor tasks:</dt>\n              <dd class=\"col-12 pl-4\">\n                <span *ngIf=\"foundTask.successors.length <= 0\">N/A</span>\n                <app-tasklist *ngIf=\"foundTask.successors.length > 0\" [tasks]=\"foundTask.successors\">\n\n                </app-tasklist>\n              </dd>\n            </dl>\n          </div>\n          <div class=\"section\">\n            <!--DATE SECTION-->\n            <!--<h5 class=\"mb-3\">Date</h5>-->\n            <dl class=\"row ml-1\">\n              <dt class=\"col-4\">Start date:</dt>\n              <dd class=\"col-8\">\n                <span *ngIf=\"foundTask.startDate\">\n                  {{foundTask.startDate | date:'dd/MM/yyyy'}}\n                </span>\n              </dd>\n              <dt class=\"col-4\">Duration:</dt>\n              <dd class=\"col-8\">\n                {{foundTask.duration}}\n                <span *ngIf=\"foundTask.duration <= 1\">Day</span>\n                <span *ngIf=\"foundTask.duration > 1\">Days</span>\n              </dd>\n              <dt class=\"col-4\">Deadline date:</dt>\n              <dd class=\"col-8\">\n                {{foundTask.deadline | date:'dd/MM/yyyy'}}\n              </dd>\n              <dt class=\"col-4\">Finished date:</dt>\n              <dd class=\"col-8\">\n                <span *ngIf=\"!foundTask.finishedDate\">\n                  N/A\n                </span>\n                <span *ngIf=\"foundTask.finishedDate\">\n                  {{foundTask.finishedDate | date:'dd/MM/yyyy'}}\n                </span>\n              </dd>\n              <dt class=\"col-4\">Created date:</dt>\n              <dd class=\"col-8\">{{foundTask.createdDate | date:'dd/MM/yyyy'}}</dd>\n              <dt class=\"col-4\">Last change at:</dt>\n              <dd class=\"col-8\">\n                <span *ngIf=\"foundTask.changedDate\">\n                  {{foundTask.changedDate | date:'dd/MM/yyyy'}}\n                </span>\n                <span *ngIf=\"!foundTask.changedDate\">\n                  N/A\n                </span>\n              </dd>\n            </dl>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -894,6 +896,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_user_service__ = __webpack_require__("../../../../../src/app/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_comment_service__ = __webpack_require__("../../../../../src/app/services/comment.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_checklist_service__ = __webpack_require__("../../../../../src/app/services/checklist.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -916,18 +919,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ViewComponent = /** @class */ (function () {
-    function ViewComponent(taskService, uploadService, userService, commentService, storeService, router, route, location, modalService) {
+    function ViewComponent(taskService, uploadService, userService, commentService, storeService, checkListService, router, route, location, modalService) {
         this.taskService = taskService;
         this.uploadService = uploadService;
         this.userService = userService;
         this.commentService = commentService;
         this.storeService = storeService;
+        this.checkListService = checkListService;
         this.router = router;
         this.route = route;
         this.location = location;
         this.modalService = modalService;
         var currentUser = this.storeService.get(['currentUser']);
+        this.currentUser = this.storeService.get(['currentUser']);
         this.managementMode = currentUser.isManager || currentUser.isAdmin;
         this.isLoading = {
             page: true,
@@ -938,7 +944,10 @@ var ViewComponent = /** @class */ (function () {
             done: false,
             comment: false,
             editComment: false,
-            setStatus: false
+            setStatus: false,
+            addCheckList: false,
+            deleteCheckList: false,
+            archiveTask: false
         };
         this.needReviewMode = false;
         this.openCommentForm = false;
@@ -948,6 +957,7 @@ var ViewComponent = /** @class */ (function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             var taskId = params['id'];
+            _this.foundTaskID = taskId;
             if (Number(taskId)) {
                 _this.isLoading.page = true;
                 _this.loadData(taskId);
@@ -965,18 +975,22 @@ var ViewComponent = /** @class */ (function () {
         this.taskService.getTaskDetail(taskId)
             .then(function (value) {
             _this.foundTask = value;
+            _this.foundProjectID = _this.foundTask.project.id;
             _this.isLoading.page = false;
-            _this.updateLockingMode();
+            _this.updatePageMode();
         })
             .catch(function (reason) {
-            console.debug('ViewComponent-onInit', reason);
             _this.showErrorModal(reason.Message, true);
         });
     };
-    ViewComponent.prototype.updateLockingMode = function () {
-        this.needReviewMode =
-            this.foundTask.statusText == 'Need review' ||
-                this.foundTask.statusText == 'Done';
+    ViewComponent.prototype.updatePageMode = function () {
+        this.pageMode = {
+            done: this.foundTask.statusText == 'Done',
+            needReview: this.foundTask.statusText == 'Need review',
+            manager: this.currentUser.isManager,
+            admin: this.currentUser.isAdmin,
+            staff: !this.currentUser.isManager && !this.currentUser.isAdmin,
+        };
     };
     ViewComponent.prototype.handleOnCommentBtnClick = function () {
         this.openCommentForm = true;
@@ -1019,7 +1033,11 @@ var ViewComponent = /** @class */ (function () {
         this.userService.getUserOfProject(this.foundTask.project.id)
             .then(function (value) {
             var currentAssigneesIds = __WEBPACK_IMPORTED_MODULE_8_lodash__["map"](_this.foundTask.assignees, 'id');
-            var pool = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](value, function (user) { return !currentAssigneesIds.includes(user.id) && !user.isManager; });
+            var pool = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](value, function (user) {
+                return !currentAssigneesIds.includes(user.id) &&
+                    !user.isManager &&
+                    user.teamId == _this.currentUser.teamId;
+            });
             var selected = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](value, function (user) { return currentAssigneesIds.includes(user.id); });
             var initialState = {
                 confirmCallback: onConfirm,
@@ -1058,6 +1076,9 @@ var ViewComponent = /** @class */ (function () {
                 _this.isLoading.openUnAssignModal = false;
             });
         };
+        var userPool = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](this.foundTask.assignees, function (user) {
+            return user.teamId == _this.currentUser.teamId;
+        });
         var initialState = {
             confirmCallback: onConfirm,
             cancelCallback: function () {
@@ -1066,9 +1087,9 @@ var ViewComponent = /** @class */ (function () {
             closeCallback: function () {
                 _this.isLoading.openUnAssignModal = false;
             },
-            userPool: this.foundTask.assignees,
-            title: "Un-assign",
-            confirmButtonText: 'Un-assign'
+            userPool: userPool,
+            title: "Unassign",
+            confirmButtonText: 'Unassign'
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["l" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog', ignoreBackdropClick: true });
     };
@@ -1087,7 +1108,7 @@ var ViewComponent = /** @class */ (function () {
             });
         };
         var initialState = {
-            message: "Are you sure you want to finish this task!",
+            message: "Are you sure you want to finish this task?",
             confirmCallback: onConfirm
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["b" /* ConfirmModalComponent */], { initialState: initialState, class: 'modal-dialog', ignoreBackdropClick: true });
@@ -1103,6 +1124,7 @@ var ViewComponent = /** @class */ (function () {
                 var attachment = value;
                 _this.foundTask.attachments.push(attachment);
                 _this.isLoading.attachmentUpload = false;
+                _this.attachmentInput.nativeElement.value = '';
             })
                 .catch(function (reason) {
                 _this.errors.attachment = reason.Data;
@@ -1165,7 +1187,7 @@ var ViewComponent = /** @class */ (function () {
             task: this.foundTask,
             confirmCallback: function (task) {
                 _this.foundTask = task;
-                _this.updateLockingMode();
+                _this.updatePageMode();
                 _this.isLoading.setStatus = false;
             },
             cancelCallback: function () {
@@ -1176,6 +1198,44 @@ var ViewComponent = /** @class */ (function () {
             }
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["i" /* SelectStatusModalComponent */], { initialState: initialState, class: 'modal-dialog', ignoreBackdropClick: true });
+    };
+    ViewComponent.prototype.handleAddCheckListBtnClick = function (input) {
+        var _this = this;
+        this.isLoading.addCheckList = true;
+        var name = input.value;
+        this.checkListService.createChecklist(name, this.foundTask.id)
+            .then(function (value) {
+            input.value = '';
+            _this.foundTask.checkLists.push(value);
+            _this.isLoading.addCheckList = false;
+        })
+            .catch(function (reason) {
+            console.debug('handleAddCheckListBtnClick - error', reason);
+            var message = reason.Data[0].message;
+            _this.showErrorModal(message);
+            _this.isLoading.addCheckList = false;
+        });
+    };
+    ViewComponent.prototype.handleDeleteCheckListClick = function ($event) {
+        var _this = this;
+        this.isLoading.deleteCheckList = false;
+        this.checkListService.deleteChecklist($event.checkListId)
+            .then(function (value) {
+            _this.foundTask.checkLists = __WEBPACK_IMPORTED_MODULE_8_lodash__["filter"](_this.foundTask.checkLists, function (checkList) {
+                return checkList.id != $event.checkListId;
+            });
+            _this.isLoading.deleteCheckList = false;
+        })
+            .catch(function (reason) {
+            _this.showErrorModal(reason.Message);
+        });
+    };
+    ViewComponent.prototype.handleDoneEditCheckListClick = function ($event) {
+        var _this = this;
+        this.checkListService.editChecklist($event.checkListId, $event.content)
+            .catch(function (reason) {
+            _this.showErrorModal(reason.Message);
+        });
     };
     ViewComponent.prototype.attachmentFileChange = function (fileInput) {
         var file = fileInput.target.files[0];
@@ -1199,6 +1259,28 @@ var ViewComponent = /** @class */ (function () {
         };
         this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["e" /* ErrorModalComponent */], { initialState: initialState, class: 'modal-dialog modal-danger' });
     };
+    ViewComponent.prototype.handleArchiveBtnClick = function () {
+        var _this = this;
+        this.isLoading.archiveTask = true;
+        var onConfirm = function () {
+            _this.taskService.archiveTask(_this.foundTaskID)
+                .then(function (value) {
+                _this.isLoading.archiveTask = false;
+                _this.router.navigate(['/project/' + _this.foundProjectID + '/task']);
+            });
+        };
+        var initialState = {
+            message: "Are you sure to archive this task?",
+            confirmCallback: onConfirm,
+            cancelCallback: function () {
+                _this.isLoading.archiveTask = false;
+            },
+            closeCallback: function () {
+                _this.isLoading.archiveTask = false;
+            }
+        };
+        this.modalService.show(__WEBPACK_IMPORTED_MODULE_5__cmaComponents_modals__["b" /* ConfirmModalComponent */], { initialState: initialState, class: 'modal-dialog' });
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('attachmentInput'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"])
@@ -1214,6 +1296,7 @@ var ViewComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_9__services_user_service__["a" /* UserService */],
             __WEBPACK_IMPORTED_MODULE_10__services_comment_service__["a" /* CommentService */],
             __WEBPACK_IMPORTED_MODULE_11__services_tree_service__["a" /* StoreService */],
+            __WEBPACK_IMPORTED_MODULE_12__services_checklist_service__["a" /* ChecklistService */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_2__angular_common__["f" /* Location */],

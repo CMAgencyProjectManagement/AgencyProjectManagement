@@ -100,7 +100,8 @@ namespace Web.Controllers
                 {
                     TaskService taskService = new TaskService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
-                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId) &&
+                        !taskService.IsManagerOfTask(currentUserId, taskId))
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
                             ResponseHelper.GetExceptionResponse(
@@ -201,7 +202,8 @@ namespace Web.Controllers
                     NotificationService notificationService = new NotificationService(db);
                     int currentUserId = Int32.Parse(User.Identity.GetUserId());
                     var taskId = db.Attachments.Find(attId).TaskID;
-                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId))
+                    if (!taskService.IsAssigneeOfTask(currentUserId, taskId)&& 
+                        !taskService.IsManagerOfTask(currentUserId, taskId) )
                     {
                         return Content(HttpStatusCode.UnsupportedMediaType,
                             ResponseHelper.GetExceptionResponse(

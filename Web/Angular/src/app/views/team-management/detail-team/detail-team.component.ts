@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { TeamService } from '../../../services/team.service';
-import { UserService } from '../../../services/user.service';
-import { Team } from 'app/interfaces/team';
-import { User } from 'app/interfaces/user';
-import { Location } from '@angular/common';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ErrorModalComponent, ConfirmModalComponent } from '../../../cmaComponents/modals';
-import { StoreService } from '../../../services/tree.service';
-import { DataTableDirective } from 'angular-datatables';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {TeamService} from '../../../services/team.service';
+import {UserService} from '../../../services/user.service';
+import {Team} from 'app/interfaces/team';
+import {User} from 'app/interfaces/user';
+import {Location} from '@angular/common';
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ErrorModalComponent, ConfirmModalComponent} from '../../../cmaComponents/modals';
+import {StoreService} from '../../../services/tree.service';
+import {DataTableDirective} from 'angular-datatables';
 import * as _ from 'lodash';
 import {
   CommentModalComponent,
@@ -16,6 +16,7 @@ import {
   SelectTeamsModalComponent,
   SelectMembersModalComponent
 } from '../../../cmaComponents/modals';
+
 @Component({
   selector: 'app-detail-team',
   templateUrl: './detail-team.component.html',
@@ -39,6 +40,7 @@ export class DetailTeamComponent implements OnInit {
     openAssignMembersModal: boolean
     openUnAssignMembersModal: boolean
   };
+
   constructor(
     private teamService: TeamService,
     private userService: UserService,
@@ -55,9 +57,6 @@ export class DetailTeamComponent implements OnInit {
     };
     this.isPageLoading = true;
     this.currentUser = this.storeService.get(['currentUser']);
-    this.userService.getFreeUser().then(value => {
-      this.foundUsers = value;
-    })
   }
 
   ngOnInit() {
@@ -111,7 +110,7 @@ export class DetailTeamComponent implements OnInit {
       },
       message: message
     };
-    this.modalService.show(ErrorModalComponent, { initialState, class: 'modal-dialog modal-danger' });
+    this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
 
   handleOnSetManagerBtnClick(userID: number) {
@@ -131,55 +130,55 @@ export class DetailTeamComponent implements OnInit {
         message: `Are you sure to promote ${this.foundUser.name} to manager?`,
         confirmCallback: onConfirm
       };
-      this.modalService.show(ConfirmModalComponent, { initialState, class: 'modal-dialog' });
+      this.modalService.show(ConfirmModalComponent, {initialState, class: 'modal-dialog'});
     }
   }
 
 
   handleOnAssignMembersBtnClick() {
     this.isLoading.openAssignMembersModal = true;
-    const pool = _.filter(this.foundUsers, (user: User) => {
-      if (this.currentUser.isAdmin) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+    this.teamService.getFreeUser()
+      .then((value: User[]) => {
+        let pool = value;
 
-    const onConfirm = (selelectedMembers: User[]) => {
-      let selectedIds = _.map(selelectedMembers, 'id');
-      if (selectedIds.length == 0) {
-        this.containmember = true;
-      }
-      if (!this.containmember) {
-        this.teamService.assignTeam(selectedIds, this.teamID)
-          .then(value => {
-            this.foundTeam = value;
-            this.isLoading.openAssignMembersModal = false
-          })
-          .catch(reason => {
-            this.showErrorModal(reason.Message);
-            this.isLoading.openAssignMembersModal = false
-          })
-      } else {
-        this.showErrorModal('Please select members!');
-        this.isLoading.openAssignMembersModal = false;
-      }
-    };
+        const onConfirm = (selelectedMembers: User[]) => {
+          let selectedIds = _.map(selelectedMembers, 'id');
+          if (selectedIds.length == 0) {
+            this.containmember = true;
+          }
+          if (!this.containmember) {
+            this.teamService.assignTeam(selectedIds, this.teamID)
+              .then(foundTeam => {
+                this.foundTeam = foundTeam;
+                this.isLoading.openAssignMembersModal = false
+              })
+              .catch(reason => {
+                this.showErrorModal(reason.Message);
+                this.isLoading.openAssignMembersModal = false
+              })
+          } else {
+            this.showErrorModal('Please select members!');
+            this.isLoading.openAssignMembersModal = false;
+          }
+        };
 
-    const initialState = {
-      confirmCallback: onConfirm,
-      cancelCallback: () => {
-        this.isLoading.openAssignMembersModal = false
-      },
-      closeCallback: () => {
-        this.isLoading.openAssignMembersModal = false
-      },
-      userPool: pool,
-      title: `Assign members`,
-      confirmButtonText: 'Assign'
-    };
-    this.modalService.show(SelectUsersModalComponent, { initialState, class: 'modal-dialog', ignoreBackdropClick: true });
+        const initialState = {
+          confirmCallback: onConfirm,
+          cancelCallback: () => {
+            this.isLoading.openAssignMembersModal = false
+          },
+          closeCallback: () => {
+            this.isLoading.openAssignMembersModal = false
+          },
+          userPool: pool,
+          title: `Assign members`,
+          confirmButtonText: 'Assign'
+        };
+        this.modalService.show(SelectUsersModalComponent, {initialState, class: 'modal-dialog', ignoreBackdropClick: true});
+      })
+      .catch(reason => {
+        this.showErrorModal(reason.Message);
+      });
   }
 
   handleOnUnAssignMembersBtnClick() {
@@ -198,7 +197,7 @@ export class DetailTeamComponent implements OnInit {
         this.containmember = true;
       }
       if (!this.containmember) {
-        this.teamService.unAssignTeam(selectedIds,this.foundTeam.id)
+        this.teamService.unAssignTeam(selectedIds, this.foundTeam.id)
           .then(value => {
             this.foundTeam = value;
             this.isLoading.openUnAssignMembersModal = false;

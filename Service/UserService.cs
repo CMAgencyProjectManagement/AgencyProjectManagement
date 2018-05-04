@@ -120,8 +120,10 @@ namespace Service
             var result = new List<User>();
             if (project != null)
             {
-                var userIdList = db.UserProjects.Where(x => x.ProjectID == projectId)
-                    .Select(x => x.UserID).ToList();
+                var userIdList = db.UserProjects
+                    .Where(x => x.ProjectID == projectId)
+                    .Select(x => x.UserID)
+                    .ToList();
 
                 foreach (var item in userIdList)
                 {
@@ -154,16 +156,23 @@ namespace Service
 
         public IEnumerable<User> GetNoDepartmentUsers(bool excludeBannedUser = true, bool excludeAdmin = true)
         {
-            IEnumerable<User> result = db.Users.Where(user => !user.TeamID.HasValue);
+            IEnumerable<User> result = db.Users
+                .Where(user => !user.TeamID.HasValue)
+                .ToList();
             
             if (excludeBannedUser)
             {
-                result = result.Where(user => user.IsActive);
+                result = result
+                    .Where(user => user.IsActive)
+                    .ToList();
             }
             
             if (excludeAdmin)
             {
-                result = result.Where(user => !user.IsAdmin);
+                result = result
+                    .Where(user => !user.IsAdmin)
+                    .ToList();
+                
             }
 
             return result;

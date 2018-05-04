@@ -3,6 +3,7 @@ import {StoreService} from './tree.service';
 import {get, put} from 'superagent';
 import {serverPath} from '../_serverPath';
 import * as _ from 'lodash';
+import {User} from '../interfaces/user';
 
 @Injectable()
 export class TeamService {
@@ -79,6 +80,22 @@ export class TeamService {
     });
   }
 
+  public getFreeUser(): Promise<User[]> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.getNoTeamUser)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+    });
+  }
+
   public assignTeam(userIdArray: number[], teamId: number): Promise<any> {
     const dataObj = {
       UserIds: userIdArray,
@@ -128,7 +145,7 @@ export class TeamService {
       IsManager: true
     };
     return new Promise<any>((resolve, reject) => {
-      put(serverPath.setTeamRole(userId,teamId))
+      put(serverPath.setTeamRole(userId, teamId))
         .set('token', this.tokenCursor.get())
         .send(dataObj)
         .then(res => {

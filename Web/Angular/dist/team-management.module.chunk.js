@@ -64,7 +64,7 @@ var CreateTeamComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/detail-team/detail-team.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div style=\"align-content: left\">\r\n  <div class=\"card align-items-left\">\r\n    <div class=\"card-header\">\r\n      <strong>Department detail</strong>\r\n    </div>\r\n    <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n    <div class=\"card-body\" *ngIf=\"!isPageLoading\">\r\n      <div class=\"col-12\" *ngIf=\"foundTeam\">\r\n        <h1>\r\n          {{foundTeam.name}}\r\n        </h1>\r\n      </div>\r\n      <div>\r\n        <a [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignMembersModal}\" (click)=\"handleOnAssignMembersBtnClick()\"\r\n          [ladda]=\"isLoading.openAssignMembersModal\" *ngIf=\"currentUser.isAdmin\">\r\n          <i class=\"fa fa-user-plus\"></i>&nbsp; Assign members\r\n        </a>\r\n\r\n        <a [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignMembersModal}\" (click)=\"handleOnUnAssignMembersBtnClick()\"\r\n          [ladda]=\"isLoading.openUnAssignMembersModal\" *ngIf=\"currentUser.isAdmin\">\r\n          <i class=\"fa fa-user-times\"></i>&nbsp; Un-assign members\r\n        </a>\r\n      </div>\r\n      <div>\r\n        <table id=\"allTeamsTable\" datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n            <tr>\r\n              <th>User</th>\r\n              <th>Role</th>\r\n              <th *ngIf=\"currentUser.isAdmin\">Status</th>\r\n              <th *ngIf=\"currentUser.isAdmin\" style=\"width: 200px\">Action</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody *ngIf=\"foundTeam.users.length !== 0 || foundTeam.manager\">\r\n            <!--MANAGER-->\r\n            <tr *ngIf=\"foundTeam.manager\">\r\n              <td>\r\n                <a href=\"#/account/detail/{{foundTeam.manager.id}}\" *ngIf=\"currentUser.isAdmin\">\r\n                  {{foundTeam.manager.name}}\r\n                </a>\r\n                <span *ngIf=\"currentUser.isManager\">{{foundTeam.manager.name}}</span>\r\n                <span *ngIf=\"!currentUser.isManager && !currentUser.isAdmin\">{{foundTeam.manager.name}}</span>\r\n              </td>\r\n              <td>\r\n                <strong>Manager</strong>\r\n              </td>\r\n              <td *ngIf=\"currentUser.isAdmin\">\r\n                <div *ngIf=\"foundTeam.manager.isActive\">Active</div>\r\n                <div *ngIf=\"!foundTeam.manager.isActive\">Banned</div>\r\n              </td>\r\n              <td *ngIf=\"currentUser.isAdmin\" class=\"text-center\">\r\n                <button type=\"button\" class=\"btn btn-primary bg-primary text-light\" disabled=\"disabled\">\r\n                  <i class=\"fa fa-user-plus\"></i>&nbsp; Set manager\r\n                </button>\r\n              </td>\r\n            </tr>\r\n\r\n            <!--NORMAL USER-->\r\n            <tr *ngFor=\"let user of foundTeam.users\">\r\n              <td>\r\n                <a href=\"#/account/detail/{{user.id}}\" *ngIf=\"currentUser.isAdmin\">\r\n                  {{user.username}}\r\n                </a>\r\n                <span *ngIf=\"currentUser.isManager\">{{user.username}}</span>\r\n                <span *ngIf=\"!currentUser.isManager && !currentUser.isAdmin\">{{user.username}}</span>\r\n              </td>\r\n              <td>\r\n                <div *ngIf=\"user.isAdmin\">\r\n                  <strong>Admin</strong>\r\n                </div>\r\n                <div *ngIf=\"!user.isAdmin && user.isManager\">\r\n                  <strong>Manager</strong>\r\n                </div>\r\n                <div *ngIf=\"!user.isAdmin && !user.isManager\">\r\n                  Staff\r\n                </div>\r\n              </td>\r\n              <td *ngIf=\"currentUser.isAdmin\">\r\n                <div *ngIf=\"user.isActive\">Active</div>\r\n                <div *ngIf=\"!user.isActive\">Banned</div>\r\n              </td>\r\n              <td *ngIf=\"currentUser.isAdmin\" class=\"text-center\">\r\n                <a class=\"btn btn-primary bg-primary text-light\" (click)=\"handleOnSetManagerBtnClick(user.id)\">\r\n                  <i class=\"fa fa-user-plus\"></i>&nbsp; Set manager\r\n                </a>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div style=\"align-content: left\">\n  <div class=\"card align-items-left\">\n    <div class=\"card-header\">\n      <strong>Department detail</strong>\n    </div>\n    <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\n    <div class=\"card-body\" *ngIf=\"!isPageLoading\">\n      <div class=\"col-12\" *ngIf=\"foundTeam\">\n        <h1>\n          {{foundTeam.name}}\n        </h1>\n      </div>\n      <div>\n        <a [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignMembersModal}\"\n           (click)=\"handleOnAssignMembersBtnClick()\"\n           [ladda]=\"isLoading.openAssignMembersModal\" *ngIf=\"currentUser.isAdmin\">\n          <i class=\"fa fa-user-plus\"></i>&nbsp; Assign members\n        </a>\n        <a [ngClass]=\"{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openUnAssignMembersModal}\"\n           (click)=\"handleOnUnAssignMembersBtnClick()\"\n           [ladda]=\"isLoading.openUnAssignMembersModal\" *ngIf=\"currentUser.isAdmin\">\n          <i class=\"fa fa-user-times\"></i>&nbsp; Un-assign members\n        </a>\n      </div>\n      <div>\n        <table id=\"allTeamsTable\" datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\n          <thead>\n          <tr>\n            <th>User</th>\n            <th>Role</th>\n            <th *ngIf=\"currentUser.isAdmin\">Status</th>\n            <th *ngIf=\"currentUser.isAdmin\" style=\"width: 200px\">Action</th>\n          </tr>\n          </thead>\n          <tbody *ngIf=\"foundTeam.users.length !== 0 || foundTeam.manager\">\n          <!--MANAGER-->\n          <tr *ngIf=\"foundTeam.manager\">\n            <td>\n              <a href=\"#/account/detail/{{foundTeam.manager.id}}\" *ngIf=\"currentUser.isAdmin\">\n                {{foundTeam.manager.name}}\n              </a>\n              <span *ngIf=\"currentUser.isManager\">{{foundTeam.manager.name}}</span>\n              <span *ngIf=\"!currentUser.isManager && !currentUser.isAdmin\">{{foundTeam.manager.name}}</span>\n            </td>\n            <td>\n              <strong>Manager</strong>\n            </td>\n            <td *ngIf=\"currentUser.isAdmin\">\n              <div *ngIf=\"foundTeam.manager.isActive\">Active</div>\n              <div *ngIf=\"!foundTeam.manager.isActive\">Banned</div>\n            </td>\n            <td *ngIf=\"currentUser.isAdmin\" class=\"text-center\">\n              <button type=\"button\" class=\"btn btn-primary bg-primary text-light\" disabled=\"disabled\">\n                <i class=\"fa fa-user-plus\"></i>&nbsp; Set manager\n              </button>\n            </td>\n          </tr>\n\n          <!--NORMAL USER-->\n          <tr *ngFor=\"let user of foundTeam.users\">\n            <td>\n              <a href=\"#/account/detail/{{user.id}}\" *ngIf=\"currentUser.isAdmin\">\n                {{user.name}}\n              </a>\n              <span *ngIf=\"currentUser.isManager\">{{user.username}}</span>\n              <span *ngIf=\"!currentUser.isManager && !currentUser.isAdmin\">{{user.name}}</span>\n            </td>\n            <td>\n              <div *ngIf=\"user.isAdmin\">\n                <strong>Admin</strong>\n              </div>\n              <div *ngIf=\"!user.isAdmin && user.isManager\">\n                <strong>Manager</strong>\n              </div>\n              <div *ngIf=\"!user.isAdmin && !user.isManager\">\n                Staff\n              </div>\n            </td>\n            <td *ngIf=\"currentUser.isAdmin\">\n              <div *ngIf=\"user.isActive\">Active</div>\n              <div *ngIf=\"!user.isActive\">Banned</div>\n            </td>\n            <td *ngIf=\"currentUser.isAdmin\" class=\"text-center\">\n              <a class=\"btn btn-primary bg-primary text-light\" (click)=\"handleOnSetManagerBtnClick(user.id)\">\n                <i class=\"fa fa-user-plus\"></i>&nbsp; Set manager\n              </a>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -124,7 +124,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var DetailTeamComponent = /** @class */ (function () {
     function DetailTeamComponent(teamService, userService, storeService, modalService, router, route, location) {
-        var _this = this;
         this.teamService = teamService;
         this.userService = userService;
         this.storeService = storeService;
@@ -142,9 +141,6 @@ var DetailTeamComponent = /** @class */ (function () {
         };
         this.isPageLoading = true;
         this.currentUser = this.storeService.get(['currentUser']);
-        this.userService.getFreeUser().then(function (value) {
-            _this.foundUsers = value;
-        });
     }
     DetailTeamComponent.prototype.ngOnInit = function () {
         var id = this.route.snapshot.paramMap.get('id');
@@ -222,48 +218,47 @@ var DetailTeamComponent = /** @class */ (function () {
     DetailTeamComponent.prototype.handleOnAssignMembersBtnClick = function () {
         var _this = this;
         this.isLoading.openAssignMembersModal = true;
-        var pool = __WEBPACK_IMPORTED_MODULE_9_lodash__["filter"](this.foundUsers, function (user) {
-            if (_this.currentUser.isAdmin) {
-                return true;
-            }
-            else {
-                return false;
-            }
+        this.teamService.getFreeUser()
+            .then(function (value) {
+            var pool = value;
+            var onConfirm = function (selelectedMembers) {
+                var selectedIds = __WEBPACK_IMPORTED_MODULE_9_lodash__["map"](selelectedMembers, 'id');
+                if (selectedIds.length == 0) {
+                    _this.containmember = true;
+                }
+                if (!_this.containmember) {
+                    _this.teamService.assignTeam(selectedIds, _this.teamID)
+                        .then(function (foundTeam) {
+                        _this.foundTeam = foundTeam;
+                        _this.isLoading.openAssignMembersModal = false;
+                    })
+                        .catch(function (reason) {
+                        _this.showErrorModal(reason.Message);
+                        _this.isLoading.openAssignMembersModal = false;
+                    });
+                }
+                else {
+                    _this.showErrorModal('Please select members!');
+                    _this.isLoading.openAssignMembersModal = false;
+                }
+            };
+            var initialState = {
+                confirmCallback: onConfirm,
+                cancelCallback: function () {
+                    _this.isLoading.openAssignMembersModal = false;
+                },
+                closeCallback: function () {
+                    _this.isLoading.openAssignMembersModal = false;
+                },
+                userPool: pool,
+                title: "Assign members",
+                confirmButtonText: 'Assign'
+            };
+            _this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["l" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog', ignoreBackdropClick: true });
+        })
+            .catch(function (reason) {
+            _this.showErrorModal(reason.Message);
         });
-        var onConfirm = function (selelectedMembers) {
-            var selectedIds = __WEBPACK_IMPORTED_MODULE_9_lodash__["map"](selelectedMembers, 'id');
-            if (selectedIds.length == 0) {
-                _this.containmember = true;
-            }
-            if (!_this.containmember) {
-                _this.teamService.assignTeam(selectedIds, _this.teamID)
-                    .then(function (value) {
-                    _this.foundTeam = value;
-                    _this.isLoading.openAssignMembersModal = false;
-                })
-                    .catch(function (reason) {
-                    _this.showErrorModal(reason.Message);
-                    _this.isLoading.openAssignMembersModal = false;
-                });
-            }
-            else {
-                _this.showErrorModal('Please select members!');
-                _this.isLoading.openAssignMembersModal = false;
-            }
-        };
-        var initialState = {
-            confirmCallback: onConfirm,
-            cancelCallback: function () {
-                _this.isLoading.openAssignMembersModal = false;
-            },
-            closeCallback: function () {
-                _this.isLoading.openAssignMembersModal = false;
-            },
-            userPool: pool,
-            title: "Assign members",
-            confirmButtonText: 'Assign'
-        };
-        this.modalService.show(__WEBPACK_IMPORTED_MODULE_6__cmaComponents_modals__["l" /* SelectUsersModalComponent */], { initialState: initialState, class: 'modal-dialog', ignoreBackdropClick: true });
     };
     DetailTeamComponent.prototype.handleOnUnAssignMembersBtnClick = function () {
         var _this = this;
@@ -424,7 +419,7 @@ var TeamManagementRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/team-management/team-management.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>View departments</strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\r\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\r\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\r\n          <thead>\r\n            <tr>\r\n              <th style=\"text-align: center\">Name</th>\r\n              <th style=\"text-align: center\">Department Leader</th>\r\n              <th style=\"text-align: center\">Created date</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let team of teams;let i = index\">\r\n              <td>\r\n                <a routerLink=\"/department/{{team.id}}/detail\">{{team.name}}</a>\r\n              </td>\r\n              <td>\r\n                <span *ngIf=\"team.manager\">{{team.manager.username}}</span>\r\n                <span *ngIf=\"!team.manager\">N/A</span>\r\n              </td>\r\n              <td>\r\n                <p>{{team.createdDate}}</p>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"row\">\n  <div class=\"col-12\">\n    <div class=\"card\">\n      <div class=\"card-header\">\n        <strong>View departments</strong>\n      </div>\n      <app-spinner *ngIf=\"isPageLoading\"></app-spinner>\n      <div *ngIf=\"!isPageLoading\" class=\"card-body\">\n        <table datatable [dtOptions]=\"datatableOptions\" class=\"table table-bordered\">\n          <thead>\n            <tr>\n              <th style=\"text-align: center\">Name</th>\n              <th style=\"text-align: center\">Department Leader</th>\n              <th style=\"text-align: center\">Created date</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let team of teams;let i = index\">\n              <td>\n                <a routerLink=\"/department/{{team.id}}/detail\">{{team.name}}</a>\n              </td>\n              <td>\n                <span *ngIf=\"team.manager\">{{team.manager.name}}</span>\n                <span *ngIf=\"!team.manager\">N/A</span>\n              </td>\n              <td>\n                <p>{{team.createdDate}}</p>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
