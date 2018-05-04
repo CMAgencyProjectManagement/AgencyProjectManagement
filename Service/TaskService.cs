@@ -158,8 +158,7 @@ namespace Service
                     if (!includeInactiveTasks)
                     {
                         if ((userTask.Task.Status == (int) TaskStatus.NotDone ||
-                             userTask.Task.Status == (int) TaskStatus.NeedReview ||
-                             userTask.Task.Status == (int) TaskStatus.Pending) &&
+                             userTask.Task.Status == (int) TaskStatus.NeedReview) &&
                             !userTask.Task.IsArchived)
                         {
                             taskList.Add(userTask.Task);

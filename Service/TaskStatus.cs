@@ -5,7 +5,6 @@ namespace Service
     {
         NotDone,
         NeedReview,
-        Done,
-        Pending
+        Done
     }
 }
