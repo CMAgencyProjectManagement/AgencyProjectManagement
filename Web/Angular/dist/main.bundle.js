@@ -247,11 +247,21 @@ var serverPath = {
     assignTask: '/api/task/assign',
     unassignTask: "/api/task/unassign",
     finishTask: function (taskID) { return "/api/task/" + taskID + "/finishTask"; },
+    archiveTask: "/api/task/archive",
+    unArchiveTask: "/api/task/unarchive",
     // Dependency
     getDependenciesOfProject: function (projectId) { return "/api/project/" + projectId + "/dependency"; },
     // Comment
     createComment: '/api/comment/create',
-    updateComment: 'api/comment/update',
+    updateComment: '/api/comment/update',
+    // Check list
+    createChecklist: '/api/checklist',
+    deleteChecklist: function (checkListId) { return "/api/checklist/" + checkListId; },
+    editChecklist: function (checkListId) { return "/api/checklist/" + checkListId; },
+    createChecklistItem: "/api/checklist/item",
+    deleteChecklistItem: function (checkListId, checkListItemId) { return "/api/checklist/" + checkListId + "/item/" + checkListItemId; },
+    editChecklistItem: function (checkListId, checkListItemId) { return "/api/checklist/" + checkListId + "/item/" + checkListItemId; },
+    checkCheckListItem: function (checkListId, checkListItemId) { return "/api/checklist/" + checkListId + "/checkitem/" + checkListItemId; },
     // File
     uploadAvatar: function (userId) { return "/api/file/user/" + userId + "/avatar"; },
     uploadAttachment: function (taskID) { return "/api/file/task/" + taskID + "/attachment"; },
@@ -279,6 +289,7 @@ var serverPath = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -294,10 +305,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(storeService, userService, activatedRoute, router, titleService) {
+    function AppComponent(storeService, userService, taskService, activatedRoute, router, titleService) {
         this.storeService = storeService;
         this.userService = userService;
+        this.taskService = taskService;
         this.activatedRoute = activatedRoute;
         this.router = router;
         this.titleService = titleService;
@@ -348,6 +361,7 @@ var AppComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_tree_service__["a" /* StoreService */],
             __WEBPACK_IMPORTED_MODULE_2__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_6__services_task_service__["a" /* TaskService */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */],
             __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["b" /* Title */]])
@@ -387,15 +401,16 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_comment_service__ = __webpack_require__("../../../../../src/app/services/comment.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_config_service__ = __webpack_require__("../../../../../src/app/services/config.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__services_notification_service__ = __webpack_require__("../../../../../src/app/services/notification.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26_ng2_charts_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services_checklist_service__ = __webpack_require__("../../../../../src/app/services/checklist.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_mydatepicker__ = __webpack_require__("../../../../mydatepicker/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_angular2_multiselect_dropdown_angular2_multiselect_dropdown__ = __webpack_require__("../../../../angular2-multiselect-dropdown/angular2-multiselect-dropdown.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30_ngx_bootstrap_modal__ = __webpack_require__("../../../../ngx-bootstrap/modal/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__cmaComponents_cma_module__ = __webpack_require__("../../../../../src/app/cmaComponents/cma.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -452,6 +467,7 @@ var APP_DIRECTIVES = [
 
 
 
+
 var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_9__services_auth_guard__["a" /* AlwaysAuthGuard */],
     __WEBPACK_IMPORTED_MODULE_10__services_tree_service__["a" /* StoreService */],
@@ -466,24 +482,25 @@ var SERVICES = [
     __WEBPACK_IMPORTED_MODULE_19_app_services_list_service__["a" /* ListService */],
     __WEBPACK_IMPORTED_MODULE_20__services_comment_service__["a" /* CommentService */],
     __WEBPACK_IMPORTED_MODULE_21__services_config_service__["a" /* ConfigService */],
-    __WEBPACK_IMPORTED_MODULE_22__services_notification_service__["a" /* NotificationService */]
+    __WEBPACK_IMPORTED_MODULE_22__services_notification_service__["a" /* NotificationService */],
+    __WEBPACK_IMPORTED_MODULE_23__services_checklist_service__["a" /* ChecklistService */]
 ];
 // Import modal
 
 var MODALS = [
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["k" /* SelectTeamsModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["m" /* SuccessModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["e" /* ErrorModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["c" /* CreateListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["b" /* ConfirmModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["f" /* RemoveListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["g" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["l" /* SelectUsersModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["a" /* CommentModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["i" /* SelectStatusModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["h" /* SelectMembersModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["j" /* SelectTasksModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_23__cmaComponents_modals__["d" /* CreateProjectModalComponent */]
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["k" /* SelectTeamsModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["m" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["e" /* ErrorModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["c" /* CreateListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["b" /* ConfirmModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["f" /* RemoveListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["g" /* RenameListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["l" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["a" /* CommentModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["i" /* SelectStatusModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["h" /* SelectMembersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["j" /* SelectTasksModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_24__cmaComponents_modals__["d" /* CreateProjectModalComponent */]
 ];
 // Import 3rd party components
 
@@ -502,13 +519,13 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_8__app_routing__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_24_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_26_ng2_charts_ng2_charts__["ChartsModule"],
-                __WEBPACK_IMPORTED_MODULE_27_mydatepicker__["MyDatePickerModule"],
-                __WEBPACK_IMPORTED_MODULE_28_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_29_ngx_bootstrap_modal__["c" /* ModalModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_30__cmaComponents_cma_module__["a" /* CmaModule */]
+                __WEBPACK_IMPORTED_MODULE_25_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_26_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_27_ng2_charts_ng2_charts__["ChartsModule"],
+                __WEBPACK_IMPORTED_MODULE_28_mydatepicker__["MyDatePickerModule"],
+                __WEBPACK_IMPORTED_MODULE_29_angular2_multiselect_dropdown_angular2_multiselect_dropdown__["a" /* AngularMultiSelectModule */],
+                __WEBPACK_IMPORTED_MODULE_30_ngx_bootstrap_modal__["c" /* ModalModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_31__cmaComponents_cma_module__["a" /* CmaModule */]
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]
@@ -627,7 +644,7 @@ var AppRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/admin-section/admin-section.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  admin-section works!\n</p>\n"
+module.exports = "<div class=\"container-fluid\">\n  <h4 class=\"card-title\">\n    Recent projects\n  </h4>\n  <table datatable [dtOptions]=\"recentProjectOptions\" class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <th>Name</th>\n      <th>Changed date</th>\n      <th>Status</th>\n      <th>Start date</th>\n      <th>Deadline</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr *ngFor=\"let project of projects\">\n      <td>\n        <a routerLink=\"/project/{{project.id}}/detail\">{{project.name}}</a>\n      </td>\n      <td>\n        <ng-container *ngIf=\"project.changedTime\">\n          <span [hidden]=\"true\">{{project.changedTime | date:'yyyy/MM/dd'}}</span>\n          {{project.changedTime | date:'dd/MM/yyyy'}}\n        </ng-container>\n\n        <ng-container *ngIf=\"!project.changedTime\">\n          N/A\n        </ng-container>\n\n      </td>\n      <td>\n        {{project.statusText}}\n      </td>\n      <td>\n        <span [hidden]=\"true\">{{project.startDate | date:'yyyy/MM/dd'}}</span>\n        {{project.startDate | date:'dd/MM/yyyy'}}\n      </td>\n      <td>\n        <span [hidden]=\"true\">{{project.deadline | date:'yyyy/MM/dd'}}</span>\n        {{project.deadline | date:'dd/MM/yyyy'}}\n      </td>\n    </tr>\n    </tbody>\n  </table>\n</div>\n"
 
 /***/ }),
 
@@ -655,6 +672,8 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminSectionComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -665,11 +684,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var AdminSectionComponent = /** @class */ (function () {
     function AdminSectionComponent() {
+        this.recentProjectOptions = {
+            searching: true,
+            lengthChange: true,
+            paging: true,
+            ordering: true,
+            order: [
+                [1, 'asc']
+            ]
+        };
     }
     AdminSectionComponent.prototype.ngOnInit = function () {
+        this.filtedData = __WEBPACK_IMPORTED_MODULE_1_lodash__["filter"](this.projects, function (project) {
+            if (project.status === 0 || project.status === 1) {
+                return true;
+            }
+        });
     };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Array)
+    ], AdminSectionComponent.prototype, "projects", void 0);
     AdminSectionComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-admin-section',
@@ -803,6 +841,210 @@ var AssignMembersCardComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cmaComponents/checklist/checklist.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<section class=\"tasks\">\r\n  <header class=\"tasks-header hover-bg row\">\r\n    <h2 class=\"tasks-title col-9 d-inline-block\" *ngIf=\"!checkListEditMode\">{{checkList.name}}</h2>\r\n    <div class=\"col-9 d-inline-block\" *ngIf=checkListEditMode>\r\n      <div class=\"input-group\">\r\n        <input class=\"form-control\" placeholder=\"content\" type=\"text\"\r\n               [(ngModel)]=\"checkListEditValue\">\r\n        <span class=\"input-group-append\">\r\n            <button class=\"btn btn-success\" type=\"button\"\r\n                    (click)=\"handleDoneEditCheckListClick()\">\r\n              <i class=\"fa fa-check\"></i>\r\n            </button>\r\n          </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-2 float-right d-inline-block\">\r\n      <div class=\"float-right btn-more\"\r\n           *ngIf=\"managementMode && !readonly\"\r\n           (click)=\"handleDeleteCheckListClick()\">\r\n        <i class=\"fa fa-trash\"></i>\r\n      </div>\r\n      <div class=\"float-right btn-more\"\r\n           *ngIf=\"managementMode && !readonly\"\r\n           (click)=\"handleEditCheckListClick()\">\r\n        <i class=\"fa fa-pencil\"></i>\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <fieldset class=\"tasks-list\" *ngIf=\"checkList.items\">\r\n    <label class=\"tasks-list-item hover-bg\" *ngFor=\"let checkListItem of checkList.items\">\r\n      <ng-container *ngIf=\"!itemsEditMode[checkListItem.id]\">\r\n        <input type=\"checkbox\" class=\"tasks-list-cb\"\r\n               [checked]=\"checkListItem.isChecked\"\r\n               [disabled]=\"readonly\"\r\n               (change)=\"handleCheckItemClick(checkListItem.id)\">\r\n        <span class=\"tasks-list-mark\"></span>\r\n        <span class=\"tasks-list-desc\">{{checkListItem.name}}</span>\r\n        <div class=\"float-right btn-more\"\r\n             *ngIf=\"managementMode\"\r\n             [hidden]=\"readonly\"\r\n             (click)=\"handleEditItemClick(checkListItem.id);false\">\r\n          <i class=\"fa fa-pencil\"></i>\r\n        </div>\r\n      </ng-container>\r\n      <ng-container *ngIf=\"itemsEditMode[checkListItem.id]\">\r\n        <div class=\"input-group\">\r\n          <input class=\"form-control\" placeholder=\"content\" type=\"text\"\r\n                 [(ngModel)]=\"itemsEditModeValue[checkListItem.id]\">\r\n          <span class=\"input-group-append\">\r\n            <button class=\"btn btn-success\" type=\"button\"\r\n                    (click)=\"handleDoneEditItemClick(checkListItem.id)\"><i class=\"fa fa-check\"></i></button>\r\n          </span>\r\n          <span class=\"input-group-append\">\r\n            <button class=\"btn btn-danger\" type=\"button\"\r\n                    [ladda]= \"isLoading.deleteItem\"\r\n                    (click)=handleDeleteItemClick(checkListItem.id)>\r\n              <i class=\"fa fa-trash\"></i>\r\n            </button>\r\n          </span>\r\n        </div>\r\n      </ng-container>\r\n    </label>\r\n    <label class=\"tasks-list-item hover-bg\" *ngIf=\"managementMode && !readonly\">\r\n      <div class=\"input-group\">\r\n        <input class=\"form-control\" placeholder=\"content\" type=\"text\"\r\n               [(ngModel)]=\"newItemValue\">\r\n        <span class=\"input-group-append\">\r\n            <button class=\"btn btn-success\" type=\"button\"\r\n                    [ladda]= \"isLoading.addItem\"\r\n                    (click)=\"handleAddItemClick()\">\r\n              <i class=\"fa fa-plus\"></i>\r\n            </button>\r\n          </span>\r\n      </div>\r\n    </label>\r\n    <label *ngIf=\"!checkList.items\" class=\"tasks-list-item\">No item available</label>\r\n  </fieldset>\r\n</section>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/checklist/checklist.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "html, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  vertical-align: baseline; }\n\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block; }\n\nbody {\n  line-height: 1; }\n\nol, ul {\n  list-style: none; }\n\nblockquote, q {\n  quotes: none; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\n.tasks {\n  border: 1px solid #cdd3d7;\n  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }\n\n.tasks-header {\n  position: relative;\n  line-height: 24px;\n  padding: 7px 15px;\n  border-bottom: 1px solid #d1d1d1; }\n\n.hover-bg:hover {\n  background-color: #F4F5F7; }\n\n.tasks-title {\n  line-height: inherit;\n  font-size: 14px;\n  font-weight: bold;\n  color: inherit;\n  display: inline-block; }\n\n.btn-more {\n  cursor: pointer;\n  width: 24px; }\n\n.tasks-lists {\n  position: absolute;\n  top: 50%;\n  right: 10px;\n  margin-top: -11px;\n  padding: 10px 4px;\n  width: 19px;\n  height: 3px;\n  font: 0/0 serif;\n  text-shadow: none;\n  color: transparent; }\n\n.tasks-lists:before {\n    content: '';\n    display: block;\n    height: 3px;\n    background: #8c959d;\n    border-radius: 1px;\n    -webkit-box-shadow: 0 6px #8c959d, 0 -6px #8c959d;\n    box-shadow: 0 6px #8c959d, 0 -6px #8c959d; }\n\n.tasks-list-item {\n  display: block;\n  line-height: 24px;\n  padding: 12px 15px;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none; }\n\n.tasks-list-item + .tasks-list-item {\n    border-top: 1px solid #f0f2f3; }\n\n.tasks-list-cb {\n  display: none; }\n\n.tasks-list-mark {\n  position: relative;\n  display: inline-block;\n  vertical-align: top;\n  margin-right: 12px;\n  width: 20px;\n  height: 20px;\n  border: 2px solid #c4cbd2;\n  border-radius: 12px; }\n\n.tasks-list-mark:before {\n    content: '';\n    display: none;\n    position: absolute;\n    top: 54%;\n    left: 52%;\n    margin: -5px 0 0 -6px;\n    height: 7px;\n    width: 11px;\n    border: solid #39ca74;\n    border-width: 0 0 4px 4px;\n    -webkit-transform: rotate(-45deg);\n    transform: rotate(-45deg); }\n\n.tasks-list-cb:checked ~ .tasks-list-mark {\n    border-color: #39ca74; }\n\n.tasks-list-cb:checked ~ .tasks-list-mark:before {\n      display: block; }\n\n.tasks-list-desc {\n  font-weight: bold;\n  color: #8a9a9b; }\n\n.tasks-list-cb:checked ~ .tasks-list-desc {\n    color: #34bf6e;\n    text-decoration: line-through; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/cmaComponents/checklist/checklist.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChecklistComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_checkList__ = __webpack_require__("../../../../../src/app/interfaces/checkList.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_checklist_service__ = __webpack_require__("../../../../../src/app/services/checklist.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ChecklistComponent = /** @class */ (function () {
+    function ChecklistComponent(checkListService) {
+        this.checkListService = checkListService;
+        this.onDeleteCheckList = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onEditChecklist = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onCreateCheckListItem = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onEditCheckListItem = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDeleteChecklistItem = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.checkListItem = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.itemsEditMode = [];
+        this.itemsEditModeValue = [];
+        this.checkListEditMode = false;
+        this.checkListEditValue = '';
+        this.isLoading = {
+            addItem: false,
+            deleteItem: false
+        };
+    }
+    ChecklistComponent.prototype.ngOnInit = function () {
+        this.checkListEditValue = this.checkList.name;
+    };
+    ChecklistComponent.prototype.handleEditCheckListClick = function () {
+        this.checkListEditMode = !this.checkListEditMode;
+    };
+    ChecklistComponent.prototype.handleDoneEditCheckListClick = function () {
+        this.checkList.name = this.checkListEditValue;
+        this.handleEditCheckListClick();
+        var eventData = {
+            checkListId: this.checkList.id,
+            content: this.checkListEditValue
+        };
+        this.onEditChecklist.emit(eventData);
+        console.debug('handleDoneEditCheckListClick', eventData);
+    };
+    ChecklistComponent.prototype.handleDeleteCheckListClick = function () {
+        var eventData = {
+            checkListId: this.checkList.id
+        };
+        this.onDeleteCheckList.emit(eventData);
+    };
+    ChecklistComponent.prototype.handleEditItemClick = function (itemId) {
+        this.itemsEditMode[itemId] = true;
+        this.itemsEditModeValue[itemId] = this.checkList.items
+            .find(function (value) { return value.id == itemId; }).name;
+    };
+    ChecklistComponent.prototype.handleDoneEditItemClick = function (itemId) {
+        this.itemsEditMode[itemId] = false;
+        this.checkList.items
+            .find(function (value) { return value.id == itemId; }).name = this.itemsEditModeValue[itemId];
+        var eventData = {
+            checkListId: this.checkList.id,
+            checkListItemId: itemId,
+            content: this.itemsEditModeValue[itemId],
+        };
+        this.onEditCheckListItem.emit(eventData);
+        this.checkListService.editChecklistItem(eventData.checkListId, eventData.checkListItemId, eventData.content)
+            .catch(function (reason) {
+            console.debug('handleDoneEditItemClick - error', reason.Message);
+        });
+    };
+    ChecklistComponent.prototype.handleDeleteItemClick = function (itemId) {
+        var _this = this;
+        this.isLoading.deleteItem = true;
+        var eventData = {
+            checkListId: this.checkList.id,
+            checkListItemId: itemId
+        };
+        this.checkListService.deleteChecklistItem(eventData.checkListId, eventData.checkListItemId)
+            .then(function (value) {
+            _this.checkList.items = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](_this.checkList.items, function (item) {
+                return item.id !== itemId;
+            });
+            _this.isLoading.deleteItem = false;
+        })
+            .catch(function (reason) {
+            _this.isLoading.deleteItem = false;
+            console.debug('handleDeleteItemClick - error', reason.Message);
+        });
+    };
+    ChecklistComponent.prototype.handleAddItemClick = function () {
+        var _this = this;
+        this.isLoading.addItem = true;
+        var eventData = {
+            checkListId: this.checkList.id,
+            content: this.newItemValue
+        };
+        this.checkListService.createChecklistItem(eventData.checkListId, eventData.content)
+            .then(function (value) {
+            _this.checkList = value;
+            _this.newItemValue = '';
+            _this.isLoading.addItem = false;
+        })
+            .catch(function (reason) {
+            console.debug('handleAddItemClick - error', reason.Message);
+            _this.isLoading.addItem = false;
+        });
+    };
+    ChecklistComponent.prototype.handleCheckItemClick = function (itemId) {
+        var eventData = {
+            checkListId: this.checkList.id,
+            checkListItemId: itemId
+        };
+        this.checkListService.checkChecklistItem(eventData.checkListId, eventData.checkListItemId)
+            .catch(function (reason) { return console.debug('handleCheckItemClick - error', eventData, reason.message); });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1__interfaces_checkList__["a" /* CheckList */])
+    ], ChecklistComponent.prototype, "checkList", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], ChecklistComponent.prototype, "managementMode", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Boolean)
+    ], ChecklistComponent.prototype, "readonly", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ChecklistComponent.prototype, "onDeleteCheckList", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ChecklistComponent.prototype, "onEditChecklist", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ChecklistComponent.prototype, "onCreateCheckListItem", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ChecklistComponent.prototype, "onEditCheckListItem", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ChecklistComponent.prototype, "onDeleteChecklistItem", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+        __metadata("design:type", Object)
+    ], ChecklistComponent.prototype, "checkListItem", void 0);
+    ChecklistComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-checklist',
+            template: __webpack_require__("../../../../../src/app/cmaComponents/checklist/checklist.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/cmaComponents/checklist/checklist.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_checklist_service__["a" /* ChecklistService */]])
+    ], ChecklistComponent);
+    return ChecklistComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/cmaComponents/cma.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -827,12 +1069,14 @@ var AssignMembersCardComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__task_status_task_status_component__ = __webpack_require__("../../../../../src/app/cmaComponents/task-status/task-status.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__project_status_project_status_component__ = __webpack_require__("../../../../../src/app/cmaComponents/project-status/project-status.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__task_priority_task_priority_component__ = __webpack_require__("../../../../../src/app/cmaComponents/task-priority/task-priority.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__tasklist_tasklist_component__ = __webpack_require__("../../../../../src/app/cmaComponents/tasklist/tasklist.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__staff_section_staff_section_component__ = __webpack_require__("../../../../../src/app/cmaComponents/staff-section/staff-section.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__manager_section_manager_section_component__ = __webpack_require__("../../../../../src/app/cmaComponents/manager-section/manager-section.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__admin_section_admin_section_component__ = __webpack_require__("../../../../../src/app/cmaComponents/admin-section/admin-section.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__ng_select_ng_select__ = __webpack_require__("../../../../@ng-select/ng-select/esm5/ng-select.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__directives__ = __webpack_require__("../../../../../src/app/directives/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__modals__ = __webpack_require__("../../../../../src/app/cmaComponents/modals/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__tasklist_tasklist_component__ = __webpack_require__("../../../../../src/app/cmaComponents/tasklist/tasklist.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__staff_section_staff_section_component__ = __webpack_require__("../../../../../src/app/cmaComponents/staff-section/staff-section.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__manager_section_manager_section_component__ = __webpack_require__("../../../../../src/app/cmaComponents/manager-section/manager-section.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__admin_section_admin_section_component__ = __webpack_require__("../../../../../src/app/cmaComponents/admin-section/admin-section.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__ng_select_ng_select__ = __webpack_require__("../../../../@ng-select/ng-select/esm5/ng-select.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__checklist_checklist_component__ = __webpack_require__("../../../../../src/app/cmaComponents/checklist/checklist.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -864,33 +1108,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 var declares_exports = [
     __WEBPACK_IMPORTED_MODULE_2__project_card_project_card_component__["a" /* ProjectCardComponent */],
     __WEBPACK_IMPORTED_MODULE_4__assignMember_card_assignMembers_card_component__["a" /* AssignMembersCardComponent */],
     __WEBPACK_IMPORTED_MODULE_3__miniUsers_table_mini_users_table_component__["a" /* MiniUsersTableComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["b" /* ConfirmModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["b" /* ConfirmModalComponent */],
     __WEBPACK_IMPORTED_MODULE_7__user_list_user_list_component__["a" /* UserListComponent */],
     __WEBPACK_IMPORTED_MODULE_8__comment_comment_component__["a" /* CommentComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["e" /* ErrorModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["c" /* CreateListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["f" /* RemoveListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["m" /* SuccessModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["g" /* RenameListModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["l" /* SelectUsersModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["a" /* CommentModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["e" /* ErrorModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["c" /* CreateListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["f" /* RemoveListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["m" /* SuccessModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["g" /* RenameListModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["l" /* SelectUsersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["a" /* CommentModalComponent */],
     __WEBPACK_IMPORTED_MODULE_14__task_table_task_table_component__["a" /* TaskTableComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["i" /* SelectStatusModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["k" /* SelectTeamsModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["i" /* SelectStatusModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["k" /* SelectTeamsModalComponent */],
     __WEBPACK_IMPORTED_MODULE_15__task_status_task_status_component__["a" /* TaskStatusComponent */],
-    __WEBPACK_IMPORTED_MODULE_19__tasklist_tasklist_component__["a" /* TasklistComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["j" /* SelectTasksModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_20__tasklist_tasklist_component__["a" /* TasklistComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["j" /* SelectTasksModalComponent */],
     __WEBPACK_IMPORTED_MODULE_16__project_status_project_status_component__["a" /* ProjectStatusComponent */],
     __WEBPACK_IMPORTED_MODULE_17__task_priority_task_priority_component__["a" /* TaskPriorityComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["h" /* SelectMembersModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_18__modals__["d" /* CreateProjectModalComponent */],
-    __WEBPACK_IMPORTED_MODULE_20__staff_section_staff_section_component__["a" /* StaffSectionComponent */],
-    __WEBPACK_IMPORTED_MODULE_21__manager_section_manager_section_component__["a" /* ManagerSectionComponent */],
-    __WEBPACK_IMPORTED_MODULE_22__admin_section_admin_section_component__["a" /* AdminSectionComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["h" /* SelectMembersModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_19__modals__["d" /* CreateProjectModalComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__staff_section_staff_section_component__["a" /* StaffSectionComponent */],
+    __WEBPACK_IMPORTED_MODULE_22__manager_section_manager_section_component__["a" /* ManagerSectionComponent */],
+    __WEBPACK_IMPORTED_MODULE_23__admin_section_admin_section_component__["a" /* AdminSectionComponent */],
+    __WEBPACK_IMPORTED_MODULE_25__checklist_checklist_component__["a" /* ChecklistComponent */],
+    __WEBPACK_IMPORTED_MODULE_18__directives__["e" /* TruncateTextPipe */]
 ];
 var CmaModule = /** @class */ (function () {
     function CmaModule() {
@@ -910,7 +1158,7 @@ var CmaModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_11_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */],
                 __WEBPACK_IMPORTED_MODULE_12__angular_forms__["c" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_23__ng_select_ng_select__["a" /* NgSelectModule */]
+                __WEBPACK_IMPORTED_MODULE_24__ng_select_ng_select__["a" /* NgSelectModule */]
             ],
             exports: declares_exports.slice(),
             declarations: declares_exports.slice()
@@ -926,7 +1174,7 @@ var CmaModule = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/comment/comment.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\r\n  <div class=\"col-1 left-section text-center\">\r\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\r\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\r\n  </div>\r\n  <div class=\"col-11 right-section\">\r\n    <div class=\"row\">\r\n      <div class=\"col-11\">\r\n        <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\r\n        <a href=\"#/account/{{comment.createdBy.id}}/detail\">\r\n          {{comment.createdBy.name}}\r\n        </a>\r\n      </div>\r\n      <div class=\"col-1 btn-edit\"\r\n           *ngIf=\"editable\"\r\n           (click)=\"handleEditBtnClick($event)\">\r\n        <i class=\"fa fa-pencil-square-o\"></i>\r\n      </div>\r\n      <div class=\"col-12 mt-3\" *ngIf=\"!isCollapsed\">\r\n        <p>{{comment.body}}</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div id=\"comment\" class=\"p-2 row\" (click)=\"containerClick()\">\r\n  <div class=\"col-1 left-section text-center\">\r\n    <i class=\"fa fa-angle-down\" *ngIf=\"!isCollapsed\"></i>\r\n    <i class=\"fa fa-angle-right\" *ngIf=\"isCollapsed\"></i>\r\n  </div>\r\n  <div class=\"col-11 right-section\">\r\n    <div class=\"row\">\r\n      <div class=\"col-11\">\r\n        <img class=\"avatar img-avatar\" src=\"{{comment.createdBy.avatar}}\"/>\r\n        <!-- <a href=\"#/account/{{comment.createdBy.id}}/detail\">\r\n          {{comment.createdBy.name}}\r\n        </a> -->\r\n        {{comment.createdBy.name}}\r\n        <p style=\"float: right; color: silver; \" >{{comment.createdTime | date:'dd/MM/yyyy'}}</p>\r\n      </div>\r\n      <div class=\"col-1 btn-edit\"\r\n           *ngIf=\"editable\"\r\n           (click)=\"handleEditBtnClick($event)\">\r\n        <i class=\"fa fa-pencil-square-o\"></i>\r\n      </div>\r\n      <div class=\"col-12 mt-3\" *ngIf=\"!isCollapsed\">\r\n        <p>{{comment.body}}</p>\r\n        \r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1012,7 +1260,7 @@ var CommentComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/manager-section/manager-section.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Late tasks\r\n  </h4>\r\n  <table datatable [dtOptions]=\"lateTableOptions\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Status</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of lateTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>\r\n        <span [hidden]=\"true\">{{task.statusText}}</span>\r\n        <app-task-status [taskStatusNumber]=\"task.status\"></app-task-status>\r\n      </td>\r\n      <td>\r\n        <span [hidden]=\"true\">{{task.deadline | date:'yyyy/MM/dd'}}</span>\r\n        {{task.deadline | date:'dd/MM/yyyy'}}\r\n      </td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n<hr class=\"mt-4 mb-4\"/>\r\n<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Need review tasks\r\n  </h4>\r\n  <table datatable [dtOptions]=\"thisWeekTableOptions\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of needReviewTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>\r\n        <span [hidden]=\"true\">{{task.deadline | date:'yyyy/MM/dd'}}</span>\r\n        {{task.deadline | date:'dd/MM/yyyy'}}\r\n      </td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Late tasks\r\n  </h4>\r\n  <table datatable [dtOptions]=\"lateTableOptions\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Status</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of lateTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>\r\n        {{task.statusText}}\r\n        <!--<span [hidden]=\"true\">{{task.statusText}}</span>-->\r\n        <!--<app-task-status [taskStatusNumber]=\"task.status\"></app-task-status>-->\r\n      </td>\r\n      <td>\r\n        <!--<span [hidden]=\"true\">{{task.deadline | date:'yyyy/MM/dd'}}</span>-->\r\n        {{task.deadline | date:'dd/MM/yyyy'}}\r\n      </td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n<hr class=\"mt-4 mb-4\"/>\r\n<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Need review tasks\r\n  </h4>\r\n  <table datatable [dtOptions]=\"thisWeekTableOptions\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of needReviewTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>\r\n        <span [hidden]=\"true\">{{task.deadline | date:'yyyy/MM/dd'}}</span>\r\n        {{task.deadline | date:'dd/MM/yyyy'}}\r\n      </td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2460,7 +2708,7 @@ var SuccessModalComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/project-card/project-card.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header\">\r\n    <strong>View Tasks</strong>\r\n    <a href=\"#/project/task?projectID={{project.id}}\" *ngIf=\"showbutton\">\r\n      <button type=\"button\" class=\"btn btn-primary\" style=\"margin-left: 77%\">\r\n        View full\r\n      </button>\r\n    </a>\r\n  </div>\r\n  <app-spinner *ngIf=!project></app-spinner>\r\n  <div *ngIf=project>\r\n    <div class=\"card-body\" *ngIf=\"project\">\r\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\r\n        <div class=\"input-group col-12\">\r\n          <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\r\n              <i class=\"fa fa-search\"></i> Search\r\n            </button>\r\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\r\n              <i class=\"fa fa-times\"></i>\r\n            </button>\r\n          </span>\r\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\r\n        </div>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\r\n        Found tasks:\r\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\r\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\r\n            <a routerLink=\"/task/{{task.id}}/view\" style=\"font-size: 17px;color: black\">\r\n              {{task.name}}\r\n            </a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- -->\r\n      <div class=\"row task-row\">\r\n        <div>\r\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\r\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\r\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\r\n                <div class=\"form-group row\">\r\n                  <div class=\"col-9\">\r\n                    {{lists.name}}\r\n                  </div>\r\n                  <div class=\"col-3\" *ngIf=\"currentUser.isManager\">\r\n                    <div class=\"btn-group\" dropdown>\r\n                      <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\r\n                        <span class=\"caret\"></span>\r\n                      </button>\r\n                      <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\"\r\n                             href=\"#/task/create?project={{project.id}}&list={{lists.id}}\">Add task</a>\r\n                        </li>\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\"\r\n                             (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\r\n                        </li>\r\n                        <li role=\"menuitem\">\r\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove\r\n                            list</a>\r\n                        </li>\r\n                      </ul>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\r\n                <div class=\"card task-card\" *ngFor=\"let task of lists.tasks\" data-toggle=\"modal\" style=\"cursor: pointer\"\r\n                     data-toggle=\"modal\"\r\n                     id=\"task\">\r\n                  <a routerLink=\"/task/{{task.id}}/view\" style=\"text-decoration: none; color: black\">\r\n                    <div class=\"card-body\">\r\n                      {{task.name}}\r\n                    </div>\r\n                    <div class=\"card-footer p-0\" style=\"height: 30px;\">\r\n                      <app-task-status class=\"float-right\" [taskStatusNumber]=\"task.status\"></app-task-status>\r\n\r\n                    </div>\r\n                  </a>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </ng-container>\r\n          <ng-container *ngIf=\"currentUser.isManager\">\r\n            <div style=\"margin-left: 15px;\">\r\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\r\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\r\n                <b>Add List</b>\r\n              </button>\r\n            </div>\r\n          </ng-container>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <ng-container *ngIf=\"project\">\n      <a routerLink=\"/project/{{project.id}}/detail\">\n        <strong>{{project.name}}</strong>\n      </a>'s tasks\n    </ng-container>\n    <ng-container *ngIf=\"!project\">\n      <strong>project's task</strong>\n    </ng-container>\n  </div>\n  <app-spinner *ngIf=!project></app-spinner>\n  <div *ngIf=project>\n    <div class=\"card-body\" *ngIf=\"project\">\n      <div class=\"row\" style=\"margin-bottom: 1rem;\">\n        <div class=\"input-group col-12\">\n          <span class=\"input-group-btn\">\n            <button class=\"btn btn-primary\" type=\"button\" (click)=\"search(searchField.value)\">\n              <i class=\"fa fa-search\"></i> Search\n            </button>\n            <button class=\"btn btn-secondary\" type=\"button\" (click)=\"clear()\">\n              <i class=\"fa fa-times\"></i>\n            </button>\n          </span>\n          <input class=\"form-control\" type=\"text\" (change)=\"search(searchField.value)\" #searchField>\n        </div>\n      </div>\n      <!-- -->\n      <div class=\"well mb-4\" *ngIf=\"foundTasks.length > 0\" style=\"font-size: 18px\">\n        Found tasks:\n        <ul class=\"list-group\" *ngFor=\"let task of foundTasks;let i=index\">\n          <li class=\"list-group-item\" style=\"background-color: #f0f3f5\">\n            <a routerLink=\"/task/{{task.id}}/view\" style=\"font-size: 17px;color: black\">\n              {{task.name}}\n            </a>\n          </li>\n        </ul>\n      </div>\n      <!-- -->\n      <div class=\"row task-row\">\n        <div>\n          <ng-container *ngFor=\"let lists of project.lists;let i = index\">\n            <div class=\"card cardstyle\" style=\"margin-left: 15px;\">\n              <div class=\"card-header cardheadertext\" style=\"font-size: 18px\">\n                <div class=\"form-group row\">\n                  <div class=\"col-9\">\n                    {{lists.name}}\n                  </div>\n                  <div class=\"col-3\" *ngIf=\"currentUser.isManager\">\n                    <div class=\"btn-group\" dropdown>\n                      <button dropdownToggle type=\"button\" class=\"btn btn-secondary dropdown-toggle\">\n                        <span class=\"caret\"></span>\n                      </button>\n                      <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\"\n                             href=\"#/task/create?project={{project.id}}&list={{lists.id}}\">Add task</a>\n                        </li>\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\"\n                             (click)=\"handleOnRenameListClick(lists.id, lists.name)\">Rename</a>\n                        </li>\n                        <li role=\"menuitem\">\n                          <a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"handleOnRemoveListClick(lists.id)\">Remove\n                            list</a>\n                        </li>\n                      </ul>\n                    </div>\n                  </div>\n                </div>\n              </div>\n              <div class=\"card-body cardbodytext\" *ngIf=\"lists.tasks\">\n                <ng-container *ngFor=\"let task of lists.tasks\">\n                  <div class=\"card task-card\" *ngIf=\"!task.isArchived\" data-toggle=\"modal\" style=\"cursor: pointer\"\n                       data-toggle=\"modal\"\n                       id=\"task\">\n                    <a routerLink=\"/task/{{task.id}}/view\" style=\"text-decoration: none; color: black\">\n                      <div class=\"card-body\">\n                        {{task.name}}\n                      </div>\n                      <div class=\"card-footer p-0\" style=\"height: 30px;\">\n                        <app-task-status class=\"float-right\" [taskStatusNumber]=\"task.status\"></app-task-status>\n\n                      </div>\n                    </a>\n                  </div>\n                </ng-container>\n              </div>\n            </div>\n          </ng-container>\n          <ng-container *ngIf=\"currentUser.isManager\">\n            <div style=\"margin-left: 15px;\">\n              <button type=\"button\" class=\"btn btn-primary\" style=\"width: 300px;height: 56px;\n              font-size: 17px;\" (click)=\"handleOnAddListClick()\">\n                <b>Add List</b>\n              </button>\n            </div>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -2729,7 +2977,7 @@ var ProjectStatusComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/staff-section/staff-section.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Late tasks\r\n  </h4>\r\n  <table datatable [dtOptions]=\"lateTableOptions\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Status</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of lateTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>\r\n        <app-task-status [taskStatusNumber]=\"task.status\"></app-task-status>\r\n      </td>\r\n      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n<hr class=\"mt-4 mb-4\"/>\r\n<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Expire this week\r\n  </h4>\r\n  <table datatable [dtOptions]=\"thisWeekTasks\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of needReviewTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
+module.exports = "<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Late tasks\r\n  </h4>\r\n  <table datatable [dtOptions]=\"lateTableOptions\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Status</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of lateTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>\r\n        {{task.statusText}}\r\n      </td>\r\n      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n<hr class=\"mt-4 mb-4\"/>\r\n<div class=\"container-fluid\">\r\n  <h4 class=\"card-title\">\r\n    Expire this week\r\n  </h4>\r\n  <table datatable [dtOptions]=\"thisWeekTasks\" class=\"table table-bordered\">\r\n    <thead>\r\n    <tr>\r\n      <th>Name</th>\r\n      <th>Priority</th>\r\n      <th>Deadline</th>\r\n      <th>Project</th>\r\n    </tr>\r\n    </thead>\r\n    <tbody>\r\n    <tr *ngFor=\"let task of needReviewTasks\">\r\n      <td>\r\n        <a routerLink=\"/task/{{task.id}}/view\">{{task.name}}</a>\r\n      </td>\r\n      <td>{{task.priorityText}}</td>\r\n      <td>{{task.deadline | date:'dd/MM/yyyy'}}</td>\r\n      <td>\r\n        <a routerLink=\"/project/{{task.project.id}}/detail\">{{task.project.name}}</a>\r\n      </td>\r\n    </tr>\r\n    </tbody>\r\n  </table>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -3131,7 +3379,7 @@ var TasklistComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/cmaComponents/user-list/user-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/{{user.id}}/detail\">\n          {{user.name}}\n        </a>\n      </div>\n      <small *ngIf=\"user.isManager && !user.isAdmin\" class=\"text-dark\">{{user.teamText}} | Manager</small>\n      <small *ngIf=\"!user.isManager && !user.isAdmin\">{{user.teamText}}</small>\n      <small *ngIf=\"!user.isManager && user.isAdmin\">{{user.teamText}}</small>\n    </div>\n    <div class=\"value\">\n      <small>{{user.phone}}</small>\n    </div>\n    <div class=\"actions\">\n      <i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>\n    </div>\n  </li>\n</ul>\n"
+module.exports = "<ul class=\"icons-list\">\n  <li *ngFor=\"let user of users\">\n    <i>\n      <img *ngIf=\"user.avatar\" src=\"{{user.avatar}}\" class=\"avatar img-avatar\">\n      <img *ngIf=\"!user.avatar\" src=\"/assets/img/100x100_avatar.png\" class=\"avatar img-avatar\">\n    </i>\n    <div class=\"desc\">\n      <div class=\"title\">\n        <a href=\"#/account/{{user.id}}/detail\">\n          {{user.name}}\n        </a>\n      </div>\n      <small *ngIf=\"user.isManager && !user.isAdmin\" class=\"text-dark\">{{user.teamText}} | Manager</small>\n      <small *ngIf=\"!user.isManager && !user.isAdmin\">{{user.teamText}}</small>\n      <small *ngIf=\"!user.isManager && user.isAdmin\">{{user.teamText}}</small>\n    </div>\n    <!--<div class=\"value\">-->\n      <!--<small>{{user.phone}}</small>-->\n    <!--</div>-->\n    <!--<div class=\"actions\">-->\n      <!--<i *ngIf=\"user.phone\" class=\"fa fa-phone text-muted\"></i>-->\n    <!--</div>-->\n  </li>\n</ul>\n"
 
 /***/ }),
 
@@ -3508,7 +3756,6 @@ var AppHeaderComponent = /** @class */ (function () {
         this.user = event.data.currentData;
     };
     AppHeaderComponent.prototype.handleNotificationUpdate = function (data) {
-        console.log('update');
         var notifications = __WEBPACK_IMPORTED_MODULE_4_lodash__["cloneDeep"](data);
         var unReadCount = 0;
         for (var _i = 0, notifications_1 = notifications; _i < notifications_1.length; _i++) {
@@ -4719,6 +4966,27 @@ var SIDEBAR_TOGGLE_DIRECTIVES = [
 
 /***/ }),
 
+/***/ "../../../../../src/app/interfaces/checkList.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckList; });
+/* unused harmony export CheckListItem */
+var CheckList = /** @class */ (function () {
+    function CheckList() {
+    }
+    return CheckList;
+}());
+var CheckListItem = /** @class */ (function () {
+    function CheckListItem() {
+    }
+    return CheckListItem;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/interfaces/comment.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4779,6 +5047,176 @@ var AlwaysAuthGuard = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_2__tree_service__["a" /* StoreService */]])
     ], AlwaysAuthGuard);
     return AlwaysAuthGuard;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/checklist.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChecklistService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tree_service__ = __webpack_require__("../../../../../src/app/services/tree.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__serverPath__ = __webpack_require__("../../../../../src/app/_serverPath.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_superagent__ = __webpack_require__("../../../../superagent/lib/client.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_superagent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_superagent__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ChecklistService = /** @class */ (function () {
+    function ChecklistService(storeService) {
+        this.storeService = storeService;
+        this.tokenCursor = storeService.select(['token', 'access_token']);
+    }
+    ChecklistService.prototype.createChecklist = function (name, taskId) {
+        var _this = this;
+        var dataObject = {
+            Name: name,
+            TaskID: taskId
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["post"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createChecklist)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObject)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    ChecklistService.prototype.editChecklist = function (checkListId, name) {
+        var _this = this;
+        var dataObject = {
+            Name: name
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].editChecklist(checkListId))
+                .set('token', _this.tokenCursor.get())
+                .send(dataObject)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    ChecklistService.prototype.deleteChecklist = function (checkListId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["delete"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].deleteChecklist(checkListId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    ChecklistService.prototype.createChecklistItem = function (checkListId, name) {
+        var _this = this;
+        var dataObject = {
+            Name: name,
+            CheckListId: checkListId
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["post"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].createChecklistItem)
+                .set('token', _this.tokenCursor.get())
+                .send(dataObject)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    ChecklistService.prototype.checkChecklistItem = function (checkListId, checkListItemId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].checkCheckListItem(checkListId, checkListItemId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    ChecklistService.prototype.editChecklistItem = function (checkListId, checkListItemId, name) {
+        var _this = this;
+        var dataObject = {
+            Name: name
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].editChecklistItem(checkListId, checkListItemId))
+                .set('token', _this.tokenCursor.get())
+                .send(dataObject)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    ChecklistService.prototype.deleteChecklistItem = function (checkListId, checkListItemId) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_3_superagent__["delete"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].deleteChecklistItem(checkListId, checkListItemId))
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            });
+        });
+    };
+    ChecklistService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__tree_service__["a" /* StoreService */]])
+    ], ChecklistService);
+    return ChecklistService;
 }());
 
 
@@ -5704,28 +6142,43 @@ var TaskService = /** @class */ (function () {
         });
     };
     TaskService.prototype.getStatuses = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var statuses = _this.statusesCursor.get();
-            if (statuses) {
-                resolve(statuses);
-            }
-            else {
-                __WEBPACK_IMPORTED_MODULE_1_superagent__["get"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].getStatus)
-                    .set('token', _this.tokenCursor.get())
-                    .then(function (res) {
-                    var content = res.body;
-                    if (content.IsSuccess) {
-                        _this.statusesCursor.set(content.Data);
-                        resolve(content.Data);
-                    }
-                    else {
-                        reject(content.Message);
-                    }
-                })
-                    .catch(function (reason) { return reject(reason.response.body); });
-            }
-        });
+        return Promise.resolve([
+            {
+                'key': 0,
+                'value': 'Not done'
+            },
+            {
+                'key': 1,
+                'value': 'Need review'
+            },
+            {
+                'key': 2,
+                'value': 'Done'
+            },
+            {
+                'key': 3,
+                'value': 'Pending'
+            },
+        ]);
+        // return new Promise<any>((resolve, reject) => {
+        //   let statuses = this.statusesCursor.get();
+        //   if (statuses) {
+        //     resolve(statuses);
+        //   } else {
+        //     request.get(serverPath.getStatus)
+        //       .set('token', this.tokenCursor.get())
+        //       .then(res => {
+        //         const content = res.body;
+        //         if (content.IsSuccess) {
+        //           this.statusesCursor.set(content.Data);
+        //           resolve(content.Data);
+        //         } else {
+        //           reject(content.Message);
+        //         }
+        //       })
+        //       .catch(reason => reject(reason.response.body));
+        //   }
+        // });
     };
     TaskService.prototype.setStatus = function (taskId, status) {
         var _this = this;
@@ -5903,6 +6356,48 @@ var TaskService = /** @class */ (function () {
                 .catch(function (reason) { return reject(reason.response.body); });
         });
     };
+    TaskService.prototype.archiveTask = function (taskId) {
+        var _this = this;
+        var objData = {
+            TaskID: taskId
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].archiveTask)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
+    TaskService.prototype.unArchiveTask = function (taskId) {
+        var _this = this;
+        var objData = {
+            TaskID: taskId
+        };
+        return new Promise(function (resolve, reject) {
+            __WEBPACK_IMPORTED_MODULE_1_superagent__["put"](__WEBPACK_IMPORTED_MODULE_2__serverPath__["a" /* serverPath */].unArchiveTask)
+                .set('token', _this.tokenCursor.get())
+                .send(objData)
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
+        });
+    };
     TaskService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__tree_service__["a" /* StoreService */]])
@@ -6010,6 +6505,23 @@ var TeamService = /** @class */ (function () {
                     reject(content.Message);
                 }
             });
+        });
+    };
+    TeamService.prototype.getFreeUser = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["get"])(__WEBPACK_IMPORTED_MODULE_3__serverPath__["a" /* serverPath */].getNoTeamUser)
+                .set('token', _this.tokenCursor.get())
+                .then(function (res) {
+                var content = res.body;
+                if (content.IsSuccess) {
+                    resolve(content.Data);
+                }
+                else {
+                    reject(content.Message);
+                }
+            })
+                .catch(function (reason) { return reject(reason.response.body); });
         });
     };
     TeamService.prototype.assignTeam = function (userIdArray, teamId) {

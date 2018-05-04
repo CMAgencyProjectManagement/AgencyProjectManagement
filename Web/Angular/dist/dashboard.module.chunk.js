@@ -45,7 +45,7 @@ var DashboardRoutingModule = /** @class */ (function () {
 /***/ "../../../../../src/app/views/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>\r\n          <div>Dashboard</div>\r\n        </strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div class=\"card-body\" *ngIf=\"!isLoading.page\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-7 col-md-10\">\r\n            <app-staff-section [lateTasks]=l ateTasks [thisWeekTasks]=\"thisWeekTasks\" *ngIf=\"role == 'staff'\"></app-staff-section>\r\n            <app-manager-section [lateTasks]=\"lateTasks\" [needReviewTasks]=\"needReviewTasks\" *ngIf=\"role == 'manager'\">\r\n\r\n            </app-manager-section>\r\n            <app-admin-section *ngIf=\"role == 'admin'\"></app-admin-section>\r\n          </div>\r\n          <div class=\"col-lg-5 col-md-10\">\r\n            <div class=\"card p-0\">\r\n              <div class=\"card-body\">\r\n                <h4 class=\"card-title col-12\">Leader board</h4>\r\n                <table class=\"table\">\r\n                  <thead>\r\n                    <tr>\r\n                      <th class=\"text-center\">Rank</th>\r\n                      <th class=\"text-center\">Name</th>\r\n                      <tH class=\"text-center\">Score</tH>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n                    <tr *ngFor=\"let item of leaderboard;let i = index\">\r\n                      <td class=\"text-center\">{{i+1}}</td>\r\n                      <td class=\"text-center\">{{item.name}}</td>\r\n                      <td class=\"text-center\">{{item.score}}</td>\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header\">\r\n        <strong>\r\n          <div>Dashboard</div>\r\n        </strong>\r\n      </div>\r\n      <app-spinner *ngIf=\"isLoading.page\"></app-spinner>\r\n      <div class=\"card-body\" *ngIf=\"!isLoading.page\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-7 col-md-10\">\r\n            <app-staff-section [lateTasks]=l ateTasks [thisWeekTasks]=\"thisWeekTasks\" *ngIf=\"role == 'staff'\"></app-staff-section>\r\n            <app-manager-section\r\n              [lateTasks]=\"lateTasks\"\r\n              [needReviewTasks]=\"needReviewTasks\"\r\n              *ngIf=\"role == 'manager'\">\r\n            </app-manager-section>\r\n            <app-admin-section\r\n              [projects]=\"projects\"\r\n              *ngIf=\"role == 'admin'\"></app-admin-section>\r\n          </div>\r\n          <div class=\"col-lg-5 col-md-10\">\r\n            <div class=\"card p-0\">\r\n              <div class=\"card-body\">\r\n                <h4 class=\"card-title col-12\">Leader board</h4>\r\n                <table class=\"table\">\r\n                  <thead>\r\n                    <tr>\r\n                      <th class=\"text-center\">Rank</th>\r\n                      <th class=\"text-center\">Name</th>\r\n                      <tH class=\"text-center\">Score</tH>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n                    <tr *ngFor=\"let item of leaderboard;let i = index\">\r\n                      <td class=\"text-center\">{{i+1}}</td>\r\n                      <td class=\"text-center\">{{item.name}}</td>\r\n                      <td class=\"text-center\">{{item.score}}</td>\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -128,6 +128,7 @@ var DashboardComponent = /** @class */ (function () {
                 break;
             }
             case 'admin': {
+                this.loadAdminSection();
                 break;
             }
         }
@@ -166,7 +167,20 @@ var DashboardComponent = /** @class */ (function () {
             _this.showErrorModal(reason.Message);
         });
     };
-    DashboardComponent.prototype.loadMAdminSection = function () {
+    DashboardComponent.prototype.loadAdminSection = function () {
+        var _this = this;
+        Promise.all([
+            this.projectService.getAllProjects(),
+            this.userService.getLeaderBoard()
+        ])
+            .then(function (resData) {
+            _this.projects = resData[0];
+            _this.leaderboard = resData[1];
+            _this.isLoading.page = false;
+        })
+            .catch(function (reason) {
+            _this.showErrorModal(reason.Message);
+        });
     };
     DashboardComponent.prototype.showErrorModal = function (message, isNavigateBack) {
         var _this = this;
