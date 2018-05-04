@@ -112,7 +112,6 @@ export class ArchiveComponent implements OnInit {
           this.tasks = _.filter(this.tasks, (item: Task) => {
             return task.id != item.id;
           });
-          // this.search('');
         })
     };
     const initialState = {

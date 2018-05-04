@@ -18,8 +18,15 @@
         <a routerLink="/project/{{project.id}}/detail">{{project.name}}</a>
       </td>
       <td>
-        <span [hidden]="true">{{project.changedTime | date:'yyyy/MM/dd'}}</span>
-        {{project.changedTime | date:'dd/MM/yyyy'}}
+        <ng-container *ngIf="project.changedTime">
+          <span [hidden]="true">{{project.changedTime | date:'yyyy/MM/dd'}}</span>
+          {{project.changedTime | date:'dd/MM/yyyy'}}
+        </ng-container>
+
+        <ng-container *ngIf="!project.changedTime">
+          N/A
+        </ng-container>
+
       </td>
       <td>
         {{project.statusText}}

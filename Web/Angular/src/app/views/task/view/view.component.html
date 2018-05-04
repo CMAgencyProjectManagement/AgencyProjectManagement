@@ -40,9 +40,9 @@
                 (click)="handleSetStatusBtnClick()" [ladda]="isLoading.setStatus">
           <i class="fa fa-refresh"></i>&nbsp;Set status
         </button>
-        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.setStatus}"
-                [hidden]="!pageMode.manager" [disabled]="isLoading.setStatus"
-                (click)="handleArchiveBtnClick()" [ladda]="isLoading.setStatus">
+        <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.archiveTask}"
+                [hidden]="!pageMode.manager" [disabled]="isLoading.archiveTask"
+                (click)="handleArchiveBtnClick()" [ladda]="isLoading.archiveTask">
           <i class="fa fa-archive"></i>&nbsp;Archive
         </button>
       </div>

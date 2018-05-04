@@ -90,10 +90,9 @@
                     </div>
                   </div>
                 </td>
-
-                <td *ngIf="currentUser.isManager && project.status!= 2">
-                  <div class="row">
-                    <div class="btn-group col-12" style="margin-left: 40px;">
+                <td class="text-center">
+                  <div class="row" *ngIf="currentUser.isManager && project.status!= 2">
+                    <div class="btn-group col-12">
                       <a routerLink="/project/{{project.id}}/task" class="btn btn-primary">
                         Tasks
                       </a>
@@ -105,10 +104,8 @@
                       </a>
                     </div>
                   </div>
-                </td>
-                <td *ngIf="currentUser.isManager && project.status== 2">
-                  <div class="row">
-                    <div class="btn-group col-12" style="margin-left: 40px;">
+                  <div class="row" *ngIf="currentUser.isManager && project.status== 2">
+                    <div class="btn-group col-12">
                       <a routerLink="/project/{{project.id}}/task" class="btn btn-primary">
                         Tasks
                       </a>

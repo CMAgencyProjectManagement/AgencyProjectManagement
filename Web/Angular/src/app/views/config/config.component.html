@@ -104,6 +104,24 @@
             </div>
           </div>
 
+          <div class="form-group row">
+            <!--Allow admin participant age-->
+            <label class="col-6 col-form-label text-right">
+              Minimum working age
+
+            </label>
+            <div class="col-6">
+              <div class="input-group">
+                <label class="switch switch-default switch-primary">
+                  <input class="switch-input" checked="" type="checkbox" formControlName="allowAdminParticipant">
+                  <span class="switch-label"></span>
+                  <span class="switch-handle"></span>
+                </label>
+              </div>
+              <div class="invalid-feedback" *ngIf="errors.minimumWorkingAge" style="display: block">{{errors.minimumWorkingAge}}</div>
+            </div>
+          </div>
+
           <!--BUTTONS-->
           <div class="col-6 col-form-label text-right">
             <button class="btn btn-primary" (click)="handleUpdate()">

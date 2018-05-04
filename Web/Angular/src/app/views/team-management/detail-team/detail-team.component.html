@@ -59,7 +59,7 @@
             <tr *ngFor="let user of foundTeam.users">
               <td>
                 <a href="#/account/detail/{{user.id}}" *ngIf="currentUser.isAdmin">
-                  {{user.username}}
+                  {{user.name}}
                 </a>
                 <span *ngIf="currentUser.isManager">{{user.username}}</span>
                 <span *ngIf="!currentUser.isManager && !currentUser.isAdmin">{{user.name}}</span>
