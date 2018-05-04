@@ -231,7 +231,7 @@ export class EditComponent implements OnInit {
     })
   }
 
-  showSuccessModal(message: string, isNavigateBack: boolean = false) {
+  showSuccessModal(message: string, isNavigateBack: boolean = true) {
     const initialState = {
       closeCallback: () => {
         if (isNavigateBack) {
