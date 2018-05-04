@@ -52,10 +52,7 @@ export class TaskService {
         'key': 2,
         'value': 'Done'
       },
-      {
-        'key': 3,
-        'value': 'Pending'
-      },
+ 
     ])
     // return new Promise<any>((resolve, reject) => {
     //   let statuses = this.statusesCursor.get();
