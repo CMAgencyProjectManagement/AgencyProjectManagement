@@ -11,7 +11,10 @@
     <!--<div class="col-12" *ngIf="isReadonlyMode && !managementMode">-->
     <div class="col-12">
       <div class="button-row" [hidden]="pageMode.admin">
-        <a routerLink="/task/edit/{{foundTask.id}}" *ngIf="managementMode" class="btn btn-secondary bg-light">
+        <a routerLink="/task/edit/{{foundTask.id}}"
+           *ngIf="managementMode"
+           [hidden]="pageMode.done"
+           class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
         </a>
         <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
