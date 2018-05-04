@@ -604,7 +604,7 @@ namespace Service
         {
             DateTime date = DateTime.Now.Date;
             DateTime weekFirstDay = date.AddDays(DayOfWeek.Sunday - date.DayOfWeek);
-            DateTime weekLastDay = weekFirstDay.AddDays(6);
+            DateTime weekLastDay = weekFirstDay.AddDays(7);
             if (task.StartDate != null)
             {
                 DateTime deadline = task.StartDate.Value.AddDays(task.Duration);
