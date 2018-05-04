@@ -17,9 +17,9 @@
            class="btn btn-secondary bg-light">
           <i class="fa fa-edit"></i>&nbsp; Edit
         </a>
-        <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
+        <!-- <button class="btn btn-secondary bg-light" (click)="handleOnCommentBtnClick()">
           <i class="fa fa-comment-o"></i>&nbsp; Comment
-        </button>
+        </button> -->
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.openAssignModal}"
                 [hidden]="!pageMode.manager || pageMode.done"
                 (click)="handleOnAssignBtnClick()" [disabled]="isLoading.openAssignModal"
@@ -34,7 +34,7 @@
         </button>
         <button [ngClass]="{'btn': true, 'btn-secondary': true, 'bg-light':!isLoading.done}"
                 [hidden]="!pageMode.staff || isLoading.done"
-                [disabled]="foundTask.status == 1 || isLoading.done" (click)="handleOnNeedReviewBtnClick()"
+                [disabled]="foundTask.status == 1 || foundTask.status == 2|| isLoading.done" (click)="handleOnNeedReviewBtnClick()"
                 [ladda]="isLoading.done">
           <i class="fa fa-check"></i>&nbsp; Need review
         </button>
