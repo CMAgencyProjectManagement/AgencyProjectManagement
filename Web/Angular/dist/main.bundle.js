@@ -5370,7 +5370,7 @@ var ConfigService = /** @class */ (function () {
     //       }
     //     });
     //   }
-    ConfigService.prototype.updateConfig = function (lowPriority, mediumPriority, hightPriority, taskMaxDuration, lateTaskPenalty, minimumWorkingAge) {
+    ConfigService.prototype.updateConfig = function (lowPriority, mediumPriority, hightPriority, taskMaxDuration, lateTaskPenalty, minimumWorkingAge, allowAdminInTeam) {
         var _this = this;
         var objData = {
             lowPoint: lowPriority,
@@ -5379,6 +5379,7 @@ var ConfigService = /** @class */ (function () {
             maxDuration: taskMaxDuration,
             penatyPercent: lateTaskPenalty,
             minAge: minimumWorkingAge,
+            allowAdminInTeam: allowAdminInTeam
         };
         return new Promise(function (resolve, reject) {
             Object(__WEBPACK_IMPORTED_MODULE_2_superagent__["put"])(__WEBPACK_IMPORTED_MODULE_1__serverPath__["a" /* serverPath */].updateConfig)
@@ -6154,10 +6155,6 @@ var TaskService = /** @class */ (function () {
             {
                 'key': 2,
                 'value': 'Done'
-            },
-            {
-                'key': 3,
-                'value': 'Pending'
             },
         ]);
         // return new Promise<any>((resolve, reject) => {

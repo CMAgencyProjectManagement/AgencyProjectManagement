@@ -119,7 +119,7 @@ namespace Web.Controllers
                 {
                     UserService userService = new UserService(db);
 
-                    IEnumerable<JObject> usersObject = userService.GetNoDepartmentUsers()
+                    IEnumerable<JObject> usersObject = userService.GetNoDepartmentUsers(excludeAdmin:!AgencyConfig.allowAdminInTeam)
                         .Select(user => userService.ParseToJson(user, AgencyConfig.AvatarPath));
 
                     return Ok(ResponseHelper.GetResponse(new JArray(usersObject)));
