@@ -31,8 +31,8 @@ namespace Web.Controllers
                     User currentUser = userService.GetUser(userId);
                     IEnumerable<NotificationUser> notificationUsers = notificationService
                         .GetNotificationsOfUser(currentUser.ID)
-                        .Take(50)
-                        .Reverse();
+                        .Reverse()
+                        .Take(50);
 
                     IEnumerable<JObject> notificationsJson = notificationService
                         .FormatNotificationForUser(notificationUsers, currentUser);

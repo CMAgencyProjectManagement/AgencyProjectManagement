@@ -786,7 +786,6 @@ namespace Web.Controllers
                             );
                         notifiedUsersList.AddRange(notifiedUsers);
                     }
-                    
 
 
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<EventHub>();
@@ -799,6 +798,34 @@ namespace Web.Controllers
                     {
                         ["id"] = new JArray(unassignTaskModel.UserIDs)
                     }));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError,
+                    ResponseHelper.GetExceptionResponse(ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("{taskId:int}/others")]
+        [System.Web.Http.Authorize(Roles = "Manager")]
+        public IHttpActionResult GetOtherTasks(int taskId)
+        {
+            try
+            {
+                using (CmAgencyEntities db = new CmAgencyEntities())
+                {
+                    TaskService taskService = new TaskService(db);
+                    ProjectService projectService = new ProjectService(db);
+
+                    var projectOfTask = projectService.GetProjectOfTask(taskId);
+                    var tasksOfProject = taskService.GetTasksOfProject(projectOfTask.ID);
+
+                    IEnumerable<Task> otherTasks = tasksOfProject.Where(task => task.ID != taskId);
+                    IEnumerable<JObject> otherTasksJson = otherTasks.Select(task => taskService.ParseToJson(task));
+
+                    return Ok(ResponseHelper.GetResponse(new JArray(otherTasksJson)));
                 }
             }
             catch (Exception ex)
@@ -873,7 +900,7 @@ namespace Web.Controllers
 
                         return Content(HttpStatusCode.Unauthorized,
                             ResponseHelper.GetExceptionResponse(
-                            "User have to be manager of this task to edit it's Archive status"));
+                                "User have to be manager of this task to edit it's Archive status"));
                     }
                 }
                 else
