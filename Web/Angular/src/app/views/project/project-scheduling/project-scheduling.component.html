@@ -1,6 +1,13 @@
 <div class="card">
   <div class="card-header">
-    <strong>View project schedule </strong>
+    <ng-container *ngIf="foundProject">
+      <a routerLink="/project/{{foundProject.id}}/detail">
+        <strong>{{foundProject.name}}</strong>
+      </a>'s schedule
+    </ng-container>
+    <ng-container *ngIf="!foundProject">
+      <strong>project's schedule</strong>
+    </ng-container>
   </div>
   <div class="card-body row">
     <app-spinner *ngIf="isLoading.page" class="col-12"></app-spinner>

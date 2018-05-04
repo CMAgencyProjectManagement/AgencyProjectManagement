@@ -21,7 +21,7 @@ namespace Web.Controllers
     {
         [HttpPut]
         [Route("user/{id:int}/avatar")]
-        [System.Web.Http.Authorize(Roles = "Staff")]
+        [System.Web.Http.Authorize(Roles = "Admin, Manager, Staff")]
         public IHttpActionResult UploadAvatar(int id)
         {
             try
@@ -91,7 +91,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("task/{taskId:int}/attachment")]
-        [System.Web.Http.Authorize(Roles = "Admin, Staff")]
+        [System.Web.Http.Authorize(Roles = "Admin, Manager, Staff")]
         public IHttpActionResult UploadAttachment(int taskId)
         {
             try
@@ -189,7 +189,7 @@ namespace Web.Controllers
 
         [HttpPut]
         [Route("attachment/{attId:int}/delete")]
-        [System.Web.Http.Authorize(Roles = "Admin, Staff")]
+        [System.Web.Http.Authorize(Roles = "Admin, Manager, Staff")]
         public IHttpActionResult DeleteAttachment(int attId)
         {
             try

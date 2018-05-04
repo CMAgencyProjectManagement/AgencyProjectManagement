@@ -455,7 +455,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost] 
         [Route("{id:int}/resetpassword")]
         [Authorize(Roles = "Admin")]
         public IHttpActionResult ResetPassword(int id)

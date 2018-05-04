@@ -22,6 +22,7 @@ export class ProjectSchedulingComponent implements OnInit, OnDestroy {
   @ViewChild('gantt_here') ganttContainer: ElementRef;
   projectTasks: Task[];
   projectDependencies: Dependency[];
+  foundProject: Project;
   isLoading: {
     page: boolean
   };
@@ -45,6 +46,7 @@ export class ProjectSchedulingComponent implements OnInit, OnDestroy {
     if (id) {
       this.projectService.getProject(Number(id))
         .then((value: Project) => {
+          this.foundProject = value;
           for (let list of value.lists) {
             for (let task of list.tasks) {
               this.projectTasks.push(task);
