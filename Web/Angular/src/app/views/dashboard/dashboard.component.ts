@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit {
 
   private loadAdminSection() {
     Promise.all([
-      this.projectService.getAllProjects(),
+      this.projectService.getRecentProjects(),
       this.userService.getLeaderBoard()])
       .then((resData: [Project[], UserWithScore[]]) => {
         this.projects = resData[0];

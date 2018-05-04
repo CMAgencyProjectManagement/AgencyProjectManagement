@@ -111,7 +111,11 @@ namespace Web.Controllers
                     int userId = Int32.Parse(User.Identity.GetUserId());
                     ProjectService projectService = new ProjectService(db);
                     JArray dataObject = new JArray();
-                    var projects = projectService.GetProjectChangeThisWeek().OrderByDescending(x => x.ChangedTime);
+                    var projects = projectService.GetProjectChangeThisWeek()
+                        .Where(project => project.Status.HasValue &&
+                                          (project.Status.Value == (int) ProjectStatus.NotStarted ||
+                                           project.Status.Value == (int) ProjectStatus.Executing))
+                        .OrderByDescending(x => x.ChangedTime);
 
 
                     foreach (var project in projects)
@@ -312,7 +316,8 @@ namespace Web.Controllers
                     {
                         ProjectService projectService = new ProjectService(db);
                         Boolean flag = true;
-                        if (createProjectModel.Name != null && projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
+                        if (createProjectModel.Name != null &&
+                            projectService.CheckDuplicatedNameOfProject(createProjectModel.Name))
                         {
                             ModelState.AddModelError("Name", "Project name is taken");
                             flag = false;
@@ -339,7 +344,7 @@ namespace Web.Controllers
                         {
                             return Content(HttpStatusCode.BadRequest, ResponseHelper.GetExceptionResponse(ModelState));
                         }
-                            
+
                         UserService userService = new UserService(db);
                         string loginedUserId = User.Identity.GetUserId();
                         User creator = userService.GetUser(loginedUserId);
@@ -399,10 +404,10 @@ namespace Web.Controllers
                         UserService userService = new UserService(db);
                         TeamService teamService = new TeamService(db);
                         NotificationService notificationService = new NotificationService(db);
-                        
+
                         string userIdString = User.Identity.GetUserId();
                         User currentUser = userService.GetUser(userIdString);
-                        
+
                         Boolean flag = true;
 
                         if (updateProjectViewModel.startdate != null && updateProjectViewModel.deadline != null)
@@ -434,8 +439,8 @@ namespace Web.Controllers
                             deadline,
                             startdate
                         );
-                        
-                        
+
+
                         NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                         NotificationSentence sentence = builder.EditProjectSentence(
                             currentUser.ID,
@@ -448,7 +453,7 @@ namespace Web.Controllers
                         {
                             context.Clients.All.updateNotification(new JArray(notifiedUsers.Select(user => user.ID)));
                         }
-                        
+
                         return Ok(ResponseHelper.GetResponse(projectService.ParseToJson(updatedProject)));
                     }
                 }
@@ -480,8 +485,8 @@ namespace Web.Controllers
                     NotificationService notificationService = new NotificationService(db);
                     string userIdString = User.Identity.GetUserId();
                     User currentUser = userService.GetUser(userIdString);
-                    
-                    projectService.CloseProject(deleteProjectViewModel.id,currentUser.ID);
+
+                    projectService.CloseProject(deleteProjectViewModel.id, currentUser.ID);
 
                     NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                     NotificationSentence sentence = builder.CloseProjectSentence(
@@ -701,7 +706,7 @@ namespace Web.Controllers
 
                         NotificationSentenceBuilder builder = new NotificationSentenceBuilder(db);
                         List<User> notifiedUsersList = new List<User>();
-                        List<User> removedUserList = userService.GetUsers(assignProjectModel.UserIds).ToList(); 
+                        List<User> removedUserList = userService.GetUsers(assignProjectModel.UserIds).ToList();
                         foreach (int userId in assignProjectModel.UserIds)
                         {
                             NotificationSentence sentence = builder.UnAssignMemberFromProjectSentence(

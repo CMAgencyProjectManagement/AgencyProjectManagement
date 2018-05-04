@@ -22,6 +22,7 @@ const serverPath = {
   updateProject: '/api/project',
   createProject: '/api/project',
   closeProject: '/api/project/close',
+  recentProject: '/api/project/recentchanged',
   getProjectStatus: '/api/project/statuses',
   assignUsersToProject: '/api/project/assign',
   unAssignUsersFromProject: '/api/project/Unassign',

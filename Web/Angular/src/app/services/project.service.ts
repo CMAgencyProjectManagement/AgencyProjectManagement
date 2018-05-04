@@ -150,6 +150,24 @@ export class ProjectService {
     });
   }
 
+  public getRecentProjects(force: boolean = false): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      get(serverPath.recentProject)
+        .set('token', this.tokenCursor.get())
+        .then(res => {
+          const content = res.body;
+          if (content.IsSuccess) {
+            this.projectsCursor.set(content.Data);
+            resolve(content.Data);
+          } else {
+            reject(content.Message);
+          }
+        })
+        .catch(reason => reject(reason.response.body));
+      // }
+    });
+  }
+
   public getProjectStatus() {
     return new Promise<any>((resolve, reject) => {
       post(serverPath.createProject)

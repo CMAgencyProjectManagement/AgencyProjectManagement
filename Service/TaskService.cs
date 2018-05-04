@@ -299,9 +299,12 @@ namespace Service
             task.Status = (int) taskStatus;
             task.ChangedBy = modifier.ID;
 
-            if (taskStatus == TaskStatus.NeedReview || taskStatus == TaskStatus.Done)
+            if (!task.FinishedDate.HasValue)
             {
-                task.FinishedDate = DateTime.Today;
+                if (taskStatus == TaskStatus.NeedReview || taskStatus == TaskStatus.NeedReview)
+                {
+                    task.FinishedDate = DateTime.Today;                    
+                }
             }
             else if (taskStatus == TaskStatus.NotDone)
             {
