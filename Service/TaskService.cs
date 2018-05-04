@@ -300,7 +300,7 @@ namespace Service
             task.Status = (int) taskStatus;
             task.ChangedBy = modifier.ID;
 
-            if (taskStatus == TaskStatus.NeedReview)
+            if (taskStatus == TaskStatus.NeedReview || taskStatus == TaskStatus.Done)
             {
                 task.FinishedDate = DateTime.Today;
             }
