@@ -208,6 +208,7 @@ namespace Web.Controllers
                     ResponseHelper.GetExceptionResponse(ex));
             }
         }
+        
         [HttpPut]
         [Route("{checkListId:int}/item/{checklistItemId:int}")]
         [Authorize(Roles = "Manager")]

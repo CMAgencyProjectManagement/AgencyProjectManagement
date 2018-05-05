@@ -76,8 +76,10 @@ const serverPath = {
   config: '/api/config',
   // Notification
   getMyNotification: '/api/notification',
-  checkin: '/api/notification/checkin'
-
+  checkin: '/api/notification/checkin',
+  // Report
+  reportStatistic: (projectId) => `/api/report/project/${projectId}/statistic`,
+  reportProgress: (projectId) => `/api/report/project/${projectId}/progress`,
 };
 
 export {

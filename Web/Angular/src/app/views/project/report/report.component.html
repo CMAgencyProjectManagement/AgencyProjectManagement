@@ -7,71 +7,48 @@
   <app-spinner *ngIf=isLoading.page class="col-12"></app-spinner>
   <div class="card-body row" *ngIf=!isLoading.page>
     <div class="col-12">
-      <a routerLink="/project/{{report.id}}/detail">
-        <h2 class="card-title">{{report.name}}</h2>
+      <a routerLink="/project/{{foundProject.id}}/detail">
+        <h2 class="card-title">{{foundProject.name}}</h2>
       </a>
     </div>
     <div class="col-12">
       <div class="row">
+        <div class="section col-12">
+          <!--Progress SECTION-->
+          <h5 class="mb-3">Project progress</h5>
+          <dl class="row ml-1">
+            <!--<dt class="col-4">Task count:</dt>-->
+            <dd class="col-12">
+              <canvas baseChart
+                      [datasets]="barChart.data"
+                      [labels]="barChart.labels"
+                      [chartType]="'bar'">
+              </canvas>
+            </dd>
+          </dl>
+        </div>
         <div class="section col-6">
           <!--DETAIL SECTION-->
           <h5 class="mb-3">Detail</h5>
           <dl class="row ml-1">
             <dt class="col-5">Task count:</dt>
             <dd class="col-7">
-              {{report.taskCount}}
+              {{statistic.taskCount}} tasks
             </dd>
           </dl>
           <dl class="row ml-1">
-            <dt class="col-5">Task deadline this week:</dt>
+            <dt class="col-5">Completed task:</dt>
             <dd class="col-7">
-              {{report.taskExpireThisWeek.length}}
+              {{statistic.completedTask}} tasks
             </dd>
           </dl>
           <dl class="row ml-1">
-            <dt class="col-5">Number of user:</dt>
+            <dt class="col-5">Number of staffs:</dt>
             <dd class="col-7">
-              {{report.userNumberInProject}}
-            </dd>
-          </dl>
-          <dl class="row ml-1">
-            <dt class="col-5">Number of free user:</dt>
-            <dd class="col-7">
-              {{report.userNumberNotInTask}}
+              {{statistic.numberOfPeopleInProject}} staffs
             </dd>
           </dl>
         </div>
-        <div class="section col-6">
-          <!--DETAIL SECTION-->
-          <h5 class="mb-3">Number of task deadline this week</h5>
-          <dl class="row ml-1">
-            <!--<dt class="col-4">Task count:</dt>-->
-            <dd class="col-12">
-              <canvas baseChart
-                      [data]="lineChart.data"
-                      [labels]="lineChart.labels"
-                      [chartType]="lineChart.type"
-                      [legend]="false">
-
-              </canvas>
-            </dd>
-          </dl>
-        </div>
-        <div class="section col-12">
-          <!--DETAIL SECTION-->
-          <h5 class="mb-3">Task status</h5>
-          <dl class="row ml-1">
-            <!--<dt class="col-4">Task count:</dt>-->
-            <dd class="col-12">
-              <canvas baseChart
-                      [data]="pieChart.data"
-                      [labels]="pieChart.labels"
-                      [chartType]="pieChart.type">
-              </canvas>
-            </dd>
-          </dl>
-        </div>
-
       </div>
     </div>
   </div>

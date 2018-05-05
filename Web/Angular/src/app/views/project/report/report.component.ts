@@ -4,10 +4,9 @@ import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ErrorModalComponent} from '../../../cmaComponents/modals';
 import {ProjectService} from '../../../services/project.service';
+import {ReportService} from '../../../services/report.service';
 import {Task} from '../../../interfaces/task';
-import * as moment from 'moment';
-import {forEach} from '@angular/router/src/utils/collection';
-import * as _ from 'lodash';
+import {Project} from '../../../interfaces/project';
 
 @Component({
   selector: 'app-report',
@@ -15,20 +14,19 @@ import * as _ from 'lodash';
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
-  projectId: number;
-  report: Report;
+  foundProject: Project;
   isLoading: {
     page: boolean
   };
-  pieChart: {
-    labels,
-    data,
-    type
+  statistic: {
+    taskCount: number,
+    completedTask: number,
+    numberOfPeopleInProject: number;
   };
-  lineChart: {
-    labels,
-    data,
-    type
+  barChart: {
+    labels: any
+    series: any
+    data: any
   };
 
   constructor(
@@ -36,7 +34,8 @@ export class ReportComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private modalService: BsModalService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private reportService: ReportService
   ) {
     this.isLoading = {
       page: true
@@ -46,63 +45,26 @@ export class ReportComponent implements OnInit {
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
     if (Number(id)) {
-      this.projectId = Number(id);
-      this.projectService.getReport(id)
-        .then((value: Report) => {
-          this.report = value;
-          this.setupPieChart();
-          this.setupLineChart();
-          this.isLoading.page = false;
-        })
-        .catch(reason => {
-          this.showErrorModal(reason.Message);
-        })
+      this.loadData(id);
     } else {
       this.showErrorModal(`${id} is not a valid ID`);
     }
   }
 
-  setupPieChart() {
-    let labels = this.report.taskStatusReport.map(value => value.key);
-    let data = this.report.taskStatusReport.map(value => value.value);
-
-    this.pieChart = {
-      labels: labels,
-      data: data,
-      type: 'pie'
-    }
-  }
-
-  setupLineChart() {
-    let tmpArray: {
-      key: moment.Moment,
-      value: Task[]
-    }[] = [];
-    let resultObj = _.groupBy(this.report.taskExpireThisWeek, 'deadline');
-    for (let key in resultObj) {
-      if (resultObj.hasOwnProperty(key)) {
-        tmpArray.push({
-          key: moment(key),
-          value: resultObj[key]
-        })
-      }
-    }
-    tmpArray.sort((left, right) => {
-      if (left.key.isSame(right.key)) {
-        return 0;
-      }
-
-      if (left.key.isAfter(right.key)) {
-        return 1;
-      }
-
-      return -1;
-    });
-    this.lineChart = {
-      labels: tmpArray.map(el => el.key.format('DD/MM')),
-      data: tmpArray.map(el => el.value.length),
-      type: 'line'
-    };
+  loadData(projectId) {
+    this.isLoading.page = true;
+    Promise.all([this.projectService.getProject(projectId),
+      this.reportService.getReportStatistic(projectId),
+      this.reportService.getReportProgress(projectId)])
+      .then((resData: [Project, any, any]) => {
+        this.foundProject = resData[0];
+        this.statistic = resData[1];
+        this.barChart = resData[2];
+        this.isLoading.page = false;
+      })
+      .catch(reason => {
+        this.showErrorModal(reason.Message);
+      })
   }
 
   private showErrorModal(message: string, isNavigateBack: boolean = false) {
@@ -116,18 +78,4 @@ export class ReportComponent implements OnInit {
     };
     this.modalService.show(ErrorModalComponent, {initialState, class: 'modal-dialog modal-danger'});
   }
-}
-
-
-interface Report {
-  id: number,
-  name: string,
-  taskCount: number,
-  userNumberInProject: number,
-  userNumberNotInTask: number,
-  taskStatusReport: {
-    key: string,
-    value: number
-  }[],
-  taskExpireThisWeek: Task[]
 }

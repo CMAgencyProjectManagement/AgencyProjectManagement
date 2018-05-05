@@ -254,34 +254,6 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Route("dd/{id:int}")]
-        [System.Web.Http.Authorize]
-        public IHttpActionResult GetMyProjectinTeam(int id)
-        {
-            try
-            {
-                using (CmAgencyEntities db = new CmAgencyEntities())
-                {
-                    ProjectService projectService = new ProjectService(db);
-                    IEnumerable<Project> projects = projectService.GetProjectOfTeam(id);
-                    JArray dataObject = new JArray();
-
-                    foreach (var project in projects)
-                    {
-                        dataObject.Add(projectService.ParseToJson(project, isDetailed: false));
-                    }
-
-                    return Ok(ResponseHelper.GetResponse(dataObject));
-                }
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError,
-                    ResponseHelper.GetExceptionResponse(ex));
-            }
-        }
-
-        [HttpGet]
         [Route("{id:int}/list")]
         [System.Web.Http.Authorize]
         public IHttpActionResult GetListOfProject(int id)
