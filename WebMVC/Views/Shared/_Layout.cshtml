@@ -8,26 +8,57 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bs-example {
+            margin: 20px;
+        }
+
+        hr {
+            margin: 25px 0;
+        }
+    </style>
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    <div class="bs-example">
+        <ul class="nav nav-pills">
+            <li class=""><a href="#">Dashboad</a></li>
+            <li>
+                <a href="#" data-toggle="dropdown" class="">Project <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">View Projects</a></li>
+                    <li><a href="#">Create Project</a></li>
                 </ul>
-            </div>
-        </div>
+            </li>
+            <li class=""><a href="#">Departments</a></li>
+            <li class="">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Account <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">View accounts</a></li>
+                    <li><a href="#">Create account</a></li>
+                    <li><a href="#">My Profile</a></li>
+                    @*<li class="divider"></li>
+                    <li><a href="#">Trash</a></li>*@
+                </ul>
+            </li>
+            <li class=""><a href="#">Configuration</a></li>
+
+
+            <li class="dropdown pull-right">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </li>
+        </ul>
+        <hr>
+
     </div>
     <div class="container body-content">
         @RenderBody()
