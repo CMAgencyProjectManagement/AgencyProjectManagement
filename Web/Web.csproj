@@ -433,6 +433,8 @@
     <Content Include="Angular\dist\user-management.module.chunk.js.map" />
     <Content Include="Angular\dist\vendor.bundle.js" />
     <Content Include="Angular\dist\vendor.bundle.js.map" />
+    <Content Include="App_Data\CmaData.mdf" />
+    <Content Include="App_Data\CmaData_log.ldf" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <Content Include="Angular\dist\config.module.chunk.js.map" />
