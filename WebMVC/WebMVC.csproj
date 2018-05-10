@@ -182,6 +182,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\vue.js" />
     <Content Include="sort_asc.png" />
     <Content Include="sort_both.png" />
     <Content Include="sort_desc.png" />

@@ -68,11 +68,30 @@
     </div>
 </div>
 
+<script src="~/Scripts/vue.js"></script>
+<h3>VueJS 2 in ASP.NET MVC 5</h3>
+
+<div id="aboutPage">
+    <p>Message is: {{ message }}</p>
+    <input v-model="message" placeholder="edit me">
+
+</div>
+<script>
+    var aboutPage = new Vue({
+        el: '#aboutPage',
+        data: {
+            message: 'Hello Vue! in About Page'
+        }
+    });
+</script>
+
+
+
 @section Scripts
 {
     <script>
         $(document).ready(function () {
             $('#myTable').DataTable();
         });
-    </script>    
+    </script>
 }
