@@ -5,6 +5,8 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.SqlServer.Server;
 using Newtonsoft.Json.Linq;
 

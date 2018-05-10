@@ -9,6 +9,8 @@ using System.Security;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;

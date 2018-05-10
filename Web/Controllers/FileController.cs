@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;

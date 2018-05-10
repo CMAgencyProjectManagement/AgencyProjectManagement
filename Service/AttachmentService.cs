@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Core;
-using System.Data.Entity.Migrations.Model;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Security;
-using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service

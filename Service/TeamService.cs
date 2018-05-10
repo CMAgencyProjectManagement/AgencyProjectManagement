@@ -6,6 +6,8 @@ using System.Net;
 using System.Runtime.Remoting.Messaging;
 using System.Web.Configuration;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service
@@ -86,29 +88,6 @@ namespace Service
             }
 
             return tasklist;
-        }
-
-        public Team Updateteam(
-            int id,
-            string name,
-            string createdBy,
-            DateTime? createdDate,
-            Boolean isClosed,
-            string manager)
-        {
-            Team team = db.Teams.Find(id);
-            if (team != null)
-            {
-                team.Name = name;
-                team.User.Username = manager;
-
-                db.SaveChanges();
-                return team;
-            }
-            else
-            {
-                throw new ObjectNotFoundException($"User with ID{id} not found");
-            }
         }
 
         public User AssignTeam(

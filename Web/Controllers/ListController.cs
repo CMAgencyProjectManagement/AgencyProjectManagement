@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Web.ViewModels;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using Entity.DAL;
+using Entity.Models;
 
 namespace Web.Controllers
 {

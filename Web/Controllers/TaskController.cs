@@ -6,13 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Web.WebSockets;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;
 using Service;
 using Web.Hubs;
 using Web.ViewModels;
-using Task = Entity.Task;
 
 namespace Web.Controllers
 {

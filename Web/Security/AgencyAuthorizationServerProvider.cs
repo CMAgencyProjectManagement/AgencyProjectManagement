@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.Owin.Security.OAuth;
 using Service;
 using Task = System.Threading.Tasks.Task;

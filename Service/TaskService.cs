@@ -9,6 +9,8 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service

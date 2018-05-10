@@ -5,6 +5,8 @@ using System.Data.Entity.Core;
 using System.Linq;
 using System.Text;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service
@@ -38,7 +40,7 @@ namespace Service
             {
                 foreach (List list in db.Lists)
                 {
-                    foreach (Entity.Task task in list.Tasks)
+                    foreach (Task task in list.Tasks)
                     {
                         if (task.ID == taskId)
                         {

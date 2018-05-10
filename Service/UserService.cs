@@ -6,6 +6,8 @@ using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service

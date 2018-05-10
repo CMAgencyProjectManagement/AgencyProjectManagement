@@ -1,5 +1,7 @@
 ﻿using System;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 
 namespace Service
 {

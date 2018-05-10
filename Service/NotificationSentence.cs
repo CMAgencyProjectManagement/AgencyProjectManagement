@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entity;
+using Entity.Models;
 using Microsoft.SqlServer.Server;
 using Newtonsoft.Json.Linq;
 

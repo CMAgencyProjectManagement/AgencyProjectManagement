@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json.Linq;

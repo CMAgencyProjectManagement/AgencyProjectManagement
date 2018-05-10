@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Http;
+using Entity.DAL;
+using Entity.Models;
 using Web.ViewModels;
 
 namespace Web.Controllers

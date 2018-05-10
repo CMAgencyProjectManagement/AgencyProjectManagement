@@ -5,6 +5,7 @@ using System.Net;
 using System.Security;
 using System.Web.Http;
 using Entity;
+using Entity.DAL;
 using Newtonsoft.Json.Linq;
 using Service;
 

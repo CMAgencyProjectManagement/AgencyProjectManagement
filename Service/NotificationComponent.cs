@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using Entity;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service

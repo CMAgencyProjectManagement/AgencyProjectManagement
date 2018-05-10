@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 using Service;
 

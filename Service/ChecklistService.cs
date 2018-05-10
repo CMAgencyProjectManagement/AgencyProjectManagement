@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
 using Entity;
+using Entity.DAL;
+using Entity.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Service

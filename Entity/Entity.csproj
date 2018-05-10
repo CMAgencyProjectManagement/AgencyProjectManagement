@@ -49,93 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attachment.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CheckList.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CheckListItem.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CmAgencyModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CmAgencyModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CmAgencyModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CmAgencyModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CmAgencyModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Comment.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="List.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Notification.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NotificationUser.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Project.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="DAL\CmAgencyEntities.cs" />
+    <Compile Include="DAL\CmaInitializer.cs" />
+    <Compile Include="Models\Attachment.cs" />
+    <Compile Include="Models\CheckList.cs" />
+    <Compile Include="Models\CheckListItem.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\List.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\NotificationUser.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\TaskDependency.cs" />
+    <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\TeamProject.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserProject.cs" />
+    <Compile Include="Models\UserTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Task.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TaskDependency.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Team.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TeamProject.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserProject.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserTask.cs">
-      <DependentUpon>CmAgencyModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="CmAgencyModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CmAgencyModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="CmAgencyModel.edmx.diagram">
-      <DependentUpon>CmAgencyModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CmAgencyModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CmAgencyModel.edmx</DependentUpon>
-      <LastGenOutput>CmAgencyModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="CmAgencyModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CmAgencyModel.edmx</DependentUpon>
-      <LastGenOutput>CmAgencyModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
